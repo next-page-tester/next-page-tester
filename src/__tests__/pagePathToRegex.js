@@ -1,6 +1,6 @@
 import {
   default as pagePathToRouteRegex,
-  ANYTHING_BUT_SLASH_REGEX_STRING as ANYTHING_BUT_SLASH_REGEX,
+  PARAM_WILDCARD_REGEX_STRING as WILDCARD,
 } from '../pagePathToRouteRegex';
 
 describe('pagePathToRouteRegex', () => {
@@ -11,9 +11,9 @@ describe('pagePathToRouteRegex', () => {
   });
 
   it('gets expected regex with dynamic segments', () => {
-    const actual = pagePathToRouteRegex('/blog/[id]/[fof]/index.js');
+    const actual = pagePathToRouteRegex('/blog/[id]/[foo]/index.js');
     const expected = new RegExp(
-      `^/blog/${ANYTHING_BUT_SLASH_REGEX}/${ANYTHING_BUT_SLASH_REGEX}/index$`
+      `^/blog/(?<id>${WILDCARD})/(?<foo>${WILDCARD})/index$`
     ).toString();
 
     expect(actual.toString()).toBe(expected);

@@ -5,23 +5,23 @@ import * as blogPage99 from './__fixtures__/pages/blog/99';
 const pagesDirectory = __dirname + '/__fixtures__/pages';
 
 describe('getPage', () => {
-  it('gets expected page', async () => {
+  it('gets expected page object', async () => {
     const actual = await getPage({ pagesDirectory, route: '/index' });
-    expect(actual).toBe(indexPage);
+    expect(actual.page).toBe(indexPage);
   });
 
-  it('gets expected page', async () => {
+  it('gets expected page object', async () => {
     const actual = await getPage({ pagesDirectory, route: '/blog/5' });
-    expect(actual).toBe(blogPage);
+    expect(actual.page).toBe(blogPage);
   });
 
   describe('Predefined VS. dynamic routes', () => {
-    it('Predefined routes take precedence over dynamic', async () => {
+    it('predefined routes take precedence over dynamic', async () => {
       const actual = await getPage({
         pagesDirectory,
         route: '/blog/99',
       });
-      expect(actual).toBe(blogPage99);
+      expect(actual.page).toBe(blogPage99);
     });
   });
 
@@ -32,7 +32,7 @@ describe('getPage', () => {
     });
   });
 
-  describe('non macthing route', () => {
+  describe('non matching route', () => {
     it('returns undefined', async () => {
       const actual = await getPage({
         pagesDirectory,
