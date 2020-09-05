@@ -1,0 +1,4 @@
+.git/
+.tmp/
+package.json
+package-lock.json

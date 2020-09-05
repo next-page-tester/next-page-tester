@@ -1,0 +1,18 @@
+# OS generated files
+.*
+*.db
+*.log
+node_modules
+
+# Trailing dotted files
+!.all-contributorsrc
+!.babelrc.js
+!.editorconfig
+!.gitignore
+!.npmignore
+!.npmrc
+!.prettierignore
+!.prettierrc
+!.travis.yml
+!.github
+!.babelrc

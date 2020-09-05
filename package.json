@@ -1,0 +1,60 @@
+{
+  "name": "next-tester",
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "files": [
+    "src",
+    "!__tests__"
+  ],
+  "scripts": {
+    "test": "jest",
+    "preversion": "npm run prepublish",
+    "version": "git add package.json",
+    "postversion": "git push && git push --tags",
+    "prepare": "npm t",
+    "format": "prettier --write \"**/*.{js,json,md}\""
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toomuchdesign/next-tester.git"
+  },
+  "author": "Andrea Carraro <me@andreacarraro.it>",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "babel-jest": "^26.3.0",
+    "husky": "^4.0.0",
+    "jest": "^26.4.2",
+    "lint-staged": "^10.0.0",
+    "next": "^9.5.3",
+    "prettier": "^2.0.0"
+  },
+  "dependencies": {
+    "recursive-readdir": "^2.2.2"
+  },
+  "peerDependencies": {
+    "next": "^9.4.0"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "node_modules",
+      "__fixtures__"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{js,json}": [
+      "prettier",
+      "npm t -- ."
+    ],
+    "**/*.{md}": [
+      "prettier"
+    ]
+  }
+}
