@@ -1,8 +1,9 @@
-const PARAM_WILDCARD_REGEX = /[^\/]*/;
 // prettier-ignore
-export const PARAM_WILDCARD_REGEX_STRING = PARAM_WILDCARD_REGEX.toString().slice(1, -1);
+export const PARAM_WILDCARD_REGEX_STRING = '[^/]*';
 const DYNAMIC_ROUTE_SEGMENT_REGEX = /\[([^\/\[\]]*)\]/g;
 const FILE_EXTENSION_REGEX = /\..*$/;
+const TRAILING_INDEX_REGEX = /\/index$/;
+export const OPTIONAL_TRAILING_INDEX_REGEX_STRING = '(?:/index)?';
 
 function makeNamedCapturingGroup({ name, regex }) {
   return `(?<${name}>${regex})`;
@@ -12,6 +13,7 @@ function makeNamedCapturingGroup({ name, regex }) {
 function pagePathToRouteRegex(pagePath) {
   const regex = pagePath
     .replace(FILE_EXTENSION_REGEX, '')
+    .replace(TRAILING_INDEX_REGEX, OPTIONAL_TRAILING_INDEX_REGEX_STRING)
     .replace(DYNAMIC_ROUTE_SEGMENT_REGEX, (match, paramName) => {
       return makeNamedCapturingGroup({
         name: paramName,
