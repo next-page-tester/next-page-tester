@@ -29,13 +29,16 @@
     "jest": "^26.4.2",
     "lint-staged": "^10.0.0",
     "next": "^9.5.3",
-    "prettier": "^2.0.0"
+    "prettier": "^2.0.0",
+    "react": "^16.13.1"
   },
   "dependencies": {
+    "query-string": "^6.13.1",
     "recursive-readdir": "^2.2.2"
   },
   "peerDependencies": {
-    "next": "^9.4.0"
+    "next": "^9.4.0",
+    "react": ">16.0.0"
   },
   "jest": {
     "testPathIgnorePatterns": [

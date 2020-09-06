@@ -1,16 +1,16 @@
-import { getPage } from '../';
-import * as indexPage from './__fixtures__/pages/index';
-import * as blogIndexPage from './__fixtures__/pages/blog/index';
-import * as blogPage from './__fixtures__/pages/blog/[id]';
-import * as blogPage99 from './__fixtures__/pages/blog/99';
+import React from 'react';
+import getPage from '../getPage';
+import IndexPage from './__fixtures__/pages/index';
+import BlogIndexPage from './__fixtures__/pages/blog/index';
+import BlogPage from './__fixtures__/pages/blog/[id]';
+import BlogPage99 from './__fixtures__/pages/blog/99';
 const pagesDirectory = __dirname + '/__fixtures__/pages';
 
 describe('getPage', () => {
   describe('route matching a page path', () => {
-    it('gets expected page object', async () => {
+    it('gets expected component', async () => {
       const actual = await getPage({ pagesDirectory, route: '/index' });
-      expect(actual.page).toBe(indexPage);
-      expect(actual.params).toEqual({});
+      expect(actual).toEqual(React.createElement(IndexPage));
     });
   });
 
@@ -27,17 +27,18 @@ describe('getPage', () => {
   describe('pages files named "index"', () => {
     it('routes them to the root of the directory', async () => {
       const actual = await getPage({ pagesDirectory, route: '/blog' });
-      expect(actual.page).toBe(blogIndexPage);
-      expect(actual.params).toEqual({});
+      expect(actual).toEqual(React.createElement(BlogIndexPage));
     });
   });
 
   describe('dynamic route segments', () => {
     describe('routes exactly matching a dynamic page path', () => {
       it('gets expected page object', async () => {
-        const actual = await getPage({ pagesDirectory, route: '/blog/5' });
-        expect(actual.page).toBe(blogPage);
-        expect(actual.params).toEqual({ id: '5' });
+        const actual = await getPage({
+          pagesDirectory,
+          route: '/blog/5',
+        });
+        expect(actual).toEqual(React.createElement(BlogPage));
       });
 
       it('predefined routes take precedence over dynamic', async () => {
@@ -45,8 +46,7 @@ describe('getPage', () => {
           pagesDirectory,
           route: '/blog/99',
         });
-        expect(actual.page).toBe(blogPage99);
-        expect(actual.params).toEqual({});
+        expect(actual).toEqual(React.createElement(BlogPage99, {}));
       });
     });
   });

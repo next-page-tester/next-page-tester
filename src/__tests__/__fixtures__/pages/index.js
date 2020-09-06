@@ -1,1 +1,3 @@
-export default '/index';
+export default function index(props) {
+  return `/index - props: ${props}`;
+}
