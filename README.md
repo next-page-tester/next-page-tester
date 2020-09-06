@@ -1,4 +1,4 @@
-# Next tester
+# Next pages tester
 
 Test Next.js in Node environment.
 
