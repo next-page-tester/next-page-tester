@@ -2,6 +2,20 @@ import getPagePaths from './getPagePaths';
 import pagePathToRouteRegex from './pagePathToRouteRegex';
 import loadPage from './loadPage';
 
+/**
+ * @typedef {Object} PageObject
+ * @property {Object.<function>} page
+ * @property {string} path
+ * @property {Object.<string, string>} params
+ * @property {number} paramsNumber
+ */
+
+/**
+ * @param {Object} options
+ * @param {string} options.pagesDirectory - Next Pages directory path
+ * @param {string} options.route - Next route
+ * @returns {(PageObject|undefined)}
+ */
 export default async function getPage({ pagesDirectory, route }) {
   const pagePath = await getPagePath({ pagesDirectory, route });
   if (pagePath) {
@@ -33,24 +47,9 @@ async function getPagePath({ pagesDirectory, route }) {
         };
       }
     })
-    .filter(Boolean);
+    .filter(Boolean)
+    .sort((a, b) => a.paramsNumber - b.paramsNumber);
 
-  if (matchingPagePaths.length === 0) {
-    return undefined;
-  }
-
-  if (matchingPagePaths.length === 1) {
-    return matchingPagePaths[0];
-  }
-
-  // Predefined routes take precedence over dynamic routes
-  // https://nextjs.org/docs/routing/dynamic-routes#caveats
-  let pagePathWithLessParams = matchingPagePaths[0];
-  for (const pagePath of matchingPagePaths) {
-    if (pagePath.paramsNumber < pagePathWithLessParams.paramsNumber) {
-      pagePathWithLessParams = pagePath;
-    }
-  }
-
-  return pagePathWithLessParams;
+  // Return the result with less page params
+  return matchingPagePaths[0];
 }

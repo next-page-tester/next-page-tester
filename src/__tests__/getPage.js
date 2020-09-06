@@ -6,7 +6,7 @@ import * as blogPage99 from './__fixtures__/pages/blog/99';
 const pagesDirectory = __dirname + '/__fixtures__/pages';
 
 describe('getPage', () => {
-  describe('routes exactly matching a page path', () => {
+  describe('route matching a page path', () => {
     it('gets expected page object', async () => {
       const actual = await getPage({ pagesDirectory, route: '/index' });
       expect(actual.page).toBe(indexPage);
@@ -14,8 +14,18 @@ describe('getPage', () => {
     });
   });
 
-  describe('index route', () => {
-    it('route files named index to the root of the directory', async () => {
+  describe('route not matching any page', () => {
+    it('returns undefined', async () => {
+      const actual = await getPage({
+        pagesDirectory,
+        route: '/blog/5/doesntexists',
+      });
+      expect(actual).toBe(undefined);
+    });
+  });
+
+  describe('pages files named "index"', () => {
+    it('routes them to the root of the directory', async () => {
       const actual = await getPage({ pagesDirectory, route: '/blog' });
       expect(actual.page).toBe(blogIndexPage);
       expect(actual.params).toEqual({});
@@ -44,16 +54,6 @@ describe('getPage', () => {
   describe('route with trailing slash', () => {
     it('returns undefined', async () => {
       const actual = await getPage({ pagesDirectory, route: '/blog/5/' });
-      expect(actual).toBe(undefined);
-    });
-  });
-
-  describe("route doesn't match any page", () => {
-    it('returns undefined', async () => {
-      const actual = await getPage({
-        pagesDirectory,
-        route: '/blog/5/doesntexists',
-      });
       expect(actual).toBe(undefined);
     });
   });
