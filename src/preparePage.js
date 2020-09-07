@@ -18,14 +18,12 @@ export default async function preparePage({
 
   if (page.getStaticProps) {
     // @TODO complete ctx object
-    //https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation
-    const ctx = {};
-    if (page.getStaticPaths) {
-      const { paths } = await page.getStaticPaths();
-      // @NOTE getStaticPaths returns an array of paths to statically render a set of pages
-      // Here we only use and test the first returned path
-      ctx.params = paths[0].params;
-    }
+    // https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation
+    const ctx = {
+      params: { ...params },
+    };
+    // @TODO introduce `getStaticPaths` logic
+    // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
     const result = await page.getStaticProps(ctx);
     return React.createElement(page.default, result.props);
   }

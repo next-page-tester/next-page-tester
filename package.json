@@ -42,8 +42,10 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "node_modules",
       "__fixtures__"
+    ],
+    "coveragePathIgnorePatterns": [
+      "__tests__"
     ]
   },
   "husky": {
