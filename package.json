@@ -15,7 +15,11 @@
     "prepare": "npm t",
     "format": "prettier --write \"**/*.{js,json,md}\""
   },
-  "keywords": ["next", "test", "routing"],
+  "keywords": [
+    "next",
+    "test",
+    "routing"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/toomuchdesign/next-pages-tester.git"
@@ -33,6 +37,7 @@
     "react": "^16.13.1"
   },
   "dependencies": {
+    "node-mocks-http": "^1.9.0",
     "query-string": "^6.13.1",
     "recursive-readdir": "^2.2.2"
   },

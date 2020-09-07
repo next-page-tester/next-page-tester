@@ -1,4 +1,5 @@
 import React from 'react';
+import httpMocks from 'node-mocks-http';
 import getPage from '../getPage';
 import IndexPage from './__fixtures__/pages/index';
 import BlogIndexPage from './__fixtures__/pages/blog/index';
@@ -71,11 +72,25 @@ describe('getPage', () => {
   describe('page with getServerSideProps', () => {
     it('feeds page component with returned props', async () => {
       const actual = await getPage({ pagesDirectory, route: '/ssr/5?foo=bar' });
-      expect(actual).toEqual(
-        React.createElement(SSRPage, {
-          query: { foo: 'bar' },
-          params: { id: '5' },
-        })
+      const expectedParams = { id: '5' };
+      const expectedQuery = { foo: 'bar' };
+      const expectedReq = httpMocks.createRequest({
+        url: '/ssr/5?foo=bar',
+        params: expectedParams,
+        query: expectedQuery,
+      });
+      const expectedRes = httpMocks.createResponse();
+
+      //@HACK here props property order counts
+      expect(JSON.stringify(actual)).toEqual(
+        JSON.stringify(
+          React.createElement(SSRPage, {
+            params: expectedParams,
+            query: expectedQuery,
+            req: expectedReq,
+            res: expectedRes,
+          })
+        )
       );
     });
   });
