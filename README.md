@@ -1,4 +1,4 @@
-# Next pages tester
+# Next page tester
 
 [![Build status][ci-badge]][ci]
 [![Npm version][npm-badge]][npm]
@@ -28,7 +28,7 @@ The idea behind this library is to provide a smooth unit testing experience with
 
 The testing approach suggested here consists of mocking external API's responses and get the component instance matching a given route.
 
-Next pages tester will take care of:
+Next page tester will take care of:
 
 - **resolving** the provided **route** into the matching page component
 - optionally calling **data fetching methods** (`getServerSideProps` or `getStatic Props`)
@@ -55,10 +55,10 @@ Next pages tester will take care of:
 - Get `next/router` (especially `withRouter` and `useRouter`) to work
 - Switch to Typescript
 
-[ci]: https://travis-ci.com/toomuchdesign/next-pages-tester
-[ci-badge]: https://travis-ci.com/toomuchdesign/next-pages-tester.svg?branch=master
-[npm]: https://www.npmjs.com/package/next-pages-tester
-[npm-badge]: https://img.shields.io/npm/v/next-pages-tester.svg
+[ci]: https://travis-ci.com/toomuchdesign/next-page-tester
+[ci-badge]: https://travis-ci.com/toomuchdesign/next-page-tester.svg?branch=master
+[npm]: https://www.npmjs.com/package/next-page-tester
+[npm-badge]: https://img.shields.io/npm/v/next-page-tester.svg
 [next-github]: https://nextjs.org/
 [req-docs]: https://nodejs.org/api/http.html#http_class_http_clientrequest
 [res-docs]: https://nodejs.org/api/http.html#http_class_http_serverresponse
