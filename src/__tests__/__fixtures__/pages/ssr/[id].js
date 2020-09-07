@@ -1,8 +1,4 @@
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
+import { sleep } from '../../../../utils';
 
 export default function ssr_$id$(props) {
   return `/ssr/[id] - props: ${props}`;
