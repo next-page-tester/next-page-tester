@@ -1,5 +1,5 @@
 // prettier-ignore
-export const PARAM_WILDCARD_REGEX_STRING = '[^/]*';
+export const PARAM_WILDCARD_REGEX_STRING = '[^/?]*';
 const DYNAMIC_ROUTE_SEGMENT_REGEX = /\[([^\/\[\]]*)\]/g;
 const FILE_EXTENSION_REGEX = /\..*$/;
 const TRAILING_INDEX_REGEX = /\/index$/;

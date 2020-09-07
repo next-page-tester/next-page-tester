@@ -4,6 +4,7 @@ import IndexPage from './__fixtures__/pages/index';
 import BlogIndexPage from './__fixtures__/pages/blog/index';
 import BlogPage from './__fixtures__/pages/blog/[id]';
 import BlogPage99 from './__fixtures__/pages/blog/99';
+import SsrPage from './__fixtures__/pages/ssr/[id]';
 const pagesDirectory = __dirname + '/__fixtures__/pages';
 
 describe('getPage', () => {
@@ -41,6 +42,14 @@ describe('getPage', () => {
         expect(actual).toEqual(React.createElement(BlogPage));
       });
 
+      it('supports aths with query strings', async () => {
+        const actual = await getPage({
+          pagesDirectory,
+          route: '/blog/5?foo=bar',
+        });
+        expect(actual).toEqual(React.createElement(BlogPage));
+      });
+
       it('predefined routes take precedence over dynamic', async () => {
         const actual = await getPage({
           pagesDirectory,
@@ -55,6 +64,18 @@ describe('getPage', () => {
     it('returns undefined', async () => {
       const actual = await getPage({ pagesDirectory, route: '/blog/5/' });
       expect(actual).toBe(undefined);
+    });
+  });
+
+  describe('page with getServerSideProps', () => {
+    it('calls getServerSideProps before rendering', async () => {
+      const actual = await getPage({ pagesDirectory, route: '/ssr/5?foo=bar' });
+      expect(actual).toEqual(
+        React.createElement(SsrPage, {
+          query: { foo: 'bar' },
+          params: { id: '5' },
+        })
+      );
     });
   });
 });

@@ -1,5 +1,6 @@
 import React from 'react';
 import queryString from 'query-string';
+import { parseRoute } from './utils';
 
 export default async function preparePage({
   pageObject: { page, params, route },
@@ -10,7 +11,7 @@ export default async function preparePage({
     // @TODO complete ctx object
     // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
     const ctx = {
-      query: queryString.parse(new URL(route).search),
+      query: queryString.parse(parseRoute({ route }).search),
       params: { ...params },
     };
     const result = await page.getServerSideProps(ctx);

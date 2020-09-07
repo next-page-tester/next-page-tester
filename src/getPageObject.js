@@ -1,6 +1,7 @@
 import getPagePaths from './getPagePaths';
 import pagePathToRouteRegex from './pagePathToRouteRegex';
 import loadPage from './loadPage';
+import { parseRoute } from './utils';
 
 /**
  * @typedef {Object} PageObject
@@ -34,16 +35,17 @@ export default async function getPageObject({ pagesDirectory, route }) {
 async function getPageInfo({ pagesDirectory, route }) {
   const pagePaths = await getPagePaths({ pagesDirectory });
   const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
+  const routePathName = parseRoute({ route }).pathname;
 
   // Match provided route through route regexes generated from /page components
   const matchingPagePaths = pagePaths
-    .map((pagePath, index) => {
-      const result = route.match(pagePathRegexes[index]);
+    .map((originalPath, index) => {
+      const result = routePathName.match(pagePathRegexes[index]);
       if (result) {
         const params = result.groups || {};
         return {
           route,
-          pagePath,
+          pagePath: originalPath,
           params,
           paramsNumber: Object.keys(params).length,
         };
