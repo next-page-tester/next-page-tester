@@ -6,6 +6,7 @@ import BlogIndexPage from './__fixtures__/pages/blog/index';
 import BlogPage from './__fixtures__/pages/blog/[id]';
 import BlogPage99 from './__fixtures__/pages/blog/99';
 import CatchAllPage from './__fixtures__/pages/catch-all/[id]/[...slug]';
+import OptionalCatchAllPage from './__fixtures__/pages/optional-catch-all/[id]/[[...slug]]';
 import SSRPage from './__fixtures__/pages/ssr/[id]';
 import SSGPage from './__fixtures__/pages/ssg/[id]';
 const pagesDirectory = __dirname + '/__fixtures__/pages';
@@ -98,6 +99,64 @@ describe('getPage', () => {
             slug: ['foo', 'bar', 'moo'],
           },
           query: { foo: 'bar' },
+        })
+      );
+    });
+
+    it("doesn't match when no optional params are provided", async () => {
+      const actual = await getPage({
+        pagesDirectory,
+        route: '/catch-all/5',
+      });
+      expect(actual).toBe(undefined);
+    });
+  });
+
+  //@TODO: test it without getServerSideProps when next/router is supported
+  describe('optional catch all routes', () => {
+    it('gets expected page object', async () => {
+      const actual = await getPage({
+        pagesDirectory,
+        route: '/optional-catch-all/5/foo/bar/moo',
+      });
+      expect(actual).toEqual(
+        React.createElement(OptionalCatchAllPage, {
+          params: {
+            id: '5',
+            slug: ['foo', 'bar', 'moo'],
+          },
+          query: {},
+        })
+      );
+    });
+
+    it('supports paths with query strings', async () => {
+      const actual = await getPage({
+        pagesDirectory,
+        route: '/optional-catch-all/5/foo/bar/moo?foo=bar',
+      });
+      expect(actual).toEqual(
+        React.createElement(OptionalCatchAllPage, {
+          params: {
+            id: '5',
+            slug: ['foo', 'bar', 'moo'],
+          },
+          query: { foo: 'bar' },
+        })
+      );
+    });
+
+    it('matches when no optional params are provided', async () => {
+      const actual = await getPage({
+        pagesDirectory,
+        route: '/optional-catch-all/5',
+      });
+      expect(actual).toEqual(
+        React.createElement(OptionalCatchAllPage, {
+          params: {
+            id: '5',
+          },
+          query: {},
         })
       );
     });

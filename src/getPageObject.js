@@ -36,7 +36,9 @@ function makeParamsObject({ regexCaptureGroups }) {
   const params = {};
   if (regexCaptureGroups) {
     for (const [key, value] of Object.entries(regexCaptureGroups)) {
-      params[key] = value.includes('/') ? value.split('/') : value;
+      if (value !== undefined) {
+        params[key] = value.includes('/') ? value.split('/') : value;
+      }
     }
   }
   return params;

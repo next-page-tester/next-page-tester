@@ -30,4 +30,15 @@ describe('pagePathToRouteRegex', () => {
       expect(actual.toString()).toBe(expected);
     });
   });
+
+  describe('optional catch all segments', () => {
+    it('gets expected regex', () => {
+      const actual = pagePathToRouteRegex('/blog/[id]/[[...foo]]/index.js');
+      const expected = new RegExp(
+        `^/blog/(?<id>[^/?]*)(?:\/)?(?<foo>.*?)?(?:/index)?$`
+      ).toString();
+
+      expect(actual.toString()).toBe(expected);
+    });
+  });
 });
