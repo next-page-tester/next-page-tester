@@ -50,7 +50,7 @@ Next page tester will take care of:
 
 ## Todo's
 
-- Catch all routes
+- Optional catch all routes
 - Make dynamic api routes under `/pages/api` available
 - Consider adding custom App and Document
 - Get `next/router` (especially `withRouter` and `useRouter`) to work

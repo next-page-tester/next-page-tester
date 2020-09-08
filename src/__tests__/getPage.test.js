@@ -28,6 +28,13 @@ describe('getPage', () => {
     });
   });
 
+  describe('route with trailing slash', () => {
+    it('returns undefined', async () => {
+      const actual = await getPage({ pagesDirectory, route: '/blog/5/' });
+      expect(actual).toBe(undefined);
+    });
+  });
+
   describe('pages files named "index"', () => {
     it('routes them to the root of the directory', async () => {
       const actual = await getPage({ pagesDirectory, route: '/blog' });
@@ -61,8 +68,8 @@ describe('getPage', () => {
     });
   });
 
-  //@TODO: test without getServerSideProps when router is supported
-  describe.only('catch all routes', () => {
+  //@TODO: test it without getServerSideProps when next/router is supported
+  describe('catch all routes', () => {
     it('gets expected page object', async () => {
       const actual = await getPage({
         pagesDirectory,
@@ -74,31 +81,25 @@ describe('getPage', () => {
             id: '5',
             slug: ['foo', 'bar', 'moo'],
           },
+          query: {},
         })
       );
     });
 
-    // it('supports paths with query strings', async () => {
-    //   const actual = await getPage({
-    //     pagesDirectory,
-    //     route: '/blog/5?foo=bar',
-    //   });
-    //   expect(actual).toEqual(React.createElement(BlogPage));
-    // });
-
-    // it('predefined routes take precedence over dynamic', async () => {
-    //   const actual = await getPage({
-    //     pagesDirectory,
-    //     route: '/blog/99',
-    //   });
-    //   expect(actual).toEqual(React.createElement(BlogPage99, {}));
-    // });
-  });
-
-  describe('route with trailing slash', () => {
-    it('returns undefined', async () => {
-      const actual = await getPage({ pagesDirectory, route: '/blog/5/' });
-      expect(actual).toBe(undefined);
+    it('supports paths with query strings', async () => {
+      const actual = await getPage({
+        pagesDirectory,
+        route: '/catch-all/5/foo/bar/moo?foo=bar',
+      });
+      expect(actual).toEqual(
+        React.createElement(CatchAllPage, {
+          params: {
+            id: '5',
+            slug: ['foo', 'bar', 'moo'],
+          },
+          query: { foo: 'bar' },
+        })
+      );
     });
   });
 
