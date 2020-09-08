@@ -2,6 +2,8 @@ language: node_js
 node_js:
   - 'lts/*'
 script:
-  - npm run test
+  - npm run test:coverage
+after_success:
+  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 notifications:
   email: false

@@ -2,6 +2,7 @@
 
 [![Build status][ci-badge]][ci]
 [![Npm version][npm-badge]][npm]
+[![Test coverage report][coveralls-badge]][coveralls]
 
 The missing unit testing tool for [Next.js][next-github]]. Given a route, the matching page component is returned with the **properties** derived from **dynamic routing** and **server side data fetching** results.
 
@@ -59,6 +60,8 @@ Next page tester will take care of:
 [ci-badge]: https://travis-ci.com/toomuchdesign/next-page-tester.svg?branch=master
 [npm]: https://www.npmjs.com/package/next-page-tester
 [npm-badge]: https://img.shields.io/npm/v/next-page-tester.svg
+[coveralls-badge]: https://coveralls.io/repos/github/toomuchdesign/next-page-tester/badge.svg?branch=master
+[coveralls]: https://coveralls.io/github/toomuchdesign/next-page-tester?branch=master
 [next-github]: https://nextjs.org/
 [req-docs]: https://nodejs.org/api/http.html#http_class_http_clientrequest
 [res-docs]: https://nodejs.org/api/http.html#http_class_http_serverresponse

@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "preversion": "npm run prepublish",
     "version": "git add package.json",
     "postversion": "git push && git push --tags",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "babel-jest": "^26.3.0",
+    "coveralls": "^3.1.0",
     "husky": "^4.0.0",
     "jest": "^26.4.2",
     "lint-staged": "^10.0.0",
@@ -51,6 +53,10 @@
     ],
     "coveragePathIgnorePatterns": [
       "__tests__"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov"
     ]
   },
   "husky": {
