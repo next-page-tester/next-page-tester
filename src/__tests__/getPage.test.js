@@ -5,6 +5,7 @@ import IndexPage from './__fixtures__/pages/index';
 import BlogIndexPage from './__fixtures__/pages/blog/index';
 import BlogPage from './__fixtures__/pages/blog/[id]';
 import BlogPage99 from './__fixtures__/pages/blog/99';
+import CatchAllPage from './__fixtures__/pages/catch-all/[id]/[...slug]';
 import SSRPage from './__fixtures__/pages/ssr/[id]';
 import SSGPage from './__fixtures__/pages/ssg/[id]';
 const pagesDirectory = __dirname + '/__fixtures__/pages';
@@ -35,31 +36,63 @@ describe('getPage', () => {
   });
 
   describe('dynamic route segments', () => {
-    describe('routes exactly matching a dynamic page path', () => {
-      it('gets expected page object', async () => {
-        const actual = await getPage({
-          pagesDirectory,
-          route: '/blog/5',
-        });
-        expect(actual).toEqual(React.createElement(BlogPage));
+    it('gets expected page object', async () => {
+      const actual = await getPage({
+        pagesDirectory,
+        route: '/blog/5',
       });
-
-      it('supports paths with query strings', async () => {
-        const actual = await getPage({
-          pagesDirectory,
-          route: '/blog/5?foo=bar',
-        });
-        expect(actual).toEqual(React.createElement(BlogPage));
-      });
-
-      it('predefined routes take precedence over dynamic', async () => {
-        const actual = await getPage({
-          pagesDirectory,
-          route: '/blog/99',
-        });
-        expect(actual).toEqual(React.createElement(BlogPage99, {}));
-      });
+      expect(actual).toEqual(React.createElement(BlogPage));
     });
+
+    it('supports paths with query strings', async () => {
+      const actual = await getPage({
+        pagesDirectory,
+        route: '/blog/5?foo=bar',
+      });
+      expect(actual).toEqual(React.createElement(BlogPage));
+    });
+
+    it('predefined routes take precedence over dynamic', async () => {
+      const actual = await getPage({
+        pagesDirectory,
+        route: '/blog/99',
+      });
+      expect(actual).toEqual(React.createElement(BlogPage99, {}));
+    });
+  });
+
+  //@TODO: test without getServerSideProps when router is supported
+  describe.only('catch all routes', () => {
+    it('gets expected page object', async () => {
+      const actual = await getPage({
+        pagesDirectory,
+        route: '/catch-all/5/foo/bar/moo',
+      });
+      expect(actual).toEqual(
+        React.createElement(CatchAllPage, {
+          params: {
+            id: '5',
+            slug: ['foo', 'bar', 'moo'],
+          },
+        })
+      );
+    });
+
+    // it('supports paths with query strings', async () => {
+    //   const actual = await getPage({
+    //     pagesDirectory,
+    //     route: '/blog/5?foo=bar',
+    //   });
+    //   expect(actual).toEqual(React.createElement(BlogPage));
+    // });
+
+    // it('predefined routes take precedence over dynamic', async () => {
+    //   const actual = await getPage({
+    //     pagesDirectory,
+    //     route: '/blog/99',
+    //   });
+    //   expect(actual).toEqual(React.createElement(BlogPage99, {}));
+    // });
   });
 
   describe('route with trailing slash', () => {

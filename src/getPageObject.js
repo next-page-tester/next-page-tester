@@ -32,6 +32,16 @@ export default async function getPageObject({ pagesDirectory, route }) {
   }
 }
 
+function makeParamsObject({ regexCaptureGroups }) {
+  const params = {};
+  if (regexCaptureGroups) {
+    for (const [key, value] of Object.entries(regexCaptureGroups)) {
+      params[key] = value.includes('/') ? value.split['/'] : value;
+    }
+  }
+  return params;
+}
+
 async function getPageInfo({ pagesDirectory, route }) {
   const pagePaths = await getPagePaths({ pagesDirectory });
   const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
@@ -40,9 +50,13 @@ async function getPageInfo({ pagesDirectory, route }) {
   // Match provided route through route regexes generated from /page components
   const matchingPagePaths = pagePaths
     .map((originalPath, index) => {
+      console.log('routePathName', routePathName);
+      console.log('pagePathRegexe', pagePathRegexes[index]);
       const result = routePathName.match(pagePathRegexes[index]);
       if (result) {
-        const params = result.groups || {};
+        const params = makeParamsObject({
+          regexCaptureGroups: result.groups,
+        });
         return {
           route,
           pagePath: originalPath,
@@ -54,6 +68,8 @@ async function getPageInfo({ pagesDirectory, route }) {
     .filter(Boolean)
     .sort((a, b) => a.paramsNumber - b.paramsNumber);
 
+  console.log(matchingPagePaths.length);
+  console.log(matchingPagePaths[0]);
   // Return the result with less page params
   return matchingPagePaths[0];
 }
