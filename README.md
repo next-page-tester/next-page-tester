@@ -4,11 +4,13 @@
 [![Npm version][npm-badge]][npm]
 [![Test coverage report][coveralls-badge]][coveralls]
 
-The missing unit testing tool for [Next.js][next-github]]. Given a route, the matching page component is returned with the **properties** derived from **dynamic routing** and **server side data fetching** results.
+The missing unit testing tool for [Next.js][next-github].
+
+Given a Next route, this library will return an instance of the matching page component instantiated with the **properties** derived from [**routing system**][next-docs-routing] and [**server side data fetching**][next-docs-data-fetching].
 
 ```js
 import { render, screen } from '@testing-library/react';
-import { getPage } from 'next-tester';
+import { getPage } from 'next-page-tester';
 
 describe('Blog page', () => {
   it('renders blog page', async () => {
@@ -17,23 +19,23 @@ describe('Blog page', () => {
       pagesDirectory: process.cwd() + '/src/pages',
     });
 
-    render(<Page />);
-    expect(screen.getByText(Blog)).toBeInTheDocument();
+    render(Page);
+    expect(screen.getByText('Blog')).toBeInTheDocument();
   });
 });
 ```
 
 ## What
 
-The idea behind this library is to provide a smooth unit testing experience with Next.js.
+The idea behind this library is to unit test Next.js pages along with its [server side data fetching][next-docs-data-fetching] and [routing][next-docs-routing] logic in one go.
 
-The testing approach suggested here consists of mocking external API's responses and get the component instance matching a given route.
+The testing approach suggested here consists of mocking external API's and get the resulting component instance matching a given route.
 
 Next page tester will take care of:
 
-- **resolving** the provided **route** into the matching page component
+- **resolving** provided **routes** into matching page components
 - optionally calling **data fetching methods** (`getServerSideProps` or `getStatic Props`)
-- **instantiating** page component with the **expected `props`**
+- **instantiating** page component with the **expected props**
 
 ## Options
 
@@ -42,7 +44,7 @@ Next page tester will take care of:
 | **route**             | Next route (must start with `/`)                                                           | -       |
 | **pagesDirectory**    | Absolute path of Next's `/pages` folder                                                    | -       |
 | **req**               | Override default mocked [HTTP request object][req-docs] props (`getServerSideProps` only)  | -       |
-| **pagresesDirectory** | Override default mocked [HTTP response object][res-docs] props (`getServerSideProps` only) | -       |
+| **res**               | Override default mocked [HTTP response object][res-docs] props (`getServerSideProps` only) | -       |
 
 ## Notes
 
@@ -50,7 +52,7 @@ Next page tester will take care of:
 
 ## Todo's
 
-- Make dynamic api routes under `/pages/api` available
+- Make available dynamic api routes under `/pages/api`
 - Consider adding custom App and Document
 - Get `next/router` (especially `withRouter` and `useRouter`) to work
 - Switch to Typescript
@@ -65,3 +67,5 @@ Next page tester will take care of:
 [req-docs]: https://nodejs.org/api/http.html#http_class_http_clientrequest
 [res-docs]: https://nodejs.org/api/http.html#http_class_http_serverresponse
 [node-mocks-http]: https://www.npmjs.com/package/node-mocks-http
+[next-docs-routing]: https://nextjs.org/docs/routing/introduction
+[next-docs-data-fetching]: https://nextjs.org/docs/basic-features/data-fetching
