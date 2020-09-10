@@ -1,4 +1,5 @@
 import getPageObject from './getPageObject';
+import fetchData from './fetchData';
 import preparePage from './preparePage';
 
 export default async function getPage({
@@ -9,7 +10,8 @@ export default async function getPage({
 }) {
   const pageObject = await getPageObject({ pagesDirectory, route });
   if (pageObject) {
-    const pageComponent = await preparePage({ pageObject, req, res });
-    return pageComponent;
+    let pageElement = await fetchData({ pageObject, req, res });
+    pageElement = preparePage({ pageElement, pageObject });
+    return pageElement;
   }
 }

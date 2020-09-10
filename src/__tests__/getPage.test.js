@@ -1,4 +1,6 @@
 import React from 'react';
+import { render } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import httpMocks from 'node-mocks-http';
 import getPage from '../getPage';
 import IndexPage from './__fixtures__/pages/index';
@@ -14,188 +16,229 @@ const pagesDirectory = __dirname + '/__fixtures__/pages';
 describe('getPage', () => {
   describe('route matching a page path', () => {
     it('gets expected component', async () => {
-      const actual = await getPage({ pagesDirectory, route: '/index' });
-      expect(actual).toEqual(React.createElement(IndexPage));
+      const actualPage = await getPage({ pagesDirectory, route: '/index' });
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(<IndexPage />);
+      expect(actual).toEqual(expected);
     });
   });
 
   describe('route not matching any page', () => {
     it('returns undefined', async () => {
-      const actual = await getPage({
+      const actualPage = await getPage({
         pagesDirectory,
         route: '/blog/5/doesntexists',
       });
-      expect(actual).toBe(undefined);
+      expect(actualPage).toBe(undefined);
     });
   });
 
   describe('route with trailing slash', () => {
     it('returns undefined', async () => {
-      const actual = await getPage({ pagesDirectory, route: '/blog/5/' });
-      expect(actual).toBe(undefined);
+      const actualPage = await getPage({ pagesDirectory, route: '/blog/5/' });
+      expect(actualPage).toBe(undefined);
     });
   });
 
   describe('pages files named "index"', () => {
     it('routes them to the root of the directory', async () => {
-      const actual = await getPage({ pagesDirectory, route: '/blog' });
-      expect(actual).toEqual(React.createElement(BlogIndexPage));
+      const actualPage = await getPage({ pagesDirectory, route: '/blog' });
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(<BlogIndexPage />);
+      expect(actual).toEqual(expected);
     });
   });
 
   describe('dynamic route segments', () => {
     it('gets expected page object', async () => {
-      const actual = await getPage({
+      const actualPage = await getPage({
         pagesDirectory,
         route: '/blog/5',
       });
-      expect(actual).toEqual(React.createElement(BlogPage));
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(<BlogPage />);
+      expect(actual).toEqual(expected);
     });
 
     it('supports paths with query strings', async () => {
-      const actual = await getPage({
+      const actualPage = await getPage({
         pagesDirectory,
         route: '/blog/5?foo=bar',
       });
-      expect(actual).toEqual(React.createElement(BlogPage));
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(<BlogPage />);
+      expect(actual).toEqual(expected);
     });
 
     it('predefined routes take precedence over dynamic', async () => {
-      const actual = await getPage({
+      const actualPage = await getPage({
         pagesDirectory,
         route: '/blog/99',
       });
-      expect(actual).toEqual(React.createElement(BlogPage99, {}));
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(<BlogPage99 />);
+      expect(actual).toEqual(expected);
     });
   });
 
   //@TODO: test it without getServerSideProps when next/router is supported
   describe('catch all routes', () => {
     it('gets expected page object', async () => {
-      const actual = await getPage({
+      const actualPage = await getPage({
         pagesDirectory,
         route: '/catch-all/5/foo/bar/moo',
       });
-      expect(actual).toEqual(
-        React.createElement(CatchAllPage, {
-          params: {
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(
+        <CatchAllPage
+          params={{
             id: '5',
             slug: ['foo', 'bar', 'moo'],
-          },
-          query: {},
-        })
+          }}
+          query={{}}
+        />
       );
+      expect(actual).toEqual(expected);
     });
 
     it('supports paths with query strings', async () => {
-      const actual = await getPage({
+      const actualPage = await getPage({
         pagesDirectory,
         route: '/catch-all/5/foo/bar/moo?foo=bar',
       });
-      expect(actual).toEqual(
-        React.createElement(CatchAllPage, {
-          params: {
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(
+        <CatchAllPage
+          params={{
             id: '5',
             slug: ['foo', 'bar', 'moo'],
-          },
-          query: { foo: 'bar' },
-        })
+          }}
+          query={{ foo: 'bar' }}
+        />
       );
+      expect(actual).toEqual(expected);
     });
 
     it("doesn't match when no optional params are provided", async () => {
-      const actual = await getPage({
+      const actualPage = await getPage({
         pagesDirectory,
         route: '/catch-all/5',
       });
-      expect(actual).toBe(undefined);
+      expect(actualPage).toBe(undefined);
     });
   });
 
   //@TODO: test it without getServerSideProps when next/router is supported
   describe('optional catch all routes', () => {
     it('gets expected page object', async () => {
-      const actual = await getPage({
+      const actualPage = await getPage({
         pagesDirectory,
         route: '/optional-catch-all/5/foo/bar/moo',
       });
-      expect(actual).toEqual(
-        React.createElement(OptionalCatchAllPage, {
-          params: {
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(
+        <OptionalCatchAllPage
+          params={{
             id: '5',
             slug: ['foo', 'bar', 'moo'],
-          },
-          query: {},
-        })
+          }}
+          query={{}}
+        />
       );
+      expect(actual).toEqual(expected);
     });
 
     it('supports paths with query strings', async () => {
-      const actual = await getPage({
+      const actualPage = await getPage({
         pagesDirectory,
         route: '/optional-catch-all/5/foo/bar/moo?foo=bar',
       });
-      expect(actual).toEqual(
-        React.createElement(OptionalCatchAllPage, {
-          params: {
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(
+        <OptionalCatchAllPage
+          params={{
             id: '5',
             slug: ['foo', 'bar', 'moo'],
-          },
-          query: { foo: 'bar' },
-        })
+          }}
+          query={{ foo: 'bar' }}
+        />
       );
+      expect(actual).toEqual(expected);
     });
 
     it('matches when no optional params are provided', async () => {
-      const actual = await getPage({
+      const actualPage = await getPage({
         pagesDirectory,
         route: '/optional-catch-all/5',
       });
-      expect(actual).toEqual(
-        React.createElement(OptionalCatchAllPage, {
-          params: {
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(
+        <OptionalCatchAllPage
+          params={{
             id: '5',
-          },
-          query: {},
-        })
+          }}
+          query={{}}
+        />
       );
+      expect(actual).toEqual(expected);
     });
   });
 
   describe('page with getServerSideProps', () => {
     it('feeds page component with returned props', async () => {
-      const actual = await getPage({ pagesDirectory, route: '/ssr/5?foo=bar' });
+      const actualPage = await getPage({
+        pagesDirectory,
+        route: '/ssr/5?foo=bar',
+      });
+
       const expectedParams = { id: '5' };
       const expectedQuery = { foo: 'bar' };
-      const expectedReq = httpMocks.createRequest({
-        url: '/ssr/5?foo=bar',
-        params: expectedParams,
-        query: expectedQuery,
-      });
-      const expectedRes = httpMocks.createResponse();
 
-      //@HACK here props property order counts
-      expect(JSON.stringify(actual)).toEqual(
-        JSON.stringify(
-          React.createElement(SSRPage, {
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(
+        <SSRPage
+          params={expectedParams}
+          query={expectedQuery}
+          req={httpMocks.createRequest({
+            url: '/ssr/5?foo=bar',
             params: expectedParams,
             query: expectedQuery,
-            req: expectedReq,
-            res: expectedRes,
-          })
-        )
+          })}
+          res={httpMocks.createResponse()}
+        />
       );
+
+      expect(actual).toEqual(expected);
     });
   });
 
   describe('page with getStaticProps', () => {
     it('feeds page component with returned props', async () => {
-      const actual = await getPage({ pagesDirectory, route: '/ssg/5?foo=bar' });
-      expect(actual).toEqual(
-        React.createElement(SSGPage, {
-          params: { id: '5' },
-        })
+      const actualPage = await getPage({
+        pagesDirectory,
+        route: '/ssg/5?foo=bar',
+      });
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(
+        <SSGPage
+          params={{
+            id: '5',
+          }}
+        />
       );
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('with Next router', () => {
+    it('receives expected router object', async () => {
+      const actualPage = await getPage({
+        pagesDirectory,
+        route: '/with-router/99',
+      });
+
+      const { container } = render(actualPage);
+      expect(container).toHaveTextContent(99);
     });
   });
 });
