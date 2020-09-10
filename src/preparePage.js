@@ -1,47 +1,44 @@
 import React from 'react';
-import queryString from 'query-string';
-import httpMocks from 'node-mocks-http';
+import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import { parseRoute } from './utils';
 
-export default async function preparePage({
-  pageObject: { page, params, route, req, res },
+// https://github.com/vercel/next.js/issues/7479#issuecomment-659859682
+const routerMock = {
+  basePath: '',
+  pathname: '/',
+  route: '/',
+  asPath: '/',
+  query: {},
+  push: () => {},
+  replace: () => {},
+  reload: () => {},
+  back: () => {},
+  prefetch: () => {},
+  beforePopState: () => {},
+  events: {
+    on: () => {},
+    off: () => {},
+    emit: () => {},
+  },
+  isFallback: false,
+};
+
+export default function preparePage({
+  pageElement,
+  pageObject: { pagePath, params, route },
 }) {
-  if (page.getServerSideProps) {
-    // @TODO complete ctx object
-    // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
-    const { search } = parseRoute({ route });
-    const query = queryString.parse(search);
-    const ctx = {
-      params: { ...params },
-      query,
-      req: {
-        ...httpMocks.createRequest({
-          url: route,
-          params: { ...params },
-          query,
-        }),
-        ...req,
+  const { pathname } = parseRoute(route);
+  return React.createElement(
+    RouterContext.Provider,
+    {
+      value: {
+        ...routerMock,
+        // @TODO review these values
+        pathname: pagePath,
+        asPath: pathname,
+        query: params,
       },
-      res: {
-        ...httpMocks.createResponse(),
-        ...res,
-      },
-    };
-    const result = await page.getServerSideProps(ctx);
-    return React.createElement(page.default, result.props);
-  }
-
-  if (page.getStaticProps) {
-    // @TODO complete ctx object
-    // https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation
-    const ctx = {
-      params: { ...params },
-    };
-    // @TODO introduce `getStaticPaths` logic
-    // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
-    const result = await page.getStaticProps(ctx);
-    return React.createElement(page.default, result.props);
-  }
-
-  return React.createElement(page.default);
+    },
+    pageElement
+  );
 }

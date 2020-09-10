@@ -1,3 +1,3 @@
 export default function index(props) {
-  return `/index - props: ${props}`;
+  return `/index - props: ${JSON.stringify(props)}`;
 }

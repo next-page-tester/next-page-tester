@@ -1,7 +1,7 @@
 import { sleep } from '../../../../utils';
 
 export default function ssr_$id$(props) {
-  return `/ssr/[id] - props: ${props}`;
+  return `/ssr/[id] - props: ${JSON.stringify(props)}`;
 }
 
 export async function getServerSideProps(ctx) {
