@@ -7,3 +7,7 @@ export function sleep(ms) {
     setTimeout(resolve, ms);
   });
 }
+
+export function removeFileExtension({ path }) {
+  return path.replace(/\.[^/.]+$/, '');
+}

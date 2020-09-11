@@ -11,6 +11,7 @@ import CatchAllPage from './__fixtures__/pages/catch-all/[id]/[...slug]';
 import OptionalCatchAllPage from './__fixtures__/pages/optional-catch-all/[id]/[[...slug]]';
 import SSRPage from './__fixtures__/pages/ssr/[id]';
 import SSGPage from './__fixtures__/pages/ssg/[id]';
+import WithRouter from './__fixtures__/pages/with-router/[id]';
 const pagesDirectory = __dirname + '/__fixtures__/pages';
 
 describe('getPage', () => {
@@ -234,11 +235,24 @@ describe('getPage', () => {
     it('receives expected router object', async () => {
       const actualPage = await getPage({
         pagesDirectory,
-        route: '/with-router/99',
+        route: '/with-router/99&foo=bar',
       });
 
-      const { container } = render(actualPage);
-      expect(container).toHaveTextContent(99);
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(
+        <WithRouter
+          routerMock={{
+            asPath: '/with-router/99&foo=bar',
+            pathname: '/with-router/[id]',
+            query: {
+              foo: 'bar',
+              id: '99',
+            },
+            route: '/with-router/[id]',
+          }}
+        />
+      );
+      expect(actual).toEqual(expected);
     });
   });
 });
