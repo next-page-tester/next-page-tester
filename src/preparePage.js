@@ -1,4 +1,5 @@
 import React from 'react';
+import queryString from 'query-string';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import { parseRoute, removeFileExtension } from './utils';
 
@@ -32,15 +33,15 @@ export default function preparePage({
   pageObject: { pagePath, params, route },
   routerMocker,
 }) {
-  const { pathname, search } = parseRoute({ route });
+  const { pathname, search, hash } = parseRoute({ route });
   return React.createElement(
     RouterContext.Provider,
     {
       value: routerMocker(
         makeDefaultRouterMock({
-          asPath: pathname + search, // Includes querystring and anchor
+          asPath: pathname + search + hash, // Includes querystring and anchor
           pathname: removeFileExtension({ path: pagePath }), // Page component path without extension
-          query: params, // Route params + parsed querystring
+          query: { ...params, ...queryString.parse(search) }, // Route params + parsed querystring
           route: removeFileExtension({ path: pagePath }), // Page component path without extension
         })
       ),

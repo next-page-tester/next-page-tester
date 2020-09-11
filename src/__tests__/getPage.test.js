@@ -235,18 +235,18 @@ describe('getPage', () => {
     it('receives expected router object', async () => {
       const actualPage = await getPage({
         pagesDirectory,
-        route: '/with-router/99&foo=bar',
+        route: '/with-router/99?foo=bar#moo',
       });
 
       const { container: actual } = render(actualPage);
       const { container: expected } = render(
         <WithRouter
           routerMock={{
-            asPath: '/with-router/99&foo=bar',
+            asPath: '/with-router/99?foo=bar#moo',
             pathname: '/with-router/[id]',
             query: {
-              foo: 'bar',
               id: '99',
+              foo: 'bar',
             },
             route: '/with-router/[id]',
           }}
