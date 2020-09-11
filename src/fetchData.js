@@ -4,7 +4,9 @@ import httpMocks from 'node-mocks-http';
 import { parseRoute } from './utils';
 
 export default async function fetchData({
-  pageObject: { page, params, route, req, res },
+  pageObject: { page, params, route },
+  reqMocker,
+  resMocker,
 }) {
   if (page.getServerSideProps) {
     // @TODO complete ctx object
@@ -14,18 +16,14 @@ export default async function fetchData({
     const ctx = {
       params: { ...params },
       query,
-      req: {
-        ...httpMocks.createRequest({
+      req: reqMocker(
+        httpMocks.createRequest({
           url: route,
           params: { ...params },
           query,
-        }),
-        ...req,
-      },
-      res: {
-        ...httpMocks.createResponse(),
-        ...res,
-      },
+        })
+      ),
+      res: resMocker(httpMocks.createResponse()),
     };
     const result = await page.getServerSideProps(ctx);
     return React.createElement(page.default, result.props);

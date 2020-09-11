@@ -39,12 +39,12 @@ Next page tester will take care of:
 
 ## Options
 
-| Property              | Description                                                                                | Default |
-| --------------------- | ------------------------------------------------------------------------------------------ | ------- |
-| **route**             | Next route (must start with `/`)                                                           | -       |
-| **pagesDirectory**    | Absolute path of Next's `/pages` folder                                                    | -       |
-| **req**               | Override default mocked [HTTP request object][req-docs] props (`getServerSideProps` only)  | -       |
-| **res**               | Override default mocked [HTTP response object][res-docs] props (`getServerSideProps` only) | -       |
+| Property           | Description                                                                        | type         | Default |
+| ------------------ | ---------------------------------------------------------------------------------- | ------------ | ------- |
+| **route**          | Next route (must start with `/`)                                                   | -            | -       |
+| **pagesDirectory** | Absolute path of Next's `/pages` folder                                            | -            | -       |
+| **req**            | Override default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res` | -       |
+| **res**            | Override default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req` | -       |
 
 ## Notes
 
