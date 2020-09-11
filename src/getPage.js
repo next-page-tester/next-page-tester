@@ -7,11 +7,12 @@ export default async function getPage({
   route,
   req: reqMocker = (req) => req,
   res: resMocker = (res) => res,
+  router: routerMocker = (router) => router,
 }) {
   const pageObject = await getPageObject({ pagesDirectory, route });
   if (pageObject) {
     let pageElement = await fetchData({ pageObject, reqMocker, resMocker });
-    pageElement = preparePage({ pageElement, pageObject });
+    pageElement = preparePage({ pageElement, pageObject, routerMocker });
     return pageElement;
   }
 }
