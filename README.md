@@ -45,17 +45,18 @@ Next page tester will take care of:
 | **pagesDirectory** | Absolute path of Next's `/pages` folder                                            | -                  | -       |
 | **req**            | Override default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -       |
 | **res**            | Override default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -       |
-| **router**         | Override default mocked Next router object                                         | `router => router` | -       |
+| **router**         | Override default mocked [Next router object][next-docs-router]                     | `router => router` | -       |
 
 ## Notes
 
 `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http].
 
+Next page tester can be used with any testing framework/library.
+
 ## Todo's
 
 - Make available dynamic api routes under `/pages/api`
 - Consider adding custom App and Document
-- Get `next/router` (especially `withRouter` and `useRouter`) to work
 - Switch to Typescript
 
 [ci]: https://travis-ci.com/toomuchdesign/next-page-tester
@@ -70,3 +71,4 @@ Next page tester will take care of:
 [node-mocks-http]: https://www.npmjs.com/package/node-mocks-http
 [next-docs-routing]: https://nextjs.org/docs/routing/introduction
 [next-docs-data-fetching]: https://nextjs.org/docs/basic-features/data-fetching
+[next-docs-router]: https://nextjs.org/docs/api-reference/next/router
