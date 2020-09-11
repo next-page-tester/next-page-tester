@@ -1,6 +1,6 @@
 import React from 'react';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
-import { parseRoute } from './utils';
+import { parseRoute, removeFileExtension } from './utils';
 
 // https://github.com/vercel/next.js/issues/7479#issuecomment-659859682
 function makeDefaultRouterMock(props) {
@@ -32,15 +32,16 @@ export default function preparePage({
   pageObject: { pagePath, params, route },
   routerMocker,
 }) {
-  const { pathname } = parseRoute(route);
+  const { pathname, search } = parseRoute({ route });
   return React.createElement(
     RouterContext.Provider,
     {
       value: routerMocker(
         makeDefaultRouterMock({
-          pathname: pagePath,
-          asPath: pathname,
-          query: params,
+          asPath: pathname + search, // Includes querystring and anchor
+          pathname: removeFileExtension({ path: pagePath }), // Page component path without extension
+          query: params, // Route params + parsed querystring
+          route: removeFileExtension({ path: pagePath }), // Page component path without extension
         })
       ),
     },
