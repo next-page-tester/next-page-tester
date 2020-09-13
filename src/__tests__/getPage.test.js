@@ -57,7 +57,15 @@ describe('getPage', () => {
         route: '/blog/5',
       });
       const { container: actual } = render(actualPage);
-      const { container: expected } = render(<BlogPage />);
+      const { container: expected } = render(
+        <BlogPage
+          routerMock={{
+            query: {
+              id: '5',
+            },
+          }}
+        />
+      );
       expect(actual).toEqual(expected);
     });
 
@@ -67,7 +75,16 @@ describe('getPage', () => {
         route: '/blog/5?foo=bar',
       });
       const { container: actual } = render(actualPage);
-      const { container: expected } = render(<BlogPage />);
+      const { container: expected } = render(
+        <BlogPage
+          routerMock={{
+            query: {
+              id: '5',
+              foo: 'bar',
+            },
+          }}
+        />
+      );
       expect(actual).toEqual(expected);
     });
 
@@ -82,27 +99,8 @@ describe('getPage', () => {
     });
   });
 
-  //@TODO: test it without getServerSideProps when next/router is supported
   describe('catch all routes', () => {
-    it('gets expected page object', async () => {
-      const actualPage = await getPage({
-        pagesDirectory,
-        route: '/catch-all/5/foo/bar/moo',
-      });
-      const { container: actual } = render(actualPage);
-      const { container: expected } = render(
-        <CatchAllPage
-          params={{
-            id: '5',
-            slug: ['foo', 'bar', 'moo'],
-          }}
-          query={{}}
-        />
-      );
-      expect(actual).toEqual(expected);
-    });
-
-    it('supports paths with query strings', async () => {
+    it('gets expected page object with params and querystring', async () => {
       const actualPage = await getPage({
         pagesDirectory,
         route: '/catch-all/5/foo/bar/moo?foo=bar',
@@ -110,11 +108,13 @@ describe('getPage', () => {
       const { container: actual } = render(actualPage);
       const { container: expected } = render(
         <CatchAllPage
-          params={{
-            id: '5',
-            slug: ['foo', 'bar', 'moo'],
+          routerMock={{
+            query: {
+              id: '5',
+              slug: ['foo', 'bar', 'moo'],
+              foo: 'bar',
+            },
           }}
-          query={{ foo: 'bar' }}
         />
       );
       expect(actual).toEqual(expected);
@@ -129,27 +129,8 @@ describe('getPage', () => {
     });
   });
 
-  //@TODO: test it without getServerSideProps when next/router is supported
   describe('optional catch all routes', () => {
-    it('gets expected page object', async () => {
-      const actualPage = await getPage({
-        pagesDirectory,
-        route: '/optional-catch-all/5/foo/bar/moo',
-      });
-      const { container: actual } = render(actualPage);
-      const { container: expected } = render(
-        <OptionalCatchAllPage
-          params={{
-            id: '5',
-            slug: ['foo', 'bar', 'moo'],
-          }}
-          query={{}}
-        />
-      );
-      expect(actual).toEqual(expected);
-    });
-
-    it('supports paths with query strings', async () => {
+    it('gets expected page object with params and querystring', async () => {
       const actualPage = await getPage({
         pagesDirectory,
         route: '/optional-catch-all/5/foo/bar/moo?foo=bar',
@@ -157,11 +138,13 @@ describe('getPage', () => {
       const { container: actual } = render(actualPage);
       const { container: expected } = render(
         <OptionalCatchAllPage
-          params={{
-            id: '5',
-            slug: ['foo', 'bar', 'moo'],
+          routerMock={{
+            query: {
+              id: '5',
+              slug: ['foo', 'bar', 'moo'],
+              foo: 'bar',
+            },
           }}
-          query={{ foo: 'bar' }}
         />
       );
       expect(actual).toEqual(expected);
@@ -175,10 +158,11 @@ describe('getPage', () => {
       const { container: actual } = render(actualPage);
       const { container: expected } = render(
         <OptionalCatchAllPage
-          params={{
-            id: '5',
+          routerMock={{
+            query: {
+              id: '5',
+            },
           }}
-          query={{}}
         />
       );
       expect(actual).toEqual(expected);
@@ -251,6 +235,24 @@ describe('getPage', () => {
             route: '/with-router/[id]',
           }}
         />
+      );
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('router option', () => {
+    it('return custom router object', async () => {
+      const routerMock = {
+        route: 'mocked',
+      };
+      const actualPage = await getPage({
+        pagesDirectory,
+        route: '/with-router/99',
+        router: (router) => routerMock,
+      });
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(
+        <WithRouter routerMock={routerMock} />
       );
       expect(actual).toEqual(expected);
     });
