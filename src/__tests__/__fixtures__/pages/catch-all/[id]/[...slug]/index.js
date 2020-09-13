@@ -1,15 +1,8 @@
-import { sleep } from '../../../../../../utils';
+import { useRouter } from 'next/router';
 
-export default function catchall_$id$_$slug$(props) {
-  return `/catch-all/[id]/[...slug]/index - props: ${JSON.stringify(props)}`;
-}
-
-export async function getServerSideProps({ params, query }) {
-  await sleep(1);
-  return {
-    props: {
-      params,
-      query,
-    },
-  };
+export default function catchall_$id$_$slug$({ routerMock }) {
+  const { query } = routerMock || useRouter();
+  return `/catch-all/[id]/[...slug]/index - router query: ${JSON.stringify(
+    query
+  )}`;
 }
