@@ -257,4 +257,14 @@ describe('getPage', () => {
       expect(actual).toEqual(expected);
     });
   });
+
+  describe('api pages', () => {
+    it('returns undefined', async () => {
+      const actualPage = await getPage({
+        pagesDirectory,
+        route: '/api',
+      });
+      expect(actualPage).toBe(undefined);
+    });
+  });
 });
