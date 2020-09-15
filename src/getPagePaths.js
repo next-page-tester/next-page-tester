@@ -13,7 +13,7 @@ async function getPagePaths({ pagesDirectory }) {
   try {
     files = await readdir(pagesDirectory, [ignoreFunc]);
   } catch (err) {
-    throw new Error(`[next testing] ${err}`);
+    throw new Error(`[next page tester] ${err}`);
   }
 
   return files.map((filePath) =>

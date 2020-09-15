@@ -267,4 +267,28 @@ describe('getPage', () => {
       expect(actualPage).toBe(undefined);
     });
   });
+
+  describe('errors handling', () => {
+    describe("pagesDirectory doesn't exist", () => {
+      it('throws error', async () => {
+        await expect(
+          getPage({
+            pagesDirectory: 'doesnt-exist',
+            route: '/blog',
+          })
+        ).rejects.toThrow('[next page tester]');
+      });
+    });
+
+    describe('route doesn\'t start with "/"', () => {
+      it('throws error', async () => {
+        await expect(
+          getPage({
+            pagesDirectory,
+            route: 'blog',
+          })
+        ).rejects.toThrow('[next page tester]');
+      });
+    });
+  });
 });
