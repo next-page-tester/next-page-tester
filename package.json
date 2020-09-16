@@ -10,6 +10,7 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
+    "prepublish": "npm run test",
     "preversion": "npm run prepublish",
     "version": "git add package.json",
     "postversion": "git push && git push --tags",
