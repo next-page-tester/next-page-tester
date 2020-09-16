@@ -1,12 +1,12 @@
 # Next page tester
 
 [![Build status][ci-badge]][ci]
-[![Npm version][npm-badge]][npm]
 [![Test coverage report][coveralls-badge]][coveralls]
+[![Npm version][npm-badge]][npm]
 
-The missing unit testing tool for [Next.js][next-github].
+The missing integration testing tool for [Next.js][next-github].
 
-Given a Next route, this library will return an instance of the matching page component instantiated with the **properties** derived from [**routing system**][next-docs-routing] and [**server side data fetching**][next-docs-data-fetching].
+Given a Next.js route, this library will return an instance of the matching page component instantiated with the **properties** derived by Next.js' [**routing system**][next-docs-routing] and [**server side data fetching**][next-docs-data-fetching].
 
 ```js
 import { render, screen } from '@testing-library/react';
@@ -27,15 +27,16 @@ describe('Blog page', () => {
 
 ## What
 
-The idea behind this library is to unit test Next.js pages along with its [server side data fetching][next-docs-data-fetching] and [routing][next-docs-routing] logic in one go.
+The idea behind this library is to enable integration tests on Next.js pages including [server side data fetching][next-docs-data-fetching] and [routing][next-docs-routing].
 
-The testing approach suggested here consists of mocking external API's and get the resulting component instance matching a given route.
+The testing approach suggested here consists of manually mocking external API's and get the component instance matching a given route.
 
 Next page tester will take care of:
 
-- **resolving** provided **routes** into matching page components
-- optionally calling **data fetching methods** (`getServerSideProps` or `getStatic Props`)
-- **instantiating** page component with the **expected props**
+- **resolving** provided **routes** into the matching page component
+- calling **Next.js data fetching methods** (`getServerSideProps` or `getStaticProps`) if the case
+- set up a **mocked `next/router` provider** initialized with the expected values (to test `useRouter` and `withRouter`)
+- **instantiating** the page component with the **expected props**
 
 ## Options
 
@@ -58,6 +59,7 @@ Next page tester can be used with any testing framework/library.
 - Make available dynamic api routes under `/pages/api`
 - Consider adding custom App and Document
 - Switch to Typescript
+- Consider adding a `getPage` factory
 
 [ci]: https://travis-ci.com/toomuchdesign/next-page-tester
 [ci-badge]: https://travis-ci.com/toomuchdesign/next-page-tester.svg?branch=master
