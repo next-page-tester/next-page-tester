@@ -1,7 +1,7 @@
 {
   "name": "next-page-tester",
+  "description": "Enable DOM integration testing on Next.js pages",
   "version": "0.1.0",
-  "description": "",
   "main": "src/index.js",
   "files": [
     "src",
@@ -19,7 +19,13 @@
   },
   "keywords": [
     "next",
+    "nextjs",
     "test",
+    "testing",
+    "dom",
+    "ui",
+    "unit",
+    "integration",
     "routing"
   ],
   "repository": {

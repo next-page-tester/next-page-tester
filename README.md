@@ -4,7 +4,7 @@
 [![Test coverage report][coveralls-badge]][coveralls]
 [![Npm version][npm-badge]][npm]
 
-The missing integration testing tool for [Next.js][next-github].
+The missing DOM integration testing tool for [Next.js][next-github].
 
 Given a Next.js route, this library will return an instance of the matching page component instantiated with the **properties** derived by Next.js' [**routing system**][next-docs-routing] and [**server side data fetching**][next-docs-data-fetching].
 
