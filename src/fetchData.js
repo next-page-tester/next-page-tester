@@ -1,7 +1,5 @@
 import React from 'react';
-import queryString from 'query-string';
 import httpMocks from 'node-mocks-http';
-import { parseRoute } from './utils';
 
 export default async function fetchData({
   pageObject: { page, params, route },
@@ -11,18 +9,15 @@ export default async function fetchData({
   if (page.getServerSideProps) {
     // @TODO complete ctx object
     // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
-    const { search } = parseRoute({ route });
-    const query = queryString.parse(search);
+    const req = httpMocks.createRequest({
+      url: route,
+      params: { ...params },
+    });
+
     const ctx = {
       params: { ...params },
-      query,
-      req: reqMocker(
-        httpMocks.createRequest({
-          url: route,
-          params: { ...params },
-          query,
-        })
-      ),
+      query: { ...req.query },
+      req: reqMocker(req),
       res: resMocker(httpMocks.createResponse()),
     };
     const result = await page.getServerSideProps(ctx);
