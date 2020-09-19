@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import httpMocks from 'node-mocks-http';
-import getPage from '../getPage';
+import { getPage } from '../index';
 import IndexPage from './__fixtures__/pages/index';
 import BlogIndexPage from './__fixtures__/pages/blog/index';
 import BlogPage from './__fixtures__/pages/blog/[id]';
