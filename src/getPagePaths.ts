@@ -1,13 +1,17 @@
 import path from 'path';
 import readdir from 'recursive-readdir';
 
-function makeIgnoreFunc(pagesDirectory) {
-  return (file, stats) => {
+function makeIgnoreFunc(pagesDirectory: string) {
+  return (file: string) => {
     return file.startsWith(pagesDirectory + '/api/');
   };
 }
 
-async function getPagePaths({ pagesDirectory }) {
+async function getPagePaths({
+  pagesDirectory,
+}: {
+  pagesDirectory: string;
+}): Promise<string[]> {
   const ignoreFunc = makeIgnoreFunc(pagesDirectory);
   let files = [];
   try {

@@ -54,11 +54,12 @@ Next page tester will take care of:
 
 Next page tester can be used with any testing framework/library.
 
+It might be necessary to install `@types/react-dom` and `@types/webpack` when using Typescript in `strict` mode due to [this bug][next-gh-strict-bug].
+
 ## Todo's
 
 - Make available dynamic api routes under `/pages/api`
 - Consider adding custom App and Document
-- Switch to Typescript
 - Consider adding a `getPage` factory
 
 [ci]: https://travis-ci.com/toomuchdesign/next-page-tester
@@ -74,3 +75,4 @@ Next page tester can be used with any testing framework/library.
 [next-docs-routing]: https://nextjs.org/docs/routing/introduction
 [next-docs-data-fetching]: https://nextjs.org/docs/basic-features/data-fetching
 [next-docs-router]: https://nextjs.org/docs/api-reference/next/router
+[next-gh-strict-bug]: https://github.com/vercel/next.js/issues/16219

@@ -15,17 +15,22 @@ const OPTIONAL_TRAILING_INDEX_REGEX_STRING = '(?:/index)?';
 
 const FILE_EXTENSION_REGEX = /\.[a-zA-Z0-9]*$/;
 
-function makeNamedCaptureGroup({ name, regex }) {
+type namedCapture = {
+  name: string;
+  regex: string;
+};
+
+function makeNamedCaptureGroup({ name, regex }: namedCapture) {
   return `(?<${name}>${regex})`;
 }
 
-function makeOptionalNamedCapturingGroup({ name, regex }) {
+function makeOptionalNamedCapturingGroup({ name, regex }: namedCapture) {
   const captureGroup = makeNamedCaptureGroup({ name, regex });
   return `${captureGroup}?`;
 }
 
 // Build a regex from a page path to catch its matching routes
-function pagePathToRouteRegex(pagePath) {
+function pagePathToRouteRegex(pagePath: string): RegExp {
   const regex = pagePath
     .replace(FILE_EXTENSION_REGEX, '')
     .replace(TRAILING_INDEX_REGEX, OPTIONAL_TRAILING_INDEX_REGEX_STRING)
