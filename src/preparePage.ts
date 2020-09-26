@@ -1,12 +1,11 @@
 import React, { ReactNode } from 'react';
-import queryString from 'query-string';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import type { NextRouter } from 'next/router';
-import { parseRoute, removeFileExtension } from './utils';
+import { parseRoute, removeFileExtension, parseQueryString } from './utils';
 import type { Options, PageObject } from './commonTypes';
 
 // https://github.com/vercel/next.js/issues/7479#issuecomment-659859682
-function makeDefaultRouterMock(props?: {}): NextRouter {
+function makeDefaultRouterMock(props?: Partial<NextRouter>): NextRouter {
   const routerMock = {
     basePath: '',
     pathname: '/',
@@ -47,7 +46,7 @@ export default function preparePage({
         makeDefaultRouterMock({
           asPath: pathname + search + hash, // Includes querystring and anchor
           pathname: removeFileExtension({ path: pagePath }), // Page component path without extension
-          query: { ...params, ...queryString.parse(search) }, // Route params + parsed querystring
+          query: { ...params, ...parseQueryString({ queryString: search }) }, // Route params + parsed querystring
           route: removeFileExtension({ path: pagePath }), // Page component path without extension
         })
       ),
