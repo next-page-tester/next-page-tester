@@ -1,12 +1,11 @@
-const url = require('url');
+import { URL } from 'url';
 import querystring from 'querystring';
 
 export function parseRoute({ route }: { route: string }) {
-  return url.parse(`http://test.com${route}`);
+  return new URL(`http://test.com${route}`);
 }
 
-export function parseQueryString({ queryString }: { queryString?: string }) {
-  if (typeof queryString !== 'string') return {};
+export function parseQueryString({ queryString }: { queryString: string }) {
   const qs = queryString.startsWith('?')
     ? queryString.substring(1)
     : queryString;
