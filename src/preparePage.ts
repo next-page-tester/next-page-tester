@@ -6,15 +6,15 @@ import { parseRoute, removeFileExtension } from './utils';
 import type { Options, PageObject } from './commonTypes';
 
 // https://github.com/vercel/next.js/issues/7479#issuecomment-659859682
-function makeDefaultRouterMock(props = {}): NextRouter {
+function makeDefaultRouterMock(props?: {}): NextRouter {
   const routerMock = {
     basePath: '',
     pathname: '/',
     route: '/',
     asPath: '/',
     query: {},
-    push: async () => true,
-    replace: async () => true,
+    push: /* istanbul ignore next */ async () => true,
+    replace: /* istanbul ignore next */ async () => true,
     reload: () => {},
     back: () => {},
     prefetch: async () => {},
