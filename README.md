@@ -61,6 +61,7 @@ It might be necessary to install `@types/react-dom` and `@types/webpack` when us
 - Make available dynamic api routes under `/pages/api`
 - Consider adding custom App and Document
 - Consider adding a `getPage` factory
+- Consider reusing Next.js code parts (not only types)
 
 [ci]: https://travis-ci.com/toomuchdesign/next-page-tester
 [ci-badge]: https://travis-ci.com/toomuchdesign/next-page-tester.svg?branch=master
