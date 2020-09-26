@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2018",
+    "strict": true,
+    "esModuleInterop": true,
+    "noErrorTruncation": true,
+    "outDir": "dist",
+    "allowJs": true,
+    "jsx": "react",
+    "declaration": true
+  },
+  "include": ["./src/index.ts"]
+}

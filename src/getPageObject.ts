@@ -2,26 +2,15 @@ import getPagePaths from './getPagePaths';
 import pagePathToRouteRegex from './pagePathToRouteRegex';
 import loadPage from './loadPage';
 import { parseRoute } from './utils';
+import type { Options, PageObject, PageParams } from './commonTypes';
 
-/**
- * @typedef {Object} PageObject
- * @property {Object.<string, function>} page
- * @property {string} route
- * @property {string} pagePath
- * @property {Object.<string, string>} params
- * @property {number} paramsNumber
- */
-
-/**
- * @param {Object} options
- * @param {string} options.pagesDirectory - Next Pages directory path
- * @param {string} options.route - Next route
- * @returns {(PageObject|undefined)}
- */
-export default async function getPageObject({ pagesDirectory, route }) {
+export default async function getPageObject({
+  pagesDirectory,
+  route,
+}: Options): Promise<PageObject | undefined> {
   const pageInfo = await getPageInfo({ pagesDirectory, route });
   if (pageInfo) {
-    const page = await loadPage({
+    const page = loadPage({
       pagesDirectory,
       pagePath: pageInfo.pagePath,
     });
@@ -32,8 +21,18 @@ export default async function getPageObject({ pagesDirectory, route }) {
   }
 }
 
-function makeParamsObject({ regexCaptureGroups }) {
-  const params = {};
+type RegexCaptureGroups =
+  | {
+      [name: string]: string;
+    }
+  | undefined;
+
+function makeParamsObject({
+  regexCaptureGroups,
+}: {
+  regexCaptureGroups: RegexCaptureGroups;
+}) {
+  const params = {} as PageParams;
   if (regexCaptureGroups) {
     for (const [key, value] of Object.entries(regexCaptureGroups)) {
       if (value !== undefined) {
@@ -44,7 +43,11 @@ function makeParamsObject({ regexCaptureGroups }) {
   return params;
 }
 
-async function getPageInfo({ pagesDirectory, route }) {
+type PageInfo = Pick<
+  PageObject,
+  'route' | 'pagePath' | 'params' | 'paramsNumber'
+>;
+async function getPageInfo({ pagesDirectory, route }: Options) {
   const pagePaths = await getPagePaths({ pagesDirectory });
   const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
   const routePathName = parseRoute({ route }).pathname;
@@ -65,7 +68,7 @@ async function getPageInfo({ pagesDirectory, route }) {
         };
       }
     })
-    .filter(Boolean)
+    .filter((result): result is PageInfo => Boolean(result))
     .sort((a, b) => a.paramsNumber - b.paramsNumber);
 
   // Return the result with less page params

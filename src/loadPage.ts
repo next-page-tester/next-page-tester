@@ -1,6 +1,13 @@
 import path from 'path';
+import { NextPageFile } from './commonTypes';
 
-async function loadPage({ pagesDirectory, pagePath }) {
+function loadPage({
+  pagesDirectory,
+  pagePath,
+}: {
+  pagesDirectory: string;
+  pagePath: string;
+}): NextPageFile {
   // @NOTE Here we have to remove pagePath's trailing "/"
   return require(path.resolve(pagesDirectory, pagePath.substring(1)));
 }

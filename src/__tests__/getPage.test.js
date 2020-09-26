@@ -233,6 +233,7 @@ describe('getPage', () => {
               foo: 'bar',
             },
             route: '/with-router/[id]',
+            basePath: '',
           }}
         />
       );

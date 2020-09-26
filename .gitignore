@@ -4,6 +4,7 @@
 *.log
 node_modules
 coverage
+dist/
 
 # Trailing dotted files
 !.all-contributorsrc
