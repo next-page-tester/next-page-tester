@@ -6,7 +6,6 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "src",
     "!__tests__"
   ],
   "scripts": {
