@@ -12,8 +12,8 @@ type Res = ReturnType<typeof createResponse>;
 export type Options = {
   route: string;
   pagesDirectory: string;
-  req?: (req: Req) => { [name: string]: any };
-  res?: (res: Res) => { [name: string]: any };
+  req?: (req: Req) => Req;
+  res?: (res: Res) => Res;
   router?: (router: NextRouter) => NextRouter;
 };
 

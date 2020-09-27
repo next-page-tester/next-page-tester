@@ -12,7 +12,8 @@
     "clean": "rm -rf dist",
     "compile": "npm run clean && tsc",
     "test": "jest ./src",
-    "test:source": "npm t -- --coverage",
+    "test:source": "npm run test:ts && npm t -- --coverage",
+    "test:ts": "tsc --noEmit",
     "prepare": "npm run test:source && npm run compile",
     "preversion": "npm run prepare",
     "version": "git add package.json",
@@ -61,7 +62,6 @@
     "@types/express": "^4.17.8",
     "@types/recursive-readdir": "^2.2.0",
     "node-mocks-http": "^1.9.0",
-    "query-string": "^6.13.1",
     "recursive-readdir": "^2.2.2"
   },
   "peerDependencies": {
@@ -89,7 +89,7 @@
   "lint-staged": {
     "**/*.{js,ts,json}": [
       "prettier",
-      "npm t -- ."
+      "npm run test:source -- ."
     ],
     "**/*.{md}": [
       "prettier"

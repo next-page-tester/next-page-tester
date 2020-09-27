@@ -40,13 +40,13 @@ Next page tester will take care of:
 
 ## Options
 
-| Property           | Description                                                                        | type               | Default |
-| ------------------ | ---------------------------------------------------------------------------------- | ------------------ | ------- |
-| **route**          | Next route (must start with `/`)                                                   | -                  | -       |
-| **pagesDirectory** | Absolute path of Next's `/pages` folder                                            | -                  | -       |
-| **req**            | Override default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -       |
-| **res**            | Override default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -       |
-| **router**         | Override default mocked [Next router object][next-docs-router]                     | `router => router` | -       |
+| Property           | Description                                                                      | type               | Default |
+| ------------------ | -------------------------------------------------------------------------------- | ------------------ | ------- |
+| **route**          | Next route (must start with `/`)                                                 | -                  | -       |
+| **pagesDirectory** | Absolute path of Next's `/pages` folder                                          | -                  | -       |
+| **req**            | Access default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -       |
+| **res**            | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -       |
+| **router**         | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -       |
 
 ## Notes
 
@@ -61,6 +61,7 @@ It might be necessary to install `@types/react-dom` and `@types/webpack` when us
 - Make available dynamic api routes under `/pages/api`
 - Consider adding custom App and Document
 - Consider adding a `getPage` factory
+- Consider reusing Next.js code parts (not only types)
 
 [ci]: https://travis-ci.com/toomuchdesign/next-page-tester
 [ci-badge]: https://travis-ci.com/toomuchdesign/next-page-tester.svg?branch=master
