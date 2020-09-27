@@ -47,6 +47,7 @@ Next page tester will take care of:
 | **req**            | Access default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -       |
 | **res**            | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -       |
 | **router**         | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -       |
+| **customApp**      | Use [custom App component ][next-docs-custom-app]                                | `boolean`          | `false` |
 
 ## Notes
 
@@ -59,8 +60,8 @@ It might be necessary to install `@types/react-dom` and `@types/webpack` when us
 ## Todo's
 
 - Make available dynamic api routes under `/pages/api`
-- Add support for `getInitialProps`
-- Consider adding custom App and Document
+- Add support for `getInitialProps` (in custom App and Pages)
+- Consider adding custom Document
 - Consider adding a `getPage` factory
 - Consider reusing Next.js code parts (not only types)
 
@@ -77,4 +78,5 @@ It might be necessary to install `@types/react-dom` and `@types/webpack` when us
 [next-docs-routing]: https://nextjs.org/docs/routing/introduction
 [next-docs-data-fetching]: https://nextjs.org/docs/basic-features/data-fetching
 [next-docs-router]: https://nextjs.org/docs/api-reference/next/router
+[next-docs-custom-app]: https://nextjs.org/docs/advanced-features/custom-app
 [next-gh-strict-bug]: https://github.com/vercel/next.js/issues/16219

@@ -1,3 +1,4 @@
+import { existsSync } from 'fs';
 import React, { ReactNode } from 'react';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import type { NextRouter } from 'next/router';
@@ -30,19 +31,31 @@ function makeDefaultRouterMock(props?: Partial<NextRouter>): NextRouter {
 }
 
 export default function preparePage({
+  pagesDirectory,
   pageData,
   pageObject: { page, pagePath, params, route },
   routerMocker,
+  customApp,
 }: {
+  pagesDirectory: string;
   pageData: PageData;
   pageObject: PageObject;
   routerMocker: Exclude<Options['router'], undefined>;
+  customApp: boolean;
 }): ReactNode {
   // Render page element
   const props = pageData?.props;
-  const pageElement = React.createElement(page.default, props);
+  let pageElement = React.createElement(page.default, props);
 
-  // Wrap with custom App
+  // Optionally wrap with custom App
+  const customAppPath = pagesDirectory + '/_app.js';
+  if (customApp && existsSync(customAppPath)) {
+    const customAppComponent = require(customAppPath).default;
+    pageElement = React.createElement(customAppComponent, {
+      Component: page.default,
+      pageProps: props,
+    });
+  }
 
   // Wrap with RouterContext provider
   const { pathname, search, hash } = parseRoute({ route });

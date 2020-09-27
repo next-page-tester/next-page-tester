@@ -11,8 +11,10 @@ import BlogPage99 from './__fixtures__/pages/blog/99';
 import CatchAllPage from './__fixtures__/pages/catch-all/[id]/[...slug]';
 import OptionalCatchAllPage from './__fixtures__/pages/optional-catch-all/[id]/[[...slug]]';
 import SSRPage from './__fixtures__/pages/ssr/[id]';
+import CustomApp from './__fixtures__/pages/custom-app/[id]';
 import SSGPage from './__fixtures__/pages/ssg/[id]';
 import WithRouter from './__fixtures__/pages/with-router/[id]';
+import CustomAppComponent from './__fixtures__/pages/_app';
 const pagesDirectory = __dirname + '/__fixtures__/pages';
 
 describe('getPage', () => {
@@ -68,7 +70,7 @@ describe('getPage', () => {
     });
   });
 
-  describe.only('route matching page file with invalid extension', () => {
+  describe('route matching page file with invalid extension', () => {
     it('returns undefined', async () => {
       const actualPage = await getPage({
         pagesDirectory,
@@ -327,6 +329,28 @@ describe('getPage', () => {
           })
         ).rejects.toThrow('[next page tester]');
       });
+    });
+  });
+
+  describe('custom App component', () => {
+    it('wraps expected page with _app component', async () => {
+      const actualPage = await getPage({
+        pagesDirectory,
+        route: '/custom-app/5',
+        customApp: true,
+      });
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(
+        <CustomAppComponent
+          Component={CustomApp}
+          pageProps={{
+            params: {
+              id: '5',
+            },
+          }}
+        />
+      );
+      expect(actual).toEqual(expected);
     });
   });
 });

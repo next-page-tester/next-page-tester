@@ -16,6 +16,7 @@ export default async function getPage({
   req: reqMocker = (req) => req,
   res: resMocker = (res) => res,
   router: routerMocker = (router) => router,
+  customApp = false,
 }: Options): Promise<ReactNode | undefined> {
   validateOptions({ route });
 
@@ -23,9 +24,11 @@ export default async function getPage({
   if (pageObject) {
     const pageData = await fetchData({ pageObject, reqMocker, resMocker });
     const pageElement = preparePage({
+      pagesDirectory,
       pageData,
       pageObject,
       routerMocker,
+      customApp,
     });
     return pageElement;
   }
