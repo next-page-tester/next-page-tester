@@ -34,3 +34,11 @@ export type PageObject = {
   params: PageParams;
   paramsNumber: number;
 };
+
+export type PageData =
+  | {
+      props: {
+        [key: string]: any;
+      };
+    }
+  | undefined;

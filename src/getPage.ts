@@ -21,8 +21,12 @@ export default async function getPage({
 
   const pageObject = await getPageObject({ pagesDirectory, route });
   if (pageObject) {
-    let pageElement = await fetchData({ pageObject, reqMocker, resMocker });
-    pageElement = preparePage({ pageElement, pageObject, routerMocker });
+    const pageData = await fetchData({ pageObject, reqMocker, resMocker });
+    const pageElement = preparePage({
+      pageData,
+      pageObject,
+      routerMocker,
+    });
     return pageElement;
   }
 }
