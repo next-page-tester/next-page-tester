@@ -59,6 +59,7 @@ It might be necessary to install `@types/react-dom` and `@types/webpack` when us
 ## Todo's
 
 - Make available dynamic api routes under `/pages/api`
+- Add support for `getInitialProps`
 - Consider adding custom App and Document
 - Consider adding a `getPage` factory
 - Consider reusing Next.js code parts (not only types)
