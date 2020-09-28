@@ -1,28 +1,27 @@
 import path from 'path';
 import readdir from 'recursive-readdir';
 
-function makeIgnoreFunc(pagesDirectory: string) {
-  return (file: string) => {
-    return file.startsWith(pagesDirectory + '/api/');
-  };
-}
-
 async function getPagePaths({
   pagesDirectory,
 }: {
   pagesDirectory: string;
 }): Promise<string[]> {
-  const ignoreFunc = makeIgnoreFunc(pagesDirectory);
   let files = [];
   try {
-    files = await readdir(pagesDirectory, [ignoreFunc]);
+    files = await readdir(pagesDirectory);
   } catch (err) {
     throw new Error(`[next page tester] ${err}`);
   }
 
-  return files.map((filePath) =>
-    filePath.replace(`${path.resolve(pagesDirectory)}`, '')
-  );
+  const pagesDirectoryAbs = path.resolve(pagesDirectory);
+  return files
+    .map((filePath) => filePath.replace(pagesDirectoryAbs, ''))
+    .filter((filename) => {
+      if (filename.startsWith('/api/')) {
+        return false;
+      }
+      return true;
+    });
 }
 
 export default getPagePaths;
