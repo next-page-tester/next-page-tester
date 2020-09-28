@@ -41,6 +41,20 @@ describe('getPage', () => {
     });
   });
 
+  describe('route === "_app"', () => {
+    it('returns undefined', async () => {
+      const actualPage = await getPage({ pagesDirectory, route: '/_app' });
+      expect(actualPage).toBe(undefined);
+    });
+  });
+
+  describe('route === "_document"', () => {
+    it('returns undefined', async () => {
+      const actualPage = await getPage({ pagesDirectory, route: '/_document' });
+      expect(actualPage).toBe(undefined);
+    });
+  });
+
   describe('pages files named "index"', () => {
     it('routes them to the root of the directory', async () => {
       const actualPage = await getPage({ pagesDirectory, route: '/blog' });

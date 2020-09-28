@@ -17,15 +17,17 @@ async function getPagePaths({
   const pagesDirectoryAbs = path.resolve(pagesDirectory);
   // @TODO Make allowed extensions configurable
   const extensionsRegex = /\.(?:mdx|jsx|js|ts|tsx)$/;
-  return files
-    .map((filePath) => filePath.replace(pagesDirectoryAbs, ''))
-    .filter((filePath) => {
-      if (filePath.startsWith('/api/')) {
-        return false;
-      }
-      return true;
-    })
-    .map((filePath) => filePath.replace(extensionsRegex, ''));
+  return (
+    files
+      // Make page paths relative
+      .map((filePath) => filePath.replace(pagesDirectoryAbs, ''))
+      // Strip file extensions
+      .map((filePath) => filePath.replace(extensionsRegex, ''))
+      // Filter out /api folder
+      .filter((filePath) => !filePath.startsWith('/api/'))
+      // Filter out /_app and /_document files
+      .filter((filePath) => filePath !== '/_app' && filePath !== '/_document')
+  );
 }
 
 export default getPagePaths;
