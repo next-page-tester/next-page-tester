@@ -21,6 +21,8 @@ async function getPagePaths({
     files
       // Make page paths relative
       .map((filePath) => filePath.replace(pagesDirectoryAbs, ''))
+      // Filter out files with non-allowed extensions
+      .filter((filePath) => filePath.match(extensionsRegex))
       // Strip file extensions
       .map((filePath) => filePath.replace(extensionsRegex, ''))
       // Filter out /api folder

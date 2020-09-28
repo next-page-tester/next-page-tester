@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 import httpMocks from 'node-mocks-http';
 import { getPage } from '../index';
 import IndexPage from './__fixtures__/pages/index';
+import TypescriptPage from './__fixtures__/pages/typescript.ts';
 import BlogIndexPage from './__fixtures__/pages/blog/index';
 import BlogPage from './__fixtures__/pages/blog/[id]';
 import BlogPage99 from './__fixtures__/pages/blog/99';
@@ -51,6 +52,28 @@ describe('getPage', () => {
   describe('route === "_document"', () => {
     it('returns undefined', async () => {
       const actualPage = await getPage({ pagesDirectory, route: '/_document' });
+      expect(actualPage).toBe(undefined);
+    });
+  });
+
+  describe('route matching page with .ts extension', () => {
+    it('returns undefined', async () => {
+      const actualPage = await getPage({
+        pagesDirectory,
+        route: '/typescript',
+      });
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(<TypescriptPage />);
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  describe.only('route matching page file with invalid extension', () => {
+    it('returns undefined', async () => {
+      const actualPage = await getPage({
+        pagesDirectory,
+        route: '/invalid-extension',
+      });
       expect(actualPage).toBe(undefined);
     });
   });
