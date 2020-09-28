@@ -1,6 +1,7 @@
 import path from 'path';
 import readdir from 'recursive-readdir';
 
+// Returns available page paths without file extension
 async function getPagePaths({
   pagesDirectory,
 }: {
@@ -14,14 +15,17 @@ async function getPagePaths({
   }
 
   const pagesDirectoryAbs = path.resolve(pagesDirectory);
+  // @TODO Make allowed extensions configurable
+  const extensionsRegex = /\.(?:mdx|jsx|js|ts|tsx)$/;
   return files
     .map((filePath) => filePath.replace(pagesDirectoryAbs, ''))
-    .filter((filename) => {
-      if (filename.startsWith('/api/')) {
+    .filter((filePath) => {
+      if (filePath.startsWith('/api/')) {
         return false;
       }
       return true;
-    });
+    })
+    .map((filePath) => filePath.replace(extensionsRegex, ''));
 }
 
 export default getPagePaths;
