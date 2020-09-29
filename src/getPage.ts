@@ -25,10 +25,10 @@ export default async function getPage({
     const pageData = await fetchData({ pageObject, reqMocker, resMocker });
     const pageElement = preparePage({
       pagesDirectory,
-      pageData,
-      pageObject,
       routerMocker,
       customApp,
+      pageObject,
+      pageData,
     });
     return pageElement;
   }
