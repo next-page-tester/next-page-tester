@@ -4,14 +4,17 @@ import '@testing-library/jest-dom';
 import httpMocks from 'node-mocks-http';
 import { getPage } from '../index';
 import IndexPage from './__fixtures__/pages/index';
+import TypescriptPage from './__fixtures__/pages/typescript.ts';
 import BlogIndexPage from './__fixtures__/pages/blog/index';
 import BlogPage from './__fixtures__/pages/blog/[id]';
 import BlogPage99 from './__fixtures__/pages/blog/99';
 import CatchAllPage from './__fixtures__/pages/catch-all/[id]/[...slug]';
 import OptionalCatchAllPage from './__fixtures__/pages/optional-catch-all/[id]/[[...slug]]';
 import SSRPage from './__fixtures__/pages/ssr/[id]';
+import CustomApp from './__fixtures__/pages/custom-app/[id]';
 import SSGPage from './__fixtures__/pages/ssg/[id]';
 import WithRouter from './__fixtures__/pages/with-router/[id]';
+import CustomAppComponent from './__fixtures__/pages/_app';
 const pagesDirectory = __dirname + '/__fixtures__/pages';
 
 describe('getPage', () => {
@@ -37,6 +40,42 @@ describe('getPage', () => {
   describe('route with trailing slash', () => {
     it('returns undefined', async () => {
       const actualPage = await getPage({ pagesDirectory, route: '/blog/5/' });
+      expect(actualPage).toBe(undefined);
+    });
+  });
+
+  describe('route === "_app"', () => {
+    it('returns undefined', async () => {
+      const actualPage = await getPage({ pagesDirectory, route: '/_app' });
+      expect(actualPage).toBe(undefined);
+    });
+  });
+
+  describe('route === "_document"', () => {
+    it('returns undefined', async () => {
+      const actualPage = await getPage({ pagesDirectory, route: '/_document' });
+      expect(actualPage).toBe(undefined);
+    });
+  });
+
+  describe('route matching page with .ts extension', () => {
+    it('returns undefined', async () => {
+      const actualPage = await getPage({
+        pagesDirectory,
+        route: '/typescript',
+      });
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(<TypescriptPage />);
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('route matching page file with invalid extension', () => {
+    it('returns undefined', async () => {
+      const actualPage = await getPage({
+        pagesDirectory,
+        route: '/invalid-extension',
+      });
       expect(actualPage).toBe(undefined);
     });
   });
@@ -290,6 +329,28 @@ describe('getPage', () => {
           })
         ).rejects.toThrow('[next page tester]');
       });
+    });
+  });
+
+  describe('custom App component', () => {
+    it('wraps expected page with _app component', async () => {
+      const actualPage = await getPage({
+        pagesDirectory,
+        route: '/custom-app/5',
+        customApp: true,
+      });
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(
+        <CustomAppComponent
+          Component={CustomApp}
+          pageProps={{
+            params: {
+              id: '5',
+            },
+          }}
+        />
+      );
+      expect(actual).toEqual(expected);
     });
   });
 });

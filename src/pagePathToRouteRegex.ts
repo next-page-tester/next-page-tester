@@ -13,8 +13,6 @@ const OPTIONAL_CATCH_ALL_PATH_SEGMENT_REGEX_STRING = '.*?';
 const TRAILING_INDEX_REGEX = /\/index$/;
 const OPTIONAL_TRAILING_INDEX_REGEX_STRING = '(?:/index)?';
 
-const FILE_EXTENSION_REGEX = /\.[a-zA-Z0-9]*$/;
-
 type namedCapture = {
   name: string;
   regex: string;
@@ -32,7 +30,6 @@ function makeOptionalNamedCapturingGroup({ name, regex }: namedCapture) {
 // Build a regex from a page path to catch its matching routes
 function pagePathToRouteRegex(pagePath: string): RegExp {
   const regex = pagePath
-    .replace(FILE_EXTENSION_REGEX, '')
     .replace(TRAILING_INDEX_REGEX, OPTIONAL_TRAILING_INDEX_REGEX_STRING)
     .replace(OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_REGEX, (match, paramName) => {
       const captureGroup = makeOptionalNamedCapturingGroup({

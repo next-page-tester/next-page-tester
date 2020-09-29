@@ -15,6 +15,7 @@ export type Options = {
   req?: (req: Req) => Req;
   res?: (res: Res) => Res;
   router?: (router: NextRouter) => NextRouter;
+  customApp?: boolean;
 };
 
 export type NextPageFile = {
@@ -34,3 +35,11 @@ export type PageObject = {
   params: PageParams;
   paramsNumber: number;
 };
+
+export type PageData =
+  | {
+      props: {
+        [key: string]: any;
+      };
+    }
+  | undefined;

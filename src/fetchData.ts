@@ -1,6 +1,5 @@
-import React, { ReactNode } from 'react';
 import httpMocks from 'node-mocks-http';
-import type { Options, PageObject } from './commonTypes';
+import type { Options, PageObject, PageData } from './commonTypes';
 
 export default async function fetchData({
   pageObject: { page, params, route },
@@ -10,7 +9,7 @@ export default async function fetchData({
   pageObject: PageObject;
   reqMocker: Exclude<Options['req'], undefined>;
   resMocker: Exclude<Options['res'], undefined>;
-}): Promise<ReactNode> {
+}): Promise<PageData> {
   if (page.getServerSideProps) {
     // @TODO complete ctx object
     // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
@@ -27,8 +26,7 @@ export default async function fetchData({
     };
 
     // @ts-ignore: Types of property 'req' are incompatible
-    const result = await page.getServerSideProps(ctx);
-    return React.createElement(page.default, result.props);
+    return await page.getServerSideProps(ctx);
   }
 
   if (page.getStaticProps) {
@@ -39,9 +37,6 @@ export default async function fetchData({
     };
     // @TODO introduce `getStaticPaths` logic
     // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
-    const result = await page.getStaticProps(ctx);
-    return React.createElement(page.default, result.props);
+    return await page.getStaticProps(ctx);
   }
-
-  return React.createElement(page.default);
 }

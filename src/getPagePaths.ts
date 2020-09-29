@@ -1,27 +1,34 @@
 import path from 'path';
 import readdir from 'recursive-readdir';
 
-function makeIgnoreFunc(pagesDirectory: string) {
-  return (file: string) => {
-    return file.startsWith(pagesDirectory + '/api/');
-  };
-}
-
+// Returns available page paths without file extension
 async function getPagePaths({
   pagesDirectory,
 }: {
   pagesDirectory: string;
 }): Promise<string[]> {
-  const ignoreFunc = makeIgnoreFunc(pagesDirectory);
   let files = [];
   try {
-    files = await readdir(pagesDirectory, [ignoreFunc]);
+    files = await readdir(pagesDirectory);
   } catch (err) {
     throw new Error(`[next page tester] ${err}`);
   }
 
-  return files.map((filePath) =>
-    filePath.replace(`${path.resolve(pagesDirectory)}`, '')
+  const pagesDirectoryAbs = path.resolve(pagesDirectory);
+  // @TODO Make allowed extensions configurable
+  const extensionsRegex = /\.(?:mdx|jsx|js|ts|tsx)$/;
+  return (
+    files
+      // Make page paths relative
+      .map((filePath) => filePath.replace(pagesDirectoryAbs, ''))
+      // Filter out files with non-allowed extensions
+      .filter((filePath) => filePath.match(extensionsRegex))
+      // Strip file extensions
+      .map((filePath) => filePath.replace(extensionsRegex, ''))
+      // Filter out /api folder
+      .filter((filePath) => !filePath.startsWith('/api/'))
+      // Filter out /_app and /_document files
+      .filter((filePath) => filePath !== '/_app' && filePath !== '/_document')
   );
 }
 
