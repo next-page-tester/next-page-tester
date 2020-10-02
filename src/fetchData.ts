@@ -4,7 +4,7 @@ import type {
   GetServerSidePropsContext,
   GetStaticPropsContext,
 } from 'next';
-import httpMocks from 'node-mocks-http';
+import makeHttpObjects from './makeHttpObjects';
 import type {
   Options,
   PageObject,
@@ -35,7 +35,7 @@ function ensureNoMultipleDataFetchingMethods({
 }
 
 export default async function fetchData({
-  pageObject: { page, pagePath, params, route, query },
+  pageObject,
   reqMocker,
   resMocker,
 }: {
@@ -43,19 +43,16 @@ export default async function fetchData({
   reqMocker: Exclude<Options['req'], undefined>;
   resMocker: Exclude<Options['res'], undefined>;
 }): Promise<PageData> {
+  const { page, pagePath, params, route, query } = pageObject;
   ensureNoMultipleDataFetchingMethods({ page });
 
   if (page.default.getInitialProps) {
-    const req = httpMocks.createRequest({
-      url: route,
-      params: { ...params },
-    });
-
+    const { req, res } = makeHttpObjects({ pageObject, reqMocker, resMocker });
     const ctx: NextPageContext = {
       // @NOTE AppTree is currently just a stub
       AppTree: Fragment,
-      req: reqMocker(req),
-      res: resMocker(httpMocks.createResponse()),
+      req,
+      res,
       err: undefined,
       pathname: pagePath,
       query: { ...params, ...query }, // GIP ctx query merges params and query together
@@ -69,16 +66,12 @@ export default async function fetchData({
   if (page.getServerSideProps) {
     // @TODO complete ctx object
     // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
-    const req = httpMocks.createRequest({
-      url: route,
-      params: { ...params },
-    });
-
+    const { req, res } = makeHttpObjects({ pageObject, reqMocker, resMocker });
     const ctx: GetServerSidePropsContext<typeof params> = {
       params: { ...params },
       query: { ...query },
-      req: reqMocker(req),
-      res: resMocker(httpMocks.createResponse()),
+      req,
+      res,
     };
 
     return await page.getServerSideProps(ctx);
