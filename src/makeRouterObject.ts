@@ -1,8 +1,8 @@
-import { removeFileExtension, parseQueryString, parseRoute } from './utils';
+import { removeFileExtension, parseRoute } from './utils';
 import type { PageObject } from './commonTypes';
 
 export default function makeRouterObject({
-  pageObject: { pagePath, params, route },
+  pageObject: { pagePath, params, route, query },
 }: {
   pageObject: PageObject;
 }) {
@@ -10,7 +10,7 @@ export default function makeRouterObject({
   return {
     asPath: pathname + search + hash, // Includes querystring and anchor
     pathname: removeFileExtension({ path: pagePath }), // Page component path without extension
-    query: { ...params, ...parseQueryString({ queryString: search }) }, // Route params + parsed querystring
+    query: { ...params, ...query }, // Route params + parsed querystring
     route: removeFileExtension({ path: pagePath }), // Page component path without extension
   };
 }

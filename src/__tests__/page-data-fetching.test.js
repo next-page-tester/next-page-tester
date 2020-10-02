@@ -1,13 +1,44 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import httpMocks from 'node-mocks-http';
 import { getPage } from '../index';
 import SSRPage from './__fixtures__/pages/ssr/[id]';
 import SSGPage from './__fixtures__/pages/ssg/[id]';
+import GIPPage from './__fixtures__/pages/gip/[id]';
 const pagesDirectory = __dirname + '/__fixtures__/pages';
 
 describe('Data fetching', () => {
+  describe('page with getInitialProps', () => {
+    it('feeds page component with returned props', async () => {
+      const actualPage = await getPage({
+        pagesDirectory,
+        route: '/gip/5?foo=bar',
+      });
+
+      const expectedParams = { id: '5' };
+      const expectedQuery = { foo: 'bar' };
+
+      const { container: actual } = render(actualPage);
+      const expectedContext = {
+        AppTree: Fragment,
+        req: httpMocks.createRequest({
+          url: '/gip/5?foo=bar',
+          params: expectedParams,
+          query: expectedQuery,
+        }),
+        res: httpMocks.createResponse(),
+        err: undefined,
+        pathname: '/gip/[id]',
+        query: { ...expectedParams, ...expectedQuery },
+        asPath: '/gip/5?foo=bar',
+      };
+
+      const { container: expected } = render(<GIPPage {...expectedContext} />);
+      expect(actual).toEqual(expected);
+    });
+  });
+
   describe('page with getServerSideProps', () => {
     it('feeds page component with returned props', async () => {
       const actualPage = await getPage({
@@ -19,19 +50,17 @@ describe('Data fetching', () => {
       const expectedQuery = { foo: 'bar' };
 
       const { container: actual } = render(actualPage);
-      const { container: expected } = render(
-        <SSRPage
-          params={expectedParams}
-          query={expectedQuery}
-          req={httpMocks.createRequest({
-            url: '/ssr/5?foo=bar',
-            params: expectedParams,
-            query: expectedQuery,
-          })}
-          res={httpMocks.createResponse()}
-        />
-      );
-
+      const expectedContext = {
+        params: expectedParams,
+        query: expectedQuery,
+        req: httpMocks.createRequest({
+          url: '/ssr/5?foo=bar',
+          params: expectedParams,
+          query: expectedQuery,
+        }),
+        res: httpMocks.createResponse(),
+      };
+      const { container: expected } = render(<SSRPage {...expectedContext} />);
       expect(actual).toEqual(expected);
     });
   });
@@ -51,6 +80,17 @@ describe('Data fetching', () => {
         />
       );
       expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('page with more than 1 data fetching method', () => {
+    it('throws error', async () => {
+      await expect(
+        getPage({
+          pagesDirectory,
+          route: '/multiple-data-fetching',
+        })
+      ).rejects.toThrow('[next page tester]');
     });
   });
 });

@@ -34,6 +34,7 @@ export type PageObject = {
   pagePath: string;
   params: PageParams;
   paramsNumber: number;
+  query: PageParams;
 };
 
 export type PageData =

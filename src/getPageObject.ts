@@ -1,7 +1,7 @@
 import getPagePaths from './getPagePaths';
 import pagePathToRouteRegex from './pagePathToRouteRegex';
 import loadPage from './loadPage';
-import { parseRoute } from './utils';
+import { parseRoute, parseQueryString } from './utils';
 import type { Options, PageObject, PageParams } from './commonTypes';
 
 export default async function getPageObject({
@@ -45,12 +45,12 @@ function makeParamsObject({
 
 type PageInfo = Pick<
   PageObject,
-  'route' | 'pagePath' | 'params' | 'paramsNumber'
+  'route' | 'pagePath' | 'params' | 'paramsNumber' | 'query'
 >;
 async function getPageInfo({ pagesDirectory, route }: Options) {
   const pagePaths = await getPagePaths({ pagesDirectory });
   const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
-  const routePathName = parseRoute({ route }).pathname;
+  const { pathname: routePathName, search } = parseRoute({ route });
 
   // Match provided route through route regexes generated from /page components
   const matchingPagePaths = pagePaths
@@ -65,6 +65,7 @@ async function getPageInfo({ pagesDirectory, route }: Options) {
           pagePath: originalPath,
           params,
           paramsNumber: Object.keys(params).length,
+          query: parseQueryString({ queryString: search }),
         };
       }
     })
