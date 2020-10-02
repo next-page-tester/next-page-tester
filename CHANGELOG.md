@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0
+
+### Breaking Changes
+
+- Support pages' `getInitialProps` data fetching method
+
+### New Features
+
+- Support custom App component behind `customApp` option flag (no support for App's `getInitialProps`, yet)
+
 ## 0.2.0
 
 ### Breaking Changes
