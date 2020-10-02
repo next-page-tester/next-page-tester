@@ -2,9 +2,9 @@ import getPageObject from './getPageObject';
 import fetchData from './fetchData';
 import preparePage from './preparePage';
 import type { ReactNode } from 'react';
-import { Options } from './commonTypes';
+import { Options, OptionsWithDefaults } from './commonTypes';
 
-function validateOptions({ route }: { route: string }) {
+function validateOptions({ route }: OptionsWithDefaults) {
   if (!route.startsWith('/')) {
     throw new Error('[next page tester] "route" option should start with "/"');
   }
@@ -13,22 +13,28 @@ function validateOptions({ route }: { route: string }) {
 export default async function getPage({
   pagesDirectory,
   route,
-  req: reqMocker = (req) => req,
-  res: resMocker = (res) => res,
-  router: routerMocker = (router) => router,
+  req = (req) => req,
+  res = (res) => res,
+  router = (router) => router,
   customApp = false,
 }: Options): Promise<ReactNode | undefined> {
-  validateOptions({ route });
+  const options: OptionsWithDefaults = {
+    pagesDirectory,
+    route,
+    req,
+    res,
+    router,
+    customApp,
+  };
+  validateOptions(options);
 
-  const pageObject = await getPageObject({ pagesDirectory, route });
+  const pageObject = await getPageObject({ options });
   if (pageObject) {
-    const pageData = await fetchData({ pageObject, reqMocker, resMocker });
+    const pageData = await fetchData({ pageObject, options });
     const pageElement = preparePage({
-      pagesDirectory,
-      routerMocker,
-      customApp,
       pageObject,
       pageData,
+      options,
     });
     return pageElement;
   }

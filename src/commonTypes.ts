@@ -18,6 +18,8 @@ export type Options = {
   customApp?: boolean;
 };
 
+export type OptionsWithDefaults = Required<Options>;
+
 export type NextPageFile = {
   [name: string]: any;
   default: NextPage;
@@ -37,10 +39,8 @@ export type PageObject = {
   query: PageParams;
 };
 
-export type PageData =
-  | {
-      props: {
-        [key: string]: any;
-      };
-    }
-  | undefined;
+export type PageData = {
+  props?: {
+    [key: string]: any;
+  };
+};

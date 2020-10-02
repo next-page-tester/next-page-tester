@@ -6,7 +6,7 @@ import type {
 } from 'next';
 import makeHttpObjects from './makeHttpObjects';
 import type {
-  Options,
+  OptionsWithDefaults,
   PageObject,
   PageData,
   NextPageFile,
@@ -36,14 +36,13 @@ function ensureNoMultipleDataFetchingMethods({
 
 export default async function fetchData({
   pageObject,
-  reqMocker,
-  resMocker,
+  options,
 }: {
   pageObject: PageObject;
-  reqMocker: Exclude<Options['req'], undefined>;
-  resMocker: Exclude<Options['res'], undefined>;
+  options: OptionsWithDefaults;
 }): Promise<PageData> {
   const { page, pagePath, params, route, query } = pageObject;
+  const { req: reqMocker, res: resMocker } = options;
   ensureNoMultipleDataFetchingMethods({ page });
 
   if (page.default.getInitialProps) {
@@ -87,4 +86,6 @@ export default async function fetchData({
     // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
     return await page.getStaticProps(ctx);
   }
+
+  return {};
 }

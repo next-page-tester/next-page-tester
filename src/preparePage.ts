@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import type { NextRouter } from 'next/router';
 import makeRouterObject from './makeRouterObject';
-import type { Options, PageObject, PageData } from './commonTypes';
+import type { OptionsWithDefaults, PageObject, PageData } from './commonTypes';
 
 // https://github.com/vercel/next.js/issues/7479#issuecomment-659859682
 function makeDefaultRouterMock(props?: Partial<NextRouter>): NextRouter {
@@ -31,21 +31,19 @@ function makeDefaultRouterMock(props?: Partial<NextRouter>): NextRouter {
 }
 
 export default function preparePage({
-  pagesDirectory,
-  pageData,
   pageObject,
-  routerMocker,
-  customApp,
+  pageData,
+  options,
 }: {
-  pagesDirectory: string;
-  pageData: PageData;
   pageObject: PageObject;
-  routerMocker: Exclude<Options['router'], undefined>;
-  customApp: boolean;
+  pageData: PageData;
+  options: OptionsWithDefaults;
 }): ReactNode {
-  // Render page element
   const { page } = pageObject;
-  const props = pageData?.props;
+  const { props } = pageData;
+  const { pagesDirectory, router: routerMocker, customApp } = options;
+
+  // Render page element
   let pageElement = React.createElement(page.default, props);
 
   // Optionally wrap with custom App

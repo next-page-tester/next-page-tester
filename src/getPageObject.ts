@@ -2,13 +2,19 @@ import getPagePaths from './getPagePaths';
 import pagePathToRouteRegex from './pagePathToRouteRegex';
 import loadPage from './loadPage';
 import { parseRoute, parseQueryString } from './utils';
-import type { Options, PageObject, PageParams } from './commonTypes';
+import type {
+  OptionsWithDefaults,
+  PageObject,
+  PageParams,
+} from './commonTypes';
 
 export default async function getPageObject({
-  pagesDirectory,
-  route,
-}: Options): Promise<PageObject | undefined> {
-  const pageInfo = await getPageInfo({ pagesDirectory, route });
+  options,
+}: {
+  options: OptionsWithDefaults;
+}): Promise<PageObject | undefined> {
+  const { pagesDirectory } = options;
+  const pageInfo = await getPageInfo({ options });
   if (pageInfo) {
     const page = loadPage({
       pagesDirectory,
@@ -47,7 +53,8 @@ type PageInfo = Pick<
   PageObject,
   'route' | 'pagePath' | 'params' | 'paramsNumber' | 'query'
 >;
-async function getPageInfo({ pagesDirectory, route }: Options) {
+async function getPageInfo({ options }: { options: OptionsWithDefaults }) {
+  const { pagesDirectory, route } = options;
   const pagePaths = await getPagePaths({ pagesDirectory });
   const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
   const { pathname: routePathName, search } = parseRoute({ route });
