@@ -27,14 +27,14 @@ describe('Blog page', () => {
 
 ## What
 
-The idea behind this library is to enable integration tests on Next.js pages including [server side data fetching][next-docs-data-fetching] and [routing][next-docs-routing].
+The idea behind this library is to enable DOM integration tests on Next.js pages along with [server side data fetching][next-docs-data-fetching] and [routing][next-docs-routing].
 
-The testing approach suggested here consists of manually mocking external API's and get the component instance matching a given route.
+The testing approach suggested here consists of manually mocking external API's dependencies and get the component instance matching a given route.
 
 Next page tester will take care of:
 
 - **resolving** provided **routes** into the matching page component
-- calling **Next.js data fetching methods** (`getServerSideProps` or `getStaticProps`) if the case
+- calling **Next.js data fetching methods** (`getServerSideProps`, `getInitialProps` or `getStaticProps`) if the case
 - set up a **mocked `next/router` provider** initialized with the expected values (to test `useRouter` and `withRouter`)
 - **instantiating** the page component with the **expected props**
 
@@ -51,7 +51,7 @@ Next page tester will take care of:
 
 ## Notes
 
-`req` and `res` objects are mocked with [node-mocks-http][node-mocks-http].
+Data fetching methods' context `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http].
 
 Next page tester can be used with any testing framework/library.
 
@@ -60,7 +60,7 @@ It might be necessary to install `@types/react-dom` and `@types/webpack` when us
 ## Todo's
 
 - Make available dynamic api routes under `/pages/api`
-- Add support for `getInitialProps` (in custom App and Pages)
+- Add support for custom App's `getInitialProps`
 - Consider adding custom Document
 - Consider adding a `getPage` factory
 - Consider reusing Next.js code parts (not only types)
