@@ -44,7 +44,7 @@ Next page tester will take care of:
 | Property           | Description                                                                      | type               | Default |
 | ------------------ | -------------------------------------------------------------------------------- | ------------------ | ------- |
 | **route**          | Next route (must start with `/`)                                                 | -                  | -       |
-| **pagesDirectory** | Absolute path of Next's `/pages` folder                                          | -                  | -       |
+| **pagesDirectory** | Absolute path to Next's `/pages` folder                                          | -                  | -       |
 | **req**            | Access default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -       |
 | **res**            | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -       |
 | **router**         | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -       |

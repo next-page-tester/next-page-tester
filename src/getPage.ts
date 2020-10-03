@@ -1,12 +1,19 @@
+import { existsSync } from 'fs';
 import getPageObject from './getPageObject';
 import { fetchPageData } from './fetchData';
 import preparePage from './preparePage';
 import type { ReactNode } from 'react';
 import { Options, OptionsWithDefaults } from './commonTypes';
 
-function validateOptions({ route }: OptionsWithDefaults) {
+function validateOptions({ pagesDirectory, route }: OptionsWithDefaults) {
   if (!route.startsWith('/')) {
     throw new Error('[next page tester] "route" option should start with "/"');
+  }
+
+  if (!existsSync(pagesDirectory)) {
+    throw new Error(
+      '[next page tester] "pagesDirectory" options points to a non-existing folder'
+    );
   }
 }
 
