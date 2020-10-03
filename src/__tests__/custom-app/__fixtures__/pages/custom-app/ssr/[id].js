@@ -1,4 +1,4 @@
-import { sleep } from '../../../../../utils';
+import { sleep } from '../../../../../../utils';
 
 export default function customApp_ssr_$id$(props) {
   return `/custom-app/ssr/[id] - props: ${JSON.stringify(props)}`;

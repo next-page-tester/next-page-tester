@@ -40,7 +40,7 @@ export default async function getPage({
   const pageObject = await getPageObject({ options });
   if (pageObject) {
     const pageData = await fetchPageData({ pageObject, options });
-    const pageElement = preparePage({
+    const pageElement = await preparePage({
       pageObject,
       pageData,
       options,

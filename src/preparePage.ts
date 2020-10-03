@@ -1,9 +1,14 @@
-import { existsSync } from 'fs';
 import React, { ReactNode } from 'react';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import type { NextRouter } from 'next/router';
 import makeRouterObject from './makeRouterObject';
-import type { OptionsWithDefaults, PageObject, PageData } from './commonTypes';
+import { loadPageWithUnknownExtension } from './loadPage';
+import type {
+  OptionsWithDefaults,
+  PageObject,
+  PageData,
+  NextCustomAppFile,
+} from './commonTypes';
 
 // https://github.com/vercel/next.js/issues/7479#issuecomment-659859682
 function makeDefaultRouterMock(props?: Partial<NextRouter>): NextRouter {
@@ -30,7 +35,7 @@ function makeDefaultRouterMock(props?: Partial<NextRouter>): NextRouter {
   return { ...routerMock, ...props };
 }
 
-export default function preparePage({
+export default async function preparePage({
   pageObject,
   pageData,
   options,
@@ -38,22 +43,28 @@ export default function preparePage({
   pageObject: PageObject;
   pageData: PageData;
   options: OptionsWithDefaults;
-}): ReactNode {
+}): Promise<ReactNode> {
   const { page } = pageObject;
   const { props } = pageData;
-  const { pagesDirectory, router: routerMocker, customApp } = options;
+  const { router: routerMocker, customApp } = options;
 
   // Render page element
   let pageElement = React.createElement(page.default, props);
 
   // Optionally wrap with custom App
-  const customAppPath = pagesDirectory + '/_app.js';
-  if (customApp && existsSync(customAppPath)) {
-    const customAppComponent = require(customAppPath).default;
-    pageElement = React.createElement(customAppComponent, {
-      Component: page.default,
-      pageProps: props,
-    });
+  if (customApp) {
+    const customAppFile = await loadPageWithUnknownExtension<NextCustomAppFile>(
+      {
+        options,
+        pagePath: '/_app',
+      }
+    );
+    if (customAppFile) {
+      pageElement = React.createElement(customAppFile.default, {
+        Component: page.default,
+        pageProps: props,
+      });
+    }
   }
 
   // Wrap with RouterContext provider

@@ -1,6 +1,6 @@
 import getPagePaths from './getPagePaths';
 import pagePathToRouteRegex from './pagePathToRouteRegex';
-import loadPage from './loadPage';
+import { loadPage } from './loadPage';
 import { parseRoute, parseQueryString } from './utils';
 import type {
   OptionsWithDefaults,
