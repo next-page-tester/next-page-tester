@@ -22,3 +22,4 @@ export function sleep(ms: number) {
 export function removeFileExtension({ path }: { path: string }) {
   return path.replace(/\.[^/.]+$/, '');
 }
+

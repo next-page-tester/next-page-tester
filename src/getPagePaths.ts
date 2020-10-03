@@ -1,14 +1,14 @@
 import fastGlob from 'fast-glob';
+import type { OptionsWithDefaults } from './commonTypes';
 
 // Returns available page paths without file extension
 async function getPagePaths({
-  pagesDirectory,
+  options: { pagesDirectory, pageExtensions },
 }: {
-  pagesDirectory: string;
+  options: OptionsWithDefaults;
 }): Promise<string[]> {
   const files = await fastGlob([pagesDirectory + '/**/*']);
-  // @TODO Make allowed extensions configurable
-  const extensionsRegex = /\.(?:mdx|jsx|js|ts|tsx)$/;
+  const extensionsRegex = new RegExp(`\.(${pageExtensions.join('|')})$`);
   return (
     files
       // Make page paths relative

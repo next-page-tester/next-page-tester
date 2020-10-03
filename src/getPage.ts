@@ -24,6 +24,7 @@ export default async function getPage({
   res = (res) => res,
   router = (router) => router,
   customApp = false,
+  pageExtensions = ['mdx', 'jsx', 'js', 'ts', 'tsx'],
 }: Options): Promise<ReactNode | undefined> {
   const options: OptionsWithDefaults = {
     pagesDirectory,
@@ -32,6 +33,7 @@ export default async function getPage({
     res,
     router,
     customApp,
+    pageExtensions,
   };
   validateOptions(options);
 

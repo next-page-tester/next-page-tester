@@ -54,8 +54,8 @@ type PageInfo = Pick<
   'route' | 'pagePath' | 'params' | 'paramsNumber' | 'query'
 >;
 async function getPageInfo({ options }: { options: OptionsWithDefaults }) {
-  const { pagesDirectory, route } = options;
-  const pagePaths = await getPagePaths({ pagesDirectory });
+  const { route } = options;
+  const pagePaths = await getPagePaths({ options });
   const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
   const { pathname: routePathName, search } = parseRoute({ route });
 
