@@ -1,5 +1,5 @@
 import getPageObject from './getPageObject';
-import fetchData from './fetchData';
+import { fetchPageData } from './fetchData';
 import preparePage from './preparePage';
 import type { ReactNode } from 'react';
 import { Options, OptionsWithDefaults } from './commonTypes';
@@ -30,7 +30,7 @@ export default async function getPage({
 
   const pageObject = await getPageObject({ options });
   if (pageObject) {
-    const pageData = await fetchData({ pageObject, options });
+    const pageData = await fetchPageData({ pageObject, options });
     const pageElement = preparePage({
       pageObject,
       pageData,

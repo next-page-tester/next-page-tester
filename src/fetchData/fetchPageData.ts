@@ -10,7 +10,7 @@ import type {
   PageObject,
   PageData,
   NextPageFile,
-} from './commonTypes';
+} from '../commonTypes';
 
 function ensureNoMultipleDataFetchingMethods({
   page,

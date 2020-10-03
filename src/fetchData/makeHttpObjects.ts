@@ -1,5 +1,5 @@
 import httpMocks from 'node-mocks-http';
-import type { OptionsWithDefaults, PageObject } from './commonTypes';
+import type { OptionsWithDefaults, PageObject } from '../commonTypes';
 
 export default function makeHttpObjects({
   pageObject: { params, route },
