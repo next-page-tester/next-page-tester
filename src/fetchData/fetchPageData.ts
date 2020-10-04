@@ -34,7 +34,7 @@ function ensureNoMultipleDataFetchingMethods({
   }
 }
 
-export default async function fetchData({
+export default async function fetchPageData({
   pageObject,
   options,
 }: {

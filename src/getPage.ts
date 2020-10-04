@@ -38,13 +38,15 @@ export default async function getPage({
   validateOptions(options);
 
   const pageObject = await getPageObject({ options });
-  if (pageObject) {
-    const pageData = await fetchPageData({ pageObject, options });
-    const pageElement = await preparePage({
-      pageObject,
-      pageData,
-      options,
-    });
-    return pageElement;
+  if (!pageObject) {
+    return undefined;
   }
+
+  const pageData = await fetchPageData({ pageObject, options });
+  const pageElement = await preparePage({
+    pageObject,
+    pageData,
+    options,
+  });
+  return pageElement;
 }
