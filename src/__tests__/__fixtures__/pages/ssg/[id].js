@@ -1,7 +1,7 @@
 import { sleep } from '../../../../utils';
 
 export default function ssg_$id$(props) {
-  return `/ssg/[id] - props: ${JSON.stringify(props)}`;
+  return `/ssg/[id] - props: ${JSON.stringify(props, null, ' ')}`;
 }
 
 export async function getStaticProps({ params }) {

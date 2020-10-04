@@ -1,7 +1,7 @@
 import { sleep } from '../../../../utils';
 
 export default function gip_$id$(props) {
-  return `/gip/[id] - props: ${JSON.stringify(props)}`;
+  return `/gip/[id] - props: ${JSON.stringify(props, null, ' ')}`;
 }
 
 gip_$id$.getInitialProps = async (ctx) => {
