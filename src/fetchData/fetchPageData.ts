@@ -1,10 +1,13 @@
-import { Fragment } from 'react';
 import type {
   NextPageContext,
   GetServerSidePropsContext,
   GetStaticPropsContext,
 } from 'next';
-import makeHttpObjects from './makeHttpObjects';
+import {
+  makeGetInitialPropsContext,
+  makeGetServerSidePropsContext,
+  makeStaticPropsContext,
+} from './makeContextObject';
 import type {
   OptionsWithDefaults,
   PageObject,
@@ -41,47 +44,30 @@ export default async function fetchPageData({
   pageObject: PageObject;
   options: OptionsWithDefaults;
 }): Promise<PageData> {
-  const { page, pagePath, params, route, query } = pageObject;
-  const { req: reqMocker, res: resMocker } = options;
+  const { page, params } = pageObject;
   ensureNoMultipleDataFetchingMethods({ page });
 
   if (page.default.getInitialProps) {
-    const { req, res } = makeHttpObjects({ pageObject, reqMocker, resMocker });
-    const ctx: NextPageContext = {
-      // @NOTE AppTree is currently just a stub
-      AppTree: Fragment,
-      req,
-      res,
-      err: undefined,
-      pathname: pagePath,
-      query: { ...params, ...query }, // GIP ctx query merges params and query together
-      asPath: route,
-    };
+    const ctx: NextPageContext = makeGetInitialPropsContext({
+      options,
+      pageObject,
+    });
 
     const initialProps = await page.default.getInitialProps(ctx);
     return { props: initialProps };
   }
 
   if (page.getServerSideProps) {
-    // @TODO complete ctx object
-    // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
-    const { req, res } = makeHttpObjects({ pageObject, reqMocker, resMocker });
-    const ctx: GetServerSidePropsContext<typeof params> = {
-      params: { ...params },
-      query: { ...query },
-      req,
-      res,
-    };
-
+    const ctx: GetServerSidePropsContext<typeof params> = makeGetServerSidePropsContext(
+      { options, pageObject }
+    );
     return await page.getServerSideProps(ctx);
   }
 
   if (page.getStaticProps) {
-    // @TODO complete ctx object
-    // https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation
-    const ctx: GetStaticPropsContext<typeof params> = {
-      params: { ...params },
-    };
+    const ctx: GetStaticPropsContext<typeof params> = makeStaticPropsContext({
+      pageObject,
+    });
     // @TODO introduce `getStaticPaths` logic
     // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
     return await page.getStaticProps(ctx);
