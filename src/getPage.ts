@@ -1,6 +1,7 @@
 import { existsSync } from 'fs';
 import getPageObject from './getPageObject';
-import { fetchPageData } from './fetchData';
+import getCustomAppFile from './getCustomAppFile';
+import { fetchAppData, fetchPageData } from './fetchData';
 import preparePage from './preparePage';
 import type { ReactNode } from 'react';
 import { Options, OptionsWithDefaults } from './commonTypes';
@@ -42,7 +43,19 @@ export default async function getPage({
     return undefined;
   }
 
-  const pageData = await fetchPageData({ pageObject, options });
+  const customAppFile = customApp
+    ? await getCustomAppFile({ options })
+    : undefined;
+
+  const appInitialProps = customAppFile
+    ? await fetchAppData({ customAppFile, pageObject, options })
+    : undefined;
+
+  const pageData = await fetchPageData({
+    pageObject,
+    options,
+    appInitialProps,
+  });
   const pageElement = await preparePage({
     pageObject,
     pageData,

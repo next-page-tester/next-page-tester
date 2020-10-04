@@ -3,31 +3,76 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import httpMocks from 'node-mocks-http';
 import { getPage } from '../../index';
-import CustomAppSSRPage from './__fixtures__/pages/custom-app/ssr/[id]';
-import CustomAppGIPPage from './__fixtures__/pages/custom-app/gip/[id]';
-import CustomAppComponent from './__fixtures__/pages/_app';
+import CustomAppWithGIP from './__fixtures__/custom-app-with-gip/_app';
+import CustomAppWithGIP_AppContextPage from './__fixtures__/custom-app-with-gip/app-context';
+import CustomAppWithGIP_SSRPage from './__fixtures__/custom-app-with-gip/ssr';
+import CustomAppWithGIP_GIPPage from './__fixtures__/custom-app-with-gip/gip';
+
+import CustomAppWithNextAppGIP from './__fixtures__/custom-app-with-next-app-gip/_app';
+import CustomAppWithNextAppGIP_GIP from './__fixtures__/custom-app-with-next-app-gip/gip';
+
 import SpecialExtensionCustomApp from './__fixtures__/special-extension/_app.jsx';
 import SpecialExtensionPage from './__fixtures__/special-extension/custom-app';
 import MissingCustomAppPage from './__fixtures__/missing-custom-app/custom-app';
-const pagesDirectory = __dirname + '/__fixtures__/pages';
 
 describe('Custom App component', () => {
-  describe("getInitialProps method calling Next's App.getInitialProps", () => {
+  describe('with getInitialProps', () => {
+    it('gets called with expected appContext', async () => {
+      const actualPage = await getPage({
+        pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
+        route: '/app-context',
+        customApp: true,
+      });
+      const { container: actual } = render(actualPage);
+      const expectedAppContext = {
+        AppTree: Fragment,
+        Component: CustomAppWithGIP_AppContextPage,
+        ctx: {
+          req: httpMocks.createRequest({
+            url: '/app-context',
+            params: {},
+            query: {},
+          }),
+          res: httpMocks.createResponse(),
+          err: undefined,
+          pathname: '/app-context',
+          query: {},
+          asPath: '/app-context',
+        },
+        router: {
+          asPath: '/app-context',
+          pathname: '/app-context',
+          query: {},
+          route: '/app-context',
+          basePath: '',
+        },
+      };
+      const { container: expected } = render(
+        <CustomAppWithGIP
+          Component={CustomAppWithGIP_AppContextPage}
+          pageProps={{
+            ctx: expectedAppContext,
+          }}
+        />
+      );
+      expect(actual).toEqual(expected);
+    });
+
     describe('Page with getServerSideProps', () => {
-      it('wraps expected page with _app component', async () => {
+      it('wraps page with _app and merges appInitialProps.pageProps with page props', async () => {
         const actualPage = await getPage({
-          pagesDirectory,
-          route: '/custom-app/ssr/5',
+          pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
+          route: '/ssr',
           customApp: true,
         });
         const { container: actual } = render(actualPage);
         const { container: expected } = render(
-          <CustomAppComponent
-            Component={CustomAppSSRPage}
+          <CustomAppWithGIP
+            Component={CustomAppWithGIP_SSRPage}
             pageProps={{
-              params: {
-                id: '5',
-              },
+              fromCustomApp: true,
+              propNameCollision: 'from-page',
+              fromPage: true,
             }}
           />
         );
@@ -36,54 +81,52 @@ describe('Custom App component', () => {
     });
 
     describe('Page with getInitialProps', () => {
-      it("wraps expected page with _app component and calls pages' getInitialProps", async () => {
+      it('getInitialProps does not get called', async () => {
         const actualPage = await getPage({
-          pagesDirectory,
-          route: '/custom-app/gip/5?foo=bar',
+          pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
+          route: '/gip',
           customApp: true,
         });
-        const expectedParams = { id: '5' };
-        const expectedQuery = { foo: 'bar' };
-
         const { container: actual } = render(actualPage);
-        const expectedAppContext = {
-          AppTree: Fragment,
-          Component: CustomAppGIPPage,
-          router: {
-            route: '/custom-app/gip/5?foo=bar',
-            pathname: '/custom-app/[id]',
-            query: { ...expectedParams, ...expectedQuery },
-            asPath: '/custom-app/gip/5?foo=bar',
-            basePath: '',
-            // events: undefined,
-            // isFallback: false,
-          },
-          ctx: {
-            req: httpMocks.createRequest({
-              url: '/custom-app/gip/5?foo=bar',
-              params: expectedParams,
-              query: expectedQuery,
-            }),
-            res: httpMocks.createResponse(),
-            err: undefined,
-            pathname: '/custom-app/[id]',
-            query: { ...expectedParams, ...expectedQuery },
-            asPath: '/custom-app/5?foo=bar',
-          },
-        };
-
         const { container: expected } = render(
-          <CustomAppComponent
-            Component={CustomAppGIPPage}
-            pageProps={expectedAppContext}
+          <CustomAppWithGIP
+            Component={CustomAppWithGIP_GIPPage}
+            pageProps={{
+              fromCustomApp: true,
+              propNameCollision: 'from-app',
+            }}
           />
         );
-        expect(actual).not.toEqual(expected);
+        expect(actual).toEqual(expected);
       });
     });
   });
 
-  it('Loads custom app file with any extension defined by "pageExtensions" option', async () => {
+  describe("calling Next's App.getInitialProps", () => {
+    describe('Page with getInitialProps', () => {
+      it("App.getInitialProps is able to call page's getInitialProps", async () => {
+        const actualPage = await getPage({
+          pagesDirectory:
+            __dirname + '/__fixtures__/custom-app-with-next-app-gip',
+          route: '/gip',
+          customApp: true,
+        });
+
+        const { container: actual } = render(actualPage);
+        const { container: expected } = render(
+          <CustomAppWithNextAppGIP
+            Component={CustomAppWithNextAppGIP_GIP}
+            pageProps={{
+              fromPage: true,
+            }}
+          />
+        );
+        expect(actual).toEqual(expected);
+      });
+    });
+  });
+
+  it('Loads custom app file with any extension defined in "pageExtensions" option', async () => {
     const actualPage = await getPage({
       pagesDirectory: __dirname + '/__fixtures__/special-extension',
       route: '/custom-app',
@@ -110,7 +153,7 @@ describe('Custom App component', () => {
   describe('route matching "_app" page', () => {
     it('returns undefined', async () => {
       const actualPage = await getPage({
-        pagesDirectory,
+        pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
         route: '/_app',
         customApp: true,
       });

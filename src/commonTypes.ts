@@ -4,6 +4,7 @@ import type {
   GetStaticPaths,
   NextPage,
 } from 'next';
+import { AppContext, AppInitialProps } from 'next/app';
 import type { NextRouter } from 'next/router';
 import type { createRequest, createResponse } from 'node-mocks-http';
 type Req = ReturnType<typeof createRequest>;
@@ -36,7 +37,9 @@ export type NextCustomAppFile = {
   default: React.FunctionComponent<{
     Component: NextPage;
     pageProps?: { [key: string]: any };
-  }>;
+  }> & {
+    getInitialProps: (appContext: AppContext) => Promise<AppInitialProps>;
+  };
 };
 
 export type PageParams = { [name: string]: string | string[] };

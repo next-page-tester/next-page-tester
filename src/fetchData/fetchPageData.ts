@@ -3,6 +3,7 @@ import type {
   GetServerSidePropsContext,
   GetStaticPropsContext,
 } from 'next';
+import type { AppInitialProps } from 'next/app';
 import {
   makeGetInitialPropsContext,
   makeGetServerSidePropsContext,
@@ -39,15 +40,18 @@ function ensureNoMultipleDataFetchingMethods({
 
 export default async function fetchPageData({
   pageObject,
+  appInitialProps,
   options,
 }: {
   pageObject: PageObject;
+  appInitialProps?: AppInitialProps;
   options: OptionsWithDefaults;
 }): Promise<PageData> {
   const { page, params } = pageObject;
   ensureNoMultipleDataFetchingMethods({ page });
 
-  if (page.default.getInitialProps) {
+  // getInitialProps is not called when custom App has the same method
+  if (page.default.getInitialProps && !appInitialProps) {
     const ctx: NextPageContext = makeGetInitialPropsContext({
       options,
       pageObject,
@@ -61,7 +65,16 @@ export default async function fetchPageData({
     const ctx: GetServerSidePropsContext<typeof params> = makeGetServerSidePropsContext(
       { options, pageObject }
     );
-    return await page.getServerSideProps(ctx);
+    const pageData = await page.getServerSideProps(ctx);
+    const { props: pageProps, ...restOfPageData } = pageData;
+    // App initial props gets merged with getServerSideProps props
+    return {
+      props: {
+        ...appInitialProps?.pageProps,
+        ...pageProps,
+      },
+      ...restOfPageData,
+    };
   }
 
   if (page.getStaticProps) {
@@ -71,6 +84,10 @@ export default async function fetchPageData({
     // @TODO introduce `getStaticPaths` logic
     // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
     return await page.getStaticProps(ctx);
+  }
+
+  if (appInitialProps) {
+    return { props: appInitialProps.pageProps };
   }
 
   return {};

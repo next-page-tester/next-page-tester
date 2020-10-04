@@ -11,7 +11,6 @@ export default function CustomApp({ Component, pageProps }) {
 }
 
 CustomApp.getInitialProps = async (appContext) => {
-  // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
   return { ...appProps };
 };
