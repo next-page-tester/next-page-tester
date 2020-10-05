@@ -12,8 +12,8 @@ import CustomAppWithNextAppGIP from './__fixtures__/custom-app-with-next-app-gip
 import CustomAppWithNextAppGIP_GIP from './__fixtures__/custom-app-with-next-app-gip/gip';
 
 import SpecialExtensionCustomApp from './__fixtures__/special-extension/_app.jsx';
-import SpecialExtensionPage from './__fixtures__/special-extension/custom-app';
-import MissingCustomAppPage from './__fixtures__/missing-custom-app/custom-app';
+import SpecialExtensionPage from './__fixtures__/special-extension/page';
+import MissingCustomAppPage from './__fixtures__/missing-custom-app/page';
 
 describe('Custom App component', () => {
   describe('with getInitialProps', () => {
@@ -129,7 +129,7 @@ describe('Custom App component', () => {
   it('Loads custom app file with any extension defined in "pageExtensions" option', async () => {
     const actualPage = await getPage({
       pagesDirectory: __dirname + '/__fixtures__/special-extension',
-      route: '/custom-app',
+      route: '/page',
       customApp: true,
     });
     const { container: actual } = render(actualPage);
@@ -142,7 +142,7 @@ describe('Custom App component', () => {
   it('Return page as usual if no custom app file is found', async () => {
     const actualPage = await getPage({
       pagesDirectory: __dirname + '/__fixtures__/missing-custom-app',
-      route: '/custom-app',
+      route: '/page',
       customApp: true,
     });
     const { container: actual } = render(actualPage);
