@@ -1,11 +1,7 @@
-import { sleep } from '../../../../utils';
+import { sleep, stringify } from '../../../../utils';
 
 export default function CustomAppWithGIP_GIP({ ctx, ...props }) {
-  return `/custom-app-with-gip/gip - props: ${JSON.stringify(
-    props,
-    null,
-    ' '
-  )}`;
+  return `/custom-app-with-gip/gip - props: ${stringify(props)}`;
 }
 
 CustomAppWithGIP_GIP.getInitialProps = async () => {

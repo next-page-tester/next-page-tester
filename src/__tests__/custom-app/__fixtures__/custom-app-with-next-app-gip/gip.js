@@ -1,11 +1,7 @@
-import { sleep } from '../../../../utils';
+import { sleep, stringify } from '../../../../utils';
 
 export default function CustomAppWithNextAppGIP_GIP(props) {
-  return `/custom-app-with-next-app-gip/gip - props: ${JSON.stringify(
-    props,
-    null,
-    ' '
-  )}`;
+  return `/custom-app-with-next-app-gip/gip - props: ${stringify(props)}`;
 }
 
 CustomAppWithNextAppGIP_GIP.getInitialProps = async () => {
