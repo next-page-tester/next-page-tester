@@ -38,6 +38,23 @@ function ensureNoMultipleDataFetchingMethods({
   }
 }
 
+/*
+ * fetchPageData behaves differently depending on whether custom /_app
+ * fetches data or not (appInitialProps)
+ *
+ * /_app HAS NOT fetched data:
+ * fetch page data using the first available method:
+ * - getInitialProps
+ * - getServerSideProps
+ * - getStaticProps
+ *
+ * /_app HAS fetched data:
+ * DO NOT call getInitialProps, if available
+ * If available, call getServerSideProps or getServerSideProps
+ * and merge returned object's prop property with appInitialProps.pageProps
+ *
+ * If no fetching methods available, return appInitialProps.pageProps as {props: appInitialProps.pageProp}
+ */
 export default async function fetchPageData({
   pageObject,
   appInitialProps,
