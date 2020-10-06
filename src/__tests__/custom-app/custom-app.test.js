@@ -6,6 +6,7 @@ import { getPage } from '../../index';
 import CustomAppWithGIP from './__fixtures__/custom-app-with-gip/_app';
 import CustomAppWithGIP_AppContextPage from './__fixtures__/custom-app-with-gip/app-context';
 import CustomAppWithGIP_SSRPage from './__fixtures__/custom-app-with-gip/ssr';
+import CustomAppWithGIP_SSGPage from './__fixtures__/custom-app-with-gip/ssg';
 import CustomAppWithGIP_GIPPage from './__fixtures__/custom-app-with-gip/gip';
 
 import CustomAppWithNextAppGIP from './__fixtures__/custom-app-with-next-app-gip/_app';
@@ -17,7 +18,7 @@ import MissingCustomAppPage from './__fixtures__/missing-custom-app/page';
 
 describe('Custom App component', () => {
   describe('with getInitialProps', () => {
-    it('gets called with expected appContext', async () => {
+    it('getInitialProps gets called with expected appContext', async () => {
       const actualPage = await getPage({
         pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
         route: '/app-context',
@@ -58,27 +59,51 @@ describe('Custom App component', () => {
       expect(actual).toEqual(expected);
     });
 
-    describe('Page with getServerSideProps', () => {
-      it('wraps page with _app and merges appInitialProps.pageProps with page props', async () => {
-        const actualPage = await getPage({
-          pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
-          route: '/ssr',
-          customApp: true,
-        });
-        const { container: actual } = render(actualPage);
-        const { container: expected } = render(
-          <CustomAppWithGIP
-            Component={CustomAppWithGIP_SSRPage}
-            pageProps={{
-              fromCustomApp: true,
-              propNameCollision: 'from-page',
-              fromPage: true,
-            }}
-          />
-        );
-        expect(actual).toEqual(expected);
+    it.each([
+      ['getServerSideProps', '/ssr', CustomAppWithGIP_SSRPage],
+      ['getStaticProps', '/ssg', CustomAppWithGIP_SSGPage],
+    ])('Page with %s', async (dataFetchingType, route, PageComponent) => {
+      const actualPage = await getPage({
+        pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
+        route,
+        customApp: true,
       });
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(
+        <CustomAppWithGIP
+          Component={PageComponent}
+          pageProps={{
+            fromCustomApp: true,
+            propNameCollision: 'from-page',
+            fromPage: true,
+          }}
+        />
+      );
+
+      expect(actual).toEqual(expected);
     });
+
+    // describe('Page with getServerSideProps', () => {
+    //   it('wraps page with _app and merges appInitialProps.pageProps with page props', async () => {
+    //     const actualPage = await getPage({
+    //       pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
+    //       route: '/ssr',
+    //       customApp: true,
+    //     });
+    //     const { container: actual } = render(actualPage);
+    //     const { container: expected } = render(
+    //       <CustomAppWithGIP
+    //         Component={CustomAppWithGIP_SSRPage}
+    //         pageProps={{
+    //           fromCustomApp: true,
+    //           propNameCollision: 'from-page',
+    //           fromPage: true,
+    //         }}
+    //       />
+    //     );
+    //     expect(actual).toEqual(expected);
+    //   });
+    // });
 
     describe('Page with getInitialProps', () => {
       it('getInitialProps does not get called', async () => {

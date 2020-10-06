@@ -38,6 +38,24 @@ function ensureNoMultipleDataFetchingMethods({
   }
 }
 
+function mergePageDataWithAppData({
+  pageData,
+  appInitialProps,
+}: {
+  pageData: { [key: string]: any };
+  appInitialProps?: AppInitialProps;
+}) {
+  const { props: pageProps, ...restOfPageData } = pageData;
+  //appInitialProps.pageProps gets merged with pageData.props
+  return {
+    props: {
+      ...appInitialProps?.pageProps,
+      ...pageProps,
+    },
+    ...restOfPageData,
+  };
+}
+
 /*
  * fetchPageData behaves differently depending on whether custom /_app
  * fetches data or not (appInitialProps)
@@ -83,15 +101,7 @@ export default async function fetchPageData({
       { options, pageObject }
     );
     const pageData = await page.getServerSideProps(ctx);
-    const { props: pageProps, ...restOfPageData } = pageData;
-    // App initial props gets merged with getServerSideProps props
-    return {
-      props: {
-        ...appInitialProps?.pageProps,
-        ...pageProps,
-      },
-      ...restOfPageData,
-    };
+    return mergePageDataWithAppData({ pageData, appInitialProps });
   }
 
   if (page.getStaticProps) {
@@ -100,7 +110,8 @@ export default async function fetchPageData({
     });
     // @TODO introduce `getStaticPaths` logic
     // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
-    return await page.getStaticProps(ctx);
+    const pageData = await page.getStaticProps(ctx);
+    return mergePageDataWithAppData({ pageData, appInitialProps });
   }
 
   if (appInitialProps) {
