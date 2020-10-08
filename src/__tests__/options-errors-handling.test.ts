@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import { getPage } from '../index';
 const pagesDirectory = __dirname + '/__fixtures__/pages';
 

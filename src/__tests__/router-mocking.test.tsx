@@ -40,6 +40,7 @@ describe('Router mocking', () => {
       const actualPage = await getPage({
         pagesDirectory,
         route: '/with-router/99',
+        // @ts-ignore
         router: (router) => routerMock,
       });
       const { container: actual } = render(actualPage);
