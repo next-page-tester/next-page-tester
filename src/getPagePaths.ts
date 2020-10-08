@@ -1,26 +1,18 @@
-import path from 'path';
-import readdir from 'recursive-readdir';
+import fastGlob from 'fast-glob';
+import type { OptionsWithDefaults } from './commonTypes';
 
 // Returns available page paths without file extension
 async function getPagePaths({
-  pagesDirectory,
+  options: { pagesDirectory, pageExtensions },
 }: {
-  pagesDirectory: string;
+  options: OptionsWithDefaults;
 }): Promise<string[]> {
-  let files = [];
-  try {
-    files = await readdir(pagesDirectory);
-  } catch (err) {
-    throw new Error(`[next page tester] ${err}`);
-  }
-
-  const pagesDirectoryAbs = path.resolve(pagesDirectory);
-  // @TODO Make allowed extensions configurable
-  const extensionsRegex = /\.(?:mdx|jsx|js|ts|tsx)$/;
+  const files = await fastGlob([pagesDirectory + '/**/*']);
+  const extensionsRegex = new RegExp(`\.(${pageExtensions.join('|')})$`);
   return (
     files
       // Make page paths relative
-      .map((filePath) => filePath.replace(pagesDirectoryAbs, ''))
+      .map((filePath) => filePath.replace(pagesDirectory, ''))
       // Filter out files with non-allowed extensions
       .filter((filePath) => filePath.match(extensionsRegex))
       // Strip file extensions

@@ -1,9 +1,9 @@
-import { existsSync } from 'fs';
 import React, { ReactNode } from 'react';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import type { NextRouter } from 'next/router';
 import makeRouterObject from './makeRouterObject';
-import type { Options, PageObject, PageData } from './commonTypes';
+import getCustomAppFile from './getCustomAppFile';
+import type { OptionsWithDefaults, PageObject, PageData } from './commonTypes';
 
 // https://github.com/vercel/next.js/issues/7479#issuecomment-659859682
 function makeDefaultRouterMock(props?: Partial<NextRouter>): NextRouter {
@@ -30,32 +30,31 @@ function makeDefaultRouterMock(props?: Partial<NextRouter>): NextRouter {
   return { ...routerMock, ...props };
 }
 
-export default function preparePage({
-  pagesDirectory,
-  pageData,
+export default async function preparePage({
   pageObject,
-  routerMocker,
-  customApp,
+  pageData,
+  options,
 }: {
-  pagesDirectory: string;
-  pageData: PageData;
   pageObject: PageObject;
-  routerMocker: Exclude<Options['router'], undefined>;
-  customApp: boolean;
-}): ReactNode {
-  // Render page element
+  pageData: PageData;
+  options: OptionsWithDefaults;
+}): Promise<ReactNode> {
   const { page } = pageObject;
-  const props = pageData?.props;
+  const { props } = pageData;
+  const { router: routerMocker, customApp } = options;
+
+  // Render page element
   let pageElement = React.createElement(page.default, props);
 
   // Optionally wrap with custom App
-  const customAppPath = pagesDirectory + '/_app.js';
-  if (customApp && existsSync(customAppPath)) {
-    const customAppComponent = require(customAppPath).default;
-    pageElement = React.createElement(customAppComponent, {
-      Component: page.default,
-      pageProps: props,
-    });
+  if (customApp) {
+    const customAppFile = await getCustomAppFile({ options });
+    if (customAppFile) {
+      pageElement = React.createElement(customAppFile.default, {
+        Component: page.default,
+        pageProps: props,
+      });
+    }
   }
 
   // Wrap with RouterContext provider

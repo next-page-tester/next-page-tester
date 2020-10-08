@@ -1,7 +1,8 @@
 import path from 'path';
-import { NextPageFile } from './commonTypes';
+import fastGlob from 'fast-glob';
+import { NextPageFile, OptionsWithDefaults } from './commonTypes';
 
-function loadPage({
+export function loadPage({
   pagesDirectory,
   pagePath,
 }: {
@@ -12,4 +13,19 @@ function loadPage({
   return require(path.resolve(pagesDirectory, pagePath.substring(1)));
 }
 
-export default loadPage;
+export async function loadPageWithUnknownExtension<FileType>({
+  pagePath,
+  options: { pagesDirectory, pageExtensions },
+}: {
+  pagePath: string;
+  options: OptionsWithDefaults;
+}): Promise<FileType | undefined> {
+  const pageExtensionGlobPattern = `.{${pageExtensions.join(',')}}`;
+  const files = await fastGlob([
+    pagesDirectory + pagePath + pageExtensionGlobPattern,
+  ]);
+  if (!files.length) {
+    return;
+  }
+  return require(files[0]);
+}

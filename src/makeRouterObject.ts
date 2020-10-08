@@ -12,5 +12,6 @@ export default function makeRouterObject({
     pathname: removeFileExtension({ path: pagePath }), // Page component path without extension
     query: { ...params, ...query }, // Route params + parsed querystring
     route: removeFileExtension({ path: pagePath }), // Page component path without extension
+    basePath: '',
   };
 }

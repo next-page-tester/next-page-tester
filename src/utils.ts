@@ -13,12 +13,16 @@ export function parseQueryString({ queryString }: { queryString: string }) {
   return querystring.parse(qs);
 }
 
+export function removeFileExtension({ path }: { path: string }) {
+  return path.replace(/\.[^/.]+$/, '');
+}
+
 export function sleep(ms: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
 }
 
-export function removeFileExtension({ path }: { path: string }) {
-  return path.replace(/\.[^/.]+$/, '');
+export function stringify(entity: any): string {
+  return JSON.stringify(entity, null, ' ');
 }
