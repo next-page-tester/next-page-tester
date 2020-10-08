@@ -33,11 +33,11 @@ The testing approach suggested here consists of manually mocking external API's 
 
 Next page tester will take care of:
 
-- **resolving** provided **routes** into the matching page component
+- **resolving** provided **routes** into matching page component
 - calling **Next.js data fetching methods** (`getServerSideProps`, `getInitialProps` or `getStaticProps`) if the case
 - set up a **mocked `next/router` provider** initialized with the expected values (to test `useRouter` and `withRouter`)
 - wrapping page with custom `_app` component
-- **instantiating** page component with the **expected page props**
+- **instantiating** page component with **expected page props**
 
 ## Options
 
