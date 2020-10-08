@@ -9,7 +9,7 @@
 
 ### New Features
 
-- Support custom files' extensions via `pageExtensions` option
+- Support custom file extensions via `pageExtensions` option
 - Migrate tests to TS
 
 ## 0.3.0
