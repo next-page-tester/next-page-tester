@@ -5,10 +5,12 @@
 ### Breaking Changes
 
 - Support custom App's data fetching with `getInitialProps`
+- Throw error when no matching page is found
 
 ### New Features
 
 - Support custom files' extensions via `pageExtensions` option
+- Migrate tests to TS
 
 ## 0.3.0
 
