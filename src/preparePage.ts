@@ -38,7 +38,7 @@ export default async function preparePage({
   pageObject: PageObject;
   pageData: PageData;
   options: OptionsWithDefaults;
-}): Promise<ReactNode> {
+}) {
   const { page } = pageObject;
   const { props } = pageData;
   const { router: routerMocker, customApp } = options;

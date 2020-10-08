@@ -79,12 +79,13 @@ describe('Dynamic routes', () => {
       expect(actual).toEqual(expected);
     });
 
-    it("doesn't match when no optional params are provided", async () => {
-      const actualPage = await getPage({
-        pagesDirectory,
-        route: '/catch-all/5',
-      });
-      expect(actualPage).toBe(undefined);
+    it('throws "page not found" error when no optional params are provided', async () => {
+      await expect(
+        getPage({
+          pagesDirectory,
+          route: '/catch-all/5',
+        })
+      ).rejects.toThrow('[next page tester]');
     });
   });
 

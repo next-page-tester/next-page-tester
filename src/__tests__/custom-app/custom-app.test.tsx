@@ -12,7 +12,7 @@ import CustomAppWithGIP_GIPPage from './__fixtures__/custom-app-with-gip/gip';
 import CustomAppWithNextAppGIP from './__fixtures__/custom-app-with-next-app-gip/_app';
 import CustomAppWithNextAppGIP_GIP from './__fixtures__/custom-app-with-next-app-gip/gip';
 
-import SpecialExtensionCustomApp from './__fixtures__/special-extension/_app.jsx';
+import SpecialExtensionCustomApp from './__fixtures__/special-extension/_app';
 import SpecialExtensionPage from './__fixtures__/special-extension/page';
 import MissingCustomAppPage from './__fixtures__/missing-custom-app/page';
 
@@ -82,28 +82,6 @@ describe('Custom App component', () => {
 
       expect(actual).toEqual(expected);
     });
-
-    // describe('Page with getServerSideProps', () => {
-    //   it('wraps page with _app and merges appInitialProps.pageProps with page props', async () => {
-    //     const actualPage = await getPage({
-    //       pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
-    //       route: '/ssr',
-    //       customApp: true,
-    //     });
-    //     const { container: actual } = render(actualPage);
-    //     const { container: expected } = render(
-    //       <CustomAppWithGIP
-    //         Component={CustomAppWithGIP_SSRPage}
-    //         pageProps={{
-    //           fromCustomApp: true,
-    //           propNameCollision: 'from-page',
-    //           fromPage: true,
-    //         }}
-    //       />
-    //     );
-    //     expect(actual).toEqual(expected);
-    //   });
-    // });
 
     describe('Page with getInitialProps', () => {
       it('getInitialProps does not get called', async () => {
@@ -176,13 +154,14 @@ describe('Custom App component', () => {
   });
 
   describe('route matching "_app" page', () => {
-    it('returns undefined', async () => {
-      const actualPage = await getPage({
-        pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
-        route: '/_app',
-        customApp: true,
-      });
-      expect(actualPage).toBe(undefined);
+    it('throws "page not found" error', async () => {
+      await expect(
+        getPage({
+          pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
+          route: '/_app',
+          customApp: true,
+        })
+      ).rejects.toThrow('[next page tester]');
     });
   });
 });

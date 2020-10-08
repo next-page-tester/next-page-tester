@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { getPage } from '../index';
 import IndexPage from './__fixtures__/pages/index';
-import TypescriptPage from './__fixtures__/pages/typescript.ts';
+import TypescriptPage from './__fixtures__/pages/typescript';
 import BlogIndexPage from './__fixtures__/pages/blog/index';
 const pagesDirectory = __dirname + '/__fixtures__/pages';
 
@@ -18,31 +18,34 @@ describe('Static routes', () => {
   });
 
   describe('route not matching any page', () => {
-    it('returns undefined', async () => {
-      const actualPage = await getPage({
-        pagesDirectory,
-        route: '/blog/5/doesntexists',
-      });
-      expect(actualPage).toBe(undefined);
+    it('throws "page not found" error', async () => {
+      await expect(
+        getPage({
+          pagesDirectory,
+          route: '/blog/5/doesntexists',
+        })
+      ).rejects.toThrow('[next page tester]');
     });
   });
 
   describe('route with trailing slash', () => {
-    it('returns undefined', async () => {
-      const actualPage = await getPage({ pagesDirectory, route: '/blog/5/' });
-      expect(actualPage).toBe(undefined);
+    it('throws "page not found" error', async () => {
+      await expect(
+        getPage({ pagesDirectory, route: '/blog/5/' })
+      ).rejects.toThrow('[next page tester]');
     });
   });
 
   describe('route === "_document"', () => {
-    it('returns undefined', async () => {
-      const actualPage = await getPage({ pagesDirectory, route: '/_document' });
-      expect(actualPage).toBe(undefined);
+    it('throws "page not found" error', async () => {
+      await expect(
+        getPage({ pagesDirectory, route: '/_document' })
+      ).rejects.toThrow('[next page tester]');
     });
   });
 
-  describe('route matching page with .ts extension', () => {
-    it('returns undefined', async () => {
+  describe('route matching page with valid non ".js" extension', () => {
+    it('renders page', async () => {
       const actualPage = await getPage({
         pagesDirectory,
         route: '/typescript',
@@ -54,12 +57,13 @@ describe('Static routes', () => {
   });
 
   describe('route matching page file with invalid extension', () => {
-    it('returns undefined', async () => {
-      const actualPage = await getPage({
-        pagesDirectory,
-        route: '/invalid-extension',
-      });
-      expect(actualPage).toBe(undefined);
+    it('throws "page not found" error', async () => {
+      await expect(
+        getPage({
+          pagesDirectory,
+          route: '/invalid-extension',
+        })
+      ).rejects.toThrow('[next page tester]');
     });
   });
 
@@ -73,12 +77,13 @@ describe('Static routes', () => {
   });
 
   describe('route matching /api pages', () => {
-    it('returns undefined', async () => {
-      const actualPage = await getPage({
-        pagesDirectory,
-        route: '/api',
-      });
-      expect(actualPage).toBe(undefined);
+    it('throws "page not found" error', async () => {
+      await expect(
+        getPage({
+          pagesDirectory,
+          route: '/api',
+        })
+      ).rejects.toThrow('[next page tester]');
     });
   });
 });

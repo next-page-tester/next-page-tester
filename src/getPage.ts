@@ -3,8 +3,8 @@ import getPageObject from './getPageObject';
 import getCustomAppFile from './getCustomAppFile';
 import { fetchAppData, fetchPageData } from './fetchData';
 import preparePage from './preparePage';
-import type { ReactNode } from 'react';
 import { Options, OptionsWithDefaults } from './commonTypes';
+import type React from 'react';
 
 function validateOptions({ pagesDirectory, route }: OptionsWithDefaults) {
   if (!route.startsWith('/')) {
@@ -26,7 +26,7 @@ export default async function getPage({
   router = (router) => router,
   customApp = false,
   pageExtensions = ['mdx', 'jsx', 'js', 'ts', 'tsx'],
-}: Options): Promise<ReactNode | undefined> {
+}: Options): Promise<React.ReactElement> {
   const options: OptionsWithDefaults = {
     pagesDirectory,
     route,
@@ -39,8 +39,10 @@ export default async function getPage({
   validateOptions(options);
 
   const pageObject = await getPageObject({ options });
-  if (!pageObject) {
-    return undefined;
+  if (pageObject === undefined) {
+    throw new Error(
+      '[next page tester] no matching page found for given route'
+    );
   }
 
   const customAppFile = customApp
@@ -56,6 +58,7 @@ export default async function getPage({
     options,
     appInitialProps,
   });
+
   const pageElement = await preparePage({
     pageObject,
     pageData,
