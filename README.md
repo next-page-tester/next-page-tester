@@ -37,7 +37,7 @@ Next page tester will take care of:
 - calling **Next.js data fetching methods** (`getServerSideProps`, `getInitialProps` or `getStaticProps`) if the case
 - set up a **mocked `next/router` provider** initialized with the expected values (to test `useRouter` and `withRouter`)
 - wrapping page with custom `_app` component
-- **instantiating** page component with the **expected props**
+- **instantiating** page component with the **expected page props**
 
 ## Options
 
@@ -62,7 +62,6 @@ It might be necessary to install `@types/react-dom` and `@types/webpack` when us
 ## Todo's
 
 - Make available dynamic api routes under `/pages/api`
-- Add support for custom App's `getInitialProps`
 - Consider adding custom Document
 - Consider adding a `getPage` factory
 - Consider reusing Next.js code parts (not only types)

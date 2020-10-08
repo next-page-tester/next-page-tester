@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0
+
+### Breaking Changes
+
+- Support custom App's data fetching with `getInitialProps`
+
+### New Features
+
+- Support custom files' extensions via `pageExtensions` option
+
 ## 0.3.0
 
 ### Breaking Changes
