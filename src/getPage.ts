@@ -32,7 +32,7 @@ export default async function getPage({
   req = (req) => req,
   res = (res) => res,
   router = (router) => router,
-  customApp = false,
+  useCustomApp = false,
 }: Options): Promise<React.ReactElement> {
   const optionsWithDefaults: OptionsWithDefaults = {
     route,
@@ -40,7 +40,7 @@ export default async function getPage({
     req,
     res,
     router,
-    customApp,
+    useCustomApp,
   };
   validateOptions(optionsWithDefaults);
 
@@ -59,7 +59,7 @@ export default async function getPage({
     );
   }
 
-  const customAppFile = customApp
+  const customAppFile = useCustomApp
     ? await getCustomAppFile({ options })
     : undefined;
 

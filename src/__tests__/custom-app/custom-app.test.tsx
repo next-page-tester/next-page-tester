@@ -22,7 +22,7 @@ describe('Custom App component', () => {
       const actualPage = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route: '/app-context',
-        customApp: true,
+        useCustomApp: true,
       });
       const { container: actual } = render(actualPage);
       const expectedAppContext = {
@@ -66,7 +66,7 @@ describe('Custom App component', () => {
       const actualPage = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route,
-        customApp: true,
+        useCustomApp: true,
       });
       const { container: actual } = render(actualPage);
       const { container: expected } = render(
@@ -88,7 +88,7 @@ describe('Custom App component', () => {
         const actualPage = await getPage({
           nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
           route: '/gip',
-          customApp: true,
+          useCustomApp: true,
         });
         const { container: actual } = render(actualPage);
         const { container: expected } = render(
@@ -111,7 +111,7 @@ describe('Custom App component', () => {
         const actualPage = await getPage({
           nextRoot: __dirname + '/__fixtures__/custom-app-with-next-app-gip',
           route: '/gip',
-          customApp: true,
+          useCustomApp: true,
         });
 
         const { container: actual } = render(actualPage);
@@ -132,7 +132,7 @@ describe('Custom App component', () => {
     const actualPage = await getPage({
       nextRoot: __dirname + '/__fixtures__/special-extension',
       route: '/page',
-      customApp: true,
+      useCustomApp: true,
     });
     const { container: actual } = render(actualPage);
     const { container: expected } = render(
@@ -145,7 +145,7 @@ describe('Custom App component', () => {
     const actualPage = await getPage({
       nextRoot: __dirname + '/__fixtures__/missing-custom-app',
       route: '/page',
-      customApp: true,
+      useCustomApp: true,
     });
     const { container: actual } = render(actualPage);
     const { container: expected } = render(<MissingCustomAppPage />);
@@ -158,7 +158,7 @@ describe('Custom App component', () => {
         getPage({
           nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
           route: '/_app',
-          customApp: true,
+          useCustomApp: true,
         })
       ).rejects.toThrow('[next page tester]');
     });
