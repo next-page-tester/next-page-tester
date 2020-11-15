@@ -3,40 +3,49 @@ import getPageObject from './getPageObject';
 import getCustomAppFile from './getCustomAppFile';
 import { fetchAppData, fetchPageData } from './fetchData';
 import preparePage from './preparePage';
-import { Options, OptionsWithDefaults } from './commonTypes';
-import type React from 'react';
+import { defaultNextRoot, findPagesDirectory } from './utils';
+import type {
+  Options,
+  OptionsWithDefaults,
+  ExtendedOptions,
+} from './commonTypes';
 
-function validateOptions({ pagesDirectory, route }: OptionsWithDefaults) {
+function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
   if (!route.startsWith('/')) {
     throw new Error('[next page tester] "route" option should start with "/"');
   }
 
-  if (!existsSync(pagesDirectory)) {
+  if (!existsSync(nextRoot)) {
     throw new Error(
-      '[next page tester] "pagesDirectory" options points to a non-existing folder'
+      '[next page tester] cannot find "nextRoot" directory under: ${nextRoot}'
     );
   }
 }
 
 export default async function getPage({
-  pagesDirectory,
   route,
+  nextRoot = defaultNextRoot,
   req = (req) => req,
   res = (res) => res,
   router = (router) => router,
   customApp = false,
   pageExtensions = ['mdx', 'jsx', 'js', 'ts', 'tsx'],
 }: Options): Promise<React.ReactElement> {
-  const options: OptionsWithDefaults = {
-    pagesDirectory,
+  const optionsWithDefaults: OptionsWithDefaults = {
     route,
+    nextRoot,
     req,
     res,
     router,
     customApp,
     pageExtensions,
   };
-  validateOptions(options);
+  validateOptions(optionsWithDefaults);
+
+  const options: ExtendedOptions = {
+    ...optionsWithDefaults,
+    pagesDirectory: findPagesDirectory({ nextRoot }),
+  };
 
   const pageObject = await getPageObject({ options });
   if (pageObject === undefined) {

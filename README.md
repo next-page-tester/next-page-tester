@@ -16,7 +16,6 @@ describe('Blog page', () => {
   it('renders blog page', async () => {
     const Page = await getPage({
       route: '/blog/1',
-      pagesDirectory: process.cwd() + '/src/pages',
     });
 
     render(Page);
@@ -41,15 +40,15 @@ Next page tester will take care of:
 
 ## Options
 
-| Property           | Description                                                                      | type               | Default                             |
-| ------------------ | -------------------------------------------------------------------------------- | ------------------ | ----------------------------------- |
-| **route**          | Next route (must start with `/`)                                                 | -                  | -                                   |
-| **pagesDirectory** | Absolute path to Next's `/pages` folder                                          | -                  | -                                   |
-| **req**            | Access default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -                                   |
-| **res**            | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -                                   |
-| **router**         | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -                                   |
-| **customApp**      | Use [custom App component][next-docs-custom-app]                                 | `boolean`          | `false`                             |
-| **pageExtensions** | [Custom Page Extensions][next-docs-custom-page-extensions]                       | `string[]`         | `['mdx', 'jsx', 'js', 'ts', 'tsx']` |
+| Property              | Description                                                                      | type               | Default                             |
+| --------------------- | -------------------------------------------------------------------------------- | ------------------ | ----------------------------------- |
+| **route** (mandatory) | Next route (must start with `/`)                                                 | `string`           | -                                   |
+| **req**               | Access default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -                                   |
+| **res**               | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -                                   |
+| **router**            | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -                                   |
+| **customApp**         | Use [custom App component][next-docs-custom-app]                                 | `boolean`          | `false`                             |
+| **nextRoot**          | Absolute path to Next's root folder                                              | `string`           | _auto detected_                     |
+| **pageExtensions**    | [Custom Page Extensions][next-docs-custom-page-extensions]                       | `string[]`         | `['mdx', 'jsx', 'js', 'ts', 'tsx']` |
 
 ## Notes
 
@@ -61,9 +60,7 @@ It might be necessary to install `@types/react-dom` and `@types/webpack` when us
 
 ## Todo's
 
-- Make available dynamic api routes under `/pages/api`
-- Consider adding custom Document
-- Consider adding a `getPage` factory
+- Consider adding custom Document support
 - Consider reusing Next.js code parts (not only types)
 - Consider loading `pageExtensions` option from `next.config.js`
 

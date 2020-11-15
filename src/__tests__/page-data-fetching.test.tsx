@@ -6,13 +6,13 @@ import { getPage } from '../index';
 import SSRPage from './__fixtures__/pages/ssr/[id]';
 import SSGPage from './__fixtures__/pages/ssg/[id]';
 import GIPPage from './__fixtures__/pages/gip/[id]';
-const pagesDirectory = __dirname + '/__fixtures__/pages';
+const nextRoot = __dirname + '/__fixtures__';
 
 describe('Data fetching', () => {
   describe('page with getInitialProps', () => {
     it('feeds page component with returned props', async () => {
       const actualPage = await getPage({
-        pagesDirectory,
+        nextRoot,
         route: '/gip/5?foo=bar',
       });
 
@@ -42,7 +42,7 @@ describe('Data fetching', () => {
   describe('page with getServerSideProps', () => {
     it('feeds page component with returned props', async () => {
       const actualPage = await getPage({
-        pagesDirectory,
+        nextRoot,
         route: '/ssr/5?foo=bar',
       });
 
@@ -68,7 +68,7 @@ describe('Data fetching', () => {
   describe('page with getStaticProps', () => {
     it('feeds page component with returned props', async () => {
       const actualPage = await getPage({
-        pagesDirectory,
+        nextRoot,
         route: '/ssg/5?foo=bar',
       });
       const { container: actual } = render(actualPage);
@@ -87,7 +87,7 @@ describe('Data fetching', () => {
     it('throws error', async () => {
       await expect(
         getPage({
-          pagesDirectory,
+          nextRoot,
           route: '/multiple-data-fetching',
         })
       ).rejects.toThrow('[next page tester]');
