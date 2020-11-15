@@ -3,7 +3,7 @@ import React from 'react';
 export default function CustomApp({ Component, pageProps }) {
   return (
     <>
-      '_app'
+      _app
       <Component {...pageProps} />;
     </>
   );

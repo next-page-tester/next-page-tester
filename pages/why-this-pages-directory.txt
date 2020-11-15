@@ -1,0 +1,4 @@
+This pages folder is here
+to support Next.js testing scenarios
+which couldn't be reproduced
+from within `__tests__` folder

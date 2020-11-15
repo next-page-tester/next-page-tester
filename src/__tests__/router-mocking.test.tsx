@@ -3,13 +3,13 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { getPage } from '../index';
 import WithRouter from './__fixtures__/pages/with-router/[id]';
-const pagesDirectory = __dirname + '/__fixtures__/pages';
+const nextRoot = __dirname + '/__fixtures__';
 
 describe('Router mocking', () => {
   describe('page using "useRouter"', () => {
     it('receives expected router object', async () => {
       const actualPage = await getPage({
-        pagesDirectory,
+        nextRoot,
         route: '/with-router/99?foo=bar#moo',
       });
 
@@ -38,7 +38,7 @@ describe('Router mocking', () => {
         route: 'mocked',
       };
       const actualPage = await getPage({
-        pagesDirectory,
+        nextRoot,
         route: '/with-router/99',
         // @ts-ignore
         router: (router) => routerMock,

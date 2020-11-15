@@ -3,24 +3,24 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import httpMocks from 'node-mocks-http';
 import { getPage } from '../../index';
-import CustomAppWithGIP from './__fixtures__/custom-app-with-gip/_app';
-import CustomAppWithGIP_AppContextPage from './__fixtures__/custom-app-with-gip/app-context';
-import CustomAppWithGIP_SSRPage from './__fixtures__/custom-app-with-gip/ssr';
-import CustomAppWithGIP_SSGPage from './__fixtures__/custom-app-with-gip/ssg';
-import CustomAppWithGIP_GIPPage from './__fixtures__/custom-app-with-gip/gip';
+import CustomAppWithGIP from './__fixtures__/custom-app-with-gip/pages/_app';
+import CustomAppWithGIP_AppContextPage from './__fixtures__/custom-app-with-gip/pages/app-context';
+import CustomAppWithGIP_SSRPage from './__fixtures__/custom-app-with-gip/pages/ssr';
+import CustomAppWithGIP_SSGPage from './__fixtures__/custom-app-with-gip/pages/ssg';
+import CustomAppWithGIP_GIPPage from './__fixtures__/custom-app-with-gip/pages/gip';
 
-import CustomAppWithNextAppGIP from './__fixtures__/custom-app-with-next-app-gip/_app';
-import CustomAppWithNextAppGIP_GIP from './__fixtures__/custom-app-with-next-app-gip/gip';
+import CustomAppWithNextAppGIP from './__fixtures__/custom-app-with-next-app-gip/pages/_app';
+import CustomAppWithNextAppGIP_GIP from './__fixtures__/custom-app-with-next-app-gip/pages/gip';
 
-import SpecialExtensionCustomApp from './__fixtures__/special-extension/_app';
-import SpecialExtensionPage from './__fixtures__/special-extension/page';
-import MissingCustomAppPage from './__fixtures__/missing-custom-app/page';
+import SpecialExtensionCustomApp from './__fixtures__/special-extension/pages/_app';
+import SpecialExtensionPage from './__fixtures__/special-extension/pages/page';
+import MissingCustomAppPage from './__fixtures__/missing-custom-app/pages/page';
 
 describe('Custom App component', () => {
   describe('with getInitialProps', () => {
     it('getInitialProps gets called with expected appContext', async () => {
       const actualPage = await getPage({
-        pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
+        nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route: '/app-context',
         customApp: true,
       });
@@ -64,7 +64,7 @@ describe('Custom App component', () => {
       ['getStaticProps', '/ssg', CustomAppWithGIP_SSGPage],
     ])('Page with %s', async (dataFetchingType, route, PageComponent) => {
       const actualPage = await getPage({
-        pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
+        nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route,
         customApp: true,
       });
@@ -86,7 +86,7 @@ describe('Custom App component', () => {
     describe('Page with getInitialProps', () => {
       it('getInitialProps does not get called', async () => {
         const actualPage = await getPage({
-          pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
+          nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
           route: '/gip',
           customApp: true,
         });
@@ -109,8 +109,7 @@ describe('Custom App component', () => {
     describe('Page with getInitialProps', () => {
       it("App.getInitialProps is able to call page's getInitialProps", async () => {
         const actualPage = await getPage({
-          pagesDirectory:
-            __dirname + '/__fixtures__/custom-app-with-next-app-gip',
+          nextRoot: __dirname + '/__fixtures__/custom-app-with-next-app-gip',
           route: '/gip',
           customApp: true,
         });
@@ -131,7 +130,7 @@ describe('Custom App component', () => {
 
   it('Loads custom app file with any extension defined in "pageExtensions" option', async () => {
     const actualPage = await getPage({
-      pagesDirectory: __dirname + '/__fixtures__/special-extension',
+      nextRoot: __dirname + '/__fixtures__/special-extension',
       route: '/page',
       customApp: true,
     });
@@ -144,7 +143,7 @@ describe('Custom App component', () => {
 
   it('Return page as usual if no custom app file is found', async () => {
     const actualPage = await getPage({
-      pagesDirectory: __dirname + '/__fixtures__/missing-custom-app',
+      nextRoot: __dirname + '/__fixtures__/missing-custom-app',
       route: '/page',
       customApp: true,
     });
@@ -157,7 +156,7 @@ describe('Custom App component', () => {
     it('throws "page not found" error', async () => {
       await expect(
         getPage({
-          pagesDirectory: __dirname + '/__fixtures__/custom-app-with-gip',
+          nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
           route: '/_app',
           customApp: true,
         })

@@ -6,13 +6,13 @@ import BlogPage from './__fixtures__/pages/blog/[id]';
 import BlogPage99 from './__fixtures__/pages/blog/99';
 import CatchAllPage from './__fixtures__/pages/catch-all/[id]/[...slug]';
 import OptionalCatchAllPage from './__fixtures__/pages/optional-catch-all/[id]/[[...slug]]';
-const pagesDirectory = __dirname + '/__fixtures__/pages';
+const nextRoot = __dirname + '/__fixtures__';
 
 describe('Dynamic routes', () => {
   describe('Basic dynamic routes', () => {
     it('gets expected page object', async () => {
       const actualPage = await getPage({
-        pagesDirectory,
+        nextRoot,
         route: '/blog/5',
       });
       const { container: actual } = render(actualPage);
@@ -30,7 +30,7 @@ describe('Dynamic routes', () => {
 
     it('gets expected page object with params and querystring', async () => {
       const actualPage = await getPage({
-        pagesDirectory,
+        nextRoot,
         route: '/blog/5?foo=bar',
       });
       const { container: actual } = render(actualPage);
@@ -49,7 +49,7 @@ describe('Dynamic routes', () => {
 
     it('predefined routes take precedence over dynamic', async () => {
       const actualPage = await getPage({
-        pagesDirectory,
+        nextRoot,
         route: '/blog/99',
       });
       const { container: actual } = render(actualPage);
@@ -61,7 +61,7 @@ describe('Dynamic routes', () => {
   describe('Catch all routes', () => {
     it('gets expected page object with params and querystring', async () => {
       const actualPage = await getPage({
-        pagesDirectory,
+        nextRoot,
         route: '/catch-all/5/foo/bar/moo?foo=bar',
       });
       const { container: actual } = render(actualPage);
@@ -82,7 +82,7 @@ describe('Dynamic routes', () => {
     it('throws "page not found" error when no optional params are provided', async () => {
       await expect(
         getPage({
-          pagesDirectory,
+          nextRoot,
           route: '/catch-all/5',
         })
       ).rejects.toThrow('[next page tester]');
@@ -93,7 +93,7 @@ describe('Dynamic routes', () => {
     describe('Optional catch all routes', () => {
       it('gets expected page object with params and querystring', async () => {
         const actualPage = await getPage({
-          pagesDirectory,
+          nextRoot,
           route: '/optional-catch-all/5/foo/bar/moo?foo=bar',
         });
         const { container: actual } = render(actualPage);
@@ -113,7 +113,7 @@ describe('Dynamic routes', () => {
 
       it('matches when no optional params are provided', async () => {
         const actualPage = await getPage({
-          pagesDirectory,
+          nextRoot,
           route: '/optional-catch-all/5',
         });
         const { container: actual } = render(actualPage);

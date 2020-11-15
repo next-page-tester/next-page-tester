@@ -60,7 +60,9 @@
   },
   "dependencies": {
     "@types/express": "^4.17.8",
+    "@types/find-root": "^1.1.2",
     "fast-glob": "^3.2.4",
+    "find-root": "^1.1.0",
     "node-mocks-http": "^1.9.0"
   },
   "peerDependencies": {
@@ -69,6 +71,9 @@
   },
   "jest": {
     "preset": "ts-jest/presets/js-with-ts",
+    "testMatch": [
+      "**/?(*.)+(test).[jt]s?(x)"
+    ],
     "testPathIgnorePatterns": [
       "__fixtures__"
     ],

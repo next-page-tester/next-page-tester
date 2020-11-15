@@ -1,5 +1,5 @@
 import React from 'react';
-import { sleep, stringify } from '../../../../utils';
+import { sleep, stringify } from '../../../../../utils';
 
 export default function CustomAppWithGIP_GIP({ ctx, ...props }) {
   return <>`/custom-app-with-gip/gip - props: ${stringify(props)}`</>;

@@ -12,7 +12,7 @@ type Res = ReturnType<typeof createResponse>;
 
 export type Options = {
   route: string;
-  pagesDirectory: string;
+  nextRoot?: string;
   req?: (req: Req) => Req;
   res?: (res: Res) => Res;
   router?: (router: NextRouter) => NextRouter;
@@ -21,6 +21,11 @@ export type Options = {
 };
 
 export type OptionsWithDefaults = Required<Options>;
+
+// Options object is extended with some extra derived props
+export type ExtendedOptions = OptionsWithDefaults & {
+  pagesDirectory: string;
+};
 
 export type NextPageFile = {
   [name: string]: any;

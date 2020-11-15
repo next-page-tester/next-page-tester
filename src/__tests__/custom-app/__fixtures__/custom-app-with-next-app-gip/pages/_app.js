@@ -5,7 +5,7 @@ import App from 'next/app';
 export default function CustomApp({ Component, pageProps }) {
   return (
     <>
-      '_app'
+      _app
       <Component {...pageProps} />;
     </>
   );
