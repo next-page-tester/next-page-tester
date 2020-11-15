@@ -10,7 +10,7 @@
 ### New Features
 
 - Auto detect pages directory
-- Auto detect pageExtensions option
+- Auto detect `pageExtensions` option
 - Add `nextRoot` option
 
 ## 0.4.0
