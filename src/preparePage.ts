@@ -41,13 +41,13 @@ export default async function preparePage({
 }) {
   const { page } = pageObject;
   const { props } = pageData;
-  const { router: routerMocker, customApp } = options;
+  const { router: routerMocker, useCustomApp } = options;
 
   // Render page element
   let pageElement = React.createElement(page.default, props);
 
   // Optionally wrap with custom App
-  if (customApp) {
+  if (useCustomApp) {
     const customAppFile = await getCustomAppFile({ options });
     if (customAppFile) {
       pageElement = React.createElement(customAppFile.default, {

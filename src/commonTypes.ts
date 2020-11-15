@@ -16,7 +16,7 @@ export type Options = {
   req?: (req: Req) => Req;
   res?: (res: Res) => Res;
   router?: (router: NextRouter) => NextRouter;
-  customApp?: boolean;
+  useCustomApp?: boolean;
 };
 
 export type OptionsWithDefaults = Required<Options>;

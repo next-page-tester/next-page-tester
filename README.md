@@ -46,7 +46,7 @@ Next page tester will take care of:
 | **req**               | Access default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -               |
 | **res**               | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -               |
 | **router**            | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -               |
-| **customApp**         | Use [custom App component][next-docs-custom-app]                                 | `boolean`          | `false`         |
+| **useCustomApp**      | Use [custom App component][next-docs-custom-app]                                 | `boolean`          | `false`         |
 | **nextRoot**          | Absolute path to Next's root folder                                              | `string`           | _auto detected_ |
 
 ## Notes
