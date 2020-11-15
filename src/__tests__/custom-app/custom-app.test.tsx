@@ -128,7 +128,7 @@ describe('Custom App component', () => {
     });
   });
 
-  it('Loads custom app file with any extension defined in "pageExtensions" option', async () => {
+  it('Loads custom app file with any extension defined in "next.config.js"', async () => {
     const actualPage = await getPage({
       nextRoot: __dirname + '/__fixtures__/special-extension',
       route: '/page',
