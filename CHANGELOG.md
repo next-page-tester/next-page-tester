@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.0
+
+### Breaking Changes
+
+- Remove `pagesDirectory` and `pageExtensions` options
+- Rename `customApp` option -> `useCustomApp`
+
+### New Features
+
+- Auto detect pages directory
+- Auto detect pageExtensions option
+- Add `nextRoot` option
+
 ## 0.4.0
 
 ### Breaking Changes
