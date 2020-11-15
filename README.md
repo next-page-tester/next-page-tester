@@ -40,15 +40,14 @@ Next page tester will take care of:
 
 ## Options
 
-| Property              | Description                                                                      | type               | Default                             |
-| --------------------- | -------------------------------------------------------------------------------- | ------------------ | ----------------------------------- |
-| **route** (mandatory) | Next route (must start with `/`)                                                 | `string`           | -                                   |
-| **req**               | Access default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -                                   |
-| **res**               | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -                                   |
-| **router**            | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -                                   |
-| **customApp**         | Use [custom App component][next-docs-custom-app]                                 | `boolean`          | `false`                             |
-| **nextRoot**          | Absolute path to Next's root folder                                              | `string`           | _auto detected_                     |
-| **pageExtensions**    | [Custom Page Extensions][next-docs-custom-page-extensions]                       | `string[]`         | `['mdx', 'jsx', 'js', 'ts', 'tsx']` |
+| Property              | Description                                                                      | type               | Default         |
+| --------------------- | -------------------------------------------------------------------------------- | ------------------ | --------------- |
+| **route** (mandatory) | Next route (must start with `/`)                                                 | `string`           | -               |
+| **req**               | Access default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -               |
+| **res**               | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -               |
+| **router**            | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -               |
+| **customApp**         | Use [custom App component][next-docs-custom-app]                                 | `boolean`          | `false`         |
+| **nextRoot**          | Absolute path to Next's root folder                                              | `string`           | _auto detected_ |
 
 ## Notes
 
@@ -62,7 +61,6 @@ It might be necessary to install `@types/react-dom` and `@types/webpack` when us
 
 - Consider adding custom Document support
 - Consider reusing Next.js code parts (not only types)
-- Consider loading `pageExtensions` option from `next.config.js`
 
 [ci]: https://travis-ci.com/toomuchdesign/next-page-tester
 [ci-badge]: https://travis-ci.com/toomuchdesign/next-page-tester.svg?branch=master
@@ -78,5 +76,4 @@ It might be necessary to install `@types/react-dom` and `@types/webpack` when us
 [next-docs-data-fetching]: https://nextjs.org/docs/basic-features/data-fetching
 [next-docs-router]: https://nextjs.org/docs/api-reference/next/router
 [next-docs-custom-app]: https://nextjs.org/docs/advanced-features/custom-app
-[next-docs-custom-page-extensions]: https://nextjs.org/docs/api-reference/next.config.js/custom-page-extensions
 [next-gh-strict-bug]: https://github.com/vercel/next.js/issues/16219

@@ -17,7 +17,6 @@ export type Options = {
   res?: (res: Res) => Res;
   router?: (router: NextRouter) => NextRouter;
   customApp?: boolean;
-  pageExtensions?: string[];
 };
 
 export type OptionsWithDefaults = Required<Options>;
@@ -25,6 +24,7 @@ export type OptionsWithDefaults = Required<Options>;
 // Options object is extended with some extra derived props
 export type ExtendedOptions = OptionsWithDefaults & {
   pagesDirectory: string;
+  pageExtensions: string[];
 };
 
 export type NextPageFile = {

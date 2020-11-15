@@ -3,7 +3,11 @@ import getPageObject from './getPageObject';
 import getCustomAppFile from './getCustomAppFile';
 import { fetchAppData, fetchPageData } from './fetchData';
 import preparePage from './preparePage';
-import { defaultNextRoot, findPagesDirectory } from './utils';
+import {
+  defaultNextRoot,
+  findPagesDirectory,
+  getPageExtensions,
+} from './utils';
 import type {
   Options,
   OptionsWithDefaults,
@@ -29,7 +33,6 @@ export default async function getPage({
   res = (res) => res,
   router = (router) => router,
   customApp = false,
-  pageExtensions = ['mdx', 'jsx', 'js', 'ts', 'tsx'],
 }: Options): Promise<React.ReactElement> {
   const optionsWithDefaults: OptionsWithDefaults = {
     route,
@@ -38,14 +41,16 @@ export default async function getPage({
     res,
     router,
     customApp,
-    pageExtensions,
   };
   validateOptions(optionsWithDefaults);
 
   const options: ExtendedOptions = {
     ...optionsWithDefaults,
     pagesDirectory: findPagesDirectory({ nextRoot }),
+    pageExtensions: getPageExtensions({ nextRoot }),
   };
+
+  // @TODO: Consider printing extended options value behind a debug flag
 
   const pageObject = await getPageObject({ options });
   if (pageObject === undefined) {
