@@ -63,3 +63,7 @@ export type PageData = {
     [key: string]: any;
   };
 };
+
+export class CustomError extends Error {
+  payload?: any;
+}

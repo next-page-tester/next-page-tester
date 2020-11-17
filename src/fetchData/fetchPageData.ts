@@ -15,6 +15,7 @@ import type {
   PageData,
   NextPageFile,
 } from '../commonTypes';
+import type { CustomError } from '../commonTypes';
 
 function ensureNoMultipleDataFetchingMethods({
   page,
@@ -35,6 +36,23 @@ function ensureNoMultipleDataFetchingMethods({
     throw new Error(
       '[next page tester] Only one data fetching method is allowed'
     );
+  }
+}
+
+// Pages' fetching methods may return "notFound" and "redirect" object
+function ensurePageDataHasProps({
+  pageData,
+}: {
+  pageData: { [key: string]: any };
+}) {
+  if ('props' in pageData) {
+    return;
+  } else {
+    const error: CustomError = new Error(
+      `[next page tester] Page's fetching method returned an object with missing "props" field. Returned value is available in error.payload.`
+    );
+    error.payload = pageData;
+    throw error;
   }
 }
 
@@ -101,6 +119,7 @@ export default async function fetchPageData({
       { options, pageObject }
     );
     const pageData = await page.getServerSideProps(ctx);
+    ensurePageDataHasProps({ pageData });
     return mergePageDataWithAppData({ pageData, appInitialProps });
   }
 
@@ -111,6 +130,7 @@ export default async function fetchPageData({
     // @TODO introduce `getStaticPaths` logic
     // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
     const pageData = await page.getStaticProps(ctx);
+    ensurePageDataHasProps({ pageData });
     return mergePageDataWithAppData({ pageData, appInitialProps });
   }
 
