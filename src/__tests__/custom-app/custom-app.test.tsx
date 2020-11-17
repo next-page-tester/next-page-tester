@@ -160,7 +160,9 @@ describe('Custom App component', () => {
           route: '/_app',
           useCustomApp: true,
         })
-      ).rejects.toThrow('[next page tester]');
+      ).rejects.toThrow(
+        '[next page tester] No matching page found for given route'
+      );
     });
   });
 });

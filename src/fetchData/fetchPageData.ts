@@ -33,7 +33,7 @@ function ensureNoMultipleDataFetchingMethods({
   }
   if (methodsCounter > 1) {
     throw new Error(
-      '[next page tester] only one data fetching method is allowed'
+      '[next page tester] Only one data fetching method is allowed'
     );
   }
 }

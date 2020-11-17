@@ -24,14 +24,16 @@ describe('Static routes', () => {
           nextRoot,
           route: '/blog/5/doesntexists',
         })
-      ).rejects.toThrow('[next page tester]');
+      ).rejects.toThrow(
+        '[next page tester] No matching page found for given route'
+      );
     });
   });
 
   describe('route with trailing slash', () => {
     it('throws "page not found" error', async () => {
       await expect(getPage({ nextRoot, route: '/blog/5/' })).rejects.toThrow(
-        '[next page tester]'
+        '[next page tester] No matching page found for given route'
       );
     });
   });
@@ -39,7 +41,7 @@ describe('Static routes', () => {
   describe('route === "_document"', () => {
     it('throws "page not found" error', async () => {
       await expect(getPage({ nextRoot, route: '/_document' })).rejects.toThrow(
-        '[next page tester]'
+        '[next page tester] No matching page found for given route'
       );
     });
   });
@@ -63,7 +65,9 @@ describe('Static routes', () => {
           nextRoot,
           route: '/invalid-extension',
         })
-      ).rejects.toThrow('[next page tester]');
+      ).rejects.toThrow(
+        '[next page tester] No matching page found for given route'
+      );
     });
   });
 
@@ -83,7 +87,9 @@ describe('Static routes', () => {
           nextRoot,
           route: '/api',
         })
-      ).rejects.toThrow('[next page tester]');
+      ).rejects.toThrow(
+        '[next page tester] No matching page found for given route'
+      );
     });
   });
 });

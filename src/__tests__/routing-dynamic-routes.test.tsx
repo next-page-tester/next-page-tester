@@ -85,7 +85,9 @@ describe('Dynamic routes', () => {
           nextRoot,
           route: '/catch-all/5',
         })
-      ).rejects.toThrow('[next page tester]');
+      ).rejects.toThrow(
+        '[next page tester] No matching page found for given route'
+      );
     });
   });
 

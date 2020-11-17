@@ -20,7 +20,7 @@ describe('Options errors handling', () => {
           nextRoot: 'doesnt-exist',
           route: '/page',
         })
-      ).rejects.toThrow('[next page tester] cannot find "nextRoot" directory');
+      ).rejects.toThrow('[next page tester] Cannot find "nextRoot" directory');
     });
   });
 });

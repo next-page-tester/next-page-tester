@@ -42,7 +42,7 @@ export function findPagesDirectory({ nextRoot }: { nextRoot: string }) {
   }
 
   throw new Error(
-    `[next page tester] cannot find "pages" directory under: ${nextRoot}`
+    `[next page tester] Cannot find "pages" directory under: ${nextRoot}`
   );
 }
 

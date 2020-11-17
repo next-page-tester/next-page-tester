@@ -90,7 +90,9 @@ describe('Data fetching', () => {
           nextRoot,
           route: '/multiple-data-fetching',
         })
-      ).rejects.toThrow('[next page tester]');
+      ).rejects.toThrow(
+        '[next page tester] Only one data fetching method is allowed'
+      );
     });
   });
 });

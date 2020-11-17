@@ -21,7 +21,7 @@ function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
 
   if (!existsSync(nextRoot)) {
     throw new Error(
-      '[next page tester] cannot find "nextRoot" directory under: ${nextRoot}'
+      '[next page tester] Cannot find "nextRoot" directory under: ${nextRoot}'
     );
   }
 }
@@ -55,7 +55,7 @@ export default async function getPage({
   const pageObject = await getPageObject({ options });
   if (pageObject === undefined) {
     throw new Error(
-      '[next page tester] no matching page found for given route'
+      '[next page tester] No matching page found for given route'
     );
   }
 
