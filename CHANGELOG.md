@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0
+
+### Breaking Changes
+
+- `getPage` trows when page's fetching methods return an object with missing `props` field (eg. 'redirect' and `notFound` responses). The response object is accessible in `error.payload`.
+
 ## 0.5.0
 
 ### Breaking Changes

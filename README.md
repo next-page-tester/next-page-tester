@@ -51,16 +51,15 @@ Next page tester will take care of:
 
 ## Notes
 
-Data fetching methods' context `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http].
-
-Next page tester can be used with any testing framework/library.
-
-It might be necessary to install `@types/react-dom` and `@types/webpack` when using Typescript in `strict` mode due to [this bug][next-gh-strict-bug].
+- Data fetching methods' context `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http]
+- Next page tester can be used with any testing framework/library (not tied to Testing library)
+- It might be necessary to install `@types/react-dom` and `@types/webpack` when using Typescript in `strict` mode due to [this bug][next-gh-strict-bug]
 
 ## Todo's
 
 - Consider adding custom Document support
 - Consider reusing Next.js code parts (not only types)
+- Consider adding client side navigation (with `Link` and `Router.push`)
 
 [ci]: https://travis-ci.com/toomuchdesign/next-page-tester
 [ci-badge]: https://travis-ci.com/toomuchdesign/next-page-tester.svg?branch=master
