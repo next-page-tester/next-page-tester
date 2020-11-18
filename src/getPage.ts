@@ -1,8 +1,7 @@
 import { existsSync } from 'fs';
-import getPageObject from './getPageObject';
-import getCustomAppFile from './getCustomAppFile';
-import { fetchAppData, fetchPageData } from './fetchData';
-import preparePage from './preparePage';
+import makePageElement from './makePageElement';
+import makePageWrapper from './makePageWrapper';
+import type { RenderPageHandler } from './makePageWrapper';
 import {
   defaultNextRoot,
   findPagesDirectory,
@@ -49,34 +48,16 @@ export default async function getPage({
     pagesDirectory: findPagesDirectory({ nextRoot }),
     pageExtensions: getPageExtensions({ nextRoot }),
   };
-
   // @TODO: Consider printing extended options value behind a debug flag
 
-  const pageObject = await getPageObject({ options });
-  if (pageObject === undefined) {
-    throw new Error(
-      '[next page tester] No matching page found for given route'
-    );
-  }
-
-  const customAppFile = useCustomApp
-    ? await getCustomAppFile({ options })
-    : undefined;
-
-  const appInitialProps = customAppFile
-    ? await fetchAppData({ customAppFile, pageObject, options })
-    : undefined;
-
-  const pageData = await fetchPageData({
-    pageObject,
-    options,
-    appInitialProps,
-  });
-
-  const pageElement = await preparePage({
-    pageObject,
-    pageData,
-    options,
-  });
-  return pageElement;
+  const pageElement = await makePageElement({ options });
+  const renderPage: RenderPageHandler = async ({ route }) => {
+    const newOptions = {
+      ...options,
+      route,
+    };
+    return makePageElement({ options: newOptions });
+  };
+  const pageWrapper = await makePageWrapper({ pageElement, renderPage });
+  return pageWrapper;
 }
