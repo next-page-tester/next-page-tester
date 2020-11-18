@@ -1,34 +1,8 @@
 import React from 'react';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
-import type { NextRouter } from 'next/router';
-import makeRouterObject from './makeRouterObject';
+import makeRouterMock from './makeRouterMock';
 import getCustomAppFile from './getCustomAppFile';
 import type { ExtendedOptions, PageObject, PageData } from './commonTypes';
-
-// https://github.com/vercel/next.js/issues/7479#issuecomment-659859682
-function makeDefaultRouterMock(props?: Partial<NextRouter>): NextRouter {
-  const routerMock = {
-    basePath: '',
-    pathname: '/',
-    route: '/',
-    asPath: '/',
-    query: {},
-    push: /* istanbul ignore next */ async () => true,
-    replace: /* istanbul ignore next */ async () => true,
-    reload: () => {},
-    back: () => {},
-    prefetch: async () => {},
-    beforePopState: () => {},
-    events: {
-      on: () => {},
-      off: () => {},
-      emit: () => {},
-    },
-    isFallback: false,
-  };
-
-  return { ...routerMock, ...props };
-}
 
 export default async function preparePage({
   pageObject,
@@ -58,18 +32,11 @@ export default async function preparePage({
   }
 
   // Wrap with RouterContext provider
-  const { asPath, pathname, query, route } = makeRouterObject({ pageObject });
+  const routerMock = makeRouterMock({ pageObject });
   return React.createElement(
     RouterContext.Provider,
     {
-      value: routerMocker(
-        makeDefaultRouterMock({
-          asPath,
-          pathname,
-          query,
-          route,
-        })
-      ),
+      value: routerMocker(routerMock),
     },
     pageElement
   );
