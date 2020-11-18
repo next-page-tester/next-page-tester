@@ -8,7 +8,7 @@ export default async function getPageObject({
   options,
 }: {
   options: ExtendedOptions;
-}): Promise<PageObject | undefined> {
+}): Promise<PageObject> {
   const { pagesDirectory } = options;
   const pageInfo = await getPageInfo({ options });
   if (pageInfo) {
@@ -21,6 +21,7 @@ export default async function getPageObject({
       ...pageInfo,
     };
   }
+  throw new Error('[next page tester] No matching page found for given route');
 }
 
 type RegexCaptureGroups =

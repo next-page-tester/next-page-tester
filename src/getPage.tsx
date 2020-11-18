@@ -1,7 +1,9 @@
+import React from 'react';
 import { existsSync } from 'fs';
+import getPageObject from './getPageObject';
 import makePageElement from './makePageElement';
-import makePageWrapper from './makePageWrapper';
-import type { RenderPageHandler } from './makePageWrapper';
+import NavigationProvider from './NavigationProvider';
+import RouterProvider from './RouterProvider';
 import {
   defaultNextRoot,
   findPagesDirectory,
@@ -50,14 +52,36 @@ export default async function getPage({
   };
   // @TODO: Consider printing extended options value behind a debug flag
 
-  const pageElement = await makePageElement({ options });
-  const renderPage: RenderPageHandler = async ({ route }) => {
+  const pageObject = await getPageObject({
+    options,
+  });
+
+  const pageElement = await makePageElement({
+    pageObject,
+    options,
+  });
+
+  type RenderPage = Parameters<typeof NavigationProvider>[0]['renderPage'];
+  const renderPage: RenderPage = async (route) => {
     const newOptions = {
       ...options,
       route,
     };
-    return makePageElement({ options: newOptions });
+    const pageObject = await getPageObject({
+      options: newOptions,
+    });
+    const pageElement = await makePageElement({
+      pageObject,
+      options: newOptions,
+    });
+    return pageElement;
   };
-  const pageWrapper = await makePageWrapper({ pageElement, renderPage });
-  return pageWrapper;
+
+  return (
+    <RouterProvider pageObject={pageObject} options={options}>
+      <NavigationProvider renderPage={renderPage}>
+        {pageElement}
+      </NavigationProvider>
+    </RouterProvider>
+  );
 }

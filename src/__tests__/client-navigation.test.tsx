@@ -4,8 +4,8 @@ import { getPage } from '../index';
 const nextRoot = __dirname + '/__fixtures__';
 
 describe('Client side navigation', () => {
-  describe('using Link component', () => {
-    it.skip('navigates between pages', async () => {
+  describe.only('using Link component', () => {
+    it('navigates between pages', async () => {
       const Page = await getPage({
         nextRoot,
         route: '/client-navigation-link/a',

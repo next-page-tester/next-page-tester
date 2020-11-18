@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import { useRef, useEffect } from 'react';
 import querystring from 'querystring';
 import findRoot from 'find-root';
 import { existsSync } from 'fs';
@@ -66,3 +67,14 @@ export function getPageExtensions({
   const { pageExtensions } = config as { pageExtensions: string[] };
   return pageExtensions;
 }
+
+export const useUpdateEffect: typeof useEffect = (effect, deps) => {
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    effect();
+  }, deps);
+};

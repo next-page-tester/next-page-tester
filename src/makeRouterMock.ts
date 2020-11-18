@@ -2,16 +2,33 @@ import type { NextRouter } from 'next/router';
 import { removeFileExtension, parseRoute } from './utils';
 import type { PageObject } from './commonTypes';
 
+type NextPushArgs = Parameters<NextRouter['push']>;
+type PushHandler = (
+  url: NextPushArgs[0],
+  as: NextPushArgs[1],
+  options: NextPushArgs[2]
+) => void;
+
 // https://github.com/vercel/next.js/issues/7479#issuecomment-659859682
-function makeDefaultRouterMock(): NextRouter {
-  const routerMock = {
+function makeDefaultRouterMock({
+  pushHandler = () => {},
+}: {
+  pushHandler?: PushHandler;
+}): NextRouter {
+  const routerMock: NextRouter = {
     basePath: '',
     pathname: '/',
     route: '/',
     asPath: '/',
     query: {},
-    push: /* istanbul ignore next */ async () => true,
-    replace: /* istanbul ignore next */ async () => true,
+    push: /* istanbul ignore next */ async (url, as, options) => {
+      pushHandler(url, as, options);
+      return true;
+    },
+    replace: /* istanbul ignore next */ async (url, as, options) => {
+      pushHandler(url, as, options);
+      return true;
+    },
     reload: () => {},
     back: () => {},
     prefetch: async () => {},
@@ -29,11 +46,13 @@ function makeDefaultRouterMock(): NextRouter {
 
 export default function makeRouterMock({
   pageObject: { pagePath, params, route, query },
+  pushHandler,
 }: {
   pageObject: PageObject;
+  pushHandler?: PushHandler;
 }): NextRouter {
   const { pathname, search, hash } = parseRoute({ route });
-  const defaultRouterMock = makeDefaultRouterMock();
+  const defaultRouterMock = makeDefaultRouterMock({ pushHandler });
   return {
     ...defaultRouterMock,
     asPath: pathname + search + hash, // Includes querystring and anchor
