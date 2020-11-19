@@ -34,6 +34,20 @@ export function parseQueryString({
   return querystring.parse(qs);
 }
 
+export function stringifyQueryString({
+  object,
+  leadingQuestionMark,
+}: {
+  object: Parameters<typeof querystring['stringify']>[0];
+  leadingQuestionMark?: boolean;
+}): string {
+  const queryString = querystring.stringify(object);
+  if (leadingQuestionMark && queryString) {
+    return '?' + queryString;
+  }
+  return queryString;
+}
+
 export function removeFileExtension({ path }: { path: string }) {
   return path.replace(/\.[^/.]+$/, '');
 }

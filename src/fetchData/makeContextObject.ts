@@ -36,7 +36,7 @@ export function makeGetServerSidePropsContext({
   pageObject: PageObject;
   options: OptionsWithDefaults;
 }): GetServerSidePropsContext<typeof pageObject.params> {
-  const { params, query } = pageObject;
+  const { params, query, resolvedUrl } = pageObject;
   const { req, res } = makeHttpObjects({ pageObject, reqMocker, resMocker });
 
   // @TODO complete ctx object
@@ -44,6 +44,7 @@ export function makeGetServerSidePropsContext({
   return {
     params: { ...params },
     query: { ...query },
+    resolvedUrl,
     req,
     res,
   };

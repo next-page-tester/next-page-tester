@@ -1,7 +1,7 @@
 import getPagePaths from './getPagePaths';
 import pagePathToRouteRegex from './pagePathToRouteRegex';
 import { loadPage } from './loadPage';
-import { parseRoute, parseQueryString } from './utils';
+import { parseRoute, parseQueryString, stringifyQueryString } from './utils';
 import type { ExtendedOptions, PageObject, PageParams } from './commonTypes';
 
 export default async function getPageObject({
@@ -48,13 +48,14 @@ function makeParamsObject({
 
 type PageInfo = Pick<
   PageObject,
-  'route' | 'pagePath' | 'params' | 'paramsNumber' | 'query'
+  'route' | 'pagePath' | 'params' | 'paramsNumber' | 'query' | 'resolvedUrl'
 >;
 async function getPageInfo({ options }: { options: ExtendedOptions }) {
   const { route } = options;
-  const { pathname: routePathName, search } = parseRoute({ route });
   const pagePaths = await getPagePaths({ options });
   const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
+  const { pathname: routePathName, search } = parseRoute({ route });
+  const query = parseQueryString({ queryString: search });
 
   // Match provided route through route regexes generated from /page components
   const matchingPageInfo: PageInfo[] = pagePaths
@@ -69,7 +70,16 @@ async function getPageInfo({ options }: { options: ExtendedOptions }) {
           pagePath: originalPath,
           params,
           paramsNumber: Object.keys(params).length,
-          query: parseQueryString({ queryString: search }),
+          query,
+          resolvedUrl:
+            routePathName +
+            stringifyQueryString({
+              object: {
+                ...params,
+                ...query,
+              },
+              leadingQuestionMark: true,
+            }),
         };
       }
     })
