@@ -63,6 +63,15 @@ Next page tester will take care of:
 
 Next.js `Link` components invoke `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
 
+### Next.js versions support
+
+`next-page-tester` focuses on supporting only the last major version of Next.js:
+
+| next-page-tester | next.js |
+| ---------------- | ------- |
+| v0.1.0 - v0.7.0  | v9.X.X  |
+| v0.8.0 +         | v10.X.X |
+
 ## Todo's
 
 - Consider adding custom Document support
