@@ -6,7 +6,11 @@ import PageB from './__fixtures__/pages/client-navigation-link/b';
 const nextRoot = __dirname + '/__fixtures__';
 
 describe('Client side navigation', () => {
-  describe('using Link component', () => {
+  describe.each`
+    title                     | linkText
+    ${'using Link component'} | ${'Go to B with Link'}
+    ${'programmatically'}     | ${'Go to B programmatically'}
+  `('$title', ({ linkText }) => {
     it('navigates between pages', async () => {
       const Page = await getPage({
         nextRoot,
@@ -16,7 +20,7 @@ describe('Client side navigation', () => {
       screen.getByText('This is page A');
 
       // Navigate A -> B
-      const linkToB = screen.getByText('Go to page B');
+      const linkToB = screen.getByText(linkText);
       fireEvent.click(linkToB);
       await screen.findByText('This is page B');
       expect(screen.queryByText('This is page A')).not.toBeInTheDocument();
@@ -46,7 +50,7 @@ describe('Client side navigation', () => {
       route: '/client-navigation-link/a',
     });
     const { unmount } = render(Page);
-    const linkToB = screen.getByText('Go to page B');
+    const linkToB = screen.getByText('Go to B with Link');
     fireEvent.click(linkToB);
     unmount();
   });

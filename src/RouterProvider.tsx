@@ -53,6 +53,7 @@ export default function RouterProvider({
   const updateRouterMock = useCallback(
     (newRouter: NextRouter) => {
       // Avoid errors if page gets unmounted
+      /* istanbul ignore next */
       if (isMounted()) {
         setRouterMock(newRouter);
       }

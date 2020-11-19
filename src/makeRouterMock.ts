@@ -21,11 +21,11 @@ function makeDefaultRouterMock({
     route: '/',
     asPath: '/',
     query: {},
-    push: /* istanbul ignore next */ async (url, as, options) => {
+    push: async (url, as, options) => {
       pushHandler(url, as, options);
       return true;
     },
-    replace: /* istanbul ignore next */ async (url, as, options) => {
+    replace: async (url, as, options) => {
       pushHandler(url, as, options);
       return true;
     },
