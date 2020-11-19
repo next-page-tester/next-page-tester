@@ -9,7 +9,7 @@ The missing DOM integration testing tool for [Next.js][next-github].
 Given a Next.js route, this library will return an instance of the matching page component instantiated with the **properties** derived by Next.js' [**routing system**][next-docs-routing] and [**server side data fetching**][next-docs-data-fetching].
 
 ```js
-import { render, screen } from '@testing-library/react';
+import { render, screen, userEvent } from '@testing-library/react';
 import { getPage } from 'next-page-tester';
 
 describe('Blog page', () => {
@@ -20,6 +20,9 @@ describe('Blog page', () => {
 
     render(Page);
     expect(screen.getByText('Blog')).toBeInTheDocument();
+
+    userEvent.click(screen.getByText('Link'));
+    await screen.findByText('Linked page');
   });
 });
 ```
@@ -37,6 +40,7 @@ Next page tester will take care of:
 - set up a **mocked `next/router` provider** initialized with the expected values (to test `useRouter` and `withRouter`)
 - wrapping page with custom `_app` component
 - **instantiating** page component with **expected page props**
+- Emulate client side navigation via `Link`, `router.push`, `router.replace`
 
 ## Options
 
