@@ -52,21 +52,12 @@ export default async function getPage({
   };
   // @TODO: Consider printing extended options value behind a debug flag
 
-  const pageObject = await getPageObject({
-    options,
-  });
-
-  const pageElement = await makePageElement({
-    pageObject,
-    options,
-  });
-
-  type RenderPage = Parameters<typeof NavigationProvider>[0]['renderPage'];
-  const renderPage: RenderPage = async (route) => {
+  const makePage = async (route?: string) => {
     const newOptions = {
       ...options,
-      route,
+      route: route || options.route,
     };
+
     const pageObject = await getPageObject({
       options: newOptions,
     });
@@ -74,12 +65,19 @@ export default async function getPage({
       pageObject,
       options: newOptions,
     });
-    return pageElement;
+    return { pageElement, pageObject };
   };
+
+  const { pageElement, pageObject } = await makePage();
 
   return (
     <RouterProvider pageObject={pageObject} options={options}>
-      <NavigationProvider renderPage={renderPage}>
+      <NavigationProvider
+        makePage={async (route) => {
+          const { pageElement } = await makePage(route);
+          return pageElement;
+        }}
+      >
         {pageElement}
       </NavigationProvider>
     </RouterProvider>

@@ -6,10 +6,10 @@ import { useUpdateEffect } from './utils';
  * Wrap pageElement to trigger a page re-render on route change
  */
 export default function NavigationProvider({
-  renderPage,
+  makePage,
   children,
 }: {
-  renderPage: (route: string) => Promise<JSX.Element>;
+  makePage: (route: string) => Promise<JSX.Element>;
   children: JSX.Element;
 }) {
   const { asPath: route } = useRouter();
@@ -17,7 +17,7 @@ export default function NavigationProvider({
 
   // Re-render page on route change
   useUpdateEffect(() => {
-    renderPage(route).then(setPageElement);
+    makePage(route).then(setPageElement);
   }, [route]);
 
   return pageElement;
