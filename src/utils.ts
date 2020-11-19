@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import querystring from 'querystring';
 import findRoot from 'find-root';
 import { existsSync } from 'fs';
@@ -78,3 +78,18 @@ export const useUpdateEffect: typeof useEffect = (effect, deps) => {
     effect();
   }, deps);
 };
+
+export function useMountedState(): () => boolean {
+  const mountedRef = useRef(false);
+  const get = useCallback(() => mountedRef.current, []);
+
+  useEffect(() => {
+    mountedRef.current = true;
+
+    return () => {
+      mountedRef.current = false;
+    };
+  });
+
+  return get;
+}

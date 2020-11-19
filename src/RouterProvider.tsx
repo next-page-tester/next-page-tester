@@ -1,17 +1,19 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
+import type { NextRouter } from 'next/router';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import makeRouterMock from './makeRouterMock';
 import getPageObject from './getPageObject';
+import { useMountedState } from './utils';
 import type { ExtendedOptions, PageObject } from './commonTypes';
 
 function makeRouterMockInstance({
   options,
   pageObject,
-  setRouterMock,
+  updateRouterMock,
 }: {
   options: ExtendedOptions;
   pageObject: PageObject;
-  setRouterMock: (routerMock: ReturnType<typeof makeRouterMock>) => void;
+  updateRouterMock: (routerMock: NextRouter) => void;
 }) {
   const { router: routerMocker } = options;
   return routerMocker(
@@ -29,9 +31,9 @@ function makeRouterMockInstance({
         const nextRouter = makeRouterMockInstance({
           options: nextOptions,
           pageObject: nextPageObject,
-          setRouterMock,
+          updateRouterMock,
         });
-        setRouterMock(nextRouter);
+        updateRouterMock(nextRouter);
       },
     })
   );
@@ -46,15 +48,23 @@ export default function RouterProvider({
   options: ExtendedOptions;
   children: JSX.Element;
 }) {
-  const [routerMock, setRouterMock] = useState<
-    ReturnType<typeof makeRouterMock>
-  >();
+  const [routerMock, setRouterMock] = useState<NextRouter>();
+  const isMounted = useMountedState();
+  const updateRouterMock = useCallback(
+    (newRouter: NextRouter) => {
+      // Avoid errors if page gets unmounted
+      if (isMounted()) {
+        setRouterMock(newRouter);
+      }
+    },
+    [setRouterMock, isMounted]
+  );
   const initialRouterMock = useMemo(
     () =>
       makeRouterMockInstance({
         options,
         pageObject,
-        setRouterMock,
+        updateRouterMock,
       }),
     []
   );

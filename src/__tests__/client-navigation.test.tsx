@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { getPage } from '../index';
 import PageB from './__fixtures__/pages/client-navigation-link/b';
@@ -36,5 +36,18 @@ describe('Client side navigation', () => {
       );
       expect(actual).toEqual(expected);
     });
+  });
+
+  // @ NOTE This test doesn't actually fail
+  // but it forces Jest to render errors about updates after unmount in console
+  it('does not re-render (does not update router mock) if page gets unmounted', async () => {
+    const Page = await getPage({
+      nextRoot,
+      route: '/client-navigation-link/a',
+    });
+    const { unmount } = render(Page);
+    const linkToB = screen.getByText('Go to page B');
+    fireEvent.click(linkToB);
+    unmount();
   });
 });
