@@ -8,15 +8,8 @@ export function RouterPrinter({ routerMock }: { routerMock?: NextRouter }) {
   const { query, pathname, asPath, route, basePath } = router;
   return (
     <>
-      `Router: $
-      {stringify({
-        asPath,
-        pathname,
-        query,
-        route,
-        basePath,
-      })}
-      `
+      Router:
+      {stringify({ asPath, pathname, query, route, basePath })}
     </>
   );
 }

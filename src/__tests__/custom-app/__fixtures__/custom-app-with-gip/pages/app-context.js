@@ -1,6 +1,11 @@
 import React from 'react';
-import { stringify } from '../../../../../utils';
+import { PropsPrinter } from '../../../../__utils__/';
 
 export default function Index({ ctx }) {
-  return <>`/gip/[id] - props: ${stringify(ctx)}`</>;
+  return (
+    <>
+      /gip/[id] -
+      <PropsPrinter props={ctx} />
+    </>
+  );
 }

@@ -1,8 +1,13 @@
 import React from 'react';
-import { sleep, stringify } from '../../../../../utils';
+import { sleep, PropsPrinter } from '../../../../__utils__/';
 
 export default function CustomAppWithGIP_GIP({ ctx, ...props }) {
-  return <>`/custom-app-with-gip/gip - props: ${stringify(props)}`</>;
+  return (
+    <>
+      /custom-app-with-gip/gip -
+      <PropsPrinter props={props} />
+    </>
+  );
 }
 
 CustomAppWithGIP_GIP.getInitialProps = async () => {

@@ -5,7 +5,7 @@ import { RouterPrinter, sleep } from '../../../__utils__/';
 export default function ClientSideNavigationB(props) {
   const { routerMock } = props;
   return (
-    <div id="BBB">
+    <div>
       <h2>This is page B</h2>
       <Link href="/client-navigation-link/a" scroll={false}>
         <a>Go to page A</a>

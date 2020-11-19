@@ -1,7 +1,6 @@
-import React from 'react';
-export default function multipleDataFetching() {
-  return <>`/multiple-data-fetching`</>;
+export default function MultipleDataFetching() {
+  return `/multiple-data-fetching`;
 }
 
 export async function getServerSideProps() {}
-multipleDataFetching.getInitialProps = function () {};
+MultipleDataFetching.getInitialProps = function () {};

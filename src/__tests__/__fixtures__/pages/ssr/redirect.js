@@ -1,8 +1,7 @@
-import React from 'react';
-import { sleep } from '../../../../utils';
+import { sleep } from '../../../__utils__/';
 
 export default function ssr_notFound() {
-  return <>/ssr/redirect</>;
+  return `/ssr/redirect`;
 }
 
 export async function getServerSideProps(ctx) {

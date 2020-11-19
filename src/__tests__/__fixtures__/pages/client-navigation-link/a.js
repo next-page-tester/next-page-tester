@@ -4,7 +4,7 @@ import { sleep } from '../../../__utils__/';
 
 export default function ClientSideNavigationA(props) {
   return (
-    <div id="AAA">
+    <div>
       <h2>This is page A</h2>
       <Link href="/client-navigation-link/b" scroll={false}>
         <a>Go to page B</a>
