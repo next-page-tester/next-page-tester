@@ -1,28 +1,40 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { getPage } from '../index';
+import PageB from './__fixtures__/pages/client-navigation-link/b';
 const nextRoot = __dirname + '/__fixtures__';
 
 describe('Client side navigation', () => {
-  describe.only('using Link component', () => {
+  describe('using Link component', () => {
     it('navigates between pages', async () => {
       const Page = await getPage({
         nextRoot,
         route: '/client-navigation-link/a',
       });
-
-      render(Page);
+      const screen = render(Page);
+      screen.getByText('This is page A');
 
       // Navigate A -> B
-      screen.getByText('This is page A');
       const linkToB = screen.getByText('Go to page B');
       fireEvent.click(linkToB);
-
-      // Navigate B -> A
       await screen.findByText('This is page B');
-      const linkToA = await screen.findByText('Go to page A');
-      fireEvent.click(linkToA);
-      await screen.findByText('This is page A');
+      expect(screen.queryByText('This is page A')).not.toBeInTheDocument();
+
+      // Ensure router mock update reflects route change
+      const { container: actual } = screen;
+      const { container: expected } = render(
+        <PageB
+          routerMock={{
+            asPath: '/client-navigation-link/b',
+            pathname: '/client-navigation-link/b',
+            query: {},
+            route: '/client-navigation-link/b',
+            basePath: '',
+          }}
+        />
+      );
+      expect(actual).toEqual(expected);
     });
   });
 });
