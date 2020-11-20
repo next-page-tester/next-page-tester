@@ -6,24 +6,6 @@ import getPageObject from './getPageObject';
 import { useMountedState } from './utils';
 import type { ExtendedOptions, PageObject } from './commonTypes';
 
-function makeRouterMockInstance({
-  options,
-  pageObject,
-  pushHandler,
-}: {
-  options: ExtendedOptions;
-  pageObject: PageObject;
-  pushHandler: PushHandler;
-}) {
-  const { router: routerMocker } = options;
-  return routerMocker(
-    makeRouterMock({
-      pageObject,
-      pushHandler,
-    })
-  );
-}
-
 export default function RouterProvider({
   pageObject,
   options,
@@ -35,7 +17,7 @@ export default function RouterProvider({
 }) {
   const [routerMock, setRouterMock] = useState<NextRouter>();
   const isMounted = useMountedState();
-  const updateRouterMock = useCallback((newRouter: NextRouter) => {
+  const setRouterMockIfMounted = useCallback((newRouter: NextRouter) => {
     // Avoid errors if page gets unmounted
     /* istanbul ignore next */
     if (isMounted()) {
@@ -51,16 +33,16 @@ export default function RouterProvider({
     const nextPageObject = await getPageObject({
       options: nextOptions,
     });
-    const nextRouter = makeRouterMockInstance({
+    const nextRouter = makeRouterMock({
       options: nextOptions,
       pageObject: nextPageObject,
       pushHandler,
     });
-    updateRouterMock(nextRouter);
+    setRouterMockIfMounted(nextRouter);
   }, []);
   const initialRouterMock = useMemo(
     () =>
-      makeRouterMockInstance({
+      makeRouterMock({
         options,
         pageObject,
         pushHandler,

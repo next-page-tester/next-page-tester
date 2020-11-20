@@ -20,6 +20,7 @@ export default async function fetchAppData({
   const customApp = customAppFile.default;
   if (customApp.getInitialProps) {
     const { asPath, pathname, query, route, basePath } = makeRouterMock({
+      options,
       pageObject,
     });
 
