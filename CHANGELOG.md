@@ -1,10 +1,16 @@
 # Changelog
 
+## 0.7.0
+
+### New Features
+
+- Support client-side navigation via `Link`, `router.push`, `router.replace`
+
 ## 0.6.0
 
 ### Breaking Changes
 
-- `getPage` trows when page's fetching methods return an object with missing `props` field (eg. 'redirect' and `notFound` responses). The response object is accessible in `error.payload`.
+- `getPage` trows when page's fetching methods return an object with missing `props` field (eg. `redirect` and `notFound` responses). The response object is accessible in `error.payload`.
 
 ## 0.5.0
 
