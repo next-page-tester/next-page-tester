@@ -59,11 +59,14 @@ Next page tester will take care of:
 - Next page tester can be used with any testing framework/library (not tied to Testing library)
 - It might be necessary to install `@types/react-dom` and `@types/webpack` when using Typescript in `strict` mode due to [this bug][next-gh-strict-bug]
 
+### Error: Not implemented: window.scrollTo
+
+Next.js `Link` components invoke `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
+
 ## Todo's
 
 - Consider adding custom Document support
 - Consider reusing Next.js code parts (not only types)
-- Consider adding client side navigation (with `Link` and `Router.push`)
 
 [ci]: https://travis-ci.com/toomuchdesign/next-page-tester
 [ci-badge]: https://travis-ci.com/toomuchdesign/next-page-tester.svg?branch=master
