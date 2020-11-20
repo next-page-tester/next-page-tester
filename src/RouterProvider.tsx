@@ -17,13 +17,6 @@ export default function RouterProvider({
 }) {
   const [routerMock, setRouterMock] = useState<NextRouter>();
   const isMounted = useMountedState();
-  const setRouterMockIfMounted = useCallback((newRouter: NextRouter) => {
-    // Avoid errors if page gets unmounted
-    /* istanbul ignore next */
-    if (isMounted()) {
-      setRouterMock(newRouter);
-    }
-  }, []);
   const pushHandler = useCallback(async (url: Parameters<PushHandler>[0]) => {
     const nextRoute = url.toString();
     const nextOptions = {
@@ -38,7 +31,12 @@ export default function RouterProvider({
       pageObject: nextPageObject,
       pushHandler,
     });
-    setRouterMockIfMounted(nextRouter);
+
+    // Avoid errors if page gets unmounted
+    /* istanbul ignore next */
+    if (isMounted()) {
+      setRouterMock(nextRouter);
+    }
   }, []);
   const initialRouterMock = useMemo(
     () =>
