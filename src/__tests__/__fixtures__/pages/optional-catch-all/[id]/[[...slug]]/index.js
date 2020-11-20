@@ -1,13 +1,11 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-import { stringify } from '../../../../../../utils';
+import { RouterQueryPrinter } from '../../../../../__utils__/';
 
-export default function optionalcatchall_$id$_$slug$({ routerMock }) {
-  const { query } = routerMock || useRouter();
+export default function OptionalCatchAll_$id$_$slug$({ routerMock }) {
   return (
     <>
-      `/optional-catch-all/[id]/[...slug]/index - router query: $
-      {stringify(query)}`
+      /optional-catch-all/[id]/[...slug]/index -
+      <RouterQueryPrinter routerMock={routerMock} />
     </>
   );
 }

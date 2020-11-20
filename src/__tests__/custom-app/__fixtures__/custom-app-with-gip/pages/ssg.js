@@ -1,8 +1,13 @@
 import React from 'react';
-import { sleep, stringify } from '../../../../../utils';
+import { sleep, PropsPrinter } from '../../../../__utils__/';
 
 export default function CustomAppWithGIP_SSG({ ctx, ...props }) {
-  return <>`custom-app-with-gip/ssg - props: ${stringify(props)}`</>;
+  return (
+    <>
+      custom-app-with-gip/ssg -
+      <PropsPrinter props={props} />
+    </>
+  );
 }
 
 export async function getStaticProps(ctx) {

@@ -1,6 +1,11 @@
 import React from 'react';
-import { stringify } from '../../../utils';
+import { PropsPrinter } from '../../__utils__';
 
 export default function index(props) {
-  return <>`/index - props: ${stringify(props)}`</>;
+  return (
+    <>
+      /index -
+      <PropsPrinter props={props} />
+    </>
+  );
 }

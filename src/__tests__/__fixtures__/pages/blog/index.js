@@ -1,6 +1,11 @@
 import React from 'react';
-import { stringify } from '../../../../utils';
+import { PropsPrinter } from '../../../__utils__';
 
 export default function blog_index(props) {
-  return <>`/blog/index - props: ${stringify(props)}`</>;
+  return (
+    <>
+      /blog/index -
+      <PropsPrinter props={props} />
+    </>
+  );
 }

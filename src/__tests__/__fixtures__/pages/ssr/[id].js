@@ -1,8 +1,13 @@
 import React from 'react';
-import { sleep, stringify } from '../../../../utils';
+import { PropsPrinter, sleep } from '../../../__utils__';
 
 export default function ssr_$id$(props) {
-  return <>`/ssr/[id] - props: ${stringify(props)}`</>;
+  return (
+    <>
+      /ssr/[id]
+      <PropsPrinter props={props} />
+    </>
+  );
 }
 
 export async function getServerSideProps(ctx) {

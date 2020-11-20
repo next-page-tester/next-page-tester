@@ -1,8 +1,9 @@
+import React from 'react';
 import { existsSync } from 'fs';
 import getPageObject from './getPageObject';
-import getCustomAppFile from './getCustomAppFile';
-import { fetchAppData, fetchPageData } from './fetchData';
-import preparePage from './preparePage';
+import makePageElement from './makePageElement';
+import NavigationProvider from './NavigationProvider';
+import RouterProvider from './RouterProvider';
 import {
   defaultNextRoot,
   findPagesDirectory,
@@ -49,34 +50,36 @@ export default async function getPage({
     pagesDirectory: findPagesDirectory({ nextRoot }),
     pageExtensions: getPageExtensions({ nextRoot }),
   };
-
   // @TODO: Consider printing extended options value behind a debug flag
 
-  const pageObject = await getPageObject({ options });
-  if (pageObject === undefined) {
-    throw new Error(
-      '[next page tester] No matching page found for given route'
-    );
-  }
+  const makePage = async (route?: string) => {
+    const newOptions = {
+      ...options,
+      route: route || options.route,
+    };
 
-  const customAppFile = useCustomApp
-    ? await getCustomAppFile({ options })
-    : undefined;
+    const pageObject = await getPageObject({
+      options: newOptions,
+    });
+    const pageElement = await makePageElement({
+      pageObject,
+      options: newOptions,
+    });
+    return { pageElement, pageObject };
+  };
 
-  const appInitialProps = customAppFile
-    ? await fetchAppData({ customAppFile, pageObject, options })
-    : undefined;
+  const { pageElement, pageObject } = await makePage();
 
-  const pageData = await fetchPageData({
-    pageObject,
-    options,
-    appInitialProps,
-  });
-
-  const pageElement = await preparePage({
-    pageObject,
-    pageData,
-    options,
-  });
-  return pageElement;
+  return (
+    <RouterProvider pageObject={pageObject} options={options}>
+      <NavigationProvider
+        makePage={async (route) => {
+          const { pageElement } = await makePage(route);
+          return pageElement;
+        }}
+      >
+        {pageElement}
+      </NavigationProvider>
+    </RouterProvider>
+  );
 }

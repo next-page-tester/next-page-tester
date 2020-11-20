@@ -1,4 +1,5 @@
 import { URL } from 'url';
+import { useRef, useEffect, useCallback } from 'react';
 import querystring from 'querystring';
 import findRoot from 'find-root';
 import { existsSync } from 'fs';
@@ -19,16 +20,6 @@ export function parseQueryString({ queryString }: { queryString: string }) {
 
 export function removeFileExtension({ path }: { path: string }) {
   return path.replace(/\.[^/.]+$/, '');
-}
-
-export function sleep(ms: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
-export function stringify(entity: any): string {
-  return JSON.stringify(entity, null, ' ');
 }
 
 export const defaultNextRoot = findRoot(process.cwd());
@@ -65,4 +56,30 @@ export function getPageExtensions({
   const config = getNextConfig({ pathToConfig: nextRoot });
   const { pageExtensions } = config as { pageExtensions: string[] };
   return pageExtensions;
+}
+
+export const useUpdateEffect: typeof useEffect = (effect, deps) => {
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    effect();
+  }, deps);
+};
+
+export function useMountedState(): () => boolean {
+  const mountedRef = useRef(false);
+  const get = useCallback(() => mountedRef.current, []);
+
+  useEffect(() => {
+    mountedRef.current = true;
+
+    return () => {
+      mountedRef.current = false;
+    };
+  });
+
+  return get;
 }
