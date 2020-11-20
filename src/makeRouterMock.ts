@@ -3,7 +3,7 @@ import { removeFileExtension, parseRoute } from './utils';
 import type { PageObject } from './commonTypes';
 
 type NextPushArgs = Parameters<NextRouter['push']>;
-type PushHandler = (
+export type PushHandler = (
   url: NextPushArgs[0],
   as: NextPushArgs[1],
   options: NextPushArgs[2]

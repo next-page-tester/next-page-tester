@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useCallback } from 'react';
 import type { NextRouter } from 'next/router';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
-import makeRouterMock from './makeRouterMock';
+import makeRouterMock, { PushHandler } from './makeRouterMock';
 import getPageObject from './getPageObject';
 import { useMountedState } from './utils';
 import type { ExtendedOptions, PageObject } from './commonTypes';
@@ -9,32 +9,17 @@ import type { ExtendedOptions, PageObject } from './commonTypes';
 function makeRouterMockInstance({
   options,
   pageObject,
-  updateRouterMock,
+  pushHandler,
 }: {
   options: ExtendedOptions;
   pageObject: PageObject;
-  updateRouterMock: (routerMock: NextRouter) => void;
+  pushHandler: PushHandler;
 }) {
   const { router: routerMocker } = options;
   return routerMocker(
     makeRouterMock({
       pageObject,
-      pushHandler: async (url) => {
-        const nextRoute = url.toString();
-        const nextOptions = {
-          ...options,
-          route: nextRoute,
-        };
-        const nextPageObject = await getPageObject({
-          options: nextOptions,
-        });
-        const nextRouter = makeRouterMockInstance({
-          options: nextOptions,
-          pageObject: nextPageObject,
-          updateRouterMock,
-        });
-        updateRouterMock(nextRouter);
-      },
+      pushHandler,
     })
   );
 }
@@ -50,22 +35,35 @@ export default function RouterProvider({
 }) {
   const [routerMock, setRouterMock] = useState<NextRouter>();
   const isMounted = useMountedState();
-  const updateRouterMock = useCallback(
-    (newRouter: NextRouter) => {
-      // Avoid errors if page gets unmounted
-      /* istanbul ignore next */
-      if (isMounted()) {
-        setRouterMock(newRouter);
-      }
-    },
-    [setRouterMock, isMounted]
-  );
+  const updateRouterMock = useCallback((newRouter: NextRouter) => {
+    // Avoid errors if page gets unmounted
+    /* istanbul ignore next */
+    if (isMounted()) {
+      setRouterMock(newRouter);
+    }
+  }, []);
+  const pushHandler = useCallback(async (url: Parameters<PushHandler>[0]) => {
+    const nextRoute = url.toString();
+    const nextOptions = {
+      ...options,
+      route: nextRoute,
+    };
+    const nextPageObject = await getPageObject({
+      options: nextOptions,
+    });
+    const nextRouter = makeRouterMockInstance({
+      options: nextOptions,
+      pageObject: nextPageObject,
+      pushHandler,
+    });
+    updateRouterMock(nextRouter);
+  }, []);
   const initialRouterMock = useMemo(
     () =>
       makeRouterMockInstance({
         options,
         pageObject,
-        updateRouterMock,
+        pushHandler,
       }),
     []
   );
