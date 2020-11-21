@@ -67,6 +67,7 @@ Next.js `Link` components invoke `window.scrollTo` on click which is not impleme
 
 - Consider adding custom Document support
 - Consider reusing Next.js code parts (not only types)
+- Consider supporting Next.js `trailingSlash` option
 
 [ci]: https://travis-ci.com/toomuchdesign/next-page-tester
 [ci-badge]: https://travis-ci.com/toomuchdesign/next-page-tester.svg?branch=master
