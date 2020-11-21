@@ -48,7 +48,7 @@ describe('Static routes', () => {
   });
 
   describe('page file extensions', () => {
-    describe('declared in "pageExtensions" config', () => {
+    describe('extension declared in "pageExtensions" config', () => {
       it('renders page', async () => {
         const actualPage = await getPage({
           nextRoot,
@@ -60,7 +60,7 @@ describe('Static routes', () => {
       });
     });
 
-    describe('NOT declared in "pageExtensions" config', () => {
+    describe('extension NOT declared in "pageExtensions" config', () => {
       it('throws "page not found" error', async () => {
         await expect(
           getPage({
