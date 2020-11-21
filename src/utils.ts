@@ -9,9 +9,12 @@ import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
 export function parseRoute({ route }: { route: string }) {
   const urlObject = new URL(`http://test.com${route}`);
   let { pathname } = urlObject;
-
-  // @NOTE Here we might handle Next.js trailingSlash option
-  // https://nextjs.org/docs/api-reference/next.config.js/trailing-slash
+  
+  /*
+   * Next.js redirects by default routes with trailing slash to the counterpart without trailing slash
+   * @NOTE: Here we might handle Next.js trailingSlash option
+   * https://nextjs.org/docs/api-reference/next.config.js/trailing-slash
+   */
   if (pathname.endsWith('/') && pathname !== '/') {
     urlObject.pathname = pathname.slice(0, -1);
   }
