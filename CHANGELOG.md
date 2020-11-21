@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.1
+
+### Bugfixes
+
+- Fix default routing behaviour with trailing slash (#24)
+
 ## 0.7.0
 
 ### New Features
