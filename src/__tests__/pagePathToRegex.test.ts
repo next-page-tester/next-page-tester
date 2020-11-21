@@ -4,7 +4,7 @@ describe('pagePathToRouteRegex', () => {
   describe('predefined routes', () => {
     it('gets expected regex', () => {
       const actual = pagePathToRouteRegex('/index');
-      const expected = new RegExp('^(?:/index)?$').toString();
+      const expected = new RegExp('^/(?:index)?$').toString();
       expect(actual.toString()).toBe(expected);
     });
   });

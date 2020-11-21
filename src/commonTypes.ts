@@ -7,6 +7,7 @@ import type {
 import { AppContext, AppInitialProps } from 'next/app';
 import type { NextRouter } from 'next/router';
 import type { createRequest, createResponse } from 'node-mocks-http';
+import type { ParsedUrlQuery } from 'querystring';
 type Req = ReturnType<typeof createRequest>;
 type Res = ReturnType<typeof createResponse>;
 
@@ -47,7 +48,7 @@ export type NextCustomAppFile = {
   };
 };
 
-export type PageParams = { [name: string]: string | string[] };
+export type PageParams = ParsedUrlQuery;
 
 export type PageObject = {
   page: NextPageFile;

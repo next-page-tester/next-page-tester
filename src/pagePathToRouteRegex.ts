@@ -29,6 +29,11 @@ function makeOptionalNamedCapturingGroup({ name, regex }: namedCapture) {
 
 // Build a regex from a page path to catch its matching routes
 function pagePathToRouteRegex(pagePath: string): RegExp {
+  // Special case for /index page which should match both "/" and "/index" pathnames
+  if (pagePath === '/index') {
+    return /^\/(?:index)?$/;
+  }
+
   const regex = pagePath
     .replace(TRAILING_INDEX_REGEX, OPTIONAL_TRAILING_INDEX_REGEX_STRING)
     .replace(OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_REGEX, (match, paramName) => {
