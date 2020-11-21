@@ -7,10 +7,26 @@ import loadConfig from 'next/dist/next-server/server/config';
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
 
 export function parseRoute({ route }: { route: string }) {
-  return new URL(`http://test.com${route}`);
+  const urlObject = new URL(`http://test.com${route}`);
+  let { pathname } = urlObject;
+  
+  /*
+   * Next.js redirects by default routes with trailing slash to the counterpart without trailing slash
+   * @NOTE: Here we might handle Next.js trailingSlash option
+   * https://nextjs.org/docs/api-reference/next.config.js/trailing-slash
+   */
+  if (pathname.endsWith('/') && pathname !== '/') {
+    urlObject.pathname = pathname.slice(0, -1);
+  }
+
+  return urlObject;
 }
 
-export function parseQueryString({ queryString }: { queryString: string }) {
+export function parseQueryString({
+  queryString,
+}: {
+  queryString: string;
+}): querystring.ParsedUrlQuery {
   const qs = queryString.startsWith('?')
     ? queryString.substring(1)
     : queryString;

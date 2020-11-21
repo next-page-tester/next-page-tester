@@ -52,12 +52,12 @@ type PageInfo = Pick<
 >;
 async function getPageInfo({ options }: { options: ExtendedOptions }) {
   const { route } = options;
+  const { pathname: routePathName, search } = parseRoute({ route });
   const pagePaths = await getPagePaths({ options });
   const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
-  const { pathname: routePathName, search } = parseRoute({ route });
 
   // Match provided route through route regexes generated from /page components
-  const matchingPagePaths = pagePaths
+  const matchingPageInfo: PageInfo[] = pagePaths
     .map((originalPath, index) => {
       const result = routePathName.match(pagePathRegexes[index]);
       if (result) {
@@ -77,5 +77,5 @@ async function getPageInfo({ options }: { options: ExtendedOptions }) {
     .sort((a, b) => a.paramsNumber - b.paramsNumber);
 
   // Return the result with less page params
-  return matchingPagePaths[0];
+  return matchingPageInfo[0];
 }

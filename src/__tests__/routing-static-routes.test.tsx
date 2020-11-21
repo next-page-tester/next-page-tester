@@ -31,10 +31,11 @@ describe('Static routes', () => {
   });
 
   describe('route with trailing slash', () => {
-    it('throws "page not found" error', async () => {
-      await expect(getPage({ nextRoot, route: '/blog/5/' })).rejects.toThrow(
-        '[next page tester] No matching page found for given route'
-      );
+    it('redirect to their counterpart without a trailing slash', async () => {
+      const actualPage = await getPage({ nextRoot, route: '/blog/' });
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(<BlogIndexPage />);
+      expect(actual).toEqual(expected);
     });
   });
 
@@ -46,36 +47,45 @@ describe('Static routes', () => {
     });
   });
 
-  describe('route matching page with valid non ".js" extension', () => {
-    it('renders page', async () => {
-      const actualPage = await getPage({
-        nextRoot,
-        route: '/typescript',
-      });
-      const { container: actual } = render(actualPage);
-      const { container: expected } = render(<TypescriptPage />);
-      expect(actual).toEqual(expected);
-    });
-  });
-
-  describe('route matching page file with invalid extension', () => {
-    it('throws "page not found" error', async () => {
-      await expect(
-        getPage({
+  describe('page file extensions', () => {
+    describe('extension declared in "pageExtensions" config', () => {
+      it('renders page', async () => {
+        const actualPage = await getPage({
           nextRoot,
-          route: '/invalid-extension',
-        })
-      ).rejects.toThrow(
-        '[next page tester] No matching page found for given route'
-      );
+          route: '/typescript',
+        });
+        const { container: actual } = render(actualPage);
+        const { container: expected } = render(<TypescriptPage />);
+        expect(actual).toEqual(expected);
+      });
+    });
+
+    describe('extension NOT declared in "pageExtensions" config', () => {
+      it('throws "page not found" error', async () => {
+        await expect(
+          getPage({
+            nextRoot,
+            route: '/invalid-extension',
+          })
+        ).rejects.toThrow(
+          '[next page tester] No matching page found for given route'
+        );
+      });
     });
   });
 
-  describe('Index routes', () => {
-    it('route files named index to the root of the directory', async () => {
+  describe('index routes', () => {
+    it('routes files named index to the root of the directory', async () => {
       const actualPage = await getPage({ nextRoot, route: '/blog' });
       const { container: actual } = render(actualPage);
       const { container: expected } = render(<BlogIndexPage />);
+      expect(actual).toEqual(expected);
+    });
+
+    it('routes root pages/index page to "/"', async () => {
+      const actualPage = await getPage({ nextRoot, route: '/' });
+      const { container: actual } = render(actualPage);
+      const { container: expected } = render(<IndexPage />);
       expect(actual).toEqual(expected);
     });
   });
