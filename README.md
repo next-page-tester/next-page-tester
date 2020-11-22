@@ -9,7 +9,7 @@ The missing DOM integration testing tool for [Next.js][next-github].
 Given a Next.js route, this library will return an instance of the matching page component instantiated with the **properties** derived by Next.js' [**routing system**][next-docs-routing] and [**server side data fetching**][next-docs-data-fetching].
 
 ```js
-import { render, screen, userEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { getPage } from 'next-page-tester';
 
 describe('Blog page', () => {
@@ -21,7 +21,7 @@ describe('Blog page', () => {
     render(Page);
     expect(screen.getByText('Blog')).toBeInTheDocument();
 
-    userEvent.click(screen.getByText('Link'));
+    fireEvent.click(screen.getByText('Link'));
     await screen.findByText('Linked page');
   });
 });
