@@ -6,17 +6,16 @@ import BlogPage from './__fixtures__/pages/blog/[id]';
 import BlogPage99 from './__fixtures__/pages/blog/99';
 import CatchAllPage from './__fixtures__/pages/catch-all/[id]/[...slug]';
 import OptionalCatchAllPage from './__fixtures__/pages/optional-catch-all/[id]/[[...slug]]';
-import { sleep } from './__utils__';
 const nextRoot = __dirname + '/__fixtures__';
 
 describe('Dynamic routes', () => {
   describe('Basic dynamic routes', () => {
     it('gets expected page object', async () => {
-      const actualPage = await getPage({
+      const { page } = await getPage({
         nextRoot,
         route: '/blog/5',
       });
-      const { container: actual } = render(actualPage);
+      const { container: actual } = render(page);
       const { container: expected } = render(
         <BlogPage
           routerMock={{
@@ -30,11 +29,11 @@ describe('Dynamic routes', () => {
     });
 
     it('gets expected page object with params and querystring', async () => {
-      const actualPage = await getPage({
+      const { page } = await getPage({
         nextRoot,
         route: '/blog/5?foo=bar',
       });
-      const { container: actual } = render(actualPage);
+      const { container: actual } = render(page);
       const { container: expected } = render(
         <BlogPage
           routerMock={{
@@ -49,11 +48,11 @@ describe('Dynamic routes', () => {
     });
 
     it('predefined routes take precedence over dynamic', async () => {
-      const actualPage = await getPage({
+      const { page } = await getPage({
         nextRoot,
         route: '/blog/99',
       });
-      const { container: actual } = render(actualPage);
+      const { container: actual } = render(page);
       const { container: expected } = render(<BlogPage99 />);
       expect(actual).toEqual(expected);
     });
@@ -61,11 +60,11 @@ describe('Dynamic routes', () => {
 
   describe('Catch all routes', () => {
     it('gets expected page object with params and querystring', async () => {
-      const actualPage = await getPage({
+      const { page } = await getPage({
         nextRoot,
         route: '/catch-all/5/foo/bar/moo?foo=bar',
       });
-      const { container: actual } = render(actualPage);
+      const { container: actual } = render(page);
       const { container: expected } = render(
         <CatchAllPage
           routerMock={{
@@ -95,11 +94,11 @@ describe('Dynamic routes', () => {
   describe('Optional catch all routes', () => {
     describe('Optional catch all routes', () => {
       it('gets expected page object with params and querystring', async () => {
-        const actualPage = await getPage({
+        const { page } = await getPage({
           nextRoot,
           route: '/optional-catch-all/5/foo/bar/moo?foo=bar',
         });
-        const { container: actual } = render(actualPage);
+        const { container: actual } = render(page);
         const { container: expected } = render(
           <OptionalCatchAllPage
             routerMock={{
@@ -115,11 +114,11 @@ describe('Dynamic routes', () => {
       });
 
       it('matches when no optional params are provided', async () => {
-        const actualPage = await getPage({
+        const { page } = await getPage({
           nextRoot,
           route: '/optional-catch-all/5',
         });
-        const { container: actual } = render(actualPage);
+        const { container: actual } = render(page);
         const { container: expected } = render(
           <OptionalCatchAllPage
             routerMock={{

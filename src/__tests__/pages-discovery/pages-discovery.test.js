@@ -9,11 +9,11 @@ import { getPage } from '../../index';
 
 describe('Pages directory discovery + "nextRoot" option', () => {
   it('discover "pages" directory in auto-detected root', async () => {
-    const actualPage = await getPage({
+    const { page } = await getPage({
       route: '/page',
     });
 
-    const { container: actual } = render(actualPage);
+    const { container: actual } = render(page);
     const { container: expected } = render(<PageInNaturalRoot />);
     expect(actual).toEqual(expected);
   });
@@ -21,24 +21,24 @@ describe('Pages directory discovery + "nextRoot" option', () => {
   describe('With "nextRoot" option', () => {
     it('discover "pages" directory in provided root', async () => {
       const nextRoot = path.join(__dirname, '/in-root');
-      const actualPage = await getPage({
+      const { page } = await getPage({
         route: '/page',
         nextRoot,
       });
 
-      const { container: actual } = render(actualPage);
+      const { container: actual } = render(page);
       const { container: expected } = render(<PageInRoot />);
       expect(actual).toEqual(expected);
     });
 
     it('discover "pages" directory in root/src', async () => {
       const nextRoot = path.join(__dirname, '/in-src');
-      const actualPage = await getPage({
+      const { page } = await getPage({
         route: '/page',
         nextRoot,
       });
 
-      const { container: actual } = render(actualPage);
+      const { container: actual } = render(page);
       const { container: expected } = render(<PageInSrc />);
       expect(actual).toEqual(expected);
     });

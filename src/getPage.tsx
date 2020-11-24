@@ -34,7 +34,7 @@ export default async function getPage({
   res = (res) => res,
   router = (router) => router,
   useCustomApp = false,
-}: Options): Promise<React.ReactElement> {
+}: Options): Promise<{ page: React.ReactElement }> {
   const optionsWithDefaults: OptionsWithDefaults = {
     route,
     nextRoot,
@@ -70,16 +70,18 @@ export default async function getPage({
 
   const { pageElement, pageObject } = await makePage();
 
-  return (
-    <RouterProvider pageObject={pageObject} options={options}>
-      <NavigationProvider
-        makePage={async (route) => {
-          const { pageElement } = await makePage(route);
-          return pageElement;
-        }}
-      >
-        {pageElement}
-      </NavigationProvider>
-    </RouterProvider>
-  );
+  return {
+    page: (
+      <RouterProvider pageObject={pageObject} options={options}>
+        <NavigationProvider
+          makePage={async (route) => {
+            const { pageElement } = await makePage(route);
+            return pageElement;
+          }}
+        >
+          {pageElement}
+        </NavigationProvider>
+      </RouterProvider>
+    ),
+  };
 }

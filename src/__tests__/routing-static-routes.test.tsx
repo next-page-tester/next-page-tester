@@ -10,8 +10,8 @@ const nextRoot = __dirname + '/__fixtures__';
 describe('Static routes', () => {
   describe('route matching a page path', () => {
     it('gets expected component', async () => {
-      const actualPage = await getPage({ nextRoot, route: '/index' });
-      const { container: actual } = render(actualPage);
+      const { page } = await getPage({ nextRoot, route: '/index' });
+      const { container: actual } = render(page);
       const { container: expected } = render(<IndexPage />);
       expect(actual).toEqual(expected);
     });
@@ -32,8 +32,8 @@ describe('Static routes', () => {
 
   describe('route with trailing slash', () => {
     it('redirect to their counterpart without a trailing slash', async () => {
-      const actualPage = await getPage({ nextRoot, route: '/blog/' });
-      const { container: actual } = render(actualPage);
+      const { page } = await getPage({ nextRoot, route: '/blog/' });
+      const { container: actual } = render(page);
       const { container: expected } = render(<BlogIndexPage />);
       expect(actual).toEqual(expected);
     });
@@ -50,11 +50,11 @@ describe('Static routes', () => {
   describe('page file extensions', () => {
     describe('extension declared in "pageExtensions" config', () => {
       it('renders page', async () => {
-        const actualPage = await getPage({
+        const { page } = await getPage({
           nextRoot,
           route: '/typescript',
         });
-        const { container: actual } = render(actualPage);
+        const { container: actual } = render(page);
         const { container: expected } = render(<TypescriptPage />);
         expect(actual).toEqual(expected);
       });
@@ -76,15 +76,15 @@ describe('Static routes', () => {
 
   describe('index routes', () => {
     it('routes files named index to the root of the directory', async () => {
-      const actualPage = await getPage({ nextRoot, route: '/blog' });
-      const { container: actual } = render(actualPage);
+      const { page } = await getPage({ nextRoot, route: '/blog' });
+      const { container: actual } = render(page);
       const { container: expected } = render(<BlogIndexPage />);
       expect(actual).toEqual(expected);
     });
 
     it('routes root pages/index page to "/"', async () => {
-      const actualPage = await getPage({ nextRoot, route: '/' });
-      const { container: actual } = render(actualPage);
+      const { page } = await getPage({ nextRoot, route: '/' });
+      const { container: actual } = render(page);
       const { container: expected } = render(<IndexPage />);
       expect(actual).toEqual(expected);
     });
