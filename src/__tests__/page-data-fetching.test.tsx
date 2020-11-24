@@ -53,6 +53,7 @@ describe('Data fetching', () => {
       const expectedContext = {
         params: expectedParams,
         query: expectedQuery,
+        resolvedUrl: '/ssr/5?id=5&foo=bar',
         req: httpMocks.createRequest({
           url: '/ssr/5?foo=bar',
           params: expectedParams,

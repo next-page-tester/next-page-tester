@@ -57,6 +57,7 @@ export type PageObject = {
   params: PageParams;
   paramsNumber: number;
   query: PageParams;
+  resolvedUrl: string;
 };
 
 export type PageData = {
