@@ -11,7 +11,7 @@ const nextRoot = __dirname + '/__fixtures__';
 describe('Data fetching', () => {
   describe('page with getInitialProps', () => {
     it('feeds page component with returned props', async () => {
-      const actualPage = await getPage({
+      const { page } = await getPage({
         nextRoot,
         route: '/gip/5?foo=bar',
       });
@@ -19,7 +19,7 @@ describe('Data fetching', () => {
       const expectedParams = { id: '5' };
       const expectedQuery = { foo: 'bar' };
 
-      const { container: actual } = render(actualPage);
+      const { container: actual } = render(page);
       const expectedContext = {
         AppTree: Fragment,
         req: httpMocks.createRequest({
@@ -41,7 +41,7 @@ describe('Data fetching', () => {
 
   describe('page with getServerSideProps', () => {
     it('feeds page component with returned props', async () => {
-      const actualPage = await getPage({
+      const { page } = await getPage({
         nextRoot,
         route: '/ssr/5?foo=bar',
       });
@@ -49,7 +49,7 @@ describe('Data fetching', () => {
       const expectedParams = { id: '5' };
       const expectedQuery = { foo: 'bar' };
 
-      const { container: actual } = render(actualPage);
+      const { container: actual } = render(page);
       const expectedContext = {
         params: expectedParams,
         query: expectedQuery,
@@ -68,11 +68,11 @@ describe('Data fetching', () => {
 
   describe('page with getStaticProps', () => {
     it('feeds page component with returned props', async () => {
-      const actualPage = await getPage({
+      const { page } = await getPage({
         nextRoot,
         route: '/ssg/5?foo=bar',
       });
-      const { container: actual } = render(actualPage);
+      const { container: actual } = render(page);
       const { container: expected } = render(
         <SSGPage
           params={{

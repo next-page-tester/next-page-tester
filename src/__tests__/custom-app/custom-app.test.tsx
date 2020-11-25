@@ -19,12 +19,12 @@ import MissingCustomAppPage from './__fixtures__/missing-custom-app/pages/page';
 describe('Custom App component', () => {
   describe('with getInitialProps', () => {
     it('getInitialProps gets called with expected appContext', async () => {
-      const actualPage = await getPage({
+      const { page } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route: '/app-context',
         useCustomApp: true,
       });
-      const { container: actual } = render(actualPage);
+      const { container: actual } = render(page);
       const expectedAppContext = {
         AppTree: Fragment,
         Component: CustomAppWithGIP_AppContextPage,
@@ -63,12 +63,12 @@ describe('Custom App component', () => {
       ['getServerSideProps', '/ssr', CustomAppWithGIP_SSRPage],
       ['getStaticProps', '/ssg', CustomAppWithGIP_SSGPage],
     ])('Page with %s', async (dataFetchingType, route, PageComponent) => {
-      const actualPage = await getPage({
+      const { page } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route,
         useCustomApp: true,
       });
-      const { container: actual } = render(actualPage);
+      const { container: actual } = render(page);
       const { container: expected } = render(
         <CustomAppWithGIP
           Component={PageComponent}
@@ -85,12 +85,12 @@ describe('Custom App component', () => {
 
     describe('Page with getInitialProps', () => {
       it('getInitialProps does not get called', async () => {
-        const actualPage = await getPage({
+        const { page } = await getPage({
           nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
           route: '/gip',
           useCustomApp: true,
         });
-        const { container: actual } = render(actualPage);
+        const { container: actual } = render(page);
         const { container: expected } = render(
           <CustomAppWithGIP
             Component={CustomAppWithGIP_GIPPage}
@@ -108,13 +108,13 @@ describe('Custom App component', () => {
   describe("calling Next's App.getInitialProps", () => {
     describe('Page with getInitialProps', () => {
       it("App.getInitialProps is able to call page's getInitialProps", async () => {
-        const actualPage = await getPage({
+        const { page } = await getPage({
           nextRoot: __dirname + '/__fixtures__/custom-app-with-next-app-gip',
           route: '/gip',
           useCustomApp: true,
         });
 
-        const { container: actual } = render(actualPage);
+        const { container: actual } = render(page);
         const { container: expected } = render(
           <CustomAppWithNextAppGIP
             Component={CustomAppWithNextAppGIP_GIP}
@@ -129,12 +129,12 @@ describe('Custom App component', () => {
   });
 
   it('Loads custom app file with any extension defined in "next.config.js"', async () => {
-    const actualPage = await getPage({
+    const { page } = await getPage({
       nextRoot: __dirname + '/__fixtures__/special-extension',
       route: '/page',
       useCustomApp: true,
     });
-    const { container: actual } = render(actualPage);
+    const { container: actual } = render(page);
     const { container: expected } = render(
       <SpecialExtensionCustomApp Component={SpecialExtensionPage} />
     );
@@ -142,12 +142,12 @@ describe('Custom App component', () => {
   });
 
   it('Return page as usual if no custom app file is found', async () => {
-    const actualPage = await getPage({
+    const { page } = await getPage({
       nextRoot: __dirname + '/__fixtures__/missing-custom-app',
       route: '/page',
       useCustomApp: true,
     });
-    const { container: actual } = render(actualPage);
+    const { container: actual } = render(page);
     const { container: expected } = render(<MissingCustomAppPage />);
     expect(actual).toEqual(expected);
   });

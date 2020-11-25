@@ -14,11 +14,11 @@ import { getPage } from 'next-page-tester';
 
 describe('Blog page', () => {
   it('renders blog page', async () => {
-    const Page = await getPage({
+    const { page } = await getPage({
       route: '/blog/1',
     });
 
-    render(Page);
+    render(page);
     expect(screen.getByText('Blog')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Link'));

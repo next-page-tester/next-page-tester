@@ -8,12 +8,12 @@ const nextRoot = __dirname + '/__fixtures__';
 describe('Router mocking', () => {
   describe('page using "useRouter"', () => {
     it('receives expected router object', async () => {
-      const actualPage = await getPage({
+      const { page } = await getPage({
         nextRoot,
         route: '/with-router/99?foo=bar#moo',
       });
 
-      const { container: actual } = render(actualPage);
+      const { container: actual } = render(page);
       const { container: expected } = render(
         <WithRouter
           routerMock={{
@@ -37,13 +37,13 @@ describe('Router mocking', () => {
       const routerMock = {
         route: 'mocked',
       };
-      const actualPage = await getPage({
+      const { page } = await getPage({
         nextRoot,
         route: '/with-router/99',
         // @ts-ignore
         router: (router) => routerMock,
       });
-      const { container: actual } = render(actualPage);
+      const { container: actual } = render(page);
       const { container: expected } = render(
         <WithRouter routerMock={routerMock} />
       );

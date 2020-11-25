@@ -12,11 +12,11 @@ describe('Client side navigation', () => {
     ${'programmatically'}     | ${'Go to B programmatically'}
   `('$title', ({ linkText }) => {
     it('navigates between pages', async () => {
-      const Page = await getPage({
+      const { page } = await getPage({
         nextRoot,
         route: '/client-navigation-link/a',
       });
-      const screen = render(Page);
+      const screen = render(page);
       screen.getByText('This is page A');
 
       // Navigate A -> B
@@ -45,11 +45,11 @@ describe('Client side navigation', () => {
   // @ NOTE This test doesn't actually fail
   // but it forces Jest to render errors about updates after unmount in console
   it('does not re-render (does not update router mock) if page gets unmounted', async () => {
-    const Page = await getPage({
+    const { page } = await getPage({
       nextRoot,
       route: '/client-navigation-link/a',
     });
-    const { unmount } = render(Page);
+    const { unmount } = render(page);
     const linkToB = screen.getByText('Go to B with Link');
     fireEvent.click(linkToB);
     unmount();
