@@ -22,7 +22,6 @@ describe('Custom App component', () => {
       const { page } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route: '/app-context',
-        useCustomApp: true,
       });
       const { container: actual } = render(page);
       const expectedAppContext = {
@@ -66,7 +65,6 @@ describe('Custom App component', () => {
       const { page } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route,
-        useCustomApp: true,
       });
       const { container: actual } = render(page);
       const { container: expected } = render(
@@ -88,7 +86,6 @@ describe('Custom App component', () => {
         const { page } = await getPage({
           nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
           route: '/gip',
-          useCustomApp: true,
         });
         const { container: actual } = render(page);
         const { container: expected } = render(
@@ -111,7 +108,6 @@ describe('Custom App component', () => {
         const { page } = await getPage({
           nextRoot: __dirname + '/__fixtures__/custom-app-with-next-app-gip',
           route: '/gip',
-          useCustomApp: true,
         });
 
         const { container: actual } = render(page);
@@ -132,7 +128,6 @@ describe('Custom App component', () => {
     const { page } = await getPage({
       nextRoot: __dirname + '/__fixtures__/special-extension',
       route: '/page',
-      useCustomApp: true,
     });
     const { container: actual } = render(page);
     const { container: expected } = render(
@@ -145,7 +140,6 @@ describe('Custom App component', () => {
     const { page } = await getPage({
       nextRoot: __dirname + '/__fixtures__/missing-custom-app',
       route: '/page',
-      useCustomApp: true,
     });
     const { container: actual } = render(page);
     const { container: expected } = render(<MissingCustomAppPage />);
@@ -158,11 +152,23 @@ describe('Custom App component', () => {
         getPage({
           nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
           route: '/_app',
-          useCustomApp: true,
         })
       ).rejects.toThrow(
         '[next page tester] No matching page found for given route'
       );
+    });
+  });
+
+  describe('"useCustomApp" === false while _app component available', () => {
+    it('does not render custom App', async () => {
+      const { page } = await getPage({
+        nextRoot: __dirname + '/__fixtures__/special-extension',
+        route: '/page',
+        useCustomApp: false,
+      });
+      const { container: actual } = render(page);
+      const { container: expected } = render(<SpecialExtensionPage />);
+      expect(actual).toEqual(expected);
     });
   });
 });

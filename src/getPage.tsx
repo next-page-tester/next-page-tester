@@ -33,7 +33,7 @@ export default async function getPage({
   req = (req) => req,
   res = (res) => res,
   router = (router) => router,
-  useCustomApp = false,
+  useCustomApp = true,
 }: Options): Promise<{ page: React.ReactElement }> {
   const optionsWithDefaults: OptionsWithDefaults = {
     route,
