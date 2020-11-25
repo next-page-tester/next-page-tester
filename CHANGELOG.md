@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.8.0
+
+### Breaking Changes
+
+- Dropped support for Next.js 9
+- `getPage` promise returns an object with a `page` prop holding the expected page element (previously page element was directly returned)
+- `useCustomApp` option defaults to `true`
+
+### New Features
+
+- Provide support for Next.js 10
+
 ## 0.7.1
 
 ### Bugfixes
