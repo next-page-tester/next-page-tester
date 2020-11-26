@@ -1,5 +1,6 @@
 import React from 'react';
 import getCustomAppFile from './getCustomAppFile';
+import { renderDocument } from './_document';
 import { fetchAppData, fetchPageData } from './fetchData';
 import type { PageObject, ExtendedOptions } from './commonTypes';
 
@@ -14,7 +15,7 @@ export default async function makePageElement({
   pageObject: PageObject;
   options: ExtendedOptions;
 }) {
-  const { useCustomApp } = options;
+  const { useCustomApp, useDocument } = options;
 
   const customAppFile = useCustomApp
     ? await getCustomAppFile({ options })
@@ -36,13 +37,20 @@ export default async function makePageElement({
   let pageElement = <page.default {...props} />;
 
   // Optionally wrap with custom App
-  if (useCustomApp) {
-    const customAppFile = await getCustomAppFile({ options });
-    if (customAppFile) {
-      pageElement = (
-        <customAppFile.default Component={page.default} pageProps={props} />
-      );
-    }
+  if (useCustomApp && customAppFile) {
+    pageElement = (
+      <customAppFile.default Component={page.default} pageProps={props} />
+    );
+  }
+
+  // Optionally wrap with custom Document
+  if (useDocument) {
+    pageElement = await renderDocument({
+      pageElement,
+      options,
+      pageObject,
+      pageData,
+    });
   }
 
   return pageElement;

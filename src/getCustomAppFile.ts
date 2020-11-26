@@ -1,5 +1,6 @@
 import type { ExtendedOptions, NextCustomAppFile } from './commonTypes';
 import { loadPageWithUnknownExtension } from './loadPage';
+import { APP_PATH } from './constants';
 
 export default async function getCustomAppFile({
   options,
@@ -8,6 +9,6 @@ export default async function getCustomAppFile({
 }): Promise<NextCustomAppFile | undefined> {
   return await loadPageWithUnknownExtension<NextCustomAppFile>({
     options,
-    pagePath: '/_app',
+    pagePath: APP_PATH,
   });
 }

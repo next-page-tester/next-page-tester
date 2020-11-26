@@ -39,6 +39,7 @@ Next page tester will take care of:
 - calling **Next.js data fetching methods** (`getServerSideProps`, `getInitialProps` or `getStaticProps`) if the case
 - set up a **mocked `next/router` provider** initialized with the expected values (to test `useRouter` and `withRouter`)
 - wrapping page with custom `_app` component
+- wrapping page with custom `_document` component
 - **instantiating** page component with **expected page props**
 - Emulate client side navigation via `Link`, `router.push`, `router.replace`
 
@@ -51,6 +52,7 @@ Next page tester will take care of:
 | **res**               | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -               |
 | **router**            | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -               |
 | **useCustomApp**      | Use [custom App component][next-docs-custom-app]                                 | `boolean`          | `true`          |
+| **useDocument**       | Use [render document component][next-docs-custom-document]                       | `boolean`          | `false`         |
 | **nextRoot**          | Absolute path to Next's root folder                                              | `string`           | _auto detected_ |
 
 ## Notes
@@ -74,7 +76,6 @@ Next.js `Link` components invoke `window.scrollTo` on click which is not impleme
 
 ## Todo's
 
-- Consider adding custom Document support
 - Consider reusing Next.js code parts (not only types)
 - Consider supporting Next.js `trailingSlash` option
 
@@ -92,4 +93,5 @@ Next.js `Link` components invoke `window.scrollTo` on click which is not impleme
 [next-docs-data-fetching]: https://nextjs.org/docs/basic-features/data-fetching
 [next-docs-router]: https://nextjs.org/docs/api-reference/next/router
 [next-docs-custom-app]: https://nextjs.org/docs/advanced-features/custom-app
+[next-docs-custom-document]: https://nextjs.org/docs/advanced-features/custom-document
 [next-gh-strict-bug]: https://github.com/vercel/next.js/issues/16219
