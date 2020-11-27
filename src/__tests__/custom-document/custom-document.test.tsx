@@ -5,7 +5,6 @@ import httpMocks from 'node-mocks-http';
 import { getPage } from '../../index';
 import CustomDocumentWithGIP_SSR from './__fixtures__/custom-document-with-gip/pages/ssr';
 import CustomApp from './__fixtures__/custom-document-with-gip/pages/_app';
-import CustomDocumentWithSpecialExtension_Page from './__fixtures__/special-extension/pages/page';
 
 describe('Custom _document', () => {
   describe('with getInitialProps', () => {
@@ -124,7 +123,7 @@ describe('Custom _document', () => {
   });
 
   describe('with special extensions', () => {
-    it('Custom document is wrapped page', async () => {
+    it('renders expected document component', async () => {
       const route = '/page';
       const { page } = await getPage({
         nextRoot: __dirname + '/__fixtures__/special-extension',
@@ -132,29 +131,15 @@ describe('Custom _document', () => {
         useDocument: true,
       });
 
-      const { container, debug } = render(page);
+      const { container } = render(page, {
+        container: document.createElement('html'),
+      });
+
       const head = container.querySelector('head') as HTMLHeadElement;
-      const html = container.querySelector('html') as HTMLHtmlElement;
-
-      debug();
-
-      expect(html).toHaveAttribute('lang', 'en');
       expect(head.querySelector('meta[name="Description"]')).toHaveAttribute(
         'Content',
-        'Static description'
+        'Document with special extension'
       );
-      expect(
-        head.querySelector('meta[name="application-name"]')
-      ).toHaveAttribute('Content', 'Static app');
-
-      const actual = container.querySelector('#__next') as HTMLDivElement;
-      actual.removeAttribute('id');
-
-      const { container: expected } = render(
-        <CustomDocumentWithSpecialExtension_Page />
-      );
-
-      expect(actual).toEqual(expected);
     });
   });
 });
