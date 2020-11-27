@@ -1,5 +1,6 @@
 import path from 'path';
 import fastGlob from 'fast-glob';
+import normalizePath from 'normalize-path';
 import { NextPageFile, ExtendedOptions } from './commonTypes';
 
 export function loadPage({
@@ -22,8 +23,9 @@ export async function loadPageWithUnknownExtension<FileType>({
 }): Promise<FileType | undefined> {
   const pageExtensionGlobPattern = `.{${pageExtensions.join(',')}}`;
   const files = await fastGlob([
-    pagesDirectory + pagePath + pageExtensionGlobPattern,
+    normalizePath(pagesDirectory + pagePath + pageExtensionGlobPattern),
   ]);
+
   if (!files.length) {
     return;
   }
