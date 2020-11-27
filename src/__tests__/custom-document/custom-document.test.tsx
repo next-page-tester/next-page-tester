@@ -5,6 +5,22 @@ import { getPage } from '../../index';
 import CustomDocumentWithGIP_Page from './__fixtures__/custom-document-with-gip/pages/page';
 import CustomApp from './__fixtures__/custom-document-with-gip/pages/_app';
 
+beforeEach(() => {
+  // Suppress validateDOMNesting error logs
+  // we now we're doing borderline stuff like rendering nested html elements
+  const consoleError = console.error;
+  console.error = jest.fn((error) => {
+    if (!error.includes('validateDOMNesting')) {
+      consoleError(error);
+    }
+  });
+});
+
+afterEach(() => {
+  // @ts-ignore
+  console.error.mockRestore();
+});
+
 describe('_document support', () => {
   describe('_document with getInitialProps', () => {
     describe('with custom _app', () => {
