@@ -5,11 +5,12 @@ import findRoot from 'find-root';
 import { existsSync } from 'fs';
 import loadConfig from 'next/dist/next-server/server/config';
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
+import path from 'path';
 
 export function parseRoute({ route }: { route: string }) {
   const urlObject = new URL(`http://test.com${route}`);
   let { pathname } = urlObject;
-  
+
   /*
    * Next.js redirects by default routes with trailing slash to the counterpart without trailing slash
    * @NOTE: Here we might handle Next.js trailingSlash option
@@ -55,7 +56,10 @@ export function removeFileExtension({ path }: { path: string }) {
 export const defaultNextRoot = findRoot(process.cwd());
 
 export function findPagesDirectory({ nextRoot }: { nextRoot: string }) {
-  const pagesPaths = [`${nextRoot}/pages`, `${nextRoot}/src/pages`];
+  const pagesPaths = [
+    path.join(nextRoot, 'pages'),
+    path.join(nextRoot, 'src', 'pages'),
+  ];
   for (const path of pagesPaths) {
     if (existsSync(path)) {
       return path;
