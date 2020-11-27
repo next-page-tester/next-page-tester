@@ -18,7 +18,7 @@
     "preversion": "npm run prepare",
     "version": "git add package.json",
     "postversion": "git push && git push --tags",
-    "format": "prettier --write \"**/*.{js,json,md,ts}\""
+    "format": "prettier --write \"**/*.{js,json,md,ts,tsx}\""
   },
   "keywords": [
     "next",
@@ -92,7 +92,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{js,ts,json}": [
+    "**/*.{js,json,ts,tsx}": [
       "prettier",
       "npm run test:source -- ."
     ],
