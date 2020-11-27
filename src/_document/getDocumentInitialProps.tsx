@@ -12,6 +12,8 @@ export default async function getDocumentInitialProps({
   pageObject: PageObject;
   renderPage: RenderPage;
 }): Promise<DocumentInitialProps> {
+  // @NOTE: Document has always a getInitialProps since inherits from NextDocument
+  /* istanbul ignore next */
   const getDocumentInitialProps =
     Document.getInitialProps || NextDocument.getInitialProps;
 
