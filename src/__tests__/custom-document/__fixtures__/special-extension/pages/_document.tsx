@@ -6,7 +6,6 @@ class CustomDocument extends Document {
     return (
       <>
         <Head>
-          <meta name="application-name" content="Static app" />
           <meta name="Description" content="Document with special extension" />
         </Head>
 

@@ -6,8 +6,7 @@ class CustomDocument extends Document {
     const initialProps = await Document.getInitialProps(ctx);
     return {
       ...initialProps,
-      applicationName: 'My app',
-      description: 'Custom description',
+      description: 'Custom document description',
     };
   };
 
@@ -15,7 +14,6 @@ class CustomDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta name="application-name" content={this.props.applicationName} />
           <meta name="Description" content={this.props.description} />
         </Head>
 
