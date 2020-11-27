@@ -1,7 +1,10 @@
 ---
 name: CI
 on:
-  - pull_request
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   build:
@@ -9,14 +12,19 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [14.x]
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run prepare
+
+      - name: Upload code coverage
+        uses: codecov/codecov-action@v1
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '14.x'
