@@ -1,7 +1,7 @@
 import React from 'react';
-import getCustomAppFile from './getCustomAppFile';
+import { getCustomAppFile, fetchAppData } from './_app';
 import { renderDocument } from './_document';
-import { fetchAppData, fetchPageData } from './fetchData';
+import { fetchPageData } from './fetchData';
 import type { PageObject, ExtendedOptions } from './commonTypes';
 
 /*

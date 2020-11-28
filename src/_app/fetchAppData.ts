@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import type { AppContext, AppInitialProps } from 'next/app';
 import makeRouterMock from '../makeRouterMock';
-import { makeGetInitialPropsContext } from './makeContextObject';
+import { makeGetInitialPropsContext } from '../fetchData/makeContextObject';
 import type {
   NextCustomAppFile,
   PageObject,
