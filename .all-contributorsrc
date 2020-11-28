@@ -45,5 +45,6 @@
   "projectOwner": "toomuchdesign",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "badgeTemplate": ""
 }
