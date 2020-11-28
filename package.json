@@ -18,7 +18,7 @@
     "preversion": "npm run prepare",
     "version": "git add package.json",
     "postversion": "git push && git push --tags",
-    "format": "prettier --write \"**/*.{js,json,md,ts}\""
+    "format": "prettier --write \"**/*.{js,json,md,ts,tsx}\""
   },
   "keywords": [
     "next",
@@ -49,7 +49,6 @@
     "@types/react-dom": "^16.9.9",
     "@types/webpack": "^4.41.22",
     "babel-jest": "^26.3.0",
-    "coveralls": "^3.1.0",
     "husky": "^4.0.0",
     "jest": "^26.4.2",
     "lint-staged": "^10.0.0",
@@ -93,7 +92,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{js,ts,json}": [
+    "**/*.{js,json,ts,tsx}": [
       "prettier",
       "npm run test:source -- ."
     ],
