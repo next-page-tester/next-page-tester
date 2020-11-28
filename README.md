@@ -41,29 +41,27 @@ Next page tester will take care of:
 - calling **Next.js data fetching methods** (`getServerSideProps`, `getInitialProps` or `getStaticProps`) if the case
 - set up a **mocked `next/router` provider** initialized with the expected values (to test `useRouter` and `withRouter`)
 - wrapping page with custom `_app` component
+- wrapping page with custom `_document` component
 - **instantiating** page component with **expected page props**
 - Emulate client side navigation via `Link`, `router.push`, `router.replace`
 
 ## Options
 
-| Property              | Description                                                                      | type               | Default         |
-| --------------------- | -------------------------------------------------------------------------------- | ------------------ | --------------- |
-| **route** (mandatory) | Next route (must start with `/`)                                                 | `string`           | -               |
-| **req**               | Access default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -               |
-| **res**               | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -               |
-| **router**            | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -               |
-| **useCustomApp**      | Use [custom App component][next-docs-custom-app]                                 | `boolean`          | `true`          |
-| **nextRoot**          | Absolute path to Next's root folder                                              | `string`           | _auto detected_ |
+| Property                       | Description                                                                      | type               | Default         |
+| ------------------------------ | -------------------------------------------------------------------------------- | ------------------ | --------------- |
+| **route** (mandatory)          | Next route (must start with `/`)                                                 | `string`           | -               |
+| **req**                        | Access default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -               |
+| **res**                        | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -               |
+| **router**                     | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -               |
+| **useCustomApp**               | Use [custom App component][next-docs-custom-app]                                 | `boolean`          | `true`          |
+| **useDocument** (experimental) | Use [render document component][next-docs-custom-document]                       | `boolean`          | `false`         |
+| **nextRoot**                   | Absolute path to Next's root folder                                              | `string`           | _auto detected_ |
 
 ## Notes
 
 - Data fetching methods' context `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http]
 - Next page tester can be used with any testing framework/library (not tied to Testing library)
 - It might be necessary to install `@types/react-dom` and `@types/webpack` when using Typescript in `strict` mode due to [this bug][next-gh-strict-bug]
-
-### Error: Not implemented: window.scrollTo
-
-Next.js `Link` components invoke `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
 
 ### Next.js versions support
 
@@ -74,9 +72,22 @@ Next.js `Link` components invoke `window.scrollTo` on click which is not impleme
 | v0.1.0 - v0.7.0  | v9.X.X  |
 | v0.8.0 +         | v10.X.X |
 
+## FAQ
+
+### Error: Not implemented: window.scrollTo
+
+Next.js `Link` components invoke `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
+
+### `useDocument` option and `validateDOMNesting(...)` error
+
+Rendering the page instance returned by `next-page-tester` with `useDocument` option enabled in a JSDOM environment, causes `react-dom` to trigger a `validateDOMNesting(...)` error.
+
+This happens because the tested page includes tags like `<html>`, `<head>` and `<body>` which are already declared by JSDOM default document.
+
+A temporary workaround consists of [mocking global `console.error` to ignore the specific error][error-log-mock].
+
 ## Todo's
 
-- Consider adding custom Document support
 - Consider reusing Next.js code parts (not only types)
 - Consider supporting Next.js `trailingSlash` option
 
@@ -115,4 +126,6 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [next-docs-data-fetching]: https://nextjs.org/docs/basic-features/data-fetching
 [next-docs-router]: https://nextjs.org/docs/api-reference/next/router
 [next-docs-custom-app]: https://nextjs.org/docs/advanced-features/custom-app
+[next-docs-custom-document]: https://nextjs.org/docs/advanced-features/custom-document
 [next-gh-strict-bug]: https://github.com/vercel/next.js/issues/16219
+[error-log-mock]: src/__tests__/use-document/use-document.test.tsx#L8

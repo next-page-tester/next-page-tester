@@ -8,6 +8,8 @@ import { AppContext, AppInitialProps } from 'next/app';
 import type { NextRouter } from 'next/router';
 import type { createRequest, createResponse } from 'node-mocks-http';
 import type { ParsedUrlQuery } from 'querystring';
+import type { DocumentType } from 'next/dist/next-server/lib/utils';
+
 type Req = ReturnType<typeof createRequest>;
 type Res = ReturnType<typeof createResponse>;
 
@@ -18,6 +20,7 @@ export type Options = {
   res?: (res: Res) => Res;
   router?: (router: NextRouter) => NextRouter;
   useCustomApp?: boolean;
+  useDocument?: boolean;
 };
 
 export type OptionsWithDefaults = Required<Options>;
@@ -46,6 +49,10 @@ export type NextCustomAppFile = {
   }> & {
     getInitialProps: (appContext: AppContext) => Promise<AppInitialProps>;
   };
+};
+
+export type NextCustomDocumentFile = {
+  default: DocumentType;
 };
 
 export type PageParams = ParsedUrlQuery;
