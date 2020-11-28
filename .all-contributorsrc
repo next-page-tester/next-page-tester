@@ -1,0 +1,50 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "toomuchdesign",
+      "name": "Andrea Carraro",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/4573549?v=4",
+      "profile": "http://www.andreacarraro.it",
+      "contributions": [
+        "code",
+        "infra",
+        "test",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "Meemaw",
+      "name": "Matej Šnuderl",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/8524109?v=4",
+      "profile": "https://www.matej.snuderl.si/",
+      "contributions": [
+        "code",
+        "infra",
+        "test",
+        "review",
+        "ideas"
+      ]
+    },
+    {
+      "login": "jasonwilliams",
+      "name": "Jason Williams",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/936006?v=4",
+      "profile": "https://jason-williams.co.uk",
+      "contributions": [
+        "ideas"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "next-page-tester",
+  "projectOwner": "toomuchdesign",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true,
+  "badgeTemplate": ""
+}
