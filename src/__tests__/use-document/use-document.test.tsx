@@ -30,7 +30,7 @@ describe('_document support', () => {
           route: '/page',
           useDocument: true,
         });
-        const { container, debug } = render(page);
+        const { container } = render(page);
         const head = container.querySelector('head') as HTMLHeadElement;
         const html = container.querySelector('html') as HTMLHtmlElement;
         expect(html).toHaveAttribute('lang', 'en');
@@ -42,14 +42,10 @@ describe('_document support', () => {
         actual.removeAttribute('id');
 
         const { container: expected } = render(
-          <CustomApp Component={CustomDocumentWithGIP_Page} pageProps={{}} />,
-          { container: document.createElement('html') }
+          <CustomApp Component={CustomDocumentWithGIP_Page} pageProps={{}} />
         );
 
-        // @NOTE this match produces a circular structure error
-        // https://github.com/facebook/jest/issues/10577
-        // expect(actual).toEqual(expected);
-        expect(true).toBe(true);
+        expect(actual).toEqual(expected);
       });
     });
   });

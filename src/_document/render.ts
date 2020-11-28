@@ -4,7 +4,7 @@ import getDocumentInitialProps from './getDocumentInitialProps';
 import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
 import type { DocumentType, RenderPage } from 'next/dist/next-server/lib/utils';
 import { APP_PATH } from '../constants';
-import { renderToString } from 'react-dom/server';
+import { renderToStaticMarkup } from 'react-dom/server';
 
 export default async function renderDocument({
   pageElement,
@@ -29,7 +29,7 @@ export default async function renderDocument({
 
   const renderPage: RenderPage = () => {
     // Render markup that will be injected into #__next element by Next.JS in the Main component of Document
-    const html = renderToString(pageElement);
+    const html = renderToStaticMarkup(pageElement);
     return { html, head };
   };
 
