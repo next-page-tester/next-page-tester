@@ -1,11 +1,10 @@
 # Next page tester
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Build status][ci-badge]][ci]
 [![Test coverage report][coveralls-badge]][coveralls]
 [![Npm version][npm-badge]][npm]
+<!-- ALL-CONTRIBUTORS-BADGE:START -->
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 The missing DOM integration testing tool for [Next.js][next-github].
 
@@ -81,22 +80,6 @@ Next.js `Link` components invoke `window.scrollTo` on click which is not impleme
 - Consider reusing Next.js code parts (not only types)
 - Consider supporting Next.js `trailingSlash` option
 
-[ci]: https://travis-ci.com/toomuchdesign/next-page-tester
-[ci-badge]: https://travis-ci.com/toomuchdesign/next-page-tester.svg?branch=master
-[npm]: https://www.npmjs.com/package/next-page-tester
-[npm-badge]: https://img.shields.io/npm/v/next-page-tester.svg
-[coveralls-badge]: https://coveralls.io/repos/github/toomuchdesign/next-page-tester/badge.svg?branch=master
-[coveralls]: https://coveralls.io/github/toomuchdesign/next-page-tester?branch=master
-[next-github]: https://nextjs.org/
-[req-docs]: https://nodejs.org/api/http.html#http_class_http_clientrequest
-[res-docs]: https://nodejs.org/api/http.html#http_class_http_serverresponse
-[node-mocks-http]: https://www.npmjs.com/package/node-mocks-http
-[next-docs-routing]: https://nextjs.org/docs/routing/introduction
-[next-docs-data-fetching]: https://nextjs.org/docs/basic-features/data-fetching
-[next-docs-router]: https://nextjs.org/docs/api-reference/next/router
-[next-docs-custom-app]: https://nextjs.org/docs/advanced-features/custom-app
-[next-gh-strict-bug]: https://github.com/vercel/next.js/issues/16219
-
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -117,3 +100,19 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+[ci]: https://travis-ci.com/toomuchdesign/next-page-tester
+[ci-badge]: https://travis-ci.com/toomuchdesign/next-page-tester.svg?branch=master
+[npm]: https://www.npmjs.com/package/next-page-tester
+[npm-badge]: https://img.shields.io/npm/v/next-page-tester.svg
+[coveralls-badge]: https://coveralls.io/repos/github/toomuchdesign/next-page-tester/badge.svg?branch=master
+[coveralls]: https://coveralls.io/github/toomuchdesign/next-page-tester?branch=master
+[next-github]: https://nextjs.org/
+[req-docs]: https://nodejs.org/api/http.html#http_class_http_clientrequest
+[res-docs]: https://nodejs.org/api/http.html#http_class_http_serverresponse
+[node-mocks-http]: https://www.npmjs.com/package/node-mocks-http
+[next-docs-routing]: https://nextjs.org/docs/routing/introduction
+[next-docs-data-fetching]: https://nextjs.org/docs/basic-features/data-fetching
+[next-docs-router]: https://nextjs.org/docs/api-reference/next/router
+[next-docs-custom-app]: https://nextjs.org/docs/advanced-features/custom-app
+[next-gh-strict-bug]: https://github.com/vercel/next.js/issues/16219
