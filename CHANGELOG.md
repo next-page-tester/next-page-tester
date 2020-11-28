@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.1
+
+### Bugfixes
+
+- Make paths handling OS insensitive
+
 ## 0.8.0
 
 ### Breaking Changes
