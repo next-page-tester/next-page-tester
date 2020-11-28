@@ -33,7 +33,7 @@ export default async function getPage({
   req = (req) => req,
   res = (res) => res,
   router = (router) => router,
-  useCustomApp = true,
+  useApp = true,
   useDocument = false,
 }: Options): Promise<{ page: React.ReactElement }> {
   const optionsWithDefaults: OptionsWithDefaults = {
@@ -42,7 +42,7 @@ export default async function getPage({
     req,
     res,
     router,
-    useCustomApp,
+    useApp,
     useDocument,
   };
   validateOptions(optionsWithDefaults);

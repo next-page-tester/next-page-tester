@@ -16,8 +16,8 @@ import SpecialExtensionCustomApp from './__fixtures__/special-extension/pages/_a
 import SpecialExtensionPage from './__fixtures__/special-extension/pages/page';
 import MissingCustomAppPage from './__fixtures__/missing-custom-app/pages/page';
 
-describe('Custom App component', () => {
-  describe('with getInitialProps', () => {
+describe('_app support', () => {
+  describe('_app with getInitialProps', () => {
     it('getInitialProps gets called with expected appContext', async () => {
       const { page } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
@@ -159,12 +159,12 @@ describe('Custom App component', () => {
     });
   });
 
-  describe('"useCustomApp" === false while _app component available', () => {
+  describe('"useApp" === false while _app component available', () => {
     it('does not render custom App', async () => {
       const { page } = await getPage({
         nextRoot: __dirname + '/__fixtures__/special-extension',
         route: '/page',
-        useCustomApp: false,
+        useApp: false,
       });
       const { container: actual } = render(page);
       const { container: expected } = render(<SpecialExtensionPage />);

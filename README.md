@@ -3,6 +3,7 @@
 [![Build status][ci-badge]][ci]
 [![Test coverage report][coveralls-badge]][coveralls]
 [![Npm version][npm-badge]][npm]
+
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
@@ -53,7 +54,7 @@ Next page tester will take care of:
 | **req**                        | Access default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -               |
 | **res**                        | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -               |
 | **router**                     | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -               |
-| **useCustomApp**               | Use [custom App component][next-docs-custom-app]                                 | `boolean`          | `true`          |
+| **useApp**                     | Use [custom App component][next-docs-custom-app]                                 | `boolean`          | `true`          |
 | **useDocument** (experimental) | Use [render document component][next-docs-custom-document]                       | `boolean`          | `false`         |
 | **nextRoot**                   | Absolute path to Next's root folder                                              | `string`           | _auto detected_ |
 
@@ -108,6 +109,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
