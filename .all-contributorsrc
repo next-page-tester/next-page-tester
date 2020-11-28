@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "jasonwilliams",
+      "name": "Jason Williams",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/936006?v=4",
+      "profile": "https://jason-williams.co.uk",
+      "contributions": [
+        "ideas"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "next-page-tester",
+  "projectOwner": "toomuchdesign",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
