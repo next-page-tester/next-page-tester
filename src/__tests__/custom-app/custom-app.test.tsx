@@ -159,12 +159,12 @@ describe('Custom App component', () => {
     });
   });
 
-  describe('"useCustomApp" === false while _app component available', () => {
+  describe('"useApp" === false while _app component available', () => {
     it('does not render custom App', async () => {
       const { page } = await getPage({
         nextRoot: __dirname + '/__fixtures__/special-extension',
         route: '/page',
-        useCustomApp: false,
+        useApp: false,
       });
       const { container: actual } = render(page);
       const { container: expected } = render(<SpecialExtensionPage />);

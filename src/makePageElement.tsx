@@ -15,9 +15,8 @@ export default async function makePageElement({
   pageObject: PageObject;
   options: ExtendedOptions;
 }) {
-  const { useCustomApp, useDocument } = options;
-
-  const customAppFile = useCustomApp
+  const { useApp, useDocument } = options;
+  const customAppFile = useApp
     ? await getCustomAppFile({ options })
     : undefined;
 
@@ -37,7 +36,7 @@ export default async function makePageElement({
   let pageElement = <page.default {...props} />;
 
   // Optionally wrap with custom App
-  if (useCustomApp && customAppFile) {
+  if (useApp && customAppFile) {
     pageElement = (
       <customAppFile.default Component={page.default} pageProps={props} />
     );
