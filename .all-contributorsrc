@@ -6,6 +6,18 @@
   "commit": false,
   "contributors": [
     {
+      "login": "toomuchdesign",
+      "name": "Andrea Carraro",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/4573549?v=4",
+      "profile": "http://www.andreacarraro.it",
+      "contributions": [
+        "code",
+        "infra",
+        "test",
+        "maintenance"
+      ]
+    },
+    {
       "login": "Meemaw",
       "name": "Matej Šnuderl",
       "avatar_url": "https://avatars3.githubusercontent.com/u/8524109?v=4",
