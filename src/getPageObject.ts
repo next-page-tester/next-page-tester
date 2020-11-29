@@ -16,10 +16,8 @@ export default async function getPageObject({
       pagesDirectory,
       pagePath: pageInfo.pagePath,
     });
-    return {
-      page,
-      ...pageInfo,
-    };
+
+    return { page, ...pageInfo };
   }
   throw new Error('[next page tester] No matching page found for given route');
 }
@@ -53,6 +51,7 @@ type PageInfo = Pick<
 async function getPageInfo({ options }: { options: ExtendedOptions }) {
   const { route } = options;
   const pagePaths = await getPagePaths({ options });
+
   const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
   const { pathname: routePathName, search } = parseRoute({ route });
   const query = parseQueryString({ queryString: search });

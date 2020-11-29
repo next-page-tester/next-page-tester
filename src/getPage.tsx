@@ -63,10 +63,12 @@ export default async function getPage({
     const pageObject = await getPageObject({
       options: newOptions,
     });
+
     const pageElement = await makePageElement({
       pageObject,
       options: newOptions,
     });
+
     return { pageElement, pageObject };
   };
 
