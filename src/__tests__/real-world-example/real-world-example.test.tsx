@@ -37,7 +37,15 @@ describe('real-world-example', () => {
     // Make sure cleint navigation work
     userEvent.click(screen.getByText('To page A'));
 
-    userEvent.click(await screen.findByText('Back to root'));
+    const backToRootLink = await screen.findByText('Back to root');
+
+    // TODO: something like this should work
+    // screen.getByText('Came from http://localhost:3000/');
+
+    // Make sure head title is updated with the new page
+    expect(head.querySelector('title')?.textContent).toEqual('Page A');
+
+    userEvent.click(backToRootLink);
 
     await screen.findByText('Count: 0');
   });
