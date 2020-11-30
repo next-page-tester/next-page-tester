@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -8,6 +8,8 @@ type Props = {
 };
 
 export default function Home({ name }: Props) {
+  const [count, setCount] = useState(0);
+
   return (
     <div>
       <Head>
@@ -16,6 +18,9 @@ export default function Home({ name }: Props) {
       </Head>
 
       <div>Hello {name}</div>
+
+      <div>Count: {count}</div>
+      <button onClick={() => setCount((prev) => prev + 1)}>Click me</button>
 
       <Link href="/page-a">
         <a>To page A</a>

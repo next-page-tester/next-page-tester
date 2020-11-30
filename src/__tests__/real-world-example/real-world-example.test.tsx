@@ -28,9 +28,17 @@ describe('real-world-example', () => {
     // Correctly passes query
     expect(screen.getByText('Hello Matthew')).toBeInTheDocument();
 
+    expect(screen.getByText('Count: 0')).toBeInTheDocument();
+
+    // Make sure that click handlers work
+    userEvent.click(screen.getByText('Click me'));
+    expect(screen.getByText('Count: 1')).toBeInTheDocument();
+
+    // Make sure cleint navigation work
     userEvent.click(screen.getByText('To page A'));
 
-    // TODO: fix client side navigation when useDocument: true
-    // await screen.findByText('Back to root');
+    userEvent.click(await screen.findByText('Back to root'));
+
+    await screen.findByText('Count: 0');
   });
 });

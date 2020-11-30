@@ -17,6 +17,7 @@ export default function RouterProvider({
 }) {
   const [routerMock, setRouterMock] = useState<NextRouter>();
   const isMounted = useMountedState();
+
   const pushHandler = useCallback(async (url: Parameters<PushHandler>[0]) => {
     const nextRoute = url.toString();
     const nextOptions = {
@@ -38,6 +39,7 @@ export default function RouterProvider({
       setRouterMock(nextRouter);
     }
   }, []);
+
   const initialRouterMock = useMemo(
     () =>
       makeRouterMock({

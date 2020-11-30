@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import NextDocument from 'next/document';
 import getCustomDocumentFile from './getCustomDocumentFile';
 import getDocumentInitialProps from './getDocumentInitialProps';
@@ -7,6 +7,9 @@ import type { DocumentType, RenderPage } from 'next/dist/next-server/lib/utils';
 import { APP_PATH } from '../constants';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
+import { DocumentContext } from 'next/dist/next-server/lib/document-context';
+import * as documentModule from 'next/document';
+import { AMP_RENDER_TARGET } from 'next/constants';
 
 export default async function renderDocument({
   pageElement,
@@ -27,7 +30,6 @@ export default async function renderDocument({
   let head: JSX.Element[] = [];
 
   const renderPage: RenderPage = () => {
-    // Render markup that will be injected into #__next element by Next.JS in the Main component of Document
     const html = renderToStaticMarkup(
       <HeadManagerContext.Provider
         value={{
@@ -41,6 +43,18 @@ export default async function renderDocument({
       </HeadManagerContext.Provider>
     );
     return { html, head };
+  };
+
+  // https://github.com/vercel/next.js/blob/canary/packages/next/pages/_document.tsx#L524
+  // Default behaviour of Main component is to dangerouslySetInnerHTML with the html
+  // string rendered above. This works, but will break all client side interactions
+  // as event handlers are lost in static markup
+  // @ts-ignore
+  documentModule.Main = () => {
+    const { inAmpMode, docComponentsRendered } = useContext(DocumentContext);
+    docComponentsRendered.Main = true;
+    if (inAmpMode) return <>{AMP_RENDER_TARGET}</>;
+    return <div id="__next">{pageElement}</div>;
   };
 
   const initialProps = await getDocumentInitialProps({
