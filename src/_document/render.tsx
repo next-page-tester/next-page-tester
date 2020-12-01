@@ -53,6 +53,8 @@ export default async function renderDocument({
   documentModule.Main = () => {
     const { inAmpMode, docComponentsRendered } = useContext(DocumentContext);
     docComponentsRendered.Main = true;
+    // ampMode is not (yet) supported, but code is here to match the upstream (NextJS) implementation
+    /* istanbul ignore next */
     if (inAmpMode) return <>{AMP_RENDER_TARGET}</>;
     return <div id="__next">{pageElement}</div>;
   };
