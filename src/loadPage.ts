@@ -13,9 +13,9 @@ export function loadPage({
   const tmpWindow = global.window;
 
   // Next.JS executes some rendering logic conditionally, depending if its on server.
-  // https://github.com/vercel/next.js/blob/canary/packages/next/next-server/lib/side-effect.tsx#L3
+  // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/next-server/lib/side-effect.tsx#L3
   // We want that logic to execute, so we have to trick it to think code is executing on server
-  // Because expression is evaluated on top lelve, we have to "mock" it before module is evaluated -- before require;
+  // Because expression is evaluated on module's top level, therefore we have to "mock" it before module is evaluated -- before require is called;
   // @ts-ignore
   delete global.window;
 

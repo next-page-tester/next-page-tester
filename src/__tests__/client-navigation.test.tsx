@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { getPage } from '../index';
 import PageB from './__fixtures__/pages/client-navigation-link/b';
 const nextRoot = __dirname + '/__fixtures__';

@@ -1,7 +1,6 @@
 import React from 'react';
 import path from 'path';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import PageInNaturalRoot from '../../../pages/page';
 import PageInRoot from './in-root/pages/page';
 import PageInSrc from './in-src/src/pages/page';

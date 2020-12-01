@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { getPage } from '../index';
 import WithRouter from './__fixtures__/pages/with-router/[id]';
+
 const nextRoot = __dirname + '/__fixtures__';
 
 describe('Router mocking', () => {

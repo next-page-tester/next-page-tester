@@ -89,7 +89,8 @@
     ],
     "moduleNameMapper": {
       "\\.(css|less|scss)$": "identity-obj-proxy"
-    }
+    },
+    "setupFilesAfterEnv": ["./src/__tests__/setup.ts"]
   },
   "husky": {
     "hooks": {

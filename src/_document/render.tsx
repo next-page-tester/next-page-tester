@@ -45,7 +45,7 @@ export default async function renderDocument({
     return { html, head };
   };
 
-  // https://github.com/vercel/next.js/blob/canary/packages/next/pages/_document.tsx#L524
+  // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/pages/_document.tsx#L524
   // Default behaviour of Main component is to dangerouslySetInnerHTML with the html
   // string rendered above. This works, but will break all client side interactions
   // as event handlers are lost in static markup

@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { getPage } from '../index';
 import IndexPage from './__fixtures__/pages/index';
 import TypescriptPage from './__fixtures__/pages/typescript';
 import BlogIndexPage from './__fixtures__/pages/blog/index';
+
 const nextRoot = __dirname + '/__fixtures__';
 
 describe('Static routes', () => {
