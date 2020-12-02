@@ -54,8 +54,8 @@ Next page tester will take care of:
 | **req**                        | Access default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -               |
 | **res**                        | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -               |
 | **router**                     | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -               |
-| **useApp**                     | Use [custom App component][next-docs-custom-app]                                 | `boolean`          | `true`          |
-| **useDocument** (experimental) | Use [render document component][next-docs-custom-document]                       | `boolean`          | `false`         |
+| **useApp**                     | Render [custom App component][next-docs-custom-app]                              | `boolean`          | `true`          |
+| **useDocument** (experimental) | Render [Document component][next-docs-custom-document]                           | `boolean`          | `false`         |
 | **nextRoot**                   | Absolute path to Next's root folder                                              | `string`           | _auto detected_ |
 
 ## Notes
