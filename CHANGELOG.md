@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.9.0
+
+### Breaking Changes
+
+- Renamed `useCustomApp` option to `useApp`
+
+### New Features
+
+- `useDocument` experimental option: add `_document` rendering support
+
 ## 0.8.1
 
 ### Bugfixes
