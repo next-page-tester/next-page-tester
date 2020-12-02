@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { getPage } from '../index';
 import BlogPage from './__fixtures__/pages/blog/[id]';
 import BlogPage99 from './__fixtures__/pages/blog/99';
 import CatchAllPage from './__fixtures__/pages/catch-all/[id]/[...slug]';
 import OptionalCatchAllPage from './__fixtures__/pages/optional-catch-all/[id]/[[...slug]]';
+
 const nextRoot = __dirname + '/__fixtures__';
 
 describe('Dynamic routes', () => {

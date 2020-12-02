@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import httpMocks from 'node-mocks-http';
 import { getPage } from '../../index';
 import CustomAppWithGIP from './__fixtures__/custom-app-with-gip/pages/_app';

@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import type { CustomError } from '../commonTypes';
 import { getPage } from '../index';
 import * as RedirectPage from './__fixtures__/pages/ssr/redirect';

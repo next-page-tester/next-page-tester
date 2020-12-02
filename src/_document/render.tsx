@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 import NextDocument from 'next/document';
 import getCustomDocumentFile from './getCustomDocumentFile';
 import getDocumentInitialProps from './getDocumentInitialProps';
@@ -5,6 +6,10 @@ import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
 import type { DocumentType, RenderPage } from 'next/dist/next-server/lib/utils';
 import { APP_PATH } from '../constants';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
+import { DocumentContext } from 'next/dist/next-server/lib/document-context';
+import * as documentModule from 'next/document';
+import { AMP_RENDER_TARGET } from 'next/constants';
 
 export default async function renderDocument({
   pageElement,
@@ -22,15 +27,36 @@ export default async function renderDocument({
     ? customDocumentFile.default
     : ((NextDocument as unknown) as DocumentType);
 
-  // TODO: this should get updated by HeadManagerContext
-  // See: https://github.com/vercel/next.js/blob/2790ea411b8b0bf2be627a5cc5ba77626079c46d/packages/next/next-server/server/render.tsx#L563
-  // Problem, can we get this to evaluate to false: https://github.com/vercel/next.js/blob/2790ea411b8b0bf2be627a5cc5ba77626079c46d/packages/next/next-server/lib/side-effect.tsx#L3?
-  const head: JSX.Element[] = [];
+  let head: JSX.Element[] = [];
 
   const renderPage: RenderPage = () => {
-    // Render markup that will be injected into #__next element by Next.JS in the Main component of Document
-    const html = renderToStaticMarkup(pageElement);
+    const html = renderToStaticMarkup(
+      <HeadManagerContext.Provider
+        value={{
+          updateHead: (state) => {
+            head = state;
+          },
+          mountedInstances: new Set(),
+        }}
+      >
+        {pageElement}
+      </HeadManagerContext.Provider>
+    );
     return { html, head };
+  };
+
+  // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/pages/_document.tsx#L524
+  // Default behaviour of Main component is to dangerouslySetInnerHTML with the html
+  // string rendered above. This works, but will break all client side interactions
+  // as event handlers are lost in static markup
+  // @ts-ignore
+  documentModule.Main = () => {
+    const { inAmpMode, docComponentsRendered } = useContext(DocumentContext);
+    docComponentsRendered.Main = true;
+    // ampMode is not (yet) supported, but code is here to match the upstream (NextJS) implementation
+    /* istanbul ignore next */
+    if (inAmpMode) return <>{AMP_RENDER_TARGET}</>;
+    return <div id="__next">{pageElement}</div>;
   };
 
   const initialProps = await getDocumentInitialProps({

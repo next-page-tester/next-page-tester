@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import httpMocks from 'node-mocks-http';
 import { getPage } from '../index';
 import SSRPage from './__fixtures__/pages/ssr/[id]';
