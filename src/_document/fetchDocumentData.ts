@@ -3,7 +3,7 @@ import NextDocument, { DocumentInitialProps } from 'next/document';
 import type { PageObject } from '../commonTypes';
 import type { DocumentType, RenderPage } from 'next/dist/next-server/lib/utils';
 
-export default async function getDocumentInitialProps({
+export default async function fetchDocumentData({
   Document,
   pageObject,
   renderPage,

@@ -31,30 +31,9 @@ export type ExtendedOptions = OptionsWithDefaults & {
   pageExtensions: string[];
 };
 
-export type NextPageFile = {
-  [name: string]: any;
-  default: NextPage;
-  getServerSideProps?: GetServerSideProps;
-  getStaticProps?: GetStaticProps;
-  getStaticPaths?: GetStaticPaths;
-};
-
-export type NextCustomAppFile = {
-  [name: string]: any;
-  // @NOTE we might use: import type App from 'next/app';
-  // but I had troubles with setting up its generics
-  default: React.FunctionComponent<{
-    Component: NextPage;
-    pageProps?: { [key: string]: any };
-  }> & {
-    getInitialProps: (appContext: AppContext) => Promise<AppInitialProps>;
-  };
-};
-
-export type NextCustomDocumentFile = {
-  default: DocumentType;
-};
-
+/*
+ * Page
+ */
 export type PageParams = ParsedUrlQuery;
 
 export type PageObject = {
@@ -67,10 +46,42 @@ export type PageObject = {
   resolvedUrl: string;
 };
 
+export type PageProps = {
+  [key: string]: any;
+};
+
 export type PageData = {
-  props?: {
-    [key: string]: any;
-  };
+  props?: PageProps;
+};
+
+export type NextPageFile = {
+  [name: string]: any;
+  default: NextPage;
+  getServerSideProps?: GetServerSideProps;
+  getStaticProps?: GetStaticProps;
+  getStaticPaths?: GetStaticPaths;
+};
+
+/*
+ * App
+ */
+
+// @NOTE we might use: import type App from 'next/app';
+// but I had troubles with setting up its generics
+export type NextApp = React.FunctionComponent<{
+  Component: NextPage;
+  pageProps?: PageProps;
+}> & {
+  getInitialProps?: (appContext: AppContext) => Promise<AppInitialProps>;
+};
+
+export type NextCustomAppFile = {
+  [name: string]: any;
+  default: NextApp;
+};
+
+export type NextCustomDocumentFile = {
+  default: DocumentType;
 };
 
 export class CustomError extends Error {

@@ -1,6 +1,6 @@
-import type { ExtendedOptions, NextCustomAppFile } from './commonTypes';
-import { loadPageWithUnknownExtension } from './loadPage';
-import { APP_PATH } from './constants';
+import type { ExtendedOptions, NextCustomAppFile } from '../commonTypes';
+import { loadPageWithUnknownExtension } from '../loadPage';
+import { APP_PATH } from '../constants';
 
 export default async function getCustomAppFile({
   options,

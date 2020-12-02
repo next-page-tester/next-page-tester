@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import NextDocument from 'next/document';
 import getCustomDocumentFile from './getCustomDocumentFile';
-import getDocumentInitialProps from './getDocumentInitialProps';
+import fetchDocumentData from './fetchDocumentData';
 import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
 import type { DocumentType, RenderPage } from 'next/dist/next-server/lib/utils';
 import { APP_PATH } from '../constants';
@@ -59,7 +59,7 @@ export default async function renderDocument({
     return <div id="__next">{pageElement}</div>;
   };
 
-  const initialProps = await getDocumentInitialProps({
+  const initialProps = await fetchDocumentData({
     Document,
     renderPage,
     pageObject,
