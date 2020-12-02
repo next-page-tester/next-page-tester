@@ -1,7 +1,7 @@
 {
   "name": "next-page-tester",
   "description": "Enable DOM integration testing on Next.js pages",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -90,7 +90,9 @@
     "moduleNameMapper": {
       "\\.(css|less|scss)$": "identity-obj-proxy"
     },
-    "setupFilesAfterEnv": ["./src/__tests__/setup.ts"]
+    "setupFilesAfterEnv": [
+      "./src/__tests__/setup.ts"
+    ]
   },
   "husky": {
     "hooks": {
