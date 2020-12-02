@@ -39,16 +39,18 @@ export type NextPageFile = {
   getStaticPaths?: GetStaticPaths;
 };
 
+// @NOTE we might use: import type App from 'next/app';
+// but I had troubles with setting up its generics
+export type NextApp = React.FunctionComponent<{
+  Component: NextPage;
+  pageProps?: { [key: string]: any };
+}> & {
+  getInitialProps?: (appContext: AppContext) => Promise<AppInitialProps>;
+};
+
 export type NextCustomAppFile = {
   [name: string]: any;
-  // @NOTE we might use: import type App from 'next/app';
-  // but I had troubles with setting up its generics
-  default: React.FunctionComponent<{
-    Component: NextPage;
-    pageProps?: { [key: string]: any };
-  }> & {
-    getInitialProps: (appContext: AppContext) => Promise<AppInitialProps>;
-  };
+  default: NextApp;
 };
 
 export type NextCustomDocumentFile = {

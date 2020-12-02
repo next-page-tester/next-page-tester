@@ -2,21 +2,22 @@ import { Fragment } from 'react';
 import type { AppContext, AppInitialProps } from 'next/app';
 import makeRouterMock from '../makeRouterMock';
 import { makeGetInitialPropsContext } from '../fetchData/makeContextObject';
-import type {
-  NextCustomAppFile,
-  PageObject,
-  OptionsWithDefaults,
-} from '../commonTypes';
+import getCustomAppFile from './getCustomAppFile';
+import type { PageObject, ExtendedOptions } from '../commonTypes';
 
 export default async function fetchAppData({
-  customAppFile,
   pageObject,
   options,
 }: {
-  customAppFile: NextCustomAppFile;
   pageObject: PageObject;
-  options: OptionsWithDefaults;
+  options: ExtendedOptions;
 }): Promise<AppInitialProps | undefined> {
+  const customAppFile = await getCustomAppFile({ options });
+
+  if (!customAppFile) {
+    return;
+  }
+
   const customApp = customAppFile.default;
   if (customApp.getInitialProps) {
     const { asPath, pathname, query, route, basePath } = makeRouterMock({
