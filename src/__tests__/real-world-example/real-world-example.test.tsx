@@ -36,7 +36,15 @@ describe('real-world-example', () => {
     // Make sure cleint navigation work
     userEvent.click(screen.getByText('To page A'));
 
-    const backToRootLink = await screen.findByText('Back to root');
+    const formSubmitButton = await screen.findByText('Submit form');
+
+    await userEvent.type(
+      screen.getByPlaceholderText('Email'),
+      'john.doe@gmail.com'
+    );
+
+    userEvent.click(formSubmitButton);
+    await screen.findByText('Got values: {"email":"john.doe@gmail.com"}');
 
     // TODO: something like this should work
     // screen.getByText('Came from http://localhost:3000/');
@@ -44,7 +52,7 @@ describe('real-world-example', () => {
     // Make sure head title is updated with the new page
     expect(head.querySelector('title')?.textContent).toEqual('Page A');
 
-    userEvent.click(backToRootLink);
+    userEvent.click(screen.getByText('Back to root'));
 
     await screen.findByText('Count: 0');
   });
