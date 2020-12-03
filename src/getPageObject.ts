@@ -15,6 +15,7 @@ export default async function getPageObject({
     const page = loadPage({
       pagesDirectory,
       pagePath: pageInfo.pagePath,
+      useDocument: options.useDocument,
     });
 
     return { page, ...pageInfo };
