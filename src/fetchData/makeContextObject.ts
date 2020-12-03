@@ -15,7 +15,11 @@ export function makeGetInitialPropsContext({
   options: OptionsWithDefaults;
 }): NextPageContext {
   const { pagePath, params, route, query } = pageObject;
-  const { req, res } = makeHttpObjects({ pageObject, reqMocker, resMocker });
+  const { req, res } = makeHttpObjects({
+    pageObject,
+    reqMocker,
+    resMocker,
+  });
 
   return {
     // @NOTE AppTree is currently just a stub
@@ -37,7 +41,11 @@ export function makeGetServerSidePropsContext({
   options: OptionsWithDefaults;
 }): GetServerSidePropsContext<typeof pageObject.params> {
   const { params, query, resolvedUrl } = pageObject;
-  const { req, res } = makeHttpObjects({ pageObject, reqMocker, resMocker });
+  const { req, res } = makeHttpObjects({
+    pageObject,
+    reqMocker,
+    resMocker,
+  });
 
   // @TODO complete ctx object
   // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering

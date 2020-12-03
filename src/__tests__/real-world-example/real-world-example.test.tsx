@@ -4,7 +4,23 @@ import path from 'path';
 import userEvent from '@testing-library/user-event';
 
 describe('real-world-example', () => {
-  it('Should work as expected', async () => {
+  it('Should be able to access authenticated page using requestOptions cookie header', async () => {
+    const { page } = await getPage({
+      nextRoot: path.join(__dirname, '__fixtures__'),
+      route: '/authenticated',
+      useDocument: true,
+      req: (req) => {
+        req.headers.cookie = 'SessionId=super-secret';
+        return req;
+      },
+    });
+
+    render(page);
+
+    await screen.findByText('Authenticated content');
+  });
+
+  it('Should correctly render _document and work with client side interactions', async () => {
     const { page } = await getPage({
       nextRoot: path.join(__dirname, '__fixtures__'),
       route: '/?name=Matthew',

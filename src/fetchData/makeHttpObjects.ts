@@ -10,13 +10,19 @@ export default function makeHttpObjects({
   reqMocker: OptionsWithDefaults['req'];
   resMocker: OptionsWithDefaults['res'];
 }) {
+  const req = reqMocker(
+    httpMocks.createRequest({
+      url: route,
+      params: { ...params },
+    })
+  );
+
+  if (req.headers.cookie) {
+    document.cookie = req.headers.cookie;
+  }
+
   return {
-    req: reqMocker(
-      httpMocks.createRequest({
-        url: route,
-        params: { ...params },
-      })
-    ),
+    req,
     res: resMocker(httpMocks.createResponse()),
   };
 }

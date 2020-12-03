@@ -6,7 +6,7 @@ import type {
 } from 'next';
 import { AppContext, AppInitialProps } from 'next/app';
 import type { NextRouter } from 'next/router';
-import type { createRequest, createResponse } from 'node-mocks-http';
+import type { createResponse, createRequest } from 'node-mocks-http';
 import type { ParsedUrlQuery } from 'querystring';
 import type { DocumentType } from 'next/dist/next-server/lib/utils';
 
