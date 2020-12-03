@@ -3,7 +3,7 @@ import fastGlob from 'fast-glob';
 import normalizePath from 'normalize-path';
 import { NextPageFile, ExtendedOptions } from './commonTypes';
 
-function trickNextJsIsServer() {
+function resolveNextJsModulesAsIfOnServer() {
   const tmpWindow = global.window;
 
   // Next.JS executes some rendering logic conditionally, depending if its on server.
@@ -22,11 +22,18 @@ function trickNextJsIsServer() {
 export function loadPage({
   pagesDirectory,
   pagePath,
+  useDocument,
 }: {
   pagesDirectory: string;
   pagePath: string;
+  useDocument: boolean;
 }): NextPageFile {
-  trickNextJsIsServer();
+  // Even though there are places in code where this code would make more sense, it has to be called
+  // before the page is loaded. The problem is that once the page is loaded, all modules get resolved (including NextJS)
+  // and we cannot influence their top level expressions anymore
+  if (useDocument) {
+    resolveNextJsModulesAsIfOnServer();
+  }
 
   // @NOTE Here we have to remove pagePath's trailing "/"
   return require(path.resolve(pagesDirectory, pagePath.substring(1)));
