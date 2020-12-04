@@ -1,16 +1,12 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
 
 export default function Login() {
   const router = useRouter();
 
   const handleLogin = () => {
-    if (document.cookie) {
-      document.cookie = `${document.cookie};SessionId=super-secret`;
-    } else {
-      document.cookie = 'SessionId=super-secret';
-    }
-
+    document.cookie = 'SessionId=super-secret';
     router.push('/authenticated');
   };
 
@@ -20,3 +16,9 @@ export default function Login() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return {
+    props: {},
+  };
+};

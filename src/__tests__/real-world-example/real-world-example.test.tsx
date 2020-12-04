@@ -4,11 +4,15 @@ import path from 'path';
 import userEvent from '@testing-library/user-event';
 
 describe('real-world-example', () => {
-  it('Should be able to access authenticated page by client side login with setting cookis', async () => {
+  it('Should be able to access authenticated page by client side login with setting cookies', async () => {
     const { page } = await getPage({
       nextRoot: path.join(__dirname, '__fixtures__'),
       route: '/login',
       useDocument: true,
+      req: (req) => {
+        req.headers.cookie = 'TrackingId=123';
+        return req;
+      },
     });
 
     render(page);
@@ -17,7 +21,7 @@ describe('real-world-example', () => {
 
     await screen.findByText('Authenticated content');
     expect(
-      screen.getByText('Cookie: SessionId=super-secret')
+      screen.getByText('Cookie: TrackingId=123; SessionId=super-secret')
     ).toBeInTheDocument();
   });
 

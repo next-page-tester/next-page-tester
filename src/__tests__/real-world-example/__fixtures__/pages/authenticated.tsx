@@ -12,10 +12,10 @@ export default function Authenticated() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const params = nextCookie(context);
+  const { SessionId } = nextCookie(context);
 
   // TODO: test this once redirects are implemented
-  if (params.SessionId !== 'super-secret') {
+  if (SessionId !== 'super-secret') {
     return {
       redirect: {
         destination: '/',

@@ -13,6 +13,8 @@ import type {
   Options,
   OptionsWithDefaults,
   ExtendedOptions,
+  ReqEnhancer,
+  Req,
 } from './commonTypes';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
@@ -54,10 +56,11 @@ export default async function getPage({
   };
   // @TODO: Consider printing extended options value behind a debug flag
 
-  const makePage = async (route?: string) => {
+  const makePage = async (route?: string, reqEnchancer?: ReqEnhancer) => {
     const newOptions = {
       ...options,
       route: route || options.route,
+      req: reqEnchancer || options.req,
     };
 
     const pageObject = await getPageObject({
@@ -79,7 +82,10 @@ export default async function getPage({
       <RouterProvider pageObject={pageObject} options={options}>
         <NavigationProvider
           makePage={async (route) => {
-            const { pageElement } = await makePage(route);
+            const { pageElement } = await makePage(route, (req) => {
+              req.headers.cookie = document.cookie;
+              return req;
+            });
             return pageElement;
           }}
         >

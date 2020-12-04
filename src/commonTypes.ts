@@ -10,14 +10,17 @@ import type { createResponse, createRequest } from 'node-mocks-http';
 import type { ParsedUrlQuery } from 'querystring';
 import type { DocumentType } from 'next/dist/next-server/lib/utils';
 
-type Req = ReturnType<typeof createRequest>;
+export type Req = ReturnType<typeof createRequest>;
 type Res = ReturnType<typeof createResponse>;
+
+export type ReqEnhancer = (req: Req) => Req;
+type ResEnhancer = (res: Res) => Res;
 
 export type Options = {
   route: string;
   nextRoot?: string;
-  req?: (req: Req) => Req;
-  res?: (res: Res) => Res;
+  req?: ReqEnhancer;
+  res?: ResEnhancer;
   router?: (router: NextRouter) => NextRouter;
   useApp?: boolean;
   useDocument?: boolean;

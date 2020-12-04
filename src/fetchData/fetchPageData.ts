@@ -16,6 +16,7 @@ import type {
   NextPageFile,
 } from '../commonTypes';
 import type { CustomError } from '../commonTypes';
+import { executeAsIfOnServer } from '../server';
 
 function ensureNoMultipleDataFetchingMethods({
   page,
@@ -115,10 +116,11 @@ export default async function fetchPageData({
   }
 
   if (page.getServerSideProps) {
+    const { getServerSideProps } = page;
     const ctx: GetServerSidePropsContext<typeof params> = makeGetServerSidePropsContext(
       { options, pageObject }
     );
-    const pageData = await page.getServerSideProps(ctx);
+    const pageData = await executeAsIfOnServer(() => getServerSideProps(ctx));
     ensurePageDataHasProps({ pageData });
     return mergePageDataWithAppData({ pageData, appInitialProps });
   }
