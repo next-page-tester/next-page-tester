@@ -22,8 +22,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
       - run: npm ci
-      - run: npm run prepare
+        env:
+          HUSKY_SKIP_INSTALL: 1
 
       - name: Upload code coverage
         uses: coverallsapp/github-action@master
