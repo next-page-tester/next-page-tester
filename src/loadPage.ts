@@ -4,14 +4,14 @@ import normalizePath from 'normalize-path';
 import { NextPageFile, ExtendedOptions } from './commonTypes';
 import { executeAsIfOnServer } from './server';
 
-function resolveNextJsModulesAsIfOnServer() {
-  executeAsIfOnServer(() => {
+async function resolveNextJsModulesAsIfOnServer() {
+  return executeAsIfOnServer(() => {
     // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/next-server/lib/side-effect.tsx#L3
     require('next/dist/next-server/lib/side-effect');
   });
 }
 
-export function loadPage({
+export async function loadPage({
   pagesDirectory,
   pagePath,
   useDocument,
@@ -19,12 +19,12 @@ export function loadPage({
   pagesDirectory: string;
   pagePath: string;
   useDocument: boolean;
-}): NextPageFile {
+}): Promise<NextPageFile> {
   // Even though there are places in code where this code would make more sense, it has to be called
   // before the page is loaded. The problem is that once the page is loaded, all modules get resolved (including NextJS)
   // and we cannot influence their top level expressions anymore
   if (useDocument) {
-    resolveNextJsModulesAsIfOnServer();
+    await resolveNextJsModulesAsIfOnServer();
   }
 
   // @NOTE Here we have to remove pagePath's trailing "/"

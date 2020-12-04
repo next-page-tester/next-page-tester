@@ -1,4 +1,4 @@
-export const executeAsIfOnServer = <T>(f: () => T) => {
+export const executeAsIfOnServer = async <T>(f: () => T) => {
   const tmpWindow = global.window;
   const tmpDocument = global.document;
 
@@ -7,7 +7,7 @@ export const executeAsIfOnServer = <T>(f: () => T) => {
   // @ts-ignore
   delete global.document;
 
-  const result = f();
+  const result = await f();
 
   global.window = tmpWindow;
   global.document = tmpDocument;
