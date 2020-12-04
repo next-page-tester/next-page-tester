@@ -24,6 +24,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - run: npm ci
+        env:
+          HUSKY_SKIP_INSTALL: 1
 
       - name: Upload code coverage
         uses: coverallsapp/github-action@master
