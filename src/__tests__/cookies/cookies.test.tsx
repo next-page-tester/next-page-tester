@@ -25,13 +25,13 @@ describe('cookies', () => {
 
       await screen.findByText('Authenticated content');
       await screen.findByText(
-        'Cookie: {"TrackingId":"123","AnalyticsId":"12345","Foo":"Bar","SessionId":"super-secret"}'
+        'Cookie: {"AnalyticsId":"12345","Foo":"Bar","SessionId":"super-secret"}'
       );
 
       userEvent.click(screen.getByText('To login'));
       await screen.findByText('Login');
       await screen.findByText(
-        'Cookie: {"TrackingId":"123","AnalyticsId":"12345","Foo":"Bar","SessionId":"super-secret"}'
+        'Cookie: {"AnalyticsId":"12345","Foo":"Bar","SessionId":"super-secret"}'
       );
     });
   });

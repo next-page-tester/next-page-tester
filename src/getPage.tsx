@@ -82,10 +82,11 @@ export default async function getPage({
       <RouterProvider pageObject={pageObject} options={options}>
         <NavigationProvider
           makePage={async (route) => {
-            const { pageElement } = await makePage(route, (req) => {
-              req.headers.cookie = document.cookie;
-              req.headers.referer = window.location.href;
-              return req;
+            const { pageElement } = await makePage(route, (request) => {
+              const ench = req(request);
+              ench.headers.cookie = document.cookie;
+              ench.headers.referer = window.location.href;
+              return ench;
             });
             return pageElement;
           }}

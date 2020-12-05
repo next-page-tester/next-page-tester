@@ -12,6 +12,8 @@ export default function Login({ cookies }: Props) {
 
   const handleLogin = () => {
     document.cookie = 'SessionId=super-secret';
+    document.cookie =
+      'TrackingId=123;expires=' + new Date().toUTCString() + ';path=/';
     router.push('/authenticated');
   };
 
