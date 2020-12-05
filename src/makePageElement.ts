@@ -10,16 +10,23 @@ import type { PageObject, ExtendedOptions } from './commonTypes';
 export default async function makePageElement({
   pageObject,
   options,
+  isInitialRequest,
 }: {
   pageObject: PageObject;
   options: ExtendedOptions;
+  isInitialRequest: boolean;
 }) {
   const { useDocument } = options;
-  const appInitialProps = await fetchAppData({ pageObject, options });
+  const appInitialProps = await fetchAppData({
+    pageObject,
+    options,
+    isInitialRequest,
+  });
   const pageData = await fetchPageData({
     pageObject,
     options,
     appInitialProps,
+    isInitialRequest,
   });
 
   // Render page element and optional wrapping custom App

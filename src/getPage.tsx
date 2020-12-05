@@ -56,20 +56,17 @@ export default async function getPage({
   };
   // @TODO: Consider printing extended options value behind a debug flag
 
-  const makePage = async (route?: string, reqEnchancer?: ReqEnhancer) => {
-    const newOptions = {
-      ...options,
-      route: route || options.route,
-      req: reqEnchancer || options.req,
-    };
+  const makePage = async (overrides?: { route: string; req: ReqEnhancer }) => {
+    const mergedOptions = { ...options, ...overrides };
 
     const pageObject = await getPageObject({
-      options: newOptions,
+      options: mergedOptions,
     });
 
     const pageElement = await makePageElement({
       pageObject,
-      options: newOptions,
+      options: mergedOptions,
+      isInitialRequest: overrides === undefined,
     });
 
     return { pageElement, pageObject };
@@ -82,11 +79,14 @@ export default async function getPage({
       <RouterProvider pageObject={pageObject} options={options}>
         <NavigationProvider
           makePage={async (route) => {
-            const { pageElement } = await makePage(route, (request) => {
-              const enhancedRequest = req(request);
-              enhancedRequest.headers.cookie = document.cookie;
-              enhancedRequest.headers.referer = window.location.href;
-              return enhancedRequest;
+            const { pageElement } = await makePage({
+              route,
+              req: (request) => {
+                const enhancedRequest = req(request);
+                enhancedRequest.headers.cookie = document.cookie;
+                enhancedRequest.headers.referer = window.location.href;
+                return enhancedRequest;
+              },
             });
             return pageElement;
           }}

@@ -10,15 +10,18 @@ import type { OptionsWithDefaults, PageObject } from '../commonTypes';
 export function makeGetInitialPropsContext({
   pageObject,
   options: { req: reqMocker, res: resMocker },
+  isInitialRequest,
 }: {
   pageObject: PageObject;
   options: OptionsWithDefaults;
+  isInitialRequest: boolean;
 }): NextPageContext {
   const { pagePath, params, route, query } = pageObject;
   const { req, res } = makeHttpObjects({
     pageObject,
     reqMocker,
     resMocker,
+    isInitialRequest,
   });
 
   return {
@@ -36,15 +39,18 @@ export function makeGetInitialPropsContext({
 export function makeGetServerSidePropsContext({
   pageObject,
   options: { req: reqMocker, res: resMocker },
+  isInitialRequest,
 }: {
   pageObject: PageObject;
   options: OptionsWithDefaults;
+  isInitialRequest: boolean;
 }): GetServerSidePropsContext<typeof pageObject.params> {
   const { params, query, resolvedUrl } = pageObject;
   const { req, res } = makeHttpObjects({
     pageObject,
     reqMocker,
     resMocker,
+    isInitialRequest,
   });
 
   // @TODO complete ctx object
