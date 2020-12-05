@@ -4,7 +4,7 @@ import normalizePath from 'normalize-path';
 import { NextPageFile, ExtendedOptions } from './commonTypes';
 import { executeAsIfOnServer } from './server';
 
-async function resolveNextJsModulesAsIfOnServer() {
+async function evaluateNextJsImportsAsIfOnServer() {
   return executeAsIfOnServer(() => {
     // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/next-server/lib/side-effect.tsx#L3
     require('next/dist/next-server/lib/side-effect');
@@ -24,7 +24,7 @@ export async function loadPage({
   // before the page is loaded. The problem is that once the page is loaded, all modules get resolved (including NextJS)
   // and we cannot influence their top level expressions anymore
   if (useDocument) {
-    await resolveNextJsModulesAsIfOnServer();
+    await evaluateNextJsImportsAsIfOnServer();
   }
 
   // @NOTE Here we have to remove pagePath's trailing "/"

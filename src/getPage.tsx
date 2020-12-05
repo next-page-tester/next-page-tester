@@ -84,6 +84,7 @@ export default async function getPage({
           makePage={async (route) => {
             const { pageElement } = await makePage(route, (req) => {
               req.headers.cookie = document.cookie;
+              req.headers.referer = window.location.href;
               return req;
             });
             return pageElement;

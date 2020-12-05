@@ -20,7 +20,8 @@ afterEach(() => {
   // @ts-ignore
   console.error.mockRestore();
 
-  // Clear all cookies
+  // We have to clear all cookies after each test as this is not done
+  // automatically by JSOM and might affect our tests
   document.cookie.split(';').forEach(function (v) {
     document.cookie = v
       .replace(/^ +/, '')
