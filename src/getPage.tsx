@@ -83,10 +83,10 @@ export default async function getPage({
         <NavigationProvider
           makePage={async (route) => {
             const { pageElement } = await makePage(route, (request) => {
-              const ench = req(request);
-              ench.headers.cookie = document.cookie;
-              ench.headers.referer = window.location.href;
-              return ench;
+              const enhancedRequest = req(request);
+              enhancedRequest.headers.cookie = document.cookie;
+              enhancedRequest.headers.referer = window.location.href;
+              return enhancedRequest;
             });
             return pageElement;
           }}
