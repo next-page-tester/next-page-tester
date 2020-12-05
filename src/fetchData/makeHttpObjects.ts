@@ -18,7 +18,9 @@ export default function makeHttpObjects({
   );
 
   if (req.headers.cookie) {
-    document.cookie = req.headers.cookie;
+    req.headers.cookie.split(';').forEach((value) => {
+      document.cookie = value.replace(/^ +/, '');
+    });
   }
 
   return {
