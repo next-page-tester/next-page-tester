@@ -55,8 +55,8 @@ export default async function getPage({
   };
   // @TODO: Consider printing extended options value behind a debug flag
 
-  const makePage = async (overrides?: { route: string; req: ReqEnhancer }) => {
-    const mergedOptions = { ...options, ...overrides };
+  const makePage = async (optionsOverride?: Partial<ExtendedOptions>) => {
+    const mergedOptions = { ...options, ...optionsOverride };
 
     const pageObject = await getPageObject({
       options: mergedOptions,
@@ -71,7 +71,6 @@ export default async function getPage({
   };
 
   const { pageElement, pageObject } = await makePage();
-
   let previousRoute = route;
 
   return {
@@ -81,15 +80,9 @@ export default async function getPage({
           makePage={async (route) => {
             const { pageElement } = await makePage({
               route,
-              req: (request) => {
-                const enhancedRequest = req(request);
-                enhancedRequest.headers.referer = `${
-                  window.location.href
-                }${previousRoute.substring(1)}`;
-                previousRoute = route;
-                return enhancedRequest;
-              },
+              previousRoute,
             });
+            previousRoute = route;
             return pageElement;
           }}
         >

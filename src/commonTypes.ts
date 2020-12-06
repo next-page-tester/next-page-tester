@@ -32,6 +32,7 @@ export type OptionsWithDefaults = Required<Options>;
 export type ExtendedOptions = OptionsWithDefaults & {
   pagesDirectory: string;
   pageExtensions: string[];
+  previousRoute?: string;
 };
 
 /*

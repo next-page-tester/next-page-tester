@@ -10,7 +10,7 @@ import {
   makeStaticPropsContext,
 } from './makeContextObject';
 import type {
-  OptionsWithDefaults,
+  ExtendedOptions,
   PageObject,
   PageData,
   NextPageFile,
@@ -99,7 +99,7 @@ export default async function fetchPageData({
 }: {
   pageObject: PageObject;
   appInitialProps?: AppInitialProps;
-  options: OptionsWithDefaults;
+  options: ExtendedOptions;
 }): Promise<PageData> {
   const { page, params } = pageObject;
   ensureNoMultipleDataFetchingMethods({ page });

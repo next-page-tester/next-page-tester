@@ -5,14 +5,14 @@ import type {
   GetStaticPropsContext,
 } from 'next';
 import makeHttpObjects from './makeHttpObjects';
-import type { OptionsWithDefaults, PageObject } from '../commonTypes';
+import type { ExtendedOptions, PageObject } from '../commonTypes';
 
 export function makeGetInitialPropsContext({
   pageObject,
-  options: { req: reqMocker, res: resMocker },
+  options: { req: reqMocker, res: resMocker, previousRoute },
 }: {
   pageObject: PageObject;
-  options: OptionsWithDefaults;
+  options: ExtendedOptions;
 }): NextPageContext {
   const { pagePath, params, route, query } = pageObject;
   const { req, res } = makeHttpObjects({
@@ -20,6 +20,7 @@ export function makeGetInitialPropsContext({
     reqMocker,
     resMocker,
     appendCookie: true,
+    refererRoute: previousRoute,
   });
 
   return {
@@ -36,10 +37,10 @@ export function makeGetInitialPropsContext({
 
 export function makeGetServerSidePropsContext({
   pageObject,
-  options: { req: reqMocker, res: resMocker },
+  options: { req: reqMocker, res: resMocker, previousRoute },
 }: {
   pageObject: PageObject;
-  options: OptionsWithDefaults;
+  options: ExtendedOptions;
 }): GetServerSidePropsContext<typeof pageObject.params> {
   const { params, query, resolvedUrl } = pageObject;
   const { req, res } = makeHttpObjects({
@@ -47,6 +48,7 @@ export function makeGetServerSidePropsContext({
     reqMocker,
     resMocker,
     appendCookie: true,
+    refererRoute: previousRoute,
   });
 
   // @TODO complete ctx object
