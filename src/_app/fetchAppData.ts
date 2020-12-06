@@ -8,11 +8,9 @@ import type { PageObject, ExtendedOptions } from '../commonTypes';
 export default async function fetchAppData({
   pageObject,
   options,
-  isInitialRequest,
 }: {
   pageObject: PageObject;
   options: ExtendedOptions;
-  isInitialRequest: boolean;
 }): Promise<AppInitialProps | undefined> {
   const customAppFile = await getCustomAppFile({ options });
 
@@ -34,7 +32,6 @@ export default async function fetchAppData({
       ctx: makeGetInitialPropsContext({
         pageObject,
         options,
-        isInitialRequest,
       }),
       // @ts-ignore: Incomplete router object
       router: { asPath, pathname, query, route, basePath },

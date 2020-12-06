@@ -96,12 +96,10 @@ export default async function fetchPageData({
   pageObject,
   appInitialProps,
   options,
-  isInitialRequest,
 }: {
   pageObject: PageObject;
   appInitialProps?: AppInitialProps;
   options: OptionsWithDefaults;
-  isInitialRequest: boolean;
 }): Promise<PageData> {
   const { page, params } = pageObject;
   ensureNoMultipleDataFetchingMethods({ page });
@@ -111,7 +109,6 @@ export default async function fetchPageData({
     const ctx: NextPageContext = makeGetInitialPropsContext({
       options,
       pageObject,
-      isInitialRequest,
     });
 
     const initialProps = await page.default.getInitialProps(ctx);
@@ -121,7 +118,7 @@ export default async function fetchPageData({
   if (page.getServerSideProps) {
     const { getServerSideProps } = page;
     const ctx: GetServerSidePropsContext<typeof params> = makeGetServerSidePropsContext(
-      { options, pageObject, isInitialRequest }
+      { options, pageObject }
     );
     const pageData = await executeAsIfOnServer(() => getServerSideProps(ctx));
     ensurePageDataHasProps({ pageData });

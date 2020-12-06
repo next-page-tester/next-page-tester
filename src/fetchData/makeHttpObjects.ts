@@ -5,30 +5,26 @@ export default function makeHttpObjects({
   pageObject: { params, route },
   reqMocker,
   resMocker,
-  isInitialRequest,
+  appendCookie,
 }: {
   pageObject: PageObject;
   reqMocker: OptionsWithDefaults['req'];
   resMocker: OptionsWithDefaults['res'];
-  isInitialRequest: boolean;
+  appendCookie?: boolean;
 }) {
-  const req = reqMocker(
-    httpMocks.createRequest({
-      url: route,
-      params: { ...params },
-    })
-  );
+  const req = httpMocks.createRequest({
+    url: route,
+    params: { ...params },
+  });
 
-  // Set document.cookie from request on initial request. After that cookies are
-  // handled client side by JSDOM
-  if (isInitialRequest && req.headers.cookie) {
-    req.headers.cookie.split(';').forEach((value) => {
-      document.cookie = value.replace(/^ +/, '');
-    });
+  // Make document.cookie available in req.headers
+  // @NOTE: SHall we make available req.headers, too?
+  if (appendCookie && document && document.cookie) {
+    req.headers.cookie = document.cookie;
   }
 
   return {
-    req,
+    req: reqMocker(req),
     res: resMocker(httpMocks.createResponse()),
   };
 }

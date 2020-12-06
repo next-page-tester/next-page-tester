@@ -2,7 +2,11 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 
-export default function Login() {
+type Props = {
+  reqHeadersCookie?: string;
+};
+
+export default function Login({ reqHeadersCookie }: Props) {
   const router = useRouter();
 
   const handleLogin = () => {
@@ -13,12 +17,13 @@ export default function Login() {
   return (
     <div>
       <button onClick={handleLogin}>Login</button>
+      <div>req.headers.cookies: "{reqHeadersCookie}"</div>
     </div>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  return {
-    props: {},
-  };
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  req,
+}) => {
+  return { props: { reqHeadersCookie: req.headers.cookie } };
 };

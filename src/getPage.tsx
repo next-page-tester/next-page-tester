@@ -14,7 +14,6 @@ import type {
   OptionsWithDefaults,
   ExtendedOptions,
   ReqEnhancer,
-  Req,
 } from './commonTypes';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
@@ -66,7 +65,6 @@ export default async function getPage({
     const pageElement = await makePageElement({
       pageObject,
       options: mergedOptions,
-      isInitialRequest: overrides === undefined,
     });
 
     return { pageElement, pageObject };
@@ -83,7 +81,6 @@ export default async function getPage({
               route,
               req: (request) => {
                 const enhancedRequest = req(request);
-                enhancedRequest.headers.cookie = document.cookie;
                 enhancedRequest.headers.referer = window.location.href;
                 return enhancedRequest;
               },

@@ -4,35 +4,26 @@ import path from 'path';
 import userEvent from '@testing-library/user-event';
 
 describe('cookies', () => {
-  describe('with-ssr', () => {
-    it('Should be able to access authenticated page by client side login with setting cookies', async () => {
+  describe.each([
+    ['getServerSideProps', 'ssr'],
+    ['getInitialProps', 'gip'],
+  ])('Page with %s', (dataFetchingType, directory) => {
+    it('Makes document.cookie available via ctx.req.headers.cookie', async () => {
       const { page } = await getPage({
-        nextRoot: path.join(__dirname, '__fixtures__/with-ssr'),
+        nextRoot: path.join(__dirname, '__fixtures__', directory),
         route: '/login',
-        req: (req) => {
-          req.headers.cookie = 'TrackingId=123;AnalyticsId=12345;Foo=Bar';
-          return req;
-        },
       });
-
       render(page);
-
-      await screen.findByText(
-        'Cookie: {"TrackingId":"123","AnalyticsId":"12345","Foo":"Bar"}'
-      );
+      screen.getByText('req.headers.cookies: ""');
 
       userEvent.click(screen.getByText('Login'));
 
       await screen.findByText('Authenticated content');
-      await screen.findByText(
-        'Cookie: {"AnalyticsId":"12345","Foo":"Bar","SessionId":"super-secret"}'
-      );
-
+      await screen.findByText('req.headers.cookies: "SessionId=super-secret"');
       userEvent.click(screen.getByText('To login'));
+
       await screen.findByText('Login');
-      await screen.findByText(
-        'Cookie: {"AnalyticsId":"12345","Foo":"Bar","SessionId":"super-secret"}'
-      );
+      await screen.findByText('req.headers.cookies: "SessionId=super-secret"');
     });
   });
 });
