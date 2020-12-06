@@ -46,7 +46,7 @@ describe('real-world-example', () => {
     userEvent.click(formSubmitButton);
     await screen.findByText('Got values: {"email":"john.doe@gmail.com"}');
 
-    screen.getByText('Came from http://localhost/');
+    screen.getByText('Came from http://localhost/?name=Matthew');
 
     // Make sure head title is updated with the new page
     expect(head.querySelector('title')?.textContent).toEqual('Page A');

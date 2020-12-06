@@ -72,6 +72,8 @@ export default async function getPage({
 
   const { pageElement, pageObject } = await makePage();
 
+  let previousRoute = route;
+
   return {
     page: (
       <RouterProvider pageObject={pageObject} options={options}>
@@ -81,7 +83,10 @@ export default async function getPage({
               route,
               req: (request) => {
                 const enhancedRequest = req(request);
-                enhancedRequest.headers.referer = window.location.href;
+                enhancedRequest.headers.referer = `${
+                  window.location.href
+                }${previousRoute.substring(1)}`;
+                previousRoute = route;
                 return enhancedRequest;
               },
             });
