@@ -44,7 +44,7 @@ Next page tester will take care of:
 - wrapping page with custom `_app` component
 - wrapping page with custom `_document` component
 - **instantiating** page component with **expected page props**
-- Emulate client side navigation via `Link`, `router.push`, `router.replace`
+- emulating client side navigation via `Link`, `router.push`, `router.replace`
 
 ## Options
 
@@ -75,12 +75,9 @@ Next page tester will take care of:
 
 ## FAQ
 
-### How do I make cookies available in my SSR data fethcing methods?
+### How do I make cookies available in Next.js data fetching methods?
 
-You can set cookies by simply appending them to `document.cookie` before the initial `getPage` call. `next-page-tester` will propagate
-those cookes to the `ctx.request.headers.cookie` so they will be available to you in your SSR data fetching methods. Moreover,
-cookies set in your React code will also be available in the subsequent SSR data fetching methods caused by client side navigations,
-just as you would expect in the browser environment.
+You can set cookies by appending them to `document.cookie` before calling `getPage`. `next-page-tester` will propagate cookies to `ctx.req.headers.cookie` so they will be available to data fetching methods. This also applies to subsequent fetching methods calls triggered by client side navigation.
 
 ```ts
 test('authenticated page', async () => {
@@ -93,7 +90,7 @@ test('authenticated page', async () => {
 });
 ```
 
-Note: `document.cookie` does not get cleaned up automatically. You'll have to clear it manually after each test to keep eveything in isolation.
+Note: `document.cookie` does not get cleaned up automatically. You'll have to clear it manually after each test to keep everything in isolation.
 
 ### Error: Not implemented: window.scrollTo
 
@@ -111,6 +108,7 @@ A temporary workaround consists of [mocking global `console.error` to ignore the
 
 - Consider reusing Next.js code parts (not only types)
 - Consider supporting Next.js `trailingSlash` option
+- Don't provide `getInitialProps` with `ctx` object when called client-side
 
 ## Contributors ✨
 
