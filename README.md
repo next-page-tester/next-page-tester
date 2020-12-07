@@ -75,6 +75,26 @@ Next page tester will take care of:
 
 ## FAQ
 
+### How do I make cookies available in my SSR data fethcing methods?
+
+You can set cookies by simply appending them to `document.cookie` before the initial `getPage` call. `next-page-tester` will propagate
+those cookes to the `ctx.request.headers.cookie` so they will be available to you in your SSR data fetching methods. Moreover,
+cookies set in your React code will also be available in the subsequent SSR data fetching methods caused by client side navigations,
+just as you would expect in the browser environment.
+
+```ts
+test('authenticated page', async () => {
+  document.cookie = 'SessionId=super=secret';
+  document.cookie = 'SomeOtherCookie=SomeOtherValue';
+
+  const { page } = await getPage({
+    route: '/authenticated',
+  });
+});
+```
+
+Note: `document.cookie` does not get cleaned up automatically. You'll have to clear it manually after each test to keep eveything in isolation.
+
 ### Error: Not implemented: window.scrollTo
 
 Next.js `Link` components invoke `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
