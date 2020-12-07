@@ -13,6 +13,7 @@ import type {
   Options,
   OptionsWithDefaults,
   ExtendedOptions,
+  ReqEnhancer,
 } from './commonTypes';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
@@ -54,32 +55,35 @@ export default async function getPage({
   };
   // @TODO: Consider printing extended options value behind a debug flag
 
-  const makePage = async (route?: string) => {
-    const newOptions = {
-      ...options,
-      route: route || options.route,
-    };
+  const makePage = async (optionsOverride?: Partial<ExtendedOptions>) => {
+    const mergedOptions = { ...options, ...optionsOverride };
 
     const pageObject = await getPageObject({
-      options: newOptions,
+      options: mergedOptions,
     });
 
     const pageElement = await makePageElement({
       pageObject,
-      options: newOptions,
+      options: mergedOptions,
     });
 
     return { pageElement, pageObject };
   };
 
   const { pageElement, pageObject } = await makePage();
+  let previousRoute = route;
 
   return {
     page: (
       <RouterProvider pageObject={pageObject} options={options}>
         <NavigationProvider
           makePage={async (route) => {
-            const { pageElement } = await makePage(route);
+            const { pageElement } = await makePage({
+              route,
+              previousRoute,
+              isClientSideNavigation: true,
+            });
+            previousRoute = route;
             return pageElement;
           }}
         >

@@ -2,24 +2,16 @@ import path from 'path';
 import fastGlob from 'fast-glob';
 import normalizePath from 'normalize-path';
 import { NextPageFile, ExtendedOptions } from './commonTypes';
+import { executeAsIfOnServer } from './server';
 
-function resolveNextJsModulesAsIfOnServer() {
-  const tmpWindow = global.window;
-
-  // Next.JS executes some rendering logic conditionally, depending if its on server.
-  // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/next-server/lib/side-effect.tsx#L3
-  // We want that logic to execute, so we have to trick it to think code is executing on server
-  // Because expression is evaluated on module's top level, therefore we have to "mock" it before module is evaluated -- before require is called;
-  // @ts-ignore
-  delete global.window;
-
-  require('next/dist/next-server/lib/side-effect');
-
-  // Restore window object -- required for client side navigation, etc...
-  global.window = tmpWindow;
+async function evaluateNextJsImportsAsIfOnServer() {
+  return executeAsIfOnServer(() => {
+    // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/next-server/lib/side-effect.tsx#L3
+    require('next/dist/next-server/lib/side-effect');
+  });
 }
 
-export function loadPage({
+export async function loadPage({
   pagesDirectory,
   pagePath,
   useDocument,
@@ -27,12 +19,12 @@ export function loadPage({
   pagesDirectory: string;
   pagePath: string;
   useDocument: boolean;
-}): NextPageFile {
+}): Promise<NextPageFile> {
   // Even though there are places in code where this code would make more sense, it has to be called
   // before the page is loaded. The problem is that once the page is loaded, all modules get resolved (including NextJS)
   // and we cannot influence their top level expressions anymore
   if (useDocument) {
-    resolveNextJsModulesAsIfOnServer();
+    await evaluateNextJsImportsAsIfOnServer();
   }
 
   // @NOTE Here we have to remove pagePath's trailing "/"

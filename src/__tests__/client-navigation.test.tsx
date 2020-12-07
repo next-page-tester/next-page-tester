@@ -1,7 +1,9 @@
 import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { getPage } from '../index';
 import PageB from './__fixtures__/pages/client-navigation-link/b';
+import userEvent from '@testing-library/user-event';
+
 const nextRoot = __dirname + '/__fixtures__';
 
 describe('Client side navigation', () => {
@@ -19,8 +21,7 @@ describe('Client side navigation', () => {
       screen.getByText('This is page A');
 
       // Navigate A -> B
-      const linkToB = screen.getByText(linkText);
-      fireEvent.click(linkToB);
+      userEvent.click(screen.getByText(linkText));
       await screen.findByText('This is page B');
       expect(screen.queryByText('This is page A')).not.toBeInTheDocument();
 
@@ -39,6 +40,62 @@ describe('Client side navigation', () => {
       );
       expect(actual).toEqual(expected);
     });
+
+    it('GIP navigates between pages ', async () => {
+      const { page } = await getPage({
+        nextRoot,
+        route: `/client-navigation-link/gip/a`,
+      });
+      render(page);
+
+      await screen.findByText(
+        JSON.stringify({
+          isWindowDefined: false,
+          isDocumentDefined: false,
+          isReqDefined: true,
+          isResDefined: true,
+        })
+      );
+
+      userEvent.click(screen.getByText(linkText));
+
+      await screen.findByText(
+        JSON.stringify({
+          isWindowDefined: true,
+          isDocumentDefined: true,
+          isReqDefined: false,
+          isResDefined: false,
+        })
+      );
+    });
+
+    it('SSR navigates between pages ', async () => {
+      const { page } = await getPage({
+        nextRoot,
+        route: `/client-navigation-link/ssr/a`,
+      });
+      render(page);
+
+      await screen.findByText(
+        JSON.stringify({
+          isWindowDefined: false,
+          isDocumentDefined: false,
+          isReqDefined: true,
+          isResDefined: true,
+        })
+      );
+
+      userEvent.click(screen.getByText(linkText));
+
+      await screen.findByText(
+        JSON.stringify({
+          isWindowDefined: false,
+          isDocumentDefined: false,
+          isReqDefined: true,
+          isResDefined: true,
+        })
+      );
+    });
   });
 
   // @ NOTE This test doesn't actually fail
@@ -49,8 +106,7 @@ describe('Client side navigation', () => {
       route: '/client-navigation-link/a',
     });
     const { unmount } = render(page);
-    const linkToB = screen.getByText('Go to B with Link');
-    fireEvent.click(linkToB);
+    userEvent.click(screen.getByText('Go to B with Link'));
     unmount();
   });
 });

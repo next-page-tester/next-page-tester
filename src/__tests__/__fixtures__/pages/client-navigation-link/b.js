@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouterPrinter, sleep } from '../../../__utils__/';
+import { RouterPrinter } from '../../../__utils__/';
 
 export default function ClientSideNavigationB(props) {
   const { routerMock } = props;
@@ -9,11 +9,4 @@ export default function ClientSideNavigationB(props) {
       <RouterPrinter routerMock={routerMock} />
     </div>
   );
-}
-
-export async function getServerSideProps() {
-  await sleep(1);
-  return {
-    props: {},
-  };
 }

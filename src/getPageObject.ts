@@ -12,7 +12,7 @@ export default async function getPageObject({
   const { pagesDirectory } = options;
   const pageInfo = await getPageInfo({ options });
   if (pageInfo) {
-    const page = loadPage({
+    const page = await loadPage({
       pagesDirectory,
       pagePath: pageInfo.pagePath,
       useDocument: options.useDocument,

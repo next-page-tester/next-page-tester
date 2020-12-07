@@ -5,39 +5,61 @@ import type {
   GetStaticPropsContext,
 } from 'next';
 import makeHttpObjects from './makeHttpObjects';
-import type { OptionsWithDefaults, PageObject } from '../commonTypes';
+import type { ExtendedOptions, PageObject } from '../commonTypes';
 
 export function makeGetInitialPropsContext({
   pageObject,
-  options: { req: reqMocker, res: resMocker },
+  options: {
+    req: reqMocker,
+    res: resMocker,
+    previousRoute,
+    isClientSideNavigation,
+  },
 }: {
   pageObject: PageObject;
-  options: OptionsWithDefaults;
+  options: ExtendedOptions;
 }): NextPageContext {
   const { pagePath, params, route, query } = pageObject;
-  const { req, res } = makeHttpObjects({ pageObject, reqMocker, resMocker });
 
-  return {
+  const ctx: NextPageContext = {
     // @NOTE AppTree is currently just a stub
     AppTree: Fragment,
-    req,
-    res,
-    err: undefined,
     pathname: pagePath,
     query: { ...params, ...query }, // GIP ctx query merges params and query together
     asPath: route,
   };
+
+  if (!isClientSideNavigation) {
+    const { req, res } = makeHttpObjects({
+      pageObject,
+      reqMocker,
+      resMocker,
+      appendCookie: true,
+      refererRoute: previousRoute,
+    });
+
+    ctx.req = req;
+    ctx.res = res;
+  }
+
+  return ctx;
 }
 
 export function makeGetServerSidePropsContext({
   pageObject,
-  options: { req: reqMocker, res: resMocker },
+  options: { req: reqMocker, res: resMocker, previousRoute },
 }: {
   pageObject: PageObject;
-  options: OptionsWithDefaults;
+  options: ExtendedOptions;
 }): GetServerSidePropsContext<typeof pageObject.params> {
   const { params, query, resolvedUrl } = pageObject;
-  const { req, res } = makeHttpObjects({ pageObject, reqMocker, resMocker });
+  const { req, res } = makeHttpObjects({
+    pageObject,
+    reqMocker,
+    resMocker,
+    appendCookie: true,
+    refererRoute: previousRoute,
+  });
 
   // @TODO complete ctx object
   // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering

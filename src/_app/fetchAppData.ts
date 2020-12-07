@@ -29,7 +29,10 @@ export default async function fetchAppData({
       // @NOTE AppTree is currently just a stub
       AppTree: Fragment,
       Component: pageObject.page.default,
-      ctx: makeGetInitialPropsContext({ pageObject, options }),
+      ctx: makeGetInitialPropsContext({
+        pageObject,
+        options,
+      }),
       // @ts-ignore: Incomplete router object
       router: { asPath, pathname, query, route, basePath },
     };

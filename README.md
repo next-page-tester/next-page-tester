@@ -44,7 +44,7 @@ Next page tester will take care of:
 - wrapping page with custom `_app` component
 - wrapping page with custom `_document` component
 - **instantiating** page component with **expected page props**
-- Emulate client side navigation via `Link`, `router.push`, `router.replace`
+- emulating client side navigation via `Link`, `router.push`, `router.replace`
 
 ## Options
 
@@ -74,6 +74,23 @@ Next page tester will take care of:
 | v0.8.0 +         | v10.X.X |
 
 ## FAQ
+
+### How do I make cookies available in Next.js data fetching methods?
+
+You can set cookies by appending them to `document.cookie` before calling `getPage`. `next-page-tester` will propagate cookies to `ctx.req.headers.cookie` so they will be available to data fetching methods. This also applies to subsequent fetching methods calls triggered by client side navigation.
+
+```ts
+test('authenticated page', async () => {
+  document.cookie = 'SessionId=super=secret';
+  document.cookie = 'SomeOtherCookie=SomeOtherValue';
+
+  const { page } = await getPage({
+    route: '/authenticated',
+  });
+});
+```
+
+Note: `document.cookie` does not get cleaned up automatically. You'll have to clear it manually after each test to keep everything in isolation.
 
 ### Error: Not implemented: window.scrollTo
 

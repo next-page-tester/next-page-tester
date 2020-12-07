@@ -4,7 +4,7 @@ import path from 'path';
 import userEvent from '@testing-library/user-event';
 
 describe('real-world-example', () => {
-  it('Should work as expected', async () => {
+  it('Should correctly render _document and work with client side interactions', async () => {
     const { page } = await getPage({
       nextRoot: path.join(__dirname, '__fixtures__'),
       route: '/?name=Matthew',
@@ -46,8 +46,7 @@ describe('real-world-example', () => {
     userEvent.click(formSubmitButton);
     await screen.findByText('Got values: {"email":"john.doe@gmail.com"}');
 
-    // TODO: something like this should work
-    // screen.getByText('Came from http://localhost:3000/');
+    screen.getByText('Came from http://localhost/?name=Matthew');
 
     // Make sure head title is updated with the new page
     expect(head.querySelector('title')?.textContent).toEqual('Page A');

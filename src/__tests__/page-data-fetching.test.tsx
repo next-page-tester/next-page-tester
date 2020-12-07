@@ -20,6 +20,9 @@ describe('Data fetching', () => {
 
       const { container: actual } = render(page);
       const expectedContext = {
+        pathname: '/gip/[id]',
+        query: { ...expectedParams, ...expectedQuery },
+        asPath: '/gip/5?foo=bar',
         AppTree: Fragment,
         req: httpMocks.createRequest({
           url: '/gip/5?foo=bar',
@@ -28,9 +31,6 @@ describe('Data fetching', () => {
         }),
         res: httpMocks.createResponse(),
         err: undefined,
-        pathname: '/gip/[id]',
-        query: { ...expectedParams, ...expectedQuery },
-        asPath: '/gip/5?foo=bar',
       };
 
       const { container: expected } = render(<GIPPage {...expectedContext} />);
@@ -49,7 +49,7 @@ describe('Data fetching', () => {
       const expectedQuery = { foo: 'bar' };
 
       const { container: actual } = render(page);
-      const expectedContext = {
+      const expectedProps = {
         params: expectedParams,
         query: expectedQuery,
         resolvedUrl: '/ssr/5?id=5&foo=bar',
@@ -59,8 +59,10 @@ describe('Data fetching', () => {
           query: expectedQuery,
         }),
         res: httpMocks.createResponse(),
+        isWindowDefined: false,
+        isDocumentDefined: false,
       };
-      const { container: expected } = render(<SSRPage {...expectedContext} />);
+      const { container: expected } = render(<SSRPage {...expectedProps} />);
       expect(actual).toEqual(expected);
     });
   });

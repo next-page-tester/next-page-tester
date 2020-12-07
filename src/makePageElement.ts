@@ -15,7 +15,10 @@ export default async function makePageElement({
   options: ExtendedOptions;
 }) {
   const { useDocument } = options;
-  const appInitialProps = await fetchAppData({ pageObject, options });
+  const appInitialProps = await fetchAppData({
+    pageObject,
+    options,
+  });
   const pageData = await fetchPageData({
     pageObject,
     options,

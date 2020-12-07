@@ -10,12 +10,13 @@ import {
   makeStaticPropsContext,
 } from './makeContextObject';
 import type {
-  OptionsWithDefaults,
+  ExtendedOptions,
   PageObject,
   PageData,
   NextPageFile,
 } from '../commonTypes';
 import type { CustomError } from '../commonTypes';
+import { executeAsIfOnServer } from '../server';
 
 function ensureNoMultipleDataFetchingMethods({
   page,
@@ -98,7 +99,7 @@ export default async function fetchPageData({
 }: {
   pageObject: PageObject;
   appInitialProps?: AppInitialProps;
-  options: OptionsWithDefaults;
+  options: ExtendedOptions;
 }): Promise<PageData> {
   const { page, params } = pageObject;
   ensureNoMultipleDataFetchingMethods({ page });
@@ -110,15 +111,20 @@ export default async function fetchPageData({
       pageObject,
     });
 
-    const initialProps = await page.default.getInitialProps(ctx);
+    const { getInitialProps } = page.default;
+    const initialProps = options.isClientSideNavigation
+      ? await getInitialProps(ctx)
+      : await executeAsIfOnServer(() => getInitialProps(ctx));
+
     return { props: initialProps };
   }
 
   if (page.getServerSideProps) {
+    const { getServerSideProps } = page;
     const ctx: GetServerSidePropsContext<typeof params> = makeGetServerSidePropsContext(
       { options, pageObject }
     );
-    const pageData = await page.getServerSideProps(ctx);
+    const pageData = await executeAsIfOnServer(() => getServerSideProps(ctx));
     ensurePageDataHasProps({ pageData });
     return mergePageDataWithAppData({ pageData, appInitialProps });
   }
