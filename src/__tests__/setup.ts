@@ -21,9 +21,11 @@ afterAll(() => {
 
 afterEach(() => {
   // Clear all cookies
-  document.cookie.split(';').forEach(function (v) {
-    document.cookie = v
-      .replace(/^ +/, '')
-      .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
-  });
+  if (document.cookie !== '') {
+    document.cookie.split(';').forEach(function (v) {
+      document.cookie = v
+        .replace(/^ +/, '')
+        .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+    });
+  }
 });
