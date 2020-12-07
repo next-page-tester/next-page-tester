@@ -11,10 +11,8 @@ dist/
 !.babelrc.js
 !.editorconfig
 !.gitignore
-!.npmignore
 !.npmrc
 !.prettierignore
 !.prettierrc
-!.travis.yml
 !.github
-!.babelrc
+!.gitattributes
