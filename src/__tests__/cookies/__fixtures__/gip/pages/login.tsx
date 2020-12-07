@@ -28,7 +28,7 @@ Login.getInitialProps = function ({ req }) {
       reqHeadersCookie: req.headers.cookie,
     };
   }
-  return {};
+  return { reqHeadersCookie: document.cookie };
 };
 
 export default Login;

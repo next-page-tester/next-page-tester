@@ -20,6 +20,9 @@ describe('Data fetching', () => {
 
       const { container: actual } = render(page);
       const expectedContext = {
+        pathname: '/gip/[id]',
+        query: { ...expectedParams, ...expectedQuery },
+        asPath: '/gip/5?foo=bar',
         AppTree: Fragment,
         req: httpMocks.createRequest({
           url: '/gip/5?foo=bar',
@@ -28,9 +31,6 @@ describe('Data fetching', () => {
         }),
         res: httpMocks.createResponse(),
         err: undefined,
-        pathname: '/gip/[id]',
-        query: { ...expectedParams, ...expectedQuery },
-        asPath: '/gip/5?foo=bar',
       };
 
       const { container: expected } = render(<GIPPage {...expectedContext} />);

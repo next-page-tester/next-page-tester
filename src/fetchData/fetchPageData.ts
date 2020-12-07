@@ -111,7 +111,11 @@ export default async function fetchPageData({
       pageObject,
     });
 
-    const initialProps = await page.default.getInitialProps(ctx);
+    const { getInitialProps } = page.default;
+    const initialProps = options.isClientSideNavigation
+      ? await getInitialProps(ctx)
+      : await executeAsIfOnServer(() => getInitialProps(ctx));
+
     return { props: initialProps };
   }
 

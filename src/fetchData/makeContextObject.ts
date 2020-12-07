@@ -9,30 +9,40 @@ import type { ExtendedOptions, PageObject } from '../commonTypes';
 
 export function makeGetInitialPropsContext({
   pageObject,
-  options: { req: reqMocker, res: resMocker, previousRoute },
+  options: {
+    req: reqMocker,
+    res: resMocker,
+    previousRoute,
+    isClientSideNavigation,
+  },
 }: {
   pageObject: PageObject;
   options: ExtendedOptions;
 }): NextPageContext {
   const { pagePath, params, route, query } = pageObject;
-  const { req, res } = makeHttpObjects({
-    pageObject,
-    reqMocker,
-    resMocker,
-    appendCookie: true,
-    refererRoute: previousRoute,
-  });
 
-  return {
+  const ctx: NextPageContext = {
     // @NOTE AppTree is currently just a stub
     AppTree: Fragment,
-    req,
-    res,
-    err: undefined,
     pathname: pagePath,
     query: { ...params, ...query }, // GIP ctx query merges params and query together
     asPath: route,
   };
+
+  if (!isClientSideNavigation) {
+    const { req, res } = makeHttpObjects({
+      pageObject,
+      reqMocker,
+      resMocker,
+      appendCookie: true,
+      refererRoute: previousRoute,
+    });
+
+    ctx.req = req;
+    ctx.res = res;
+  }
+
+  return ctx;
 }
 
 export function makeGetServerSidePropsContext({

@@ -81,6 +81,7 @@ export default async function getPage({
             const { pageElement } = await makePage({
               route,
               previousRoute,
+              isClientSideNavigation: true,
             });
             previousRoute = route;
             return pageElement;

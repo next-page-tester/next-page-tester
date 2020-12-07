@@ -27,6 +27,9 @@ describe('_app support', () => {
         AppTree: Fragment,
         Component: CustomAppWithGIP_AppContextPage,
         ctx: {
+          pathname: '/app-context',
+          query: {},
+          asPath: '/app-context',
           req: httpMocks.createRequest({
             url: '/app-context',
             params: {},
@@ -34,9 +37,6 @@ describe('_app support', () => {
           }),
           res: httpMocks.createResponse(),
           err: undefined,
-          pathname: '/app-context',
-          query: {},
-          asPath: '/app-context',
         },
         router: {
           asPath: '/app-context',

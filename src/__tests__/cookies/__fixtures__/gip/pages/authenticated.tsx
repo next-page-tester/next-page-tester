@@ -18,13 +18,13 @@ const Authenticated: NextPage<Props> = ({ reqHeadersCookie }) => {
   );
 };
 
-Authenticated.getInitialProps = function ({ req }) {
+Authenticated.getInitialProps = async function ({ req }) {
   if (req) {
     return {
       reqHeadersCookie: req.headers.cookie,
     };
   }
-  return {};
+  return { reqHeadersCookie: document.cookie };
 };
 
 export default Authenticated;

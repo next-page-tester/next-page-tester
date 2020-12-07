@@ -33,6 +33,7 @@ export type ExtendedOptions = OptionsWithDefaults & {
   pagesDirectory: string;
   pageExtensions: string[];
   previousRoute?: string;
+  isClientSideNavigation?: boolean;
 };
 
 /*
