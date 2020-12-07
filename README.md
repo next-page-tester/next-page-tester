@@ -45,15 +45,15 @@ Next page tester will take care of:
 
 ## Options
 
-| Property                       | Description                                                                      | type               | Default         |
-| ------------------------------ | -------------------------------------------------------------------------------- | ------------------ | --------------- |
-| **route** (mandatory)          | Next route (must start with `/`)                                                 | `string`           | -               |
-| **req**                        | Access default mocked [request object][req-docs]<br>(`getServerSideProps` only)  | `res => res`       | -               |
-| **res**                        | Access default mocked [response object][res-docs]<br>(`getServerSideProps` only) | `req => req`       | -               |
-| **router**                     | Access default mocked [Next router object][next-docs-router]                     | `router => router` | -               |
-| **useApp**                     | Render [custom App component][next-docs-custom-app]                              | `boolean`          | `true`          |
-| **useDocument** (experimental) | Render [Document component][next-docs-custom-document]                           | `boolean`          | `false`         |
-| **nextRoot**                   | Absolute path to Next's root folder                                              | `string`           | _auto detected_ |
+| Property                       | Description                                                   | type               | Default         |
+| ------------------------------ | ------------------------------------------------------------- | ------------------ | --------------- |
+| **route** (mandatory)          | Next route (must start with `/`)                              | `string`           | -               |
+| **req**                        | Enhance default mocked [request object][req-docs]             | `res => res`       | -               |
+| **res**                        | Enhance default mocked [response object][res-docs]            | `req => req`       | -               |
+| **router**                     | Enhance default mocked [Next router object][next-docs-router] | `router => router` | -               |
+| **useApp**                     | Render [custom App component][next-docs-custom-app]           | `boolean`          | `true`          |
+| **useDocument** (experimental) | Render [Document component][next-docs-custom-document]        | `boolean`          | `false`         |
+| **nextRoot**                   | Absolute path to Next.js root folder                          | `string`           | _auto detected_ |
 
 ## Notes
 
@@ -127,6 +127,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
+<!-- prettier-ignore-start -->
+<!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
