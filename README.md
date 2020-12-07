@@ -108,7 +108,6 @@ A temporary workaround consists of [mocking global `console.error` to ignore the
 
 - Consider reusing Next.js code parts (not only types)
 - Consider supporting Next.js `trailingSlash` option
-- Don't provide `getInitialProps` with `ctx` object when called client-side
 
 ## Contributors ✨
 
