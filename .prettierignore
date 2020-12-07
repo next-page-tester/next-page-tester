@@ -1,5 +1,6 @@
 .git/
 .tmp/
 package.json
+coverage
 package-lock.json
 dist/
