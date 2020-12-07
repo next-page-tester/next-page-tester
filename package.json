@@ -12,7 +12,7 @@
     "clean": "rm -rf dist",
     "compile": "npm run clean && tsc",
     "test": "jest ./src",
-    "test:source": "npm run test:ts && npm t -- --coverage && npm run test:format",
+    "test:source": "npm run test:format && npm run test:ts && npm t -- --coverage",
     "test:ts": "tsc --noEmit",
     "test:format": "prettier --check .",
     "prepare": "npm run test:source && npm run compile",
