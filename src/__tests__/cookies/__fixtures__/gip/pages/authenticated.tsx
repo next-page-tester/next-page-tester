@@ -19,12 +19,9 @@ const Authenticated: NextPage<Props> = ({ reqHeadersCookie }) => {
 };
 
 Authenticated.getInitialProps = async function ({ req }) {
-  if (req) {
-    return {
-      reqHeadersCookie: req.headers.cookie,
-    };
-  }
-  return { reqHeadersCookie: document.cookie };
+  return {
+    reqHeadersCookie: req?.headers?.cookie,
+  };
 };
 
 export default Authenticated;

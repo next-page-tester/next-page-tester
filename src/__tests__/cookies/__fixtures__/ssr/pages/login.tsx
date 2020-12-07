@@ -10,7 +10,7 @@ export default function Login({ reqHeadersCookie }: Props) {
   const router = useRouter();
 
   const handleLogin = () => {
-    document.cookie = 'SessionId=super-secret';
+    document.cookie = 'sessionId=bar';
     router.push('/authenticated');
   };
 

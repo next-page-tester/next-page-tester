@@ -10,7 +10,7 @@ const Login: NextPage<Props> = ({ reqHeadersCookie }) => {
   const router = useRouter();
 
   const handleLogin = () => {
-    document.cookie = 'SessionId=super-secret';
+    document.cookie = 'sessionId=bar';
     router.push('/authenticated');
   };
 
@@ -23,12 +23,9 @@ const Login: NextPage<Props> = ({ reqHeadersCookie }) => {
 };
 
 Login.getInitialProps = function ({ req }) {
-  if (req) {
-    return {
-      reqHeadersCookie: req.headers.cookie,
-    };
-  }
-  return { reqHeadersCookie: document.cookie };
+  return {
+    reqHeadersCookie: req?.headers?.cookie,
+  };
 };
 
 export default Login;
