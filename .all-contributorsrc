@@ -27,7 +27,8 @@
         "infra",
         "test",
         "review",
-        "ideas"
+        "ideas",
+        "doc"
       ]
     },
     {
@@ -46,5 +47,5 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": true,
-  "badgeTemplate": ""
+  "badgeTemplate": " "
 }

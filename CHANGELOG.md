@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.10.0
+
+### New Features
+
+- Make `document.cookie` available to fetching methods as `ctx.req.headers.cookie`
+- Make `referer` available to fetching methods as `ctx.req.headers.referer`
+
+### Bugfixes
+
+- Don't pass `getInitialProps` context `req`/`res` objects when execution happens as a result of client-side navigation
+- Simplistically simulate non-browser environment when executing server-only methods/modules
+
 ## 0.9.0
 
 ### Breaking Changes
