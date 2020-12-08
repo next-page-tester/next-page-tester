@@ -7,7 +7,7 @@ import { APP_PATH } from '../constants';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import * as nextDocument from 'next/document';
-import DefaultDocument, { Main, DocumentProps } from './defaultDocument';
+import DefaultDocument, { Main, DocumentProps } from './DefaultDocument';
 
 export default async function renderDocument({
   pageElement,
