@@ -4,7 +4,7 @@
 
 ### Bugfixes
 
-- Fix user events not firing when using default `_document` implementation
+- Fix user events not firing when using default `_document`
 
 ## 0.10.0
 
