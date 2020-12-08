@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.1
+
+### Bugfixes
+
+- Fix user events not firing when using default `_document` implementation
+
 ## 0.10.0
 
 ### New Features
