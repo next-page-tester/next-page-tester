@@ -13,7 +13,6 @@ import type {
   Options,
   OptionsWithDefaults,
   ExtendedOptions,
-  ReqEnhancer,
 } from './commonTypes';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {

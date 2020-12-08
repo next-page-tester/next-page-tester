@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import NextDocument from 'next/document';
+import React from 'react';
 import getCustomDocumentFile from './getCustomDocumentFile';
 import fetchDocumentData from './fetchDocumentData';
 import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
@@ -7,9 +6,8 @@ import type { DocumentType, RenderPage } from 'next/dist/next-server/lib/utils';
 import { APP_PATH } from '../constants';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
-import { DocumentContext } from 'next/dist/next-server/lib/document-context';
-import * as documentModule from 'next/document';
-import { AMP_RENDER_TARGET } from 'next/constants';
+import * as nextDocument from 'next/document';
+import DefaultDocument, { Main, DocumentProps } from './DefaultDocument';
 
 export default async function renderDocument({
   pageElement,
@@ -23,9 +21,10 @@ export default async function renderDocument({
   pageData: PageData;
 }): Promise<JSX.Element> {
   const customDocumentFile = await getCustomDocumentFile({ options });
+
   const Document = customDocumentFile
     ? customDocumentFile.default
-    : ((NextDocument as unknown) as DocumentType);
+    : DefaultDocument;
 
   let head: JSX.Element[] = [];
 
@@ -45,19 +44,10 @@ export default async function renderDocument({
     return { html, head };
   };
 
-  // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/pages/_document.tsx#L524
-  // Default behaviour of Main component is to dangerouslySetInnerHTML with the html
-  // string rendered above. This works, but will break all client side interactions
-  // as event handlers are lost in static markup
-  // @ts-ignore
-  documentModule.Main = () => {
-    const { inAmpMode, docComponentsRendered } = useContext(DocumentContext);
-    docComponentsRendered.Main = true;
-    // ampMode is not (yet) supported, but code is here to match the upstream (NextJS) implementation
-    /* istanbul ignore next */
-    if (inAmpMode) return <>{AMP_RENDER_TARGET}</>;
-    return <div id="__next">{pageElement}</div>;
-  };
+  if (customDocumentFile) {
+    // @ts-ignore
+    nextDocument.Main = Main;
+  }
 
   const initialProps = await fetchDocumentData({
     Document,
@@ -65,7 +55,11 @@ export default async function renderDocument({
     pageObject,
   });
 
-  return Document.renderDocument(Document, {
+  const renderDocument = (Document: DocumentType, props: DocumentProps) => {
+    return Document.renderDocument(Document, props);
+  };
+
+  return renderDocument(Document, {
     ...initialProps,
     buildManifest: {
       ampDevFiles: [],
@@ -96,5 +90,6 @@ export default async function renderDocument({
     canonicalBase: '',
     headTags: [],
     devOnlyCacheBusterQueryString: '',
+    pageElement,
   });
 }
