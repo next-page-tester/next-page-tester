@@ -15,8 +15,10 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-  // @ts-ignore
-  console.error.mockRestore();
+  if ('mockRestore' in console.error) {
+    // @ts-ignore
+    console.error.mockRestore();
+  }
 });
 
 afterEach(() => {
