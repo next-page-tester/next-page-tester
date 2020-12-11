@@ -12,6 +12,12 @@ beforeAll(() => {
       consoleError(error);
     }
   });
+
+  // Remove initial JSDOM <head> element
+  const headElement = document.querySelector('head');
+  if (headElement) {
+    headElement.remove();
+  }
 });
 
 afterAll(() => {
