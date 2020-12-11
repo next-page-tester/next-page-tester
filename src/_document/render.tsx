@@ -30,6 +30,8 @@ export default async function renderDocument({
 
   const renderPage: RenderPage = () => {
     const html = renderToStaticMarkup(
+      // @NOTE: implemented from:
+      // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/next-server/server/render.tsx#L561
       <HeadManagerContext.Provider
         value={{
           updateHead: (state) => {

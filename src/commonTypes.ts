@@ -3,7 +3,6 @@ import type {
   GetStaticProps,
   GetStaticPaths,
   NextPage,
-  GetServerSidePropsResult,
   Redirect,
 } from 'next';
 import { AppContext, AppInitialProps } from 'next/app';
