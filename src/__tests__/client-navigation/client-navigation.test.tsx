@@ -41,6 +41,21 @@ describe('Client side navigation', () => {
       expect(actual).toEqual(expected);
     });
 
+    it('navigates between pages with useDocument === true', async () => {
+      const { page } = await getPage({
+        nextRoot,
+        route: '/a',
+        useDocument: true,
+      });
+      const screen = render(page);
+      screen.getByText('This is page A');
+
+      // Navigate A -> B
+      userEvent.click(screen.getByText(linkText));
+      await screen.findByText('This is page B');
+      expect(screen.queryByText('This is page A')).not.toBeInTheDocument();
+    });
+
     it('GIP navigates between pages ', async () => {
       const { page } = await getPage({
         nextRoot,
