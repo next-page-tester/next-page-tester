@@ -2,7 +2,7 @@ import React from 'react';
 import getCustomDocumentFile from './getCustomDocumentFile';
 import fetchDocumentData from './fetchDocumentData';
 import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
-import type { DocumentType, RenderPage } from 'next/dist/next-server/lib/utils';
+import type { RenderPage } from 'next/dist/next-server/lib/utils';
 import { APP_PATH } from '../constants';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
@@ -44,6 +44,7 @@ export default async function renderDocument({
     return { html, head };
   };
 
+  // Re-assign default Next.js <Main/> component with mock provided by us
   if (customDocumentFile) {
     // @ts-ignore
     nextDocument.Main = Main;
@@ -55,11 +56,7 @@ export default async function renderDocument({
     pageObject,
   });
 
-  const renderDocument = (Document: DocumentType, props: DocumentProps) => {
-    return Document.renderDocument(Document, props);
-  };
-
-  return renderDocument(Document, {
+  const documentProps: DocumentProps = {
     ...initialProps,
     buildManifest: {
       ampDevFiles: [],
@@ -91,5 +88,7 @@ export default async function renderDocument({
     headTags: [],
     devOnlyCacheBusterQueryString: '',
     pageElement,
-  });
+  };
+
+  return Document.renderDocument(Document, documentProps);
 }
