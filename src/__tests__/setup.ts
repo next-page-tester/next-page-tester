@@ -1,5 +1,13 @@
 import '@testing-library/jest-dom';
 
+class IntersectionObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+//@ts-ignore
+global.IntersectionObserver = IntersectionObserver;
+
 beforeAll(() => {
   // Mock global.scrollTo, since Next.js Link component trigger it
   global.scrollTo = jest.fn();
