@@ -14,7 +14,7 @@ class CustomDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta name="Description" content={this.props.description} />
+          <meta name="description" content={this.props.description} />
         </Head>
 
         <body>

@@ -6,6 +6,16 @@ import { getPage } from '../../index';
 import CustomDocumentWithGIP_Page from './__fixtures__/custom-document-with-gip/pages/page';
 import CustomApp from './__fixtures__/custom-document-with-gip/pages/_app';
 
+function getMetaTagsContentByName(element: Element, name: string) {
+  const head = element.querySelector('head') as HTMLHeadElement;
+  const metaTags = head.querySelectorAll(
+    `meta[name="${name}"]`
+  ) as NodeListOf<HTMLMetaElement>;
+  const content: string[] = [];
+  metaTags.forEach((tag) => content.push(tag.content));
+  return content;
+}
+
 describe('_document support', () => {
   describe('_document with getInitialProps', () => {
     describe('with custom _app', () => {
@@ -16,13 +26,16 @@ describe('_document support', () => {
           useDocument: true,
         });
         const { container } = render(page);
-        const head = container.querySelector('head') as HTMLHeadElement;
+
         const html = container.querySelector('html') as HTMLHtmlElement;
         expect(html).toHaveAttribute('lang', 'en');
-        expect(head.querySelector('meta[name="Description"]')).toHaveAttribute(
-          'Content',
-          'Custom document description'
+
+        const metaDescriptions = getMetaTagsContentByName(
+          container,
+          'description'
         );
+        expect(metaDescriptions[0]).toBe('Custom document description');
+
         const actual = container.querySelector('#__next') as HTMLDivElement;
         actual.removeAttribute('id');
 
@@ -45,12 +58,11 @@ describe('_document support', () => {
       });
 
       const { container } = render(page);
-
-      const head = container.querySelector('head') as HTMLHeadElement;
-      expect(head.querySelector('meta[name="Description"]')).toHaveAttribute(
-        'Content',
-        'Document with special extension'
+      const metaDescriptions = getMetaTagsContentByName(
+        container,
+        'description'
       );
+      expect(metaDescriptions[0]).toBe('Document with special extension');
     });
   });
 
@@ -91,4 +103,52 @@ describe('_document support', () => {
       });
     }
   );
+
+  describe('next/head', () => {
+    describe('first render', () => {
+      it('merges _document and page head elements', async () => {
+        const { page } = await getPage({
+          nextRoot: path.join(
+            __dirname,
+            '/__fixtures__/custom-document-with-gip'
+          ),
+          route: '/page',
+          useDocument: true,
+        });
+        const { container } = render(page);
+
+        const metaDescriptions = getMetaTagsContentByName(
+          container,
+          'description'
+        );
+        expect(metaDescriptions.length).toBe(2);
+        expect(metaDescriptions[0]).toBe('Custom document description');
+        expect(metaDescriptions[1]).toBe('Page description');
+      });
+    });
+
+    describe('on client navigation', () => {
+      it('merges _document and page head elements', async () => {
+        const { page } = await getPage({
+          nextRoot: path.join(
+            __dirname,
+            '/__fixtures__/custom-document-with-gip'
+          ),
+          route: '/page',
+          useDocument: true,
+        });
+        const { container } = render(page);
+        userEvent.click(screen.getByText('Go to A'));
+        await screen.findByText('This is page A');
+
+        const metaDescriptions = getMetaTagsContentByName(
+          container,
+          'description'
+        );
+        expect(metaDescriptions.length).toBe(2);
+        expect(metaDescriptions[0]).toBe('Custom document description');
+        expect(metaDescriptions[1]).toBe('Page A description');
+      });
+    });
+  });
 });
