@@ -1,7 +1,6 @@
-import { fetchAppData, renderApp } from './_app';
+import { renderApp } from './_app';
 import { renderDocument } from './_document';
-import { fetchPageData } from './fetchData';
-import type { PageObject, ExtendedOptions } from './commonTypes';
+import type { PageObject, ExtendedOptions, PageData } from './commonTypes';
 
 /*
  * Return an instance of the page element corresponding
@@ -10,21 +9,13 @@ import type { PageObject, ExtendedOptions } from './commonTypes';
 export default async function makePageElement({
   pageObject,
   options,
+  pageData,
 }: {
   pageObject: PageObject;
   options: ExtendedOptions;
+  pageData: PageData;
 }) {
   const { useDocument } = options;
-  const appInitialProps = await fetchAppData({
-    pageObject,
-    options,
-  });
-  const pageData = await fetchPageData({
-    pageObject,
-    options,
-    appInitialProps,
-  });
-
   // Render page element and optional wrapping custom App
   let pageElement = await renderApp({
     options,
