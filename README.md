@@ -55,6 +55,32 @@ Next page tester will take care of:
 | **useDocument** (experimental) | Render [Document component][next-docs-custom-document]        | `boolean`          | `false`         |
 | **nextRoot**                   | Absolute path to Next.js root folder                          | `string`           | _auto detected_ |
 
+## Test helpers
+
+Next page tester provides an [utility to setup the expected JSDOM environment](/src/testHelpers.ts).
+
+Run the helper in your global tests setup (in case of Jest It is `setupFilesAfterEnv` file):
+
+```js
+import { initTestHelpers } from 'next-page-tester';
+initTestHelpers();
+```
+
+In case your tests make use of **experimental `useDocument` option**, take the following additional steps:
+
+```js
+import { initTestHelpers } from 'next-page-tester';
+const { setup, teardown } = initTestHelpers();
+
+beforeAll(() => {
+  setup();
+});
+
+afterAll(() => {
+  teardown();
+});
+```
+
 ## Notes
 
 - Data fetching methods' context `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http]
@@ -91,7 +117,7 @@ Note: `document.cookie` does not get cleaned up automatically. You'll have to cl
 
 ### Error: Not implemented: window.scrollTo
 
-Next.js `Link` components invoke `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
+Next.js `Link` component invokes `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
 
 ### `useDocument` option and `validateDOMNesting(...)` error
 

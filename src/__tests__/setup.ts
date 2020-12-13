@@ -1,38 +1,13 @@
 import '@testing-library/jest-dom';
-
-class IntersectionObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
-}
-//@ts-ignore
-global.IntersectionObserver = IntersectionObserver;
+import { initTestHelpers } from '../index';
+const { setup, teardown } = initTestHelpers();
 
 beforeAll(() => {
-  // Mock global.scrollTo, since Next.js Link component trigger it
-  global.scrollTo = jest.fn();
-
-  // Suppress validateDOMNesting error logs
-  // we now we're doing borderline stuff like rendering nested html elements
-  const consoleError = console.error;
-  console.error = jest.fn((error) => {
-    if (!error.includes('validateDOMNesting')) {
-      consoleError(error);
-    }
-  });
-
-  // Remove initial JSDOM <head> element
-  const headElement = document.querySelector('head');
-  if (headElement) {
-    headElement.remove();
-  }
+  setup();
 });
 
 afterAll(() => {
-  if ('mockRestore' in console.error) {
-    // @ts-ignore
-    console.error.mockRestore();
-  }
+  teardown();
 });
 
 afterEach(() => {
