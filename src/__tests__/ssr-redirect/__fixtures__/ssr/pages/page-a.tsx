@@ -9,6 +9,7 @@ type Props = {
 export default function PageA({ referer }: Props) {
   return (
     <>
+      <div>Page A</div>
       <div>req.headers.referer: "{referer}"</div>
     </>
   );

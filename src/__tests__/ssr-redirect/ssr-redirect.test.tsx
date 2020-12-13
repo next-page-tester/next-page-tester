@@ -14,7 +14,7 @@ describe('ssr-redirect', () => {
         });
 
         render(page);
-        screen.getByText('req.headers.referer: ""');
+        expect(screen.getByText('Page A')).toBeInTheDocument();
       });
     }
   );
@@ -29,7 +29,7 @@ describe('ssr-redirect', () => {
         });
 
         render(page);
-        screen.getByText('req.headers.referer: ""');
+        expect(screen.getByText('Page A')).toBeInTheDocument();
       });
     }
   );
@@ -44,10 +44,13 @@ describe('ssr-redirect', () => {
         });
 
         render(page);
+        expect(screen.getByText('Page B')).toBeInTheDocument();
         userEvent.click(screen.getByText('Proxy link'));
-        await screen.findByText(
-          'req.headers.referer: "http://localhost/page-b"'
-        );
+
+        await screen.findByText('Page A');
+        expect(
+          screen.getByText('req.headers.referer: "http://localhost/page-b"')
+        ).toBeInTheDocument();
       });
     }
   );
