@@ -1,0 +1,58 @@
+{
+  "extends": ["config:base"],
+  "schedule": "every month",
+  "masterIssue": true,
+  "rangeStrategy": "bump",
+  "automerge": true,
+  "major": {
+    "automerge": false
+  },
+  "automergeType": "branch",
+  "stabilityDays": 3,
+  "postUpdateOptions": ["npmDedupe"],
+  "packageRules": [
+    {
+      "packageNames": ["next", "@types/webpack"],
+      "groupName": "Update next.js packages"
+    },
+    {
+      "packageNames": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "groupName": "Update react packages"
+    },
+    {
+      "packagePatterns": ["^@testing-library"],
+      "groupName": "Update testing library packages"
+    },
+    {
+      "packageNames": [
+        "jest",
+        "@types/jest",
+        "ts-jest",
+        "babel-jest",
+        "@babel/core"
+      ],
+      "groupName": "Update jest packages"
+    },
+    {
+      "packageNames": ["find-root", "@types/find-root"],
+      "groupName": "Update find-root"
+    },
+    {
+      "packageNames": ["normalize-path", "@types/normalize-path"],
+      "groupName": "Update normalize-path"
+    },
+    {
+      "packageNames": ["node-mocks-http", "@types/node"],
+      "groupName": "Update node-mocks-http"
+    },
+    {
+      "depTypeList": ["peerDependencies"],
+      "enabled": false
+    }
+  ]
+}
