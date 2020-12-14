@@ -55,11 +55,18 @@ Next page tester will take care of:
 | **useDocument** (experimental) | Render [Document component][next-docs-custom-document]        | `boolean`          | `false`         |
 | **nextRoot**                   | Absolute path to Next.js root folder                          | `string`           | _auto detected_ |
 
-## Test helpers
+## Set up your test environment
 
-Next page tester provides an [utility to setup the expected JSDOM environment](/src/testHelpers.ts).
+Since Next.js is not designed to run in a JSDOM environment we need to **tweak the default JSDOM environment** to avoid unexpected errors and allow a smoother testing experience:
 
-Run the helper in your global tests setup (in case of Jest It is `setupFilesAfterEnv` file):
+- Provide a `window.scrollTo` mock
+- Provide a `IntersectionObserver` mock
+- Silence `validateDOMNesting(...)` error
+- Remove initial `<head/>` element
+
+Next page tester provides a [helper to setup the expected JSDOM environment](/src/testHelpers.ts) as described.
+
+Run `initTestHelpers` in your global tests setup (in case of Jest It is `setupFilesAfterEnv` file):
 
 ```js
 import { initTestHelpers } from 'next-page-tester';
@@ -86,6 +93,12 @@ afterAll(() => {
 - Data fetching methods' context `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http]
 - Next page tester can be used with any testing framework/library (not tied to Testing library)
 - It might be necessary to install `@types/react-dom` and `@types/webpack` when using Typescript in `strict` mode due to [this bug][next-gh-strict-bug]
+
+### Experimental `useDocument` option
+
+`useDocument` option is partially implemented and might be unstable. `next/head` doesn't currently work on initial render.
+
+`useDocument` might also produce a `UnhandledPromiseRejectionWarning` warning on client side navigation.
 
 ### Next.js versions support
 
