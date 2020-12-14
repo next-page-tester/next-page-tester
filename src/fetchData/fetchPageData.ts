@@ -46,15 +46,19 @@ function ensurePageDataHasProps({
 }: {
   pageData: { [key: string]: any };
 }) {
-  if ('props' in pageData) {
-    return;
-  } else {
-    const error: CustomError = new Error(
-      `[next page tester] Page's fetching method returned an object with missing "props" field. Returned value is available in error.payload.`
-    );
-    error.payload = pageData;
-    throw error;
+  const allowedKeys = ['props', 'redirect'];
+  for (const key of allowedKeys) {
+    if (key in pageData) {
+      return;
+    }
   }
+
+  const errorMessage = `[next page tester] Page's fetching method returned an object with unsupported fields. Supported fields are: "[${allowedKeys.join(
+    ', '
+  )}]". Returned value is available in error.payload.`;
+  const error: CustomError = new Error(errorMessage);
+  error.payload = pageData;
+  throw error;
 }
 
 function mergePageDataWithAppData({
@@ -121,9 +125,9 @@ export default async function fetchPageData({
 
   if (page.getServerSideProps) {
     const { getServerSideProps } = page;
-    const ctx: GetServerSidePropsContext<typeof params> = makeGetServerSidePropsContext(
-      { options, pageObject }
-    );
+    const ctx: GetServerSidePropsContext<
+      typeof params
+    > = makeGetServerSidePropsContext({ options, pageObject });
     const pageData = await executeAsIfOnServer(() => getServerSideProps(ctx));
     ensurePageDataHasProps({ pageData });
     return mergePageDataWithAppData({ pageData, appInitialProps });

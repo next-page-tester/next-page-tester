@@ -3,6 +3,8 @@ import type {
   GetStaticProps,
   GetStaticPaths,
   NextPage,
+  GetServerSidePropsResult,
+  Redirect,
 } from 'next';
 import { AppContext, AppInitialProps } from 'next/app';
 import type { NextRouter } from 'next/router';
@@ -11,10 +13,10 @@ import type { ParsedUrlQuery } from 'querystring';
 import type { DocumentType } from 'next/dist/next-server/lib/utils';
 
 export type Req = ReturnType<typeof createRequest>;
-type Res = ReturnType<typeof createResponse>;
+export type Res = ReturnType<typeof createResponse>;
 
 export type ReqEnhancer = (req: Req) => Req;
-type ResEnhancer = (res: Res) => Res;
+export type ResEnhancer = (res: Res) => Res;
 
 export type Options = {
   route: string;
@@ -55,8 +57,9 @@ export type PageProps = {
   [key: string]: any;
 };
 
-export type PageData = {
-  props?: PageProps;
+export type PageData<P extends PageProps = PageProps> = {
+  props?: P;
+  redirect?: Redirect;
 };
 
 export type NextPageFile = {

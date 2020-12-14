@@ -4,6 +4,7 @@ import getPageObject from './getPageObject';
 import makePageElement from './makePageElement';
 import NavigationProvider from './NavigationProvider';
 import RouterProvider from './RouterProvider';
+import { fetchRouteData } from './fetchData';
 import {
   defaultNextRoot,
   findPagesDirectory,
@@ -13,6 +14,7 @@ import type {
   Options,
   OptionsWithDefaults,
   ExtendedOptions,
+  PageObject,
 } from './commonTypes';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
@@ -54,16 +56,32 @@ export default async function getPage({
   };
   // @TODO: Consider printing extended options value behind a debug flag
 
-  const makePage = async (optionsOverride?: Partial<ExtendedOptions>) => {
+  const makePage = async (
+    optionsOverride?: Partial<ExtendedOptions>
+  ): Promise<{ pageElement: JSX.Element; pageObject: PageObject }> => {
     const mergedOptions = { ...options, ...optionsOverride };
 
     const pageObject = await getPageObject({
       options: mergedOptions,
     });
 
+    const pageData = await fetchRouteData({
+      pageObject,
+      options: mergedOptions,
+    });
+
+    if (pageData.redirect) {
+      return makePage({
+        ...mergedOptions,
+        route: pageData.redirect.destination,
+        isClientSideNavigation: false,
+      });
+    }
+
     const pageElement = await makePageElement({
       pageObject,
       options: mergedOptions,
+      pageData,
     });
 
     return { pageElement, pageObject };
