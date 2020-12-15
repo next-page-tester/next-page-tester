@@ -41,7 +41,7 @@ describe('Client side navigation', () => {
       expect(actual).toEqual(expected);
     });
 
-    it('navigates between pages with useDocument === true', async () => {
+    it.skip('navigates between pages with useDocument === true', async () => {
       const { page } = await getPage({
         nextRoot,
         route: '/a',
