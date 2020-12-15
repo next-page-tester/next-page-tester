@@ -1,10 +1,8 @@
 import React from 'react';
 import { existsSync } from 'fs';
-import getPageObject from './getPageObject';
 import makePageElement from './makePageElement';
 import NavigationProvider from './NavigationProvider';
 import RouterProvider from './RouterProvider';
-import { fetchRouteData } from './fetchData';
 import {
   defaultNextRoot,
   findPagesDirectory,
@@ -60,28 +58,8 @@ export default async function getPage({
     optionsOverride?: Partial<ExtendedOptions>
   ): Promise<{ pageElement: JSX.Element; pageObject: PageObject }> => {
     const mergedOptions = { ...options, ...optionsOverride };
-
-    const pageObject = await getPageObject({
+    const { pageElement, pageObject } = await makePageElement({
       options: mergedOptions,
-    });
-
-    const pageData = await fetchRouteData({
-      pageObject,
-      options: mergedOptions,
-    });
-
-    if (pageData.redirect) {
-      return makePage({
-        ...mergedOptions,
-        route: pageData.redirect.destination,
-        isClientSideNavigation: false,
-      });
-    }
-
-    const pageElement = await makePageElement({
-      pageObject,
-      options: mergedOptions,
-      pageData,
     });
 
     return { pageElement, pageObject };
