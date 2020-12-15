@@ -25,26 +25,34 @@ describe('real-world-example', () => {
     expect(head.querySelector('title')?.textContent).toEqual('Create Next App');
 
     // Correctly passes query
-    screen.getByText('Hello Matthew');
-    screen.getByText('Count: 0');
+    expect(screen.getByText('Hello Matthew')).toBeInTheDocument();
+
+    expect(screen.getByText('Count: 0')).toBeInTheDocument();
 
     // Make sure that click handlers work
     userEvent.click(screen.getByText('Click me'));
-    screen.getByText('Count: 1');
+    expect(screen.getByText('Count: 1')).toBeInTheDocument();
 
     // Make sure cleint navigation work
     userEvent.click(screen.getByText('To page A'));
 
-    await screen.findByText('Came from http://localhost/?name=Matthew');
+    const formSubmitButton = await screen.findByText('Submit form');
+
+    await userEvent.type(
+      screen.getByPlaceholderText('Email'),
+      'john.doe@gmail.com'
+    );
+
+    userEvent.click(formSubmitButton);
+    await screen.findByText('Got values: {"email":"john.doe@gmail.com"}');
+
+    screen.getByText('Came from http://localhost/?name=Matthew');
 
     // Make sure head title is updated with the new page
     expect(head.querySelector('title')?.textContent).toEqual('Page A');
 
-    screen.getByText('Count: 0');
-    userEvent.click(screen.getByText('Click me'));
-    screen.getByText('Count: 1');
-
     userEvent.click(screen.getByText('Back to root'));
+
     await screen.findByText('Count: 0');
   });
 });
