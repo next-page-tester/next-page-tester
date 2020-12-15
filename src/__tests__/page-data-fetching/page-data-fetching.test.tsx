@@ -59,8 +59,6 @@ describe('Data fetching', () => {
           query: expectedQuery,
         }),
         res: httpMocks.createResponse(),
-        isWindowDefined: false,
-        isDocumentDefined: false,
       };
       const { container: expected } = render(<SSRPage {...expectedProps} />);
       expect(actual).toEqual(expected);
