@@ -29,7 +29,7 @@ describe('Blog page', () => {
 
 ## What
 
-The idea behind this library is to enable DOM integration tests on Next.js pages along with [ådata fetching][next-docs-data-fetching] and [routing][next-docs-routing].
+The idea behind this library is to enable DOM integration tests on Next.js pages along with [data fetching][next-docs-data-fetching] and [routing][next-docs-routing].
 
 The testing approach suggested here consists of manually mocking external API's dependencies and get the component instance matching a given route.
 
