@@ -6,7 +6,7 @@
 
 The missing DOM integration testing tool for [Next.js][next-github].
 
-Given a Next.js route, this library will return an instance of the matching page component instantiated with the **properties** derived by Next.js' [**routing system**][next-docs-routing] and [**server side data fetching**][next-docs-data-fetching].
+Given a Next.js route, this library will return an instance of the matching page component instantiated with the **properties** derived by Next.js' [**routing system**][next-docs-routing] and [**data fetching methods**][next-docs-data-fetching].
 
 ```js
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -29,7 +29,7 @@ describe('Blog page', () => {
 
 ## What
 
-The idea behind this library is to enable DOM integration tests on Next.js pages along with [server side data fetching][next-docs-data-fetching] and [routing][next-docs-routing].
+The idea behind this library is to enable DOM integration tests on Next.js pages along with [data fetching][next-docs-data-fetching] and [routing][next-docs-routing].
 
 The testing approach suggested here consists of manually mocking external API's dependencies and get the component instance matching a given route.
 
@@ -38,10 +38,10 @@ Next page tester will take care of:
 - **resolving** provided **routes** into matching page component
 - calling **Next.js data fetching methods** (`getServerSideProps`, `getInitialProps` or `getStaticProps`) if the case
 - set up a **mocked `next/router` provider** initialized with the expected values (to test `useRouter` and `withRouter`)
-- wrapping page with custom `_app` component
-- wrapping page with custom `_document` component
+- wrapping page with custom `_app` and `_document` components
 - **instantiating** page component with **expected page props**
 - emulating client side navigation via `Link`, `router.push`, `router.replace`
+- handling pages' `redirect` returns
 
 ## Options
 
