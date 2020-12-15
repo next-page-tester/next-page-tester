@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.0
+
+### New Features
+
+- Handle data fetching `redirect` returns
+
 ## 0.10.1
 
 ### Bugfixes
