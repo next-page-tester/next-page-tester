@@ -30,12 +30,6 @@ describe('_document support', () => {
         const html = container.querySelector('html') as HTMLHtmlElement;
         expect(html).toHaveAttribute('lang', 'en');
 
-        const metaDescriptions = getMetaTagsContentByName(
-          container,
-          'description'
-        );
-        expect(metaDescriptions[0]).toBe('Custom document description');
-
         const actual = container.querySelector('#__next') as HTMLDivElement;
         actual.removeAttribute('id');
 
@@ -96,16 +90,14 @@ describe('_document support', () => {
         const { container } = render(page);
 
         expect(container.querySelector('head')).toBeInTheDocument();
-        expect(screen.queryByText('Count: 0')).toBeInTheDocument();
-
+        screen.getByText('Count: 0');
         userEvent.click(screen.getByText('Count me!'));
-        expect(screen.getByText('Count: 1')).toBeInTheDocument();
+        screen.getByText('Count: 1');
       });
     }
   );
 
-  describe('next/head', () => {
-    //@NOTE: Missing implementation
+  describe('next/document Head and next/head', () => {
     describe('first render', () => {
       it('merges _document and page head elements', async () => {
         const { page } = await getPage({

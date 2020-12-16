@@ -63,6 +63,7 @@ Since Next.js is not designed to run in a JSDOM environment we need to **tweak t
 - Provide a `IntersectionObserver` mock
 - Silence `validateDOMNesting(...)` error
 - Remove initial `<head/>` element
+- Resolve `next/dist/next-server/lib/side-effect` module in non-brwoser environment
 
 Next page tester provides a [helper to setup the expected JSDOM environment](/src/testHelpers.ts) as described.
 
@@ -96,9 +97,7 @@ afterAll(() => {
 
 ### Experimental `useDocument` option
 
-`useDocument` option is partially implemented and might be unstable. `next/head` doesn't currently work on initial render.
-
-`useDocument` might also produce a `UnhandledPromiseRejectionWarning` warning on client side navigation.
+`useDocument` option is partially implemented and might be unstable. It might produce a `UnhandledPromiseRejectionWarning` warning on client side navigation.
 
 ### Next.js versions support
 
