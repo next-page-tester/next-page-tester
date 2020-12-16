@@ -13,10 +13,6 @@ export default function ssr_$id$(props) {
 export async function getServerSideProps(ctx) {
   await sleep(1);
   return {
-    props: {
-      ...ctx,
-      isWindowDefined: global.window !== undefined,
-      isDocumentDefined: global.document !== undefined,
-    },
+    props: ctx,
   };
 }

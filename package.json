@@ -83,7 +83,8 @@
       "__fixtures__"
     ],
     "coveragePathIgnorePatterns": [
-      "__tests__"
+      "__tests__",
+      "src/testHelpers.ts"
     ],
     "coverageReporters": [
       "text",
@@ -104,7 +105,7 @@
   "lint-staged": {
     "**/*.{js,json,ts,tsx}": [
       "prettier",
-      "npm run test:source -- ."
+      "npm run test:source"
     ],
     "**/*.{md}": [
       "prettier"

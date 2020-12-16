@@ -55,11 +55,49 @@ Next page tester will take care of:
 | **useDocument** (experimental) | Render [Document component][next-docs-custom-document]        | `boolean`          | `false`         |
 | **nextRoot**                   | Absolute path to Next.js root folder                          | `string`           | _auto detected_ |
 
+## Set up your test environment
+
+Since Next.js is not designed to run in a JSDOM environment we need to **tweak the default JSDOM environment** to avoid unexpected errors and allow a smoother testing experience:
+
+- Provide a `window.scrollTo` mock
+- Provide a `IntersectionObserver` mock
+- Silence `validateDOMNesting(...)` error
+- Remove initial `<head/>` element
+- Resolve `next/dist/next-server/lib/side-effect` module in non-brwoser environment
+
+Next page tester provides a [helper to setup the expected JSDOM environment](/src/testHelpers.ts) as described.
+
+Run `initTestHelpers` in your global tests setup (in case of Jest It is `setupFilesAfterEnv` file):
+
+```js
+import { initTestHelpers } from 'next-page-tester';
+initTestHelpers();
+```
+
+In case your tests make use of **experimental `useDocument` option**, take the following additional steps:
+
+```js
+import { initTestHelpers } from 'next-page-tester';
+const { setup, teardown } = initTestHelpers();
+
+beforeAll(() => {
+  setup();
+});
+
+afterAll(() => {
+  teardown();
+});
+```
+
 ## Notes
 
 - Data fetching methods' context `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http]
 - Next page tester can be used with any testing framework/library (not tied to Testing library)
 - It might be necessary to install `@types/react-dom` and `@types/webpack` when using Typescript in `strict` mode due to [this bug][next-gh-strict-bug]
+
+### Experimental `useDocument` option
+
+`useDocument` option is partially implemented and might be unstable. It might produce a `UnhandledPromiseRejectionWarning` warning on client side navigation.
 
 ### Next.js versions support
 
@@ -91,7 +129,7 @@ Note: `document.cookie` does not get cleaned up automatically. You'll have to cl
 
 ### Error: Not implemented: window.scrollTo
 
-Next.js `Link` components invoke `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
+Next.js `Link` component invokes `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
 
 ### `useDocument` option and `validateDOMNesting(...)` error
 

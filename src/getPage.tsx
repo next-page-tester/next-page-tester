@@ -3,6 +3,9 @@ import { existsSync } from 'fs';
 import makePageElement from './makePageElement';
 import NavigationProvider from './NavigationProvider';
 import RouterProvider from './RouterProvider';
+import { renderDocument } from './_document';
+import initHeadManager from 'next/dist/client/head-manager';
+import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import {
   defaultNextRoot,
   findPagesDirectory,
@@ -13,6 +16,7 @@ import type {
   OptionsWithDefaults,
   ExtendedOptions,
   PageObject,
+  PageData,
 } from './commonTypes';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
@@ -54,37 +58,65 @@ export default async function getPage({
   };
   // @TODO: Consider printing extended options value behind a debug flag
 
+  const headManager = useDocument && initHeadManager();
+
   const makePage = async (
     optionsOverride?: Partial<ExtendedOptions>
-  ): Promise<{ pageElement: JSX.Element; pageObject: PageObject }> => {
+  ): Promise<{
+    pageElement: JSX.Element;
+    pageObject: PageObject;
+    pageData: PageData;
+  }> => {
     const mergedOptions = { ...options, ...optionsOverride };
-    const { pageElement, pageObject } = await makePageElement({
+    let { pageElement, pageData, pageObject } = await makePageElement({
       options: mergedOptions,
     });
 
-    return { pageElement, pageObject };
+    if (useDocument && mergedOptions.isClientSideNavigation && headManager) {
+      pageElement = (
+        // @NOTE: implemented from:
+        // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/client/index.tsx#L574
+        <HeadManagerContext.Provider value={headManager}>
+          {pageElement}
+        </HeadManagerContext.Provider>
+      );
+    }
+
+    return { pageElement, pageData, pageObject };
   };
 
-  const { pageElement, pageObject } = await makePage();
+  let { pageElement, pageData, pageObject } = await makePage();
   let previousRoute = route;
 
+  pageElement = (
+    <RouterProvider pageObject={pageObject} options={options}>
+      <NavigationProvider
+        makePage={async (route) => {
+          const { pageElement } = await makePage({
+            route,
+            previousRoute,
+            isClientSideNavigation: true,
+          });
+          previousRoute = route;
+          return pageElement;
+        }}
+      >
+        {pageElement}
+      </NavigationProvider>
+    </RouterProvider>
+  );
+
+  // Optionally wrap with custom Document
+  if (useDocument) {
+    pageElement = await renderDocument({
+      pageElement,
+      options,
+      pageObject,
+      pageData,
+    });
+  }
+
   return {
-    page: (
-      <RouterProvider pageObject={pageObject} options={options}>
-        <NavigationProvider
-          makePage={async (route) => {
-            const { pageElement } = await makePage({
-              route,
-              previousRoute,
-              isClientSideNavigation: true,
-            });
-            previousRoute = route;
-            return pageElement;
-          }}
-        >
-          {pageElement}
-        </NavigationProvider>
-      </RouterProvider>
-    ),
+    page: pageElement,
   };
 }

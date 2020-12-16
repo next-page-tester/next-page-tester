@@ -1,7 +1,6 @@
 import getPageObject from './getPageObject';
 import { fetchRouteData } from './fetchData';
 import { renderApp } from './_app';
-import { renderDocument } from './_document';
 import type { PageObject, ExtendedOptions, PageData } from './commonTypes';
 
 /*
@@ -17,8 +16,6 @@ export default async function makePageElement({
   pageObject: PageObject;
   pageData: PageData;
 }> {
-  const { useDocument } = options;
-
   const pageObject = await getPageObject({
     options,
   });
@@ -43,16 +40,6 @@ export default async function makePageElement({
     pageObject,
     pageData,
   });
-
-  // Optionally wrap with custom Document
-  if (useDocument) {
-    pageElement = await renderDocument({
-      pageElement,
-      options,
-      pageObject,
-      pageData,
-    });
-  }
 
   return { pageElement, pageObject, pageData };
 }

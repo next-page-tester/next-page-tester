@@ -6,7 +6,7 @@ class CustomDocument extends Document {
     return (
       <Html>
         <Head>
-          <meta name="Description" content="Document with special extension" />
+          <meta name="description" content="Document with special extension" />
         </Head>
 
         <body>
