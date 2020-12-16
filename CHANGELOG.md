@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.12.0
+
+### New Features
+
+- Support `next/head`
+- Provide `initTestHelpers` to help setting up test environment
+
+### Bugfixes
+
+- Fix client navigation when `useDocument` enabled
+
 ## 0.11.0
 
 ### New Features
