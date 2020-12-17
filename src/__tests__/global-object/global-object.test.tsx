@@ -7,18 +7,29 @@ import GIPPage from './__fixtures__/pages/gip';
 import path from 'path';
 
 const expectedGlobals = {
-  window_moduleLoadTime: true,
-  document_moduleLoadTime: true,
+  window_moduleLoadTime: false,
+  document_moduleLoadTime: false,
+  isWeb_moduleLoadTime: false,
+
   window_dataFetchingScope: false,
   document_dataFetchingScope: false,
+  isWeb_dataFetchingScope: false,
+
   window_componentScope: true,
   document_componentScope: true,
+  isWeb_componentScope: true,
+
+  window_componentScope_moduleLoadTime: true,
+  document_componentScope_moduleLoadTime: true,
+  isWeb_componentScope_moduleLoadTime: true,
 };
 
 const expectedGlobals_GIPClientSide = {
   ...expectedGlobals,
+
   window_dataFetchingScope: true,
   document_dataFetchingScope: true,
+  isWeb_dataFetchingScope: true,
 };
 
 describe('Global object', () => {
@@ -32,6 +43,7 @@ describe('Global object', () => {
         });
         const { container: actual } = render(page);
 
+        // Client side navigation to SSR page
         if (renderType === 'client') {
           userEvent.click(screen.getByText('Go to SSR'));
           await screen.findByText('Page');
