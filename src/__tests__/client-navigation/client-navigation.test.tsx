@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { getPage } from '../../index';
 import PageB from './__fixtures__/pages/b';
 import userEvent from '@testing-library/user-event';
+import type { NextRouter } from 'next/router';
 
 const nextRoot = __dirname + '/__fixtures__';
 
@@ -29,13 +30,15 @@ describe('Client side navigation', () => {
       const { container: actual } = screen;
       const { container: expected } = render(
         <PageB
-          routerMock={{
-            asPath: '/b',
-            pathname: '/b',
-            query: {},
-            route: '/b',
-            basePath: '',
-          }}
+          routerMock={
+            {
+              asPath: '/b',
+              pathname: '/b',
+              query: {},
+              route: '/b',
+              basePath: '',
+            } as NextRouter
+          }
         />
       );
       expect(actual).toEqual(expected);

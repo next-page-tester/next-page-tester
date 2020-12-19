@@ -1,11 +1,22 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { basename } from 'path';
+
+const expectedRoute = `/${basename(__filename, '.tsx')}`;
 
 export default function ClientSideNavigationA() {
-  const router = useRouter();
+  const { replace, route } = useRouter();
+
+  // Ensure client side navigation updates router & page in same tick
+  if (route !== expectedRoute) {
+    throw new Error(
+      `Unexpected route "${expectedRoute}" but received "${route}"`
+    );
+  }
+
   const goToPageB = () => {
-    router.replace('/b');
+    replace('/b');
   };
 
   return (

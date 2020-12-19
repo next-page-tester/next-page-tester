@@ -1,7 +1,6 @@
 import React from 'react';
 import { existsSync } from 'fs';
 import makePageElement from './makePageElement';
-import NavigationProvider from './NavigationProvider';
 import RouterProvider from './RouterProvider';
 import { renderDocument } from './_document';
 import initHeadManager from 'next/dist/client/head-manager';
@@ -89,20 +88,20 @@ export default async function getPage({
   let previousRoute = route;
 
   pageElement = (
-    <RouterProvider pageObject={pageObject} options={options}>
-      <NavigationProvider
-        makePage={async (route) => {
-          const { pageElement } = await makePage({
-            route,
-            previousRoute,
-            isClientSideNavigation: true,
-          });
-          previousRoute = route;
-          return pageElement;
-        }}
-      >
-        {pageElement}
-      </NavigationProvider>
+    <RouterProvider
+      pageObject={pageObject}
+      options={options}
+      makePage={async (route) => {
+        const { pageElement } = await makePage({
+          route,
+          previousRoute,
+          isClientSideNavigation: true,
+        });
+        previousRoute = route;
+        return pageElement;
+      }}
+    >
+      {pageElement}
     </RouterProvider>
   );
 

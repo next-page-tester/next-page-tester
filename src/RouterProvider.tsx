@@ -9,50 +9,48 @@ import type { ExtendedOptions, PageObject } from './commonTypes';
 export default function RouterProvider({
   pageObject,
   options,
-  children,
+  children: initialChildren,
+  makePage,
 }: {
   pageObject: PageObject;
   options: ExtendedOptions;
   children: JSX.Element;
+  makePage: (route: string) => Promise<JSX.Element>;
 }) {
-  const [routerMock, setRouterMock] = useState<NextRouter>();
   const isMounted = useMountedState();
 
   const pushHandler = useCallback(async (url: Parameters<PushHandler>[0]) => {
     const nextRoute = url.toString();
-    const nextOptions = {
-      ...options,
-      route: nextRoute,
-    };
+    const nextOptions = { ...options, route: nextRoute };
+
     const nextPageObject = await getPageObject({
       options: nextOptions,
     });
-    const nextRouter = makeRouterMock({
-      options: nextOptions,
-      pageObject: nextPageObject,
-      pushHandler,
-    });
+    const nextPage = await makePage(nextRoute);
 
     // Avoid errors if page gets unmounted
     /* istanbul ignore next */
     if (isMounted()) {
-      setRouterMock(nextRouter);
+      const nextRouter = makeRouterMock({
+        options: nextOptions,
+        pageObject: nextPageObject,
+        pushHandler,
+      });
+
+      setState({ router: nextRouter, children: nextPage });
     }
   }, []);
 
-  const initialRouterMock = useMemo(
-    () =>
-      makeRouterMock({
-        options,
-        pageObject,
-        pushHandler,
-      }),
-    []
-  );
+  const [{ children, router }, setState] = useState(() => ({
+    children: initialChildren,
+    router: makeRouterMock({
+      options,
+      pageObject,
+      pushHandler,
+    }),
+  }));
 
   return (
-    <RouterContext.Provider value={routerMock || initialRouterMock}>
-      {children}
-    </RouterContext.Provider>
+    <RouterContext.Provider value={router}>{children}</RouterContext.Provider>
   );
 }
