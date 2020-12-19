@@ -51,7 +51,7 @@ describe('Client side navigation', () => {
       });
       render(page);
 
-      await screen.findByText(
+      screen.getByText(
         JSON.stringify({
           isWindowDefined: false,
           isDocumentDefined: false,
@@ -62,7 +62,8 @@ describe('Client side navigation', () => {
 
       userEvent.click(screen.getByText(linkText));
 
-      await screen.findByText(
+      await screen.findByText('This is page B');
+      screen.getByText(
         JSON.stringify({
           isWindowDefined: true,
           isDocumentDefined: true,
@@ -90,7 +91,8 @@ describe('Client side navigation', () => {
 
       userEvent.click(screen.getByText(linkText));
 
-      await screen.findByText(
+      await screen.findByText('This is page B');
+      screen.getByText(
         JSON.stringify({
           isWindowDefined: false,
           isDocumentDefined: false,
