@@ -105,7 +105,7 @@ describe('Client side navigation', () => {
 
   // @ NOTE This test doesn't actually fail
   // but it forces Jest to render errors about updates after unmount in console
-  it('does not re-render (does not update router mock) if page gets unmounted', async () => {
+  it.skip('does not re-render (does not update router mock) if page gets unmounted', async () => {
     const { page } = await getPage({
       nextRoot,
       route: '/a',
