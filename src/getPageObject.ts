@@ -19,7 +19,7 @@ export default async function getPageObject({
 
     if (!page.default) {
       throw new Error(
-        '[next-page-tester]: No default export found for given route. This might happen if client side navigation is not awaited and JSDOM is torn down'
+        '[next-page-tester]: No default export found for given route'
       );
     }
 
