@@ -60,6 +60,19 @@ export default async function getPage({
 
   const headManager = useDocument && initHeadManager();
 
+  // For NextJS to correctly query <head> element we have to proxy its query through body (as this is where RTL will render the whole output to)
+  // to avoid "Warning: next-head-count is missing. https://err.sh/next.js/next-head-count-missing"
+  // https://github.com/vercel/next.js/blob/c96c13a71b61b93c87ed34f11ae7d37ede44eaec/packages/next/client/head-manager.ts#L36
+  const { getElementsByTagName } = document;
+  document.getElementsByTagName = function <K extends string>(this, tag: K) {
+    if (tag === 'head') {
+      return document.body.getElementsByTagName(tag);
+    }
+
+    document.getElementsByTagName = getElementsByTagName;
+    return this.getElementsByTagName(tag);
+  };
+
   const makePage = async (
     optionsOverride?: Partial<ExtendedOptions>
   ): Promise<{

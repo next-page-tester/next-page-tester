@@ -35,12 +35,6 @@ export function initTestHelpers() {
 
   function setup() {
     if (isJSDOMEnvironment()) {
-      // Remove initial JSDOM <head> element
-      const headElement = document.querySelector('head');
-      if (headElement) {
-        headElement.remove();
-      }
-
       // Suppress validateDOMNesting error logs
       // we now we're doing borderline stuff like rendering nested html elements
       console.error = (error: string) => {
