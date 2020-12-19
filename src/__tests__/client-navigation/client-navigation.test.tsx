@@ -112,6 +112,7 @@ describe('Client side navigation', () => {
     });
     const { unmount } = render(page);
     userEvent.click(screen.getByText('Go to B with Link'));
+
     unmount();
   });
 });
