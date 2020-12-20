@@ -1,7 +1,6 @@
 import React from 'react';
 import { existsSync } from 'fs';
 import makePageElement from './makePageElement';
-import NavigationProvider from './NavigationProvider';
 import RouterProvider from './RouterProvider';
 import { renderDocument } from './_document';
 import initHeadManager from 'next/dist/client/head-manager';
@@ -15,8 +14,7 @@ import type {
   Options,
   OptionsWithDefaults,
   ExtendedOptions,
-  PageObject,
-  PageData,
+  Page,
 } from './commonTypes';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
@@ -62,11 +60,7 @@ export default async function getPage({
 
   const makePage = async (
     optionsOverride?: Partial<ExtendedOptions>
-  ): Promise<{
-    pageElement: JSX.Element;
-    pageObject: PageObject;
-    pageData: PageData;
-  }> => {
+  ): Promise<Page> => {
     const mergedOptions = { ...options, ...optionsOverride };
     let { pageElement, pageData, pageObject } = await makePageElement({
       options: mergedOptions,
@@ -86,23 +80,14 @@ export default async function getPage({
   };
 
   let { pageElement, pageData, pageObject } = await makePage();
-  let previousRoute = route;
 
   pageElement = (
-    <RouterProvider pageObject={pageObject} options={options}>
-      <NavigationProvider
-        makePage={async (route) => {
-          const { pageElement } = await makePage({
-            route,
-            previousRoute,
-            isClientSideNavigation: true,
-          });
-          previousRoute = route;
-          return pageElement;
-        }}
-      >
-        {pageElement}
-      </NavigationProvider>
+    <RouterProvider
+      pageObject={pageObject}
+      options={options}
+      makePage={makePage}
+    >
+      {pageElement}
     </RouterProvider>
   );
 

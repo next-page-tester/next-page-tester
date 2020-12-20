@@ -17,6 +17,12 @@ export default async function getPageObject({
       pagePath: pageInfo.pagePath,
     });
 
+    if (!page.default) {
+      throw new Error(
+        '[next-page-tester]: No default export found for given route'
+      );
+    }
+
     return { page, ...pageInfo };
   }
   throw new Error('[next page tester] No matching page found for given route');

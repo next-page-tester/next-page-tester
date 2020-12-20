@@ -1,7 +1,7 @@
 import getPageObject from './getPageObject';
 import { fetchRouteData } from './fetchData';
 import { renderApp } from './_app';
-import type { PageObject, ExtendedOptions, PageData } from './commonTypes';
+import type { ExtendedOptions, Page } from './commonTypes';
 
 /*
  * Return an instance of the page element corresponding
@@ -11,11 +11,7 @@ export default async function makePageElement({
   options,
 }: {
   options: ExtendedOptions;
-}): Promise<{
-  pageElement: JSX.Element;
-  pageObject: PageObject;
-  pageData: PageData;
-}> {
+}): Promise<Page> {
   const pageObject = await getPageObject({
     options,
   });

@@ -1,58 +1,61 @@
-import React, { useMemo, useState, useCallback } from 'react';
-import type { NextRouter } from 'next/router';
+import React, { useState, useCallback } from 'react';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import makeRouterMock, { PushHandler } from './makeRouterMock';
-import getPageObject from './getPageObject';
 import { useMountedState } from './utils';
-import type { ExtendedOptions, PageObject } from './commonTypes';
+import type { ExtendedOptions, Page, PageObject } from './commonTypes';
 
 export default function RouterProvider({
   pageObject,
   options,
-  children,
+  children: initialChildren,
+  makePage,
 }: {
   pageObject: PageObject;
   options: ExtendedOptions;
   children: JSX.Element;
+  makePage: (optionsOverride?: Partial<ExtendedOptions>) => Promise<Page>;
 }) {
-  const [routerMock, setRouterMock] = useState<NextRouter>();
   const isMounted = useMountedState();
+  let previousRoute = pageObject.route;
 
   const pushHandler = useCallback(async (url: Parameters<PushHandler>[0]) => {
     const nextRoute = url.toString();
-    const nextOptions = {
-      ...options,
+    const nextOptions = { ...options, route: nextRoute };
+
+    const { pageElement, pageObject } = await makePage({
       route: nextRoute,
-    };
-    const nextPageObject = await getPageObject({
-      options: nextOptions,
+      previousRoute,
+      isClientSideNavigation: true,
     });
+    previousRoute = nextRoute;
+
     const nextRouter = makeRouterMock({
       options: nextOptions,
-      pageObject: nextPageObject,
+      pageObject,
       pushHandler,
     });
 
     // Avoid errors if page gets unmounted
     /* istanbul ignore next */
     if (isMounted()) {
-      setRouterMock(nextRouter);
+      setState({ router: nextRouter, children: pageElement });
+    } else {
+      console.warn(
+        '[next-page-tester]: Un-awaited client side navigation. This might lead into unexpected bugs and errors.'
+      );
     }
   }, []);
 
-  const initialRouterMock = useMemo(
-    () =>
-      makeRouterMock({
-        options,
-        pageObject,
-        pushHandler,
-      }),
-    []
-  );
+  const [{ children, router }, setState] = useState(() => ({
+    children: initialChildren,
+    router: makeRouterMock({
+      options,
+      pageObject,
+      pushHandler,
+    }),
+  }));
 
   return (
-    <RouterContext.Provider value={routerMock || initialRouterMock}>
-      {children}
-    </RouterContext.Provider>
+    <RouterContext.Provider value={router}>{children}</RouterContext.Provider>
   );
 }
