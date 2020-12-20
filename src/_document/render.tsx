@@ -20,7 +20,7 @@ export default async function renderDocument({
   pageObject: PageObject;
   pageData: PageData;
 }): Promise<JSX.Element> {
-  const customDocumentFile = await getCustomDocumentFile({ options });
+  const customDocumentFile = getCustomDocumentFile({ options });
 
   const Document = customDocumentFile
     ? customDocumentFile.default

@@ -14,15 +14,15 @@ export function loadPage({
   return require(path.resolve(pagesDirectory, pagePath.substring(1)));
 }
 
-export async function loadPageWithUnknownExtension<FileType>({
+export function loadPageWithUnknownExtension<FileType>({
   pagePath,
   options: { pagesDirectory, pageExtensions },
 }: {
   pagePath: string;
   options: ExtendedOptions;
-}): Promise<FileType | undefined> {
+}): FileType | undefined {
   const pageExtensionGlobPattern = `.{${pageExtensions.join(',')}}`;
-  const files = await fastGlob([
+  const files = fastGlob.sync([
     normalizePath(pagesDirectory + pagePath + pageExtensionGlobPattern),
   ]);
 

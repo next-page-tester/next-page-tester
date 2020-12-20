@@ -13,7 +13,7 @@ export default async function renderApp({
   pageData: PageData;
 }) {
   const { useApp } = options;
-  const customAppFile = await getCustomAppFile({ options });
+  const customAppFile = getCustomAppFile({ options });
   let AppComponent;
 
   if (useApp && customAppFile?.default) {
