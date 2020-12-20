@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.0
+
+### Bugfixes
+
+- Ensure router object and rendered page are updated simultaneously
+
 ## 0.12.0
 
 ### New Features
