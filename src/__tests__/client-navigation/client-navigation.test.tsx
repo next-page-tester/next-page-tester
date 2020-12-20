@@ -104,8 +104,7 @@ describe('Client side navigation', () => {
   });
 
   it('does not re-render (does not update router mock) if page gets unmounted', async () => {
-    const warn = jest.spyOn(console, 'warn');
-
+    const warn = jest.spyOn(console, 'warn').mockImplementationOnce(() => {});
     const { page } = await getPage({
       nextRoot,
       route: '/a',
@@ -120,5 +119,7 @@ describe('Client side navigation', () => {
         '[next-page-tester]: Un-awaited client side navigation. This might lead into unexpected bugs and errors.'
       );
     });
+
+    warn.mockRestore();
   });
 });
