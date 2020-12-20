@@ -1,10 +1,14 @@
-import React, { useMemo, useState, useCallback } from 'react';
-import type { NextRouter } from 'next/router';
+import React, { useState, useCallback } from 'react';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import makeRouterMock, { PushHandler } from './makeRouterMock';
 import getPageObject from './getPageObject';
 import { useMountedState } from './utils';
-import type { ExtendedOptions, PageObject } from './commonTypes';
+import type {
+  ExtendedOptions,
+  Page,
+  PageData,
+  PageObject,
+} from './commonTypes';
 
 export default function RouterProvider({
   pageObject,
@@ -15,7 +19,7 @@ export default function RouterProvider({
   pageObject: PageObject;
   options: ExtendedOptions;
   children: JSX.Element;
-  makePage: (route: string) => Promise<JSX.Element>;
+  makePage: (route: string) => Promise<Page>;
 }) {
   const isMounted = useMountedState();
 
@@ -23,21 +27,22 @@ export default function RouterProvider({
     const nextRoute = url.toString();
     const nextOptions = { ...options, route: nextRoute };
 
-    const nextPageObject = await getPageObject({
+    const { pageElement, pageObject } = await makePage(nextRoute);
+
+    const nextRouter = makeRouterMock({
       options: nextOptions,
+      pageObject,
+      pushHandler,
     });
-    const nextPage = await makePage(nextRoute);
 
     // Avoid errors if page gets unmounted
     /* istanbul ignore next */
     if (isMounted()) {
-      const nextRouter = makeRouterMock({
-        options: nextOptions,
-        pageObject: nextPageObject,
-        pushHandler,
-      });
-
-      setState({ router: nextRouter, children: nextPage });
+      setState({ router: nextRouter, children: pageElement });
+    } else {
+      console.warn(
+        '[next-page-tester]: Un-awaited client side navigation. This might lead into unexpected bugs and errors.'
+      );
     }
   }, []);
 

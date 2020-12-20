@@ -14,8 +14,7 @@ import type {
   Options,
   OptionsWithDefaults,
   ExtendedOptions,
-  PageObject,
-  PageData,
+  Page,
 } from './commonTypes';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
@@ -61,11 +60,7 @@ export default async function getPage({
 
   const makePage = async (
     optionsOverride?: Partial<ExtendedOptions>
-  ): Promise<{
-    pageElement: JSX.Element;
-    pageObject: PageObject;
-    pageData: PageData;
-  }> => {
+  ): Promise<Page> => {
     const mergedOptions = { ...options, ...optionsOverride };
     let { pageElement, pageData, pageObject } = await makePageElement({
       options: mergedOptions,
@@ -92,13 +87,13 @@ export default async function getPage({
       pageObject={pageObject}
       options={options}
       makePage={async (route) => {
-        const { pageElement } = await makePage({
+        const page = await makePage({
           route,
           previousRoute,
           isClientSideNavigation: true,
         });
         previousRoute = route;
-        return pageElement;
+        return page;
       }}
     >
       {pageElement}

@@ -92,17 +92,6 @@ export function getPageExtensions({
   return pageExtensions;
 }
 
-export const useUpdateEffect: typeof useEffect = (effect, deps) => {
-  const isInitialMount = useRef(true);
-  useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      return;
-    }
-    effect();
-  }, deps);
-};
-
 export function useMountedState(): () => boolean {
   const mountedRef = useRef(false);
   const get = useCallback(() => mountedRef.current, []);

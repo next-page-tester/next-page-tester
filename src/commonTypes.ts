@@ -94,3 +94,9 @@ export type NextCustomDocumentFile = {
 export class CustomError extends Error {
   payload?: any;
 }
+
+export type Page = {
+  pageElement: JSX.Element;
+  pageObject: PageObject;
+  pageData: PageData;
+};
