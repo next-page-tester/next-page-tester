@@ -2,6 +2,7 @@ import path from 'path';
 import fastGlob from 'fast-glob';
 import normalizePath from 'normalize-path';
 import { NextPageFile, ExtendedOptions } from './commonTypes';
+import { getServerPage } from './server';
 
 export function loadPage({
   pagesDirectory,
@@ -9,9 +10,16 @@ export function loadPage({
 }: {
   pagesDirectory: string;
   pagePath: string;
-}): NextPageFile {
-  // @NOTE Here we have to remove pagePath's trailing "/"
-  return require(path.resolve(pagesDirectory, pagePath.substring(1)));
+}): {
+  client: NextPageFile;
+  server: NextPageFile;
+} {
+  // @NOTE Here we have to remove pagePath's leading "/"
+  const absolutePath = path.resolve(pagesDirectory, pagePath.substring(1));
+  return {
+    client: require(absolutePath),
+    server: getServerPage({ path: absolutePath }),
+  };
 }
 
 export function loadPageWithUnknownExtension<FileType>({

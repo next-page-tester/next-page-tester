@@ -106,16 +106,17 @@ export default async function fetchPageData({
   options: ExtendedOptions;
 }): Promise<PageData> {
   const { page, params } = pageObject;
-  ensureNoMultipleDataFetchingMethods({ page });
+  ensureNoMultipleDataFetchingMethods({ page: page.server });
 
   // getInitialProps is not called when custom App has the same method
-  if (page.default.getInitialProps && !appInitialProps) {
+  // @TODO: use options.isClientSideNavigation to use server/client page version
+  if (page.server.default.getInitialProps && !appInitialProps) {
     const ctx: NextPageContext = makeGetInitialPropsContext({
       options,
       pageObject,
     });
 
-    const { getInitialProps } = page.default;
+    const { getInitialProps } = page.server.default;
     const initialProps = options.isClientSideNavigation
       ? await getInitialProps(ctx)
       : await executeAsIfOnServer(() => getInitialProps(ctx));
@@ -123,8 +124,8 @@ export default async function fetchPageData({
     return { props: initialProps };
   }
 
-  if (page.getServerSideProps) {
-    const { getServerSideProps } = page;
+  if (page.server.getServerSideProps) {
+    const { getServerSideProps } = page.server;
     const ctx: GetServerSidePropsContext<
       typeof params
     > = makeGetServerSidePropsContext({ options, pageObject });
@@ -133,13 +134,13 @@ export default async function fetchPageData({
     return mergePageDataWithAppData({ pageData, appInitialProps });
   }
 
-  if (page.getStaticProps) {
+  if (page.server.getStaticProps) {
     const ctx: GetStaticPropsContext<typeof params> = makeStaticPropsContext({
       pageObject,
     });
     // @TODO introduce `getStaticPaths` logic
     // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
-    const pageData = await page.getStaticProps(ctx);
+    const pageData = await page.server.getStaticProps(ctx);
     ensurePageDataHasProps({ pageData });
     return mergePageDataWithAppData({ pageData, appInitialProps });
   }

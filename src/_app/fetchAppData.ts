@@ -28,7 +28,7 @@ export default async function fetchAppData({
     const ctx: AppContext = {
       // @NOTE AppTree is currently just a stub
       AppTree: Fragment,
-      Component: pageObject.page.default,
+      Component: pageObject.page.client.default,
       ctx: makeGetInitialPropsContext({
         pageObject,
         options,

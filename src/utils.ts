@@ -106,3 +106,12 @@ export function useMountedState(): () => boolean {
 
   return get;
 }
+
+export function jestIsolateModules<T>(f: () => T) {
+  return new Promise((resolve, reject) => {
+    jest.isolateModules(() => {
+      const result = f();
+      resolve(result);
+    });
+  });
+}

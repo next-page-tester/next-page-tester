@@ -24,7 +24,7 @@ export default async function renderApp({
 
   return (
     <AppComponent
-      Component={pageObject.page.default}
+      Component={pageObject.page.client.default}
       pageProps={pageData.props}
     />
   );

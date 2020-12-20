@@ -43,7 +43,10 @@ export type ExtendedOptions = OptionsWithDefaults & {
 export type PageParams = ParsedUrlQuery;
 
 export type PageObject = {
-  page: NextPageFile;
+  page: {
+    client: NextPageFile;
+    server: NextPageFile;
+  };
   route: string;
   pagePath: string;
   params: PageParams;
