@@ -80,21 +80,12 @@ export default async function getPage({
   };
 
   let { pageElement, pageData, pageObject } = await makePage();
-  let previousRoute = route;
 
   pageElement = (
     <RouterProvider
       pageObject={pageObject}
       options={options}
-      makePage={async (route) => {
-        const page = await makePage({
-          route,
-          previousRoute,
-          isClientSideNavigation: true,
-        });
-        previousRoute = route;
-        return page;
-      }}
+      makePage={makePage}
     >
       {pageElement}
     </RouterProvider>
