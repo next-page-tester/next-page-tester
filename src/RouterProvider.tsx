@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import makeRouterMock, { PushHandler } from './makeRouterMock';
 import { useMountedState } from './utils';
@@ -16,18 +16,19 @@ export default function RouterProvider({
   makePage: (optionsOverride?: Partial<ExtendedOptions>) => Promise<Page>;
 }) {
   const isMounted = useMountedState();
-  let previousRoute = pageObject.route;
+  const previousRouteRef = useRef(pageObject.route);
 
   const pushHandler = useCallback(async (url: Parameters<PushHandler>[0]) => {
     const nextRoute = url.toString();
     const nextOptions = { ...options, route: nextRoute };
 
+    const previousRoute = previousRouteRef.current;
     const { pageElement, pageObject } = await makePage({
       route: nextRoute,
       previousRoute,
       isClientSideNavigation: true,
     });
-    previousRoute = nextRoute;
+    previousRouteRef.current = nextRoute;
 
     const nextRouter = makeRouterMock({
       options: nextOptions,
@@ -41,7 +42,7 @@ export default function RouterProvider({
       setState({ router: nextRouter, children: pageElement });
     } else {
       console.warn(
-        '[next-page-tester]: Un-awaited client side navigation. This might lead into unexpected bugs and errors.'
+        `[next-page-tester]: Un-awaited client side navigation from "${previousRoute}" to "${nextRoute}". This might lead into unexpected bugs and errors.`
       );
     }
   }, []);
