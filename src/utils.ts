@@ -4,6 +4,7 @@ import querystring from 'querystring';
 import findRoot from 'find-root';
 import { existsSync } from 'fs';
 import loadConfig from 'next/dist/next-server/server/config';
+import { setConfig } from 'next/dist/next-server/lib/runtime-config';
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
 import path from 'path';
 
@@ -78,17 +79,20 @@ export function findPagesDirectory({ nextRoot }: { nextRoot: string }) {
  * Default config:
  * https://github.com/vercel/next.js/blob/canary/packages/next/next-server/server/config.ts
  */
-function getNextConfig({ pathToConfig }: { pathToConfig: string }) {
-  return loadConfig(PHASE_DEVELOPMENT_SERVER, pathToConfig);
+export function getNextConfig({ pathToConfig }: { pathToConfig: string }) {
+  const config = loadConfig(PHASE_DEVELOPMENT_SERVER, pathToConfig);
+
+  setConfig(config);
+
+  return config;
 }
 
 export function getPageExtensions({
-  nextRoot,
+  nextConfig,
 }: {
-  nextRoot: string;
+  nextConfig: object;
 }): string[] {
-  const config = getNextConfig({ pathToConfig: nextRoot });
-  const { pageExtensions } = config as { pageExtensions: string[] };
+  const { pageExtensions } = nextConfig as { pageExtensions: string[] };
   return pageExtensions;
 }
 

@@ -8,6 +8,7 @@ import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-conte
 import {
   defaultNextRoot,
   findPagesDirectory,
+  getNextConfig,
   getPageExtensions,
 } from './utils';
 import type {
@@ -16,6 +17,7 @@ import type {
   ExtendedOptions,
   Page,
 } from './commonTypes';
+import loadConfig from 'next/dist/next-server/server/config';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
   if (!route.startsWith('/')) {
@@ -49,10 +51,12 @@ export default async function getPage({
   };
   validateOptions(optionsWithDefaults);
 
+  const nextConfig = getNextConfig({ pathToConfig: nextRoot });
+
   const options: ExtendedOptions = {
     ...optionsWithDefaults,
     pagesDirectory: findPagesDirectory({ nextRoot }),
-    pageExtensions: getPageExtensions({ nextRoot }),
+    pageExtensions: getPageExtensions({ nextConfig }),
   };
   // @TODO: Consider printing extended options value behind a debug flag
 
