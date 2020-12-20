@@ -8,7 +8,7 @@ export default function getCustomAppFile({
   options: ExtendedOptions;
 }) {
   return loadPageIfExists<NextCustomAppFile>({
-    options,
     pagePath: APP_PATH,
+    options,
   });
 }

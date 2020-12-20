@@ -18,7 +18,7 @@ export default async function fetchAppData({
     return;
   }
 
-  const customApp = customAppFile.default;
+  const customApp = customAppFile.server.default;
   if (customApp.getInitialProps) {
     const { asPath, pathname, query, route, basePath } = makeRouterMock({
       options,
@@ -28,7 +28,7 @@ export default async function fetchAppData({
     const ctx: AppContext = {
       // @NOTE AppTree is currently just a stub
       AppTree: Fragment,
-      Component: pageObject.page.default,
+      Component: pageObject.page.client.default,
       ctx: makeGetInitialPropsContext({
         pageObject,
         options,

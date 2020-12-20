@@ -1,6 +1,7 @@
 import path from 'path';
 import { existsSync } from 'fs';
-import { ExtendedOptions } from './commonTypes';
+import { requireAsIfOnServer } from './server';
+import type { ExtendedOptions, PageFile } from './commonTypes';
 
 export function loadPage<FileType>({
   pagePath,
@@ -8,7 +9,7 @@ export function loadPage<FileType>({
 }: {
   pagePath: string;
   options: ExtendedOptions;
-}): FileType {
+}): PageFile<FileType> {
   const { pagesDirectory, pageExtensions } = options;
   // @NOTE Here we have to remove pagePath's leading "/"
   const absolutePath = path.resolve(pagesDirectory, pagePath.substring(1));
@@ -16,7 +17,10 @@ export function loadPage<FileType>({
   for (let pageExtension of pageExtensions) {
     const pathWithExtension = absolutePath + `.${pageExtension}`;
     if (existsSync(pathWithExtension)) {
-      return require(pathWithExtension);
+      return {
+        client: require(pathWithExtension),
+        server: requireAsIfOnServer<FileType>(pathWithExtension),
+      };
     }
   }
 
@@ -31,7 +35,7 @@ export function loadPageIfExists<FileType>({
 }: {
   pagePath: string;
   options: ExtendedOptions;
-}): FileType | undefined {
+}): PageFile<FileType> | undefined {
   try {
     return loadPage({ pagePath, options });
   } catch (e) {

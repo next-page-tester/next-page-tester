@@ -106,3 +106,12 @@ export function useMountedState(): () => boolean {
 
   return get;
 }
+
+export function executeWithFreshModules<T>(f: () => T): T {
+  let result: T;
+  jest.isolateModules(() => {
+    result = f();
+  });
+  // @ts-ignore
+  return result;
+}

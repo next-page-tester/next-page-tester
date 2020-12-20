@@ -40,10 +40,15 @@ export type ExtendedOptions = OptionsWithDefaults & {
 /*
  * Page
  */
+export type PageFile<FileType> = {
+  client: FileType;
+  server: FileType;
+};
+
 export type PageParams = ParsedUrlQuery;
 
 export type PageObject = {
-  page: NextPageFile;
+  page: PageFile<NextPageFile>;
   route: string;
   pagePath: string;
   params: PageParams;

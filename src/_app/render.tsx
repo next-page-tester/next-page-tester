@@ -16,15 +16,15 @@ export default function renderApp({
   const customAppFile = getCustomAppFile({ options });
   let AppComponent;
 
-  if (useApp && customAppFile?.default) {
-    AppComponent = customAppFile.default;
+  if (useApp && customAppFile?.client?.default) {
+    AppComponent = customAppFile.client.default;
   } else {
     AppComponent = DefaultApp;
   }
 
   return (
     <AppComponent
-      Component={pageObject.page.default}
+      Component={pageObject.page.client.default}
       pageProps={pageData.props}
     />
   );
