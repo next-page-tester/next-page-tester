@@ -8,6 +8,12 @@ import { setConfig } from 'next/dist/next-server/lib/runtime-config';
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
 import path from 'path';
 
+type NextConfig = {
+  serverRuntimeConfig?: object;
+  publicRuntimeConfig?: object;
+  pageExtensions?: Array<string>;
+};
+
 export function parseRoute({ route }: { route: string }) {
   const urlObject = new URL(`http://test.com${route}`);
   let { pathname } = urlObject;
@@ -80,17 +86,33 @@ export function findPagesDirectory({ nextRoot }: { nextRoot: string }) {
  * https://github.com/vercel/next.js/blob/canary/packages/next/next-server/server/config.ts
  */
 export function getNextConfig({ pathToConfig }: { pathToConfig: string }) {
-  const config = loadConfig(PHASE_DEVELOPMENT_SERVER, pathToConfig);
+  return loadConfig(PHASE_DEVELOPMENT_SERVER, pathToConfig);
+}
 
-  setConfig(config);
+/**
+ * Set the Next.js runtime config.
+ */
+export function setNextRuntimeConfig({
+  nextConfig,
+}: {
+  nextConfig: NextConfig;
+}) {
+  const runtimeConfig = {
+    publicRuntimeConfig: nextConfig.publicRuntimeConfig || {},
+  };
 
-  return config;
+  Object.defineProperty(runtimeConfig, 'serverRuntimeConfig', {
+    get: () =>
+      typeof window !== 'undefined' ? {} : nextConfig.serverRuntimeConfig || {},
+  });
+
+  setConfig(runtimeConfig);
 }
 
 export function getPageExtensions({
   nextConfig,
 }: {
-  nextConfig: object;
+  nextConfig: NextConfig;
 }): string[] {
   const { pageExtensions } = nextConfig as { pageExtensions: string[] };
   return pageExtensions;

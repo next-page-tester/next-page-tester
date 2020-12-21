@@ -9,6 +9,7 @@ import {
   defaultNextRoot,
   findPagesDirectory,
   getNextConfig,
+  setNextRuntimeConfig,
   getPageExtensions,
 } from './utils';
 import type {
@@ -17,7 +18,6 @@ import type {
   ExtendedOptions,
   Page,
 } from './commonTypes';
-import loadConfig from 'next/dist/next-server/server/config';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
   if (!route.startsWith('/')) {
@@ -52,6 +52,8 @@ export default async function getPage({
   validateOptions(optionsWithDefaults);
 
   const nextConfig = getNextConfig({ pathToConfig: nextRoot });
+
+  setNextRuntimeConfig({ nextConfig });
 
   const options: ExtendedOptions = {
     ...optionsWithDefaults,
