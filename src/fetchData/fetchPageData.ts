@@ -110,13 +110,13 @@ export default async function fetchPageData({
 
   // getInitialProps is not called when custom App has the same method
   // @TODO: use options.isClientSideNavigation to use server/client page version
-  if (page.server.default.getInitialProps && !appInitialProps) {
+  if (page.client.default.getInitialProps && !appInitialProps) {
     const ctx: NextPageContext = makeGetInitialPropsContext({
       options,
       pageObject,
     });
 
-    const { getInitialProps } = page.server.default;
+    const { getInitialProps } = page.client.default;
     const initialProps = options.isClientSideNavigation
       ? await getInitialProps(ctx)
       : await executeAsIfOnServer(() => getInitialProps(ctx));

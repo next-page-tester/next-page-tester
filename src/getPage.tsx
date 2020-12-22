@@ -5,7 +5,6 @@ import RouterProvider from './RouterProvider';
 import { renderDocument } from './_document';
 import initHeadManager from 'next/dist/client/head-manager';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
-import { loadPagesModules } from './server';
 import {
   defaultNextRoot,
   findPagesDirectory,
@@ -57,7 +56,6 @@ export default async function getPage({
   };
   // @TODO: Consider printing extended options value behind a debug flag
 
-  await loadPagesModules({ options });
   const headManager = useDocument && initHeadManager();
 
   const makePage = async (

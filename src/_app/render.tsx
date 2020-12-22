@@ -16,8 +16,8 @@ export default async function renderApp({
   const customAppFile = getCustomAppFile({ options });
   let AppComponent;
 
-  if (useApp && customAppFile?.default) {
-    AppComponent = customAppFile.default;
+  if (useApp && customAppFile?.client?.default) {
+    AppComponent = customAppFile.client.default;
   } else {
     AppComponent = DefaultApp;
   }

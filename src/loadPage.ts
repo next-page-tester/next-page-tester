@@ -1,42 +1,33 @@
 import path from 'path';
-import fastGlob from 'fast-glob';
-import normalizePath from 'normalize-path';
-import { NextPageFile, ExtendedOptions } from './commonTypes';
-import { getServerPage } from './server';
+import { ExtendedOptions, PageFile } from './commonTypes';
+import { requireAsIfOnServer } from './server';
 
-export function loadPage({
-  pagesDirectory,
+export function loadPage<FileType>({
   pagePath,
+  options,
 }: {
-  pagesDirectory: string;
   pagePath: string;
-}): {
-  client: NextPageFile;
-  server: NextPageFile;
-} {
+  options: ExtendedOptions;
+}): PageFile<FileType> {
+  const { pagesDirectory } = options;
   // @NOTE Here we have to remove pagePath's leading "/"
   const absolutePath = path.resolve(pagesDirectory, pagePath.substring(1));
   return {
     client: require(absolutePath),
-    server: getServerPage({ path: absolutePath }),
+    server: requireAsIfOnServer<FileType>(absolutePath),
   };
 }
 
-export function loadPageWithUnknownExtension<FileType>({
+export function loadPageIfExists<FileType>({
   pagePath,
-  options: { pagesDirectory, pageExtensions },
+  options,
 }: {
   pagePath: string;
   options: ExtendedOptions;
-}): FileType | undefined {
-  const pageExtensionGlobPattern = `.{${pageExtensions.join(',')}}`;
-  const files = fastGlob.sync([
-    normalizePath(pagesDirectory + pagePath + pageExtensionGlobPattern),
-  ]);
-
-  if (!files.length) {
-    return;
+}): PageFile<FileType> | undefined {
+  try {
+    return loadPage({ pagePath, options });
+  } catch (e) {
+    return undefined;
   }
-
-  return require(files[0]);
 }
