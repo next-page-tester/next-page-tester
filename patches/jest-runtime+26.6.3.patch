@@ -1,0 +1,21 @@
+diff --git a/node_modules/jest-runtime/build/index.js b/node_modules/jest-runtime/build/index.js
+index 1c13b1d..46dabeb 100644
+--- a/node_modules/jest-runtime/build/index.js
++++ b/node_modules/jest-runtime/build/index.js
+@@ -715,13 +715,10 @@ class Runtime {
+     ) {
+       moduleRegistry = this._internalModuleRegistry;
+     } else {
+-      if (
+-        this._moduleRegistry.get(modulePath) ||
+-        !this._isolatedModuleRegistry
+-      ) {
+-        moduleRegistry = this._moduleRegistry;
+-      } else {
++      if (this._isolatedModuleRegistry) {
+         moduleRegistry = this._isolatedModuleRegistry;
++      } else {
++        moduleRegistry = this._moduleRegistry;
+       }
+     }
+ 
