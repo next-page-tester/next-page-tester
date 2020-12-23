@@ -44,12 +44,12 @@ export function initTestHelpers() {
   if (isJSDOMEnvironment()) {
     /*
      * This is a dreadful hack to resolve this Next.js module in "non-browser" environment mode.
-     * It affects `<head>` elements
+     * It allows pages to add new `<head>` elements on first render
      * https://github.com/vercel/next.js/blob/v10.0.3/packages/next/next-server/lib/side-effect.tsx#L3
      */
-    // executeAsIfOnServerSync(() => {
-    //   require('next/dist/next-server/lib/side-effect');
-    // });
+    executeAsIfOnServerSync(() => {
+      require('next/head');
+    });
 
     // Mock IntersectionObserver (Link component relies on it)
     if (!global.IntersectionObserver) {
