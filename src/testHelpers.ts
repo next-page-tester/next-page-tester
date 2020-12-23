@@ -13,15 +13,6 @@ class IntersectionObserver {
 export function initTestHelpers() {
   const originalConsoleError = console.error;
 
-  // Ensure imports return always the same React instance
-  let mockActualReact: any;
-  jest.doMock('react', () => {
-    if (!mockActualReact) {
-      mockActualReact = jest.requireActual('react');
-    }
-    return mockActualReact;
-  });
-
   if (isJSDOMEnvironment()) {
     /*
      * This is a dreadful hack to resolve this Next.js module in "non-browser" environment mode.
