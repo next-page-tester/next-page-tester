@@ -8,7 +8,10 @@
     "outDir": "dist",
     "allowJs": true,
     "jsx": "react",
-    "declaration": true
+    "declaration": true,
+    "paths": {
+      "*": ["./@types/*"]
+    }
   },
   "include": ["./src/index.ts"]
 }
