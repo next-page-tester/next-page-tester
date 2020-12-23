@@ -109,6 +109,7 @@ export function useMountedState(): () => boolean {
 }
 
 export function executeWithFreshModules<T>(f: () => T): T {
+  /* istanbul ignore else */
   if (typeof jest !== 'undefined') {
     let result: T;
     jest.isolateModules(() => {
@@ -116,7 +117,9 @@ export function executeWithFreshModules<T>(f: () => T): T {
     });
     // @ts-ignore
     return result;
-  } else {
+  }
+  // @NOTE this branch will never be execute by Jest
+  else {
     return stealthyRequire(require.cache, f);
   }
 }
