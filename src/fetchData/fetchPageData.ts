@@ -105,23 +105,32 @@ export default async function fetchPageData({
   appInitialProps?: AppInitialProps;
   options: ExtendedOptions;
 }): Promise<PageData> {
+  const { isClientSideNavigation } = options;
   const { page, params } = pageObject;
   ensureNoMultipleDataFetchingMethods({ page: page.server });
 
-  // getInitialProps is not called when custom App has the same method
-  // @TODO: use options.isClientSideNavigation to use server/client page version
-  if (page.client.default.getInitialProps && !appInitialProps) {
+  if (
+    page.server.default.getInitialProps &&
+    page.client.default.getInitialProps &&
+    // getInitialProps is not called when custom App has the same method
+    !appInitialProps
+  ) {
     const ctx: NextPageContext = makeGetInitialPropsContext({
       options,
       pageObject,
     });
 
-    const { getInitialProps } = page.client.default;
-    const initialProps = options.isClientSideNavigation
-      ? await getInitialProps(ctx)
-      : await executeAsIfOnServer(() => getInitialProps(ctx));
-
-    return { props: initialProps };
+    if (isClientSideNavigation) {
+      const { getInitialProps } = page.client.default;
+      const initialProps = await getInitialProps(ctx);
+      return { props: initialProps };
+    } else {
+      const { getInitialProps } = page.server.default;
+      const initialProps = await executeAsIfOnServer(() =>
+        getInitialProps(ctx)
+      );
+      return { props: initialProps };
+    }
   }
 
   if (page.server.getServerSideProps) {
