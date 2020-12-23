@@ -1,5 +1,9 @@
+import { executeWithFreshModules } from './utils';
+
 export const requireAsIfOnServer = <FileType>(path: string): FileType => {
-  return executeAsIfOnServerSync(() => require(path));
+  return executeWithFreshModules(() => {
+    return executeAsIfOnServerSync<FileType>(() => require(path));
+  });
 };
 
 export const executeAsIfOnServer = async <T>(f: () => T) => {
@@ -19,7 +23,7 @@ export const executeAsIfOnServer = async <T>(f: () => T) => {
   return result;
 };
 
-export const executeAsIfOnServerSync = <T>(f: () => T) => {
+export const executeAsIfOnServerSync = <T>(f: () => T): T => {
   const tmpWindow = global.window;
   const tmpDocument = global.document;
 

@@ -107,11 +107,11 @@ export function useMountedState(): () => boolean {
   return get;
 }
 
-export function jestIsolateModules<T>(f: () => T) {
-  return new Promise((resolve, reject) => {
-    jest.isolateModules(() => {
-      const result = f();
-      resolve(result);
-    });
+export function executeWithFreshModules<T>(f: () => T): T {
+  let result: T;
+  jest.isolateModules(() => {
+    result = f();
   });
+  // @ts-ignore
+  return result;
 }
