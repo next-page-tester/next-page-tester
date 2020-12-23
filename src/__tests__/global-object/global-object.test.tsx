@@ -7,29 +7,23 @@ import GIPPage from './__fixtures__/pages/gip';
 import path from 'path';
 
 const expectedGlobals = {
-  window_moduleLoadTime: false,
-  document_moduleLoadTime: false,
-  isWeb_moduleLoadTime: false,
+  component_importTime_window: true,
+  component_importTime_document: true,
+  component_runTime_window: true,
+  component_runTime_document: true,
 
-  window_dataFetchingScope: false,
-  document_dataFetchingScope: false,
-  isWeb_dataFetchingScope: false,
-
-  window_componentScope: true,
-  document_componentScope: true,
-  isWeb_componentScope: true,
-
-  window_componentScope_moduleLoadTime: true,
-  document_componentScope_moduleLoadTime: true,
-  isWeb_componentScope_moduleLoadTime: true,
+  dataFetching_importTime_window: false,
+  dataFetching_importTime_document: false,
+  dataFetching_runTime_window: false,
+  dataFetching_runTime_document: false,
 };
 
 const expectedGlobals_GIPClientSide = {
   ...expectedGlobals,
-
-  window_dataFetchingScope: true,
-  document_dataFetchingScope: true,
-  isWeb_dataFetchingScope: true,
+  dataFetching_importTime_window: true,
+  dataFetching_importTime_document: true,
+  dataFetching_runTime_window: true,
+  dataFetching_runTime_document: true,
 };
 
 describe('Global object', () => {
