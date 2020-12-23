@@ -70,7 +70,8 @@
     "fast-glob": "^3.2.4",
     "find-root": "^1.1.0",
     "node-mocks-http": "^1.9.0",
-    "normalize-path": "^3.0.0"
+    "normalize-path": "^3.0.0",
+    "stealthy-require": "^1.1.1"
   },
   "peerDependencies": {
     "next": "^10.0.0",
