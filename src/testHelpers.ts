@@ -10,25 +10,6 @@ class IntersectionObserver {
   disconnect() {}
 }
 
-function disableBrowserEnv() {
-  if (global.window) {
-    //@ts-ignore
-    global._window = global.window;
-    //@ts-ignore
-    delete global.window;
-  }
-}
-
-function enableBrowserEnv() {
-  //@ts-ignore
-  if (global._window) {
-    //@ts-ignore
-    global.window = global._window;
-    //@ts-ignore
-    delete global._window;
-  }
-}
-
 export function initTestHelpers() {
   const originalConsoleError = console.error;
 
