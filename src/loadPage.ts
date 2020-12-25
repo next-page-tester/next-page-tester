@@ -1,34 +1,40 @@
 import path from 'path';
-import fastGlob from 'fast-glob';
-import normalizePath from 'normalize-path';
-import { NextPageFile, ExtendedOptions } from './commonTypes';
+import { existsSync } from 'fs';
+import { ExtendedOptions } from './commonTypes';
 
-export function loadPage({
-  pagesDirectory,
+export function loadPage<FileType>({
   pagePath,
-}: {
-  pagesDirectory: string;
-  pagePath: string;
-}): NextPageFile {
-  // @NOTE Here we have to remove pagePath's trailing "/"
-  return require(path.resolve(pagesDirectory, pagePath.substring(1)));
-}
-
-export async function loadPageWithUnknownExtension<FileType>({
-  pagePath,
-  options: { pagesDirectory, pageExtensions },
+  options,
 }: {
   pagePath: string;
   options: ExtendedOptions;
-}): Promise<FileType | undefined> {
-  const pageExtensionGlobPattern = `.{${pageExtensions.join(',')}}`;
-  const files = await fastGlob([
-    normalizePath(pagesDirectory + pagePath + pageExtensionGlobPattern),
-  ]);
+}): FileType {
+  const { pagesDirectory, pageExtensions } = options;
+  // @NOTE Here we have to remove pagePath's leading "/"
+  const absolutePath = path.resolve(pagesDirectory, pagePath.substring(1));
 
-  if (!files.length) {
-    return;
+  for (let pageExtension of pageExtensions) {
+    const pathWithExtension = absolutePath + `.${pageExtension}`;
+    if (existsSync(pathWithExtension)) {
+      return require(pathWithExtension);
+    }
   }
 
-  return require(files[0]);
+  throw new Error(
+    "[next page tester] Couldn't find required page file with matching extension"
+  );
+}
+
+export function loadPageIfExists<FileType>({
+  pagePath,
+  options,
+}: {
+  pagePath: string;
+  options: ExtendedOptions;
+}): FileType | undefined {
+  try {
+    return loadPage({ pagePath, options });
+  } catch (e) {
+    return undefined;
+  }
 }

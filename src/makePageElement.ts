@@ -31,7 +31,7 @@ export default async function makePageElement({
   }
 
   // Render page element and optional wrapping custom App
-  let pageElement = await renderApp({
+  let pageElement = renderApp({
     options,
     pageObject,
     pageData,

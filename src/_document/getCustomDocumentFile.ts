@@ -1,13 +1,13 @@
 import type { ExtendedOptions, NextCustomDocumentFile } from '../commonTypes';
-import { loadPageWithUnknownExtension } from '../loadPage';
+import { loadPageIfExists } from '../loadPage';
 import { DOCUMENT_PATH } from '../constants';
 
-export default async function getFile({
+export default function getCustomDocumentFile({
   options,
 }: {
   options: ExtendedOptions;
-}): Promise<NextCustomDocumentFile | undefined> {
-  return await loadPageWithUnknownExtension<NextCustomDocumentFile>({
+}) {
+  return loadPageIfExists<NextCustomDocumentFile>({
     options,
     pagePath: DOCUMENT_PATH,
   });
