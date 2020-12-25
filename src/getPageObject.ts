@@ -2,19 +2,23 @@ import getPagePaths from './getPagePaths';
 import pagePathToRouteRegex from './pagePathToRouteRegex';
 import { loadPage } from './loadPage';
 import { parseRoute, parseQueryString, stringifyQueryString } from './utils';
-import type { ExtendedOptions, PageObject, PageParams } from './commonTypes';
+import type {
+  ExtendedOptions,
+  PageObject,
+  PageParams,
+  NextPageFile,
+} from './commonTypes';
 
 export default async function getPageObject({
   options,
 }: {
   options: ExtendedOptions;
 }): Promise<PageObject> {
-  const { pagesDirectory } = options;
   const pageInfo = await getPageInfo({ options });
   if (pageInfo) {
-    const page = loadPage({
-      pagesDirectory,
+    const page = loadPage<NextPageFile>({
       pagePath: pageInfo.pagePath,
+      options,
     });
 
     if (!page.default) {
