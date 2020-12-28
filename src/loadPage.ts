@@ -1,6 +1,7 @@
 import path from 'path';
-import { ExtendedOptions, PageFile } from './commonTypes';
+import { existsSync } from 'fs';
 import { requireAsIfOnServer } from './server';
+import type { ExtendedOptions, PageFile } from './commonTypes';
 
 export function loadPage<FileType>({
   pagePath,
@@ -9,13 +10,23 @@ export function loadPage<FileType>({
   pagePath: string;
   options: ExtendedOptions;
 }): PageFile<FileType> {
-  const { pagesDirectory } = options;
+  const { pagesDirectory, pageExtensions } = options;
   // @NOTE Here we have to remove pagePath's leading "/"
   const absolutePath = path.resolve(pagesDirectory, pagePath.substring(1));
-  return {
-    client: require(absolutePath),
-    server: requireAsIfOnServer<FileType>(absolutePath),
-  };
+
+  for (let pageExtension of pageExtensions) {
+    const pathWithExtension = absolutePath + `.${pageExtension}`;
+    if (existsSync(pathWithExtension)) {
+      return {
+        client: require(pathWithExtension),
+        server: requireAsIfOnServer<FileType>(pathWithExtension),
+      };
+    }
+  }
+
+  throw new Error(
+    "[next page tester] Couldn't find required page file with matching extension"
+  );
 }
 
 export function loadPageIfExists<FileType>({

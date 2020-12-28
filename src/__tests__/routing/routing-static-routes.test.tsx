@@ -2,7 +2,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { getPage } from '../../';
 import IndexPage from './__fixtures__/pages/index';
-import TypescriptPage from './__fixtures__/pages/typescript';
 import BlogIndexPage from './__fixtures__/pages/blog/index';
 
 const nextRoot = __dirname + '/__fixtures__';
@@ -44,33 +43,6 @@ describe('Static routes', () => {
       await expect(getPage({ nextRoot, route: '/_document' })).rejects.toThrow(
         '[next page tester] No matching page found for given route'
       );
-    });
-  });
-
-  describe('page file extensions', () => {
-    describe('extension declared in "pageExtensions" config', () => {
-      it('renders page', async () => {
-        const { page } = await getPage({
-          nextRoot,
-          route: '/typescript',
-        });
-        const { container: actual } = render(page);
-        const { container: expected } = render(<TypescriptPage />);
-        expect(actual).toEqual(expected);
-      });
-    });
-
-    describe('extension NOT declared in "pageExtensions" config', () => {
-      it('throws "page not found" error', async () => {
-        await expect(
-          getPage({
-            nextRoot,
-            route: '/invalid-extension',
-          })
-        ).rejects.toThrow(
-          '[next page tester] No matching page found for given route'
-        );
-      });
     });
   });
 
