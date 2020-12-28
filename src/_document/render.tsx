@@ -23,7 +23,7 @@ export default async function renderDocument({
   const customDocumentFile = getCustomDocumentFile({ options });
 
   const Document = customDocumentFile
-    ? customDocumentFile.client.default
+    ? customDocumentFile.server.default
     : DefaultDocument;
 
   let head: JSX.Element[] = [];
