@@ -7,7 +7,6 @@ import loadConfig from 'next/dist/next-server/server/config';
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
 import path from 'path';
 import stealthyRequire from 'stealthy-require';
-import React from 'react';
 
 export function parseRoute({ route }: { route: string }) {
   const urlObject = new URL(`http://test.com${route}`);
@@ -113,13 +112,7 @@ export function executeWithFreshModules<T>(f: () => T): T {
   if (typeof jest !== 'undefined') {
     let result: T;
     jest.isolateModules(() => {
-      jest.mock('react', () => React);
-      jest.mock('next/document', () => {
-        return {
-          ...jest.requireActual<object>('next/document'),
-          Main: jest.requireActual('./_document/Main').default,
-        };
-      });
+      jest.mock('next/document', () => jest.requireActual('next/document'));
       result = f();
     });
     // @ts-ignore

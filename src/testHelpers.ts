@@ -22,6 +22,9 @@ export function initTestHelpers() {
      */
     executeAsIfOnServerSync(() => {
       require('next/head');
+      const nextDocument = require('next/document');
+      const mockedMain = require('./_document/Main').default;
+      nextDocument.Main = mockedMain;
     });
 
     // Mock IntersectionObserver (Link component relies on it)
