@@ -120,6 +120,13 @@ export function executeWithFreshModules<T>(f: () => T): T {
   }
   // @NOTE this branch will never be execute by Jest
   else {
-    return stealthyRequire(require.cache, f);
+    return stealthyRequire(
+      require.cache,
+      f,
+      () => {
+        require('next/document');
+      },
+      module
+    );
   }
 }
