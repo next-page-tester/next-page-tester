@@ -15,12 +15,11 @@
     "test:source": "npm run test:format && npm run test:ts && npm t -- --coverage",
     "test:ts": "tsc --noEmit",
     "test:format": "prettier --check .",
-    "prepare": "npm run test:source && npm run compile",
+    "prepare": "patch-package && npm run test:source && npm run compile",
     "preversion": "npm run prepare",
     "version": "git add package.json",
     "postversion": "git push && git push --tags",
-    "format": "prettier --write .",
-    "postinstall": "patch-package"
+    "format": "prettier --write ."
   },
   "keywords": [
     "next",
