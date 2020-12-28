@@ -6,6 +6,7 @@ import { existsSync } from 'fs';
 import loadConfig from 'next/dist/next-server/server/config';
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
 import path from 'path';
+import stealthyRequire from 'stealthy-require';
 
 export function parseRoute({ route }: { route: string }) {
   const urlObject = new URL(`http://test.com${route}`);
@@ -105,4 +106,20 @@ export function useMountedState(): () => boolean {
   });
 
   return get;
+}
+
+export function executeWithFreshModules<T>(f: () => T): T {
+  /* istanbul ignore else */
+  if (typeof jest !== 'undefined') {
+    let result: T;
+    jest.isolateModules(() => {
+      result = f();
+    });
+    // @ts-ignore
+    return result;
+  }
+  // @NOTE this branch will never be execute by Jest
+  else {
+    return stealthyRequire(require.cache, f);
+  }
 }

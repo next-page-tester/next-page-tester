@@ -21,7 +21,7 @@ export default async function getPageObject({
       options,
     });
 
-    if (!page.default) {
+    if (!page.client.default) {
       throw new Error(
         '[next-page-tester]: No default export found for given route'
       );

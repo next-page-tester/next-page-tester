@@ -74,6 +74,8 @@ import { initTestHelpers } from 'next-page-tester';
 initTestHelpers();
 ```
 
+### If `useDocument` option enabled
+
 In case your tests make use of **experimental `useDocument` option**, take the following additional steps:
 
 ```js
@@ -88,6 +90,14 @@ afterAll(() => {
   teardown();
 });
 ```
+
+### Optional: patch Jest
+
+Until **Jest v27** is published, you might need to patch `jest` in order to load modules with [proper browser/non-browser environments](#73). _Don't do this until you actually encounter issues_.
+
+1. Install [`patch-package`](https://www.npmjs.com/package/patch-package) and follow its setup instructions
+2. Manually update `node_modules/jest-runtime/build/index.js` file and replicate [this commit](https://github.com/facebook/jest/commit/e5a84d92fc906a5bb140f9753b644319cea095da#diff-c0d5b59e96fdc7ffc98405e8afb46d525505bc7b1c24916b5c8482de5a186c00)
+3. Run `npx patch-package jest-runtime` or `yarn patch-package jest-runtime`
 
 ## Notes
 

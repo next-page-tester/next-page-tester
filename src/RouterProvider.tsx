@@ -37,7 +37,6 @@ export default function RouterProvider({
     });
 
     // Avoid errors if page gets unmounted
-    /* istanbul ignore next */
     if (isMounted()) {
       setState({ router: nextRouter, children: pageElement });
     } else {
