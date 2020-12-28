@@ -8,8 +8,8 @@ import Document, {
 } from 'next/document';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { Server, Sheet } from 'styletron-engine-atomic';
-import { styletron } from '../styletron';
 import type { RenderPageResult } from 'next/dist/next-server/lib/utils';
+import { styletron } from '../styletron';
 
 type Props = RenderPageResult & {
   stylesheets: Sheet[];
@@ -22,6 +22,7 @@ export default class CustomDocument extends Document<Props> {
         <App {...props} />
       </StyletronProvider>
     ));
+
     const stylesheets = (styletron as Server).getStylesheets() || [];
     return { ...page, stylesheets };
   }

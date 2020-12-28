@@ -50,6 +50,8 @@
     "@types/normalize-path": "^3.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@types/styletron-engine-atomic": "^1.1.0",
+    "@types/styletron-react": "^5.0.2",
     "@types/webpack": "^4.41.25",
     "aws-amplify": "^3.3.13",
     "babel-jest": "^26.6.3",

@@ -17,6 +17,7 @@ export default async function fetchDocumentData({
   const getDocumentInitialProps =
     Document.getInitialProps || NextDocument.getInitialProps;
 
+  // TODO: this should be executed in server context
   return getDocumentInitialProps({
     renderPage,
     pathname: pageObject.pagePath,
