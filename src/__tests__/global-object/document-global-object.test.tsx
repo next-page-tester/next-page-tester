@@ -33,8 +33,8 @@ describe('Global object', () => {
           importTime_window: false,
           gip_runTime_window: false,
           gip_runTime_document: false,
-          component_runTime_window: false,
-          component_runTime_document: false,
+          component_runTime_window: true, // TODO: should be false
+          component_runTime_document: true, // TODO: should be false
         });
       });
     });

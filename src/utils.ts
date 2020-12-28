@@ -114,6 +114,12 @@ export function executeWithFreshModules<T>(f: () => T): T {
     let result: T;
     jest.isolateModules(() => {
       jest.mock('react', () => React);
+      jest.mock('next/document', () => {
+        return {
+          ...jest.requireActual<object>('next/document'),
+          Main: jest.requireActual('./_document/Main').default,
+        };
+      });
       result = f();
     });
     // @ts-ignore
