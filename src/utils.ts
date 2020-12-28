@@ -89,8 +89,7 @@ export function getPageExtensions({
   nextRoot: string;
 }): string[] {
   const config = getNextConfig({ pathToConfig: nextRoot });
-  const { pageExtensions } = config as { pageExtensions: string[] };
-  return pageExtensions;
+  return config.pageExtensions as string[];
 }
 
 export function useMountedState(): () => boolean {

@@ -79,6 +79,7 @@ export default async function renderDocument({
         pageProps: pageData.props,
       },
     },
+    scriptLoader: {},
     docComponentsRendered: {},
     dangerousAsPath: '',
     ampPath: '',
