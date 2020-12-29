@@ -3,6 +3,7 @@ import type { AppContext, AppInitialProps } from 'next/app';
 import makeRouterMock from '../makeRouterMock';
 import { makeGetInitialPropsContext } from '../fetchData/makeContextObject';
 import getCustomAppFile from './getCustomAppFile';
+import { executeAsIfOnServer } from '../server';
 import type { PageObject, ExtendedOptions } from '../commonTypes';
 
 export default async function fetchAppData({
@@ -12,15 +13,19 @@ export default async function fetchAppData({
   pageObject: PageObject;
   options: ExtendedOptions;
 }): Promise<AppInitialProps | undefined> {
-  const { useApp } = options;
+  const { useApp, isClientSideNavigation } = options;
   const customAppFile = getCustomAppFile({ options });
 
   if (!useApp || !customAppFile) {
     return;
   }
 
-  const customApp = customAppFile.server.default;
-  if (customApp.getInitialProps) {
+  const customApp = isClientSideNavigation
+    ? customAppFile.client.default
+    : customAppFile.server.default;
+  const { getInitialProps } = customApp;
+
+  if (getInitialProps) {
     const { asPath, pathname, query, route, basePath } = makeRouterMock({
       options,
       pageObject,
@@ -38,7 +43,10 @@ export default async function fetchAppData({
       router: { asPath, pathname, query, route, basePath },
     };
 
-    const appInitialProps = await customApp.getInitialProps(ctx);
+    const appInitialProps = isClientSideNavigation
+      ? await getInitialProps(ctx)
+      : await executeAsIfOnServer(() => getInitialProps(ctx));
+
     return appInitialProps;
   }
 }
