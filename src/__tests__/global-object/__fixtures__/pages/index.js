@@ -10,6 +10,9 @@ export default function index() {
       <Link href="/gip">
         <a>Go to GIP</a>
       </Link>
+      <Link href="/page">
+        <a>Go to page</a>
+      </Link>
     </>
   );
 }
