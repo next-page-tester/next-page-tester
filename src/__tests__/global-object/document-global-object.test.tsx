@@ -1,7 +1,8 @@
+import path from 'path';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { getPage } from '../../index';
-import path from 'path';
+import { getMetaTagsContentByName } from '../__utils__/_document';
 
 describe('Global object', () => {
   describe('_document', () => {
@@ -21,13 +22,8 @@ describe('Global object', () => {
           await screen.findByText('Page');
         }
 
-        const head = container.querySelector('head') as HTMLHeadElement;
         expect(
-          JSON.parse(
-            (head.querySelector(
-              'meta[name="global-object"]'
-            ) as HTMLMetaElement).content
-          )
+          JSON.parse(getMetaTagsContentByName(container, 'global-object')[0])
         ).toEqual({
           importTime_document: false,
           importTime_window: false,
