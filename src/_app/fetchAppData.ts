@@ -12,9 +12,10 @@ export default async function fetchAppData({
   pageObject: PageObject;
   options: ExtendedOptions;
 }): Promise<AppInitialProps | undefined> {
+  const { useApp } = options;
   const customAppFile = getCustomAppFile({ options });
 
-  if (!customAppFile) {
+  if (!useApp || !customAppFile) {
     return;
   }
 
