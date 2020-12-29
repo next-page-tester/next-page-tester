@@ -10,7 +10,7 @@ export default function CustomApp({
   return (
     <>
       _app.jsx
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </>
   );
 }

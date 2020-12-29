@@ -7,6 +7,7 @@ import CustomAppWithGIP_AppContextPage from './__fixtures__/custom-app-with-gip/
 import CustomAppWithGIP_SSRPage from './__fixtures__/custom-app-with-gip/pages/ssr';
 import CustomAppWithGIP_SSGPage from './__fixtures__/custom-app-with-gip/pages/ssg';
 import CustomAppWithGIP_GIPPage from './__fixtures__/custom-app-with-gip/pages/gip';
+import CustomAppWithGIP_Page from './__fixtures__/custom-app-with-gip/pages/page';
 
 import CustomAppWithNextAppGIP from './__fixtures__/custom-app-with-next-app-gip/pages/_app';
 import CustomAppWithNextAppGIP_GIP from './__fixtures__/custom-app-with-next-app-gip/pages/gip';
@@ -159,14 +160,14 @@ describe('_app support', () => {
   });
 
   describe('"useApp" === false while _app component available', () => {
-    it('does not render custom App', async () => {
+    it('does not render custom App nor receives props from it', async () => {
       const { page } = await getPage({
-        nextRoot: __dirname + '/__fixtures__/special-extension',
+        nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route: '/page',
         useApp: false,
       });
       const { container: actual } = render(page);
-      const { container: expected } = render(<SpecialExtensionPage />);
+      const { container: expected } = render(<CustomAppWithGIP_Page />);
       expect(actual).toEqual(expected);
     });
   });
