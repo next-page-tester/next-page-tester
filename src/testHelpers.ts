@@ -40,11 +40,16 @@ export function initTestHelpers() {
 
   function setup() {
     if (isJSDOMEnvironment()) {
-      // Remove initial JSDOM <head> element
-      const headElement = document.querySelector('head');
-      if (headElement) {
-        headElement.remove();
-      }
+      // This is needed by NextJS to correctly find the head element which is rendered in `document.body`
+      // https://github.com/vercel/next.js/blob/c8cd77a856248346768042f4553a8513195311a4/packages/next/client/head-manager.ts#L36
+      const getElementsByTagName = document.getElementsByTagName;
+      document.getElementsByTagName = function (tag: string) {
+        if (tag === 'head') {
+          return document.body.getElementsByTagName('head');
+        }
+        document.getElementsByTagName = getElementsByTagName;
+        return document.getElementsByTagName(tag);
+      };
 
       // Suppress validateDOMNesting error logs
       // we now we're doing borderline stuff like rendering nested html elements

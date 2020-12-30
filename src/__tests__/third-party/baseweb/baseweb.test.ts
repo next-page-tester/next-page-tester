@@ -9,9 +9,14 @@ describe('baseweb', () => {
       useApp: true,
       route: '/a',
     });
-    render(page);
+    const { container } = render(page);
 
     expect(screen.getByText('style object')).toHaveStyle({ color: '#174291' });
     expect(screen.getByText('Custom _app element')).toBeInTheDocument();
+
+    expect(container.querySelector('style')).toHaveAttribute(
+      'class',
+      '_styletron_hydrate_'
+    );
   });
 });

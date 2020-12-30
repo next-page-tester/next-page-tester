@@ -14,12 +14,18 @@ export default function renderApp({
 }) {
   const { useApp } = options;
   const customAppFile = getCustomAppFile({ options });
-  let AppComponent;
+  let AppComponent = DefaultApp;
 
-  if (useApp && customAppFile?.client?.default) {
-    AppComponent = customAppFile.client.default;
-  } else {
-    AppComponent = DefaultApp;
+  if (useApp) {
+    if (options.useDocument) {
+      if (customAppFile?.server.default) {
+        AppComponent = customAppFile.server.default;
+      }
+    } else {
+      if (customAppFile?.client.default) {
+        AppComponent = customAppFile.client.default;
+      }
+    }
   }
 
   return (
