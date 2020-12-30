@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import NextDocument, { DocumentInitialProps } from 'next/document';
 import type { PageObject } from '../commonTypes';
 import type { DocumentType, RenderPage } from 'next/dist/next-server/lib/utils';
+import { executeAsIfOnServer } from '../server';
 
 export default async function fetchDocumentData({
   Document,
@@ -17,10 +18,12 @@ export default async function fetchDocumentData({
   const getDocumentInitialProps =
     Document.getInitialProps || NextDocument.getInitialProps;
 
-  return getDocumentInitialProps({
-    renderPage,
-    pathname: pageObject.pagePath,
-    query: pageObject.query,
-    AppTree: Fragment,
-  });
+  return executeAsIfOnServer(() =>
+    getDocumentInitialProps({
+      renderPage,
+      pathname: pageObject.pagePath,
+      query: pageObject.query,
+      AppTree: Fragment,
+    })
+  );
 }
