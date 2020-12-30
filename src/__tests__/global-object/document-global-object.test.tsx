@@ -29,6 +29,9 @@ describe('Global object', () => {
           importTime_window: false,
           gip_runTime_window: false,
           gip_runTime_document: false,
+          // @NOTE this flags would be false in a real Next.js app since we're
+          // currently rendering document through React at runtime, while
+          // Next.js actually send it to the browser and never hydrate it
           component_runTime_window: true, // TODO: should be false
           component_runTime_document: true, // TODO: should be false
         });
