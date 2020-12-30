@@ -5,16 +5,7 @@ import path from 'path';
 import { getPage } from '../../index';
 import CustomDocumentWithGIP_Page from './__fixtures__/custom-document-with-gip/pages/page';
 import CustomApp from './__fixtures__/custom-document-with-gip/pages/_app';
-
-function getMetaTagsContentByName(element: Element, name: string) {
-  const head = element.querySelector('head') as HTMLHeadElement;
-  const metaTags = head.querySelectorAll(
-    `meta[name="${name}"]`
-  ) as NodeListOf<HTMLMetaElement>;
-  const content: string[] = [];
-  metaTags.forEach((tag) => content.push(tag.content));
-  return content;
-}
+import { getMetaTagsContentByName } from '../__utils__/_document';
 
 describe('_document support', () => {
   describe('_document with getInitialProps', () => {

@@ -112,6 +112,9 @@ export function executeWithFreshModules<T>(f: () => T): T {
   if (typeof jest !== 'undefined') {
     let result: T;
     jest.isolateModules(() => {
+      // Ensure every page gets the same patched 'next/document' instance
+      // imported before tests by "src/testHelpers.ts"
+      jest.mock('next/document', () => jest.requireActual('next/document'));
       result = f();
     });
     // @ts-ignore
@@ -119,6 +122,13 @@ export function executeWithFreshModules<T>(f: () => T): T {
   }
   // @NOTE this branch will never be execute by Jest
   else {
-    return stealthyRequire(require.cache, f);
+    return stealthyRequire(
+      require.cache,
+      f,
+      () => {
+        require('next/document');
+      },
+      module
+    );
   }
 }

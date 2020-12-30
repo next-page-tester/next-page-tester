@@ -6,8 +6,7 @@ import type { RenderPage } from 'next/dist/next-server/lib/utils';
 import { APP_PATH } from '../constants';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
-import * as nextDocument from 'next/document';
-import DefaultDocument, { Main, DocumentProps } from './DefaultDocument';
+import DefaultDocument, { DocumentProps } from './DefaultDocument';
 
 export default async function renderDocument({
   pageElement,
@@ -23,7 +22,7 @@ export default async function renderDocument({
   const customDocumentFile = getCustomDocumentFile({ options });
 
   const Document = customDocumentFile
-    ? customDocumentFile.client.default
+    ? customDocumentFile.server.default
     : DefaultDocument;
 
   let head: JSX.Element[] = [];
@@ -45,12 +44,6 @@ export default async function renderDocument({
     );
     return { html, head };
   };
-
-  // Re-assign default Next.js <Main/> component with mock provided by us
-  if (customDocumentFile) {
-    // @ts-ignore
-    nextDocument.Main = Main;
-  }
 
   const initialProps = await fetchDocumentData({
     Document,
