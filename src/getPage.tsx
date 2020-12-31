@@ -94,7 +94,7 @@ export default async function getPage({
     pageObject,
   } = await makePage();
 
-  let pageElement = renderApp({
+  let clientPageElement = renderApp({
     options: {
       ...options,
       env: 'client',
@@ -113,13 +113,13 @@ export default async function getPage({
     </RouterProvider>
   );
 
-  pageElement = (
+  clientPageElement = (
     <RouterProvider
       pageObject={pageObject}
       options={options}
       makePage={makePage}
     >
-      {pageElement}
+      {clientPageElement}
     </RouterProvider>
   );
 
@@ -133,6 +133,7 @@ export default async function getPage({
     });
   }
 
+  // @NOTE This should be directly returned by renderDocument
   const html: string = ReactDOMServer.renderToStaticMarkup(
     <html>
       <head></head>
@@ -144,8 +145,8 @@ export default async function getPage({
 
   return {
     // @NOTE Temporary hack to keep tests green
-    page: useDocument ? serverPageElement : pageElement,
+    page: useDocument ? serverPageElement : clientPageElement,
     html,
-    ...makeRenderMethods({ pageElement, html }),
+    ...makeRenderMethods({ pageElement: clientPageElement, html }),
   };
 }
