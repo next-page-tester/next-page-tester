@@ -35,6 +35,7 @@ export type ExtendedOptions = OptionsWithDefaults & {
   pageExtensions: string[];
   previousRoute?: string;
   isClientSideNavigation?: boolean;
+  env: 'server' | 'client';
 };
 
 /*

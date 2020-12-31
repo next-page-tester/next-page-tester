@@ -53,6 +53,7 @@ export default async function getPage({
     ...optionsWithDefaults,
     pagesDirectory: findPagesDirectory({ nextRoot }),
     pageExtensions: getPageExtensions({ nextRoot }),
+    env: 'server',
   };
   // @TODO: Consider printing extended options value behind a debug flag
 
