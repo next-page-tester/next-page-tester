@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { existsSync } from 'fs';
 import makePageElement from './makePageElement';
 import RouterProvider from './RouterProvider';
@@ -37,7 +38,7 @@ export default async function getPage({
   router = (router) => router,
   useApp = true,
   useDocument = false,
-}: Options): Promise<{ page: React.ReactElement }> {
+}: Options): Promise<{ page: React.ReactElement; html: string }> {
   const optionsWithDefaults: OptionsWithDefaults = {
     route,
     nextRoot,
@@ -102,7 +103,12 @@ export default async function getPage({
     });
   }
 
+  const html: string = ReactDOMServer.renderToStaticMarkup(
+    <div id="__next">{pageElement}</div>
+  );
+
   return {
     page: pageElement,
+    html,
   };
 }
