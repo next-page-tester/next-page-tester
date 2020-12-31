@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.14.0
+
+### New Features
+
+- Require and execute \_document, \_app and pages (including data fetching methods) in expected client or server environment
+
+### Bugfixes
+
+- Ensure only pages with allowed extensions are required
+- Prevent custom app from executing data fetching when `useApp` is `false`
+
 ## 0.13.0
 
 ### Bugfixes
