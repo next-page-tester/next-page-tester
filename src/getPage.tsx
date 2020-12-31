@@ -128,7 +128,12 @@ export default async function getPage({
   }
 
   const html: string = ReactDOMServer.renderToStaticMarkup(
-    <div id="__next">{serverPageElement}</div>
+    <html>
+      <head></head>
+      <body>
+        <div id="__next">{serverPageElement}</div>
+      </body>
+    </html>
   );
 
   return {
