@@ -4,6 +4,7 @@ import { existsSync } from 'fs';
 import makePageElement from './makePageElement';
 import RouterProvider from './RouterProvider';
 import { renderDocument } from './_document';
+import { renderApp } from './_app';
 import initHeadManager from 'next/dist/client/head-manager';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import {
@@ -81,7 +82,30 @@ export default async function getPage({
     return { pageElement, pageData, pageObject };
   };
 
-  let { pageElement, pageData, pageObject } = await makePage();
+  let {
+    pageElement: serverPageElement,
+    pageData,
+    pageObject,
+  } = await makePage();
+
+  let pageElement = renderApp({
+    options: {
+      ...options,
+      env: 'client',
+    },
+    pageObject,
+    pageData,
+  });
+
+  serverPageElement = (
+    <RouterProvider
+      pageObject={pageObject}
+      options={options}
+      makePage={makePage}
+    >
+      {serverPageElement}
+    </RouterProvider>
+  );
 
   pageElement = (
     <RouterProvider
@@ -95,8 +119,8 @@ export default async function getPage({
 
   // Optionally wrap with custom Document
   if (useDocument) {
-    pageElement = await renderDocument({
-      pageElement,
+    serverPageElement = await renderDocument({
+      pageElement: serverPageElement,
       options,
       pageObject,
       pageData,
@@ -104,11 +128,12 @@ export default async function getPage({
   }
 
   const html: string = ReactDOMServer.renderToStaticMarkup(
-    <div id="__next">{pageElement}</div>
+    <div id="__next">{serverPageElement}</div>
   );
 
   return {
-    page: pageElement,
+    // @NOTE Temporary hack to keep tests green
+    page: useDocument ? serverPageElement : pageElement,
     html,
   };
 }
