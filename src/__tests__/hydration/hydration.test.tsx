@@ -19,7 +19,7 @@ function wrapWithNextRoot(element: JSX.Element): JSX.Element {
 
 describe('hydration', () => {
   it('renders expected html', async () => {
-    const { page, html } = await getPage({
+    const { page, html, render } = await getPage({
       nextRoot: path.join(__dirname, '__fixtures__'),
       route: '/page',
     });
@@ -28,22 +28,7 @@ describe('hydration', () => {
     const expectedHtml = ReactDOMServer.renderToStaticMarkup(expectedPage);
     expect(html).toEqual(expectedHtml);
 
-    // 1- Replace the whole document content with returned html :)
-    // @NOTE: This might be executed directly by getPage
-    document.documentElement.innerHTML = html;
-    console.log('SSR rendered DOM');
-    screen.debug(document);
-
-    const nextRootElement = document.getElementById('__next');
-    if (!nextRootElement) {
-      throw new Error('[next-page-tester] Missing __next div');
-    }
-
-    // 2- Hydrate page element in existing DOM
-    render(page, {
-      hydrate: true,
-      container: nextRootElement,
-    });
+    render();
 
     console.log('Hydrated DOM');
     screen.debug(document);

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { existsSync } from 'fs';
 import makePageElement from './makePageElement';
+import makeRenderMethods from './makeRenderMethods';
 import RouterProvider from './RouterProvider';
 import { renderDocument } from './_document';
 import { renderApp } from './_app';
@@ -39,7 +40,12 @@ export default async function getPage({
   router = (router) => router,
   useApp = true,
   useDocument = false,
-}: Options): Promise<{ page: React.ReactElement; html: string }> {
+}: Options): Promise<{
+  page: React.ReactElement;
+  html: string;
+  renderHtml: () => void;
+  render: () => void;
+}> {
   const optionsWithDefaults: OptionsWithDefaults = {
     route,
     nextRoot,
@@ -140,5 +146,6 @@ export default async function getPage({
     // @NOTE Temporary hack to keep tests green
     page: useDocument ? serverPageElement : pageElement,
     html,
+    ...makeRenderMethods({ pageElement, html }),
   };
 }
