@@ -27,6 +27,7 @@ export default function RouterProvider({
       route: nextRoute,
       previousRoute,
       isClientSideNavigation: true,
+      env: 'client',
     });
     previousRouteRef.current = nextRoute;
 

@@ -13,16 +13,14 @@ export default async function fetchAppData({
   pageObject: PageObject;
   options: ExtendedOptions;
 }): Promise<AppInitialProps | undefined> {
-  const { useApp, isClientSideNavigation } = options;
+  const { useApp, env } = options;
   const customAppFile = getCustomAppFile({ options });
 
   if (!useApp || !customAppFile) {
     return;
   }
 
-  const customApp = isClientSideNavigation
-    ? customAppFile.client.default
-    : customAppFile.server.default;
+  const customApp = customAppFile[env].default;
   const { getInitialProps } = customApp;
 
   if (getInitialProps) {
@@ -43,9 +41,10 @@ export default async function fetchAppData({
       router: { asPath, pathname, query, route, basePath },
     };
 
-    const appInitialProps = isClientSideNavigation
-      ? await getInitialProps(ctx)
-      : await executeAsIfOnServer(() => getInitialProps(ctx));
+    const appInitialProps =
+      env === 'client'
+        ? await getInitialProps(ctx)
+        : await executeAsIfOnServer(() => getInitialProps(ctx));
 
     return appInitialProps;
   }
