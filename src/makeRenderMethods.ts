@@ -7,10 +7,7 @@ export default function makeRenderMethods({
 }: {
   html: string;
   pageElement: JSX.Element;
-}): {
-  renderHtml: () => void;
-  render: ReturnType<typeof TLRender>;
-} {
+}) {
   // Replace the whole document content with SSR html
   function renderHtml() {
     document.documentElement.innerHTML = html;
