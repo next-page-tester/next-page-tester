@@ -4,7 +4,7 @@ import { PropsPrinter } from '../../../../__utils__/';
 export default function Index({ ctx }) {
   return (
     <>
-      /gip/[id] -
+      custom-app-with-gip/app-context -
       <PropsPrinter props={ctx} />
     </>
   );

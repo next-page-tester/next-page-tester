@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
-import { render } from '@testing-library/react';
+import { render as TLRender, screen } from '@testing-library/react';
 import httpMocks from 'node-mocks-http';
 import { getPage } from '../../index';
+import { expectDOMElementsToMatch, makeNextRootElement } from '../__utils__';
 import CustomAppWithGIP from './__fixtures__/custom-app-with-gip/pages/_app';
 import CustomAppWithGIP_AppContextPage from './__fixtures__/custom-app-with-gip/pages/app-context';
 import CustomAppWithGIP_SSRPage from './__fixtures__/custom-app-with-gip/pages/ssr';
@@ -19,11 +20,11 @@ import MissingCustomAppPage from './__fixtures__/missing-custom-app/pages/page';
 describe('_app support', () => {
   describe('_app with getInitialProps', () => {
     it('getInitialProps gets called with expected appContext', async () => {
-      const { page } = await getPage({
+      const { render } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route: '/app-context',
       });
-      const { container: actual } = render(page);
+      const { container: actual } = render();
       const expectedAppContext = {
         AppTree: Fragment,
         Component: CustomAppWithGIP_AppContextPage,
@@ -47,27 +48,30 @@ describe('_app support', () => {
           basePath: '',
         },
       };
-      const { container: expected } = render(
+
+      const { container: expected } = TLRender(
         <CustomAppWithGIP
           Component={CustomAppWithGIP_AppContextPage}
           pageProps={{
             ctx: expectedAppContext,
           }}
-        />
+        />,
+        { container: makeNextRootElement() }
       );
-      expect(actual).toEqual(expected);
+
+      expectDOMElementsToMatch(actual, expected);
     });
 
     it.each([
       ['getServerSideProps', '/ssr', CustomAppWithGIP_SSRPage],
       ['getStaticProps', '/ssg', CustomAppWithGIP_SSGPage],
     ])('Page with %s', async (dataFetchingType, route, PageComponent) => {
-      const { page } = await getPage({
+      const { page, render } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route,
       });
-      const { container: actual } = render(page);
-      const { container: expected } = render(
+      const { container: actual } = render();
+      const { container: expected } = TLRender(
         <CustomAppWithGIP
           Component={PageComponent}
           pageProps={{
@@ -75,29 +79,31 @@ describe('_app support', () => {
             propNameCollision: 'from-page',
             fromPage: true,
           }}
-        />
+        />,
+        { container: makeNextRootElement() }
       );
 
-      expect(actual).toEqual(expected);
+      expectDOMElementsToMatch(actual, expected);
     });
 
     describe('Page with getInitialProps', () => {
       it('getInitialProps does not get called', async () => {
-        const { page } = await getPage({
+        const { page, render } = await getPage({
           nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
           route: '/gip',
         });
-        const { container: actual } = render(page);
-        const { container: expected } = render(
+        const { container: actual } = render();
+        const { container: expected } = TLRender(
           <CustomAppWithGIP
             Component={CustomAppWithGIP_GIPPage}
             pageProps={{
               fromCustomApp: true,
               propNameCollision: 'from-app',
             }}
-          />
+          />,
+          { container: makeNextRootElement() }
         );
-        expect(actual).toEqual(expected);
+        expectDOMElementsToMatch(actual, expected);
       });
     });
   });
@@ -105,45 +111,49 @@ describe('_app support', () => {
   describe("calling Next's App.getInitialProps", () => {
     describe('Page with getInitialProps', () => {
       it("App.getInitialProps is able to call page's getInitialProps", async () => {
-        const { page } = await getPage({
+        const { page, render } = await getPage({
           nextRoot: __dirname + '/__fixtures__/custom-app-with-next-app-gip',
           route: '/gip',
         });
 
-        const { container: actual } = render(page);
-        const { container: expected } = render(
+        const { container: actual } = render();
+        const { container: expected } = TLRender(
           <CustomAppWithNextAppGIP
             Component={CustomAppWithNextAppGIP_GIP}
             pageProps={{
               fromPage: true,
             }}
-          />
+          />,
+          { container: makeNextRootElement() }
         );
-        expect(actual).toEqual(expected);
+        expectDOMElementsToMatch(actual, expected);
       });
     });
   });
 
   it('Loads custom app file with any extension defined in "next.config.js"', async () => {
-    const { page } = await getPage({
+    const { page, render } = await getPage({
       nextRoot: __dirname + '/__fixtures__/special-extension',
       route: '/page',
     });
-    const { container: actual } = render(page);
-    const { container: expected } = render(
-      <SpecialExtensionCustomApp Component={SpecialExtensionPage} />
+    const { container: actual } = render();
+    const { container: expected } = TLRender(
+      <SpecialExtensionCustomApp Component={SpecialExtensionPage} />,
+      { container: makeNextRootElement() }
     );
-    expect(actual).toEqual(expected);
+    expectDOMElementsToMatch(actual, expected);
   });
 
   it('Return page as usual if no custom app file is found', async () => {
-    const { page } = await getPage({
+    const { page, render } = await getPage({
       nextRoot: __dirname + '/__fixtures__/missing-custom-app',
       route: '/page',
     });
-    const { container: actual } = render(page);
-    const { container: expected } = render(<MissingCustomAppPage />);
-    expect(actual).toEqual(expected);
+    const { container: actual } = render();
+    const { container: expected } = TLRender(<MissingCustomAppPage />, {
+      container: makeNextRootElement(),
+    });
+    expectDOMElementsToMatch(actual, expected);
   });
 
   describe('route matching "_app" page', () => {
@@ -161,14 +171,16 @@ describe('_app support', () => {
 
   describe('"useApp" === false while _app component available', () => {
     it('does not render custom App nor receives props from it', async () => {
-      const { page } = await getPage({
+      const { page, render } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route: '/page',
         useApp: false,
       });
       const { container: actual } = render(page);
-      const { container: expected } = render(<CustomAppWithGIP_Page />);
-      expect(actual).toEqual(expected);
+      const { container: expected } = TLRender(<CustomAppWithGIP_Page />, {
+        container: makeNextRootElement(),
+      });
+      expectDOMElementsToMatch(actual, expected);
     });
   });
 });

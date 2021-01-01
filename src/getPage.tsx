@@ -40,12 +40,12 @@ export default async function getPage({
   router = (router) => router,
   useApp = true,
   useDocument = false,
-}: Options): Promise<{
-  page: React.ReactElement;
-  html: string;
-  renderHtml: () => void;
-  render: () => void;
-}> {
+}: Options): Promise<
+  {
+    page: React.ReactElement;
+    html: string;
+  } & ReturnType<typeof makeRenderMethods>
+> {
   const optionsWithDefaults: OptionsWithDefaults = {
     route,
     nextRoot,
@@ -134,7 +134,7 @@ export default async function getPage({
   }
 
   // @NOTE This should be directly returned by renderDocument
-  const html: string = ReactDOMServer.renderToStaticMarkup(
+  const html: string = ReactDOMServer.renderToString(
     <html>
       <head></head>
       <body>

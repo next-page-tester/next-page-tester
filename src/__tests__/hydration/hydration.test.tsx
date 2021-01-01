@@ -5,17 +5,7 @@ import { render, screen } from '@testing-library/react';
 import path from 'path';
 import App from './__fixtures__/pages/_app';
 import Page from './__fixtures__/pages/Page';
-
-function wrapWithNextRoot(element: JSX.Element): JSX.Element {
-  return (
-    <html>
-      <head></head>
-      <body>
-        <div id="__next">{element}</div>
-      </body>
-    </html>
-  );
-}
+import { wrapWithDocument } from '../__utils__';
 
 describe('hydration', () => {
   it('renders expected html', async () => {
@@ -24,8 +14,8 @@ describe('hydration', () => {
       route: '/page',
     });
 
-    const expectedPage = wrapWithNextRoot(<App Component={Page} />);
-    const expectedHtml = ReactDOMServer.renderToStaticMarkup(expectedPage);
+    const expectedPage = wrapWithDocument(<App Component={Page} />);
+    const expectedHtml = ReactDOMServer.renderToString(expectedPage);
     expect(html).toEqual(expectedHtml);
 
     render();
