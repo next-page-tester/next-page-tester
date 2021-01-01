@@ -1,5 +1,5 @@
 import { getPage } from '../../index';
-import { render, screen } from '@testing-library/react';
+import { getByText, within } from '@testing-library/react';
 import path from 'path';
 import userEvent from '@testing-library/user-event';
 
@@ -8,13 +8,13 @@ describe('ssr-redirect', () => {
     'Page with %s',
     (_dataFetchingType, directory) => {
       it('Correctly handles single redirect', async () => {
-        const { page } = await getPage({
+        const { renderHtml } = await getPage({
           nextRoot: path.join(__dirname, '__fixtures__', directory),
           route: '/proxy-to-page-a',
         });
 
-        render(page);
-        expect(screen.getByText('Page A')).toBeInTheDocument();
+        renderHtml();
+        expect(getByText(document.body, 'Page A')).toBeInTheDocument();
       });
     }
   );
@@ -23,13 +23,13 @@ describe('ssr-redirect', () => {
     'Page with %s',
     (_dataFetchingType, directory) => {
       it('Correctly handles multiple redirects', async () => {
-        const { page } = await getPage({
+        const { renderHtml } = await getPage({
           nextRoot: path.join(__dirname, '__fixtures__', directory),
           route: '/proxy-page?destination=/proxy-to-page-a',
         });
 
-        render(page);
-        expect(screen.getByText('Page A')).toBeInTheDocument();
+        renderHtml();
+        expect(getByText(document.body, 'Page A')).toBeInTheDocument();
       });
     }
   );
@@ -38,18 +38,20 @@ describe('ssr-redirect', () => {
     'Page with %s',
     (_dataFetchingType, directory) => {
       it('Correctly handles multiple redirects after client side navigation', async () => {
-        const { page } = await getPage({
+        const { render } = await getPage({
           nextRoot: path.join(__dirname, '__fixtures__', directory),
           route: '/page-b',
         });
 
-        render(page);
-        expect(screen.getByText('Page B')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Proxy link'));
+        render();
+        const { getByText, findByText } = within(document.body);
 
-        await screen.findByText('Page A');
+        expect(getByText('Page B')).toBeInTheDocument();
+        userEvent.click(getByText('Proxy link'));
+
+        await findByText('Page A');
         expect(
-          screen.getByText('req.headers.referer: "http://localhost/page-b"')
+          getByText('req.headers.referer: "http://localhost/page-b"')
         ).toBeInTheDocument();
       });
     }

@@ -1,5 +1,5 @@
 import { getPage } from '../../index';
-import { render, screen } from '@testing-library/react';
+import { within } from '@testing-library/react';
 import path from 'path';
 import userEvent from '@testing-library/user-event';
 
@@ -8,30 +8,26 @@ describe('referer', () => {
     'Page with %s',
     (_dataFetchingType, directory) => {
       it('Makes referer available via ctx.req.headers.referer', async () => {
-        const { page } = await getPage({
+        const { render } = await getPage({
           nextRoot: path.join(__dirname, '__fixtures__', directory),
           route: '/page-a',
         });
-        render(page);
-        screen.getByText('req.headers.referer: ""');
+        render();
+        const { getByText, findByText } = within(document.body);
 
-        userEvent.click(screen.getByText('To /page-b'));
+        getByText('req.headers.referer: ""');
 
-        await screen.findByText(
-          'req.headers.referer: "http://localhost/page-a"'
-        );
+        userEvent.click(getByText('To /page-b'));
 
-        userEvent.click(screen.getByText('To /page-c'));
+        await findByText('req.headers.referer: "http://localhost/page-a"');
 
-        await screen.findByText(
-          'req.headers.referer: "http://localhost/page-b"'
-        );
+        userEvent.click(getByText('To /page-c'));
 
-        userEvent.click(screen.getByText('To /page-a'));
+        await findByText('req.headers.referer: "http://localhost/page-b"');
 
-        await screen.findByText(
-          'req.headers.referer: "http://localhost/page-c"'
-        );
+        userEvent.click(getByText('To /page-a'));
+
+        await findByText('req.headers.referer: "http://localhost/page-c"');
       });
     }
   );

@@ -66,7 +66,7 @@ describe('_app support', () => {
       ['getServerSideProps', '/ssr', CustomAppWithGIP_SSRPage],
       ['getStaticProps', '/ssg', CustomAppWithGIP_SSGPage],
     ])('Page with %s', async (dataFetchingType, route, PageComponent) => {
-      const { page, render } = await getPage({
+      const { render } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route,
       });
@@ -88,7 +88,7 @@ describe('_app support', () => {
 
     describe('Page with getInitialProps', () => {
       it('getInitialProps does not get called', async () => {
-        const { page, render } = await getPage({
+        const { render } = await getPage({
           nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
           route: '/gip',
         });
@@ -111,7 +111,7 @@ describe('_app support', () => {
   describe("calling Next's App.getInitialProps", () => {
     describe('Page with getInitialProps', () => {
       it("App.getInitialProps is able to call page's getInitialProps", async () => {
-        const { page, render } = await getPage({
+        const { render } = await getPage({
           nextRoot: __dirname + '/__fixtures__/custom-app-with-next-app-gip',
           route: '/gip',
         });
@@ -132,7 +132,7 @@ describe('_app support', () => {
   });
 
   it('Loads custom app file with any extension defined in "next.config.js"', async () => {
-    const { page, render } = await getPage({
+    const { render } = await getPage({
       nextRoot: __dirname + '/__fixtures__/special-extension',
       route: '/page',
     });
@@ -145,7 +145,7 @@ describe('_app support', () => {
   });
 
   it('Return page as usual if no custom app file is found', async () => {
-    const { page, render } = await getPage({
+    const { render } = await getPage({
       nextRoot: __dirname + '/__fixtures__/missing-custom-app',
       route: '/page',
     });
@@ -171,12 +171,12 @@ describe('_app support', () => {
 
   describe('"useApp" === false while _app component available', () => {
     it('does not render custom App nor receives props from it', async () => {
-      const { page, render } = await getPage({
+      const { render } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route: '/page',
         useApp: false,
       });
-      const { container: actual } = render(page);
+      const { container: actual } = render();
       const { container: expected } = TLRender(<CustomAppWithGIP_Page />, {
         container: makeNextRootElement(),
       });
