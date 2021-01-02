@@ -114,6 +114,7 @@ export function executeWithFreshModules<T>(f: () => T): T {
     jest.isolateModules(() => {
       // Ensure every page gets the same patched 'next/document' instance
       // imported before tests by "src/testHelpers.ts"
+      jest.mock('react', () => jest.requireActual('react'));
       jest.mock('next/document', () => jest.requireActual('next/document'));
       result = f();
     });
@@ -126,6 +127,7 @@ export function executeWithFreshModules<T>(f: () => T): T {
       require.cache,
       f,
       () => {
+        require('react');
         require('next/document');
       },
       module

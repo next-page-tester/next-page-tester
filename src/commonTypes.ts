@@ -88,7 +88,7 @@ export type NextApp = React.FunctionComponent<{
   getInitialProps?: (appContext: AppContext) => Promise<AppInitialProps>;
 };
 
-export type NextCustomAppFile = {
+export type NextAppFile = {
   [name: string]: any;
   default: NextApp;
 };
