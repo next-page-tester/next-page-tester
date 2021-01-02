@@ -98,7 +98,6 @@ export function useMountedState(): () => boolean {
 
   useEffect(() => {
     mountedRef.current = true;
-
     return () => {
       mountedRef.current = false;
     };
@@ -114,8 +113,12 @@ export function executeWithFreshModules<T>(f: () => T): T {
     jest.isolateModules(() => {
       // Ensure every page gets the same patched 'next/document' instance
       // imported before tests by "src/testHelpers.ts"
-      jest.mock('react', () => jest.requireActual('react'));
-      jest.mock('next/document', () => jest.requireActual('next/document'));
+      jest.doMock('react', () => jest.requireActual('react'));
+      jest.doMock('react-dom', () => jest.requireActual('react-dom'));
+      jest.doMock('react-dom/server', () =>
+        jest.requireActual('react-dom/server')
+      );
+      jest.doMock('next/document', () => jest.requireActual('next/document'));
       result = f();
     });
     // @ts-ignore
@@ -128,6 +131,8 @@ export function executeWithFreshModules<T>(f: () => T): T {
       f,
       () => {
         require('react');
+        require('react-dom');
+        require('react-dom/server');
         require('next/document');
       },
       module

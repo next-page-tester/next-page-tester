@@ -50,6 +50,7 @@ export type PageParams = ParsedUrlQuery;
 
 export type PageObject = {
   page: PageFile<NextPageFile>;
+  appFile: PageFile<NextAppFile>;
   route: string;
   pagePath: string;
   params: PageParams;
