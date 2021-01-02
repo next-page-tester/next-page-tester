@@ -98,7 +98,6 @@ export function useMountedState(): () => boolean {
 
   useEffect(() => {
     mountedRef.current = true;
-
     return () => {
       mountedRef.current = false;
     };
@@ -111,11 +110,15 @@ export function executeWithFreshModules<T>(f: () => T): T {
   /* istanbul ignore else */
   if (typeof jest !== 'undefined') {
     let result: T;
+    // @NOTE for some reason Jest needs us to pre-import the modules
+    // we want to require with jest.requireActual
+    require('react');
+
+    // Ensure every page gets the same 'react' and 'next/document' instances.
+    // 'next/document' is imported before tests by "src/testHelpers.ts"
+    jest.mock('react', () => jest.requireActual('react'));
+    jest.mock('next/document', () => jest.requireActual('next/document'));
     jest.isolateModules(() => {
-      // Ensure every page gets the same patched 'next/document' instance
-      // imported before tests by "src/testHelpers.ts"
-      jest.mock('react', () => jest.requireActual('react'));
-      jest.mock('next/document', () => jest.requireActual('next/document'));
       result = f();
     });
     // @ts-ignore

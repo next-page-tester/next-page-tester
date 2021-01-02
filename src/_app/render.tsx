@@ -1,7 +1,5 @@
 import React from 'react';
-import { getAppFile, getDefaultAppFile } from './getAppFile';
 import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
-import { executeAsIfOnServerSync } from '../server';
 
 export default function renderApp({
   options,
@@ -12,14 +10,13 @@ export default function renderApp({
   pageObject: PageObject;
   pageData: PageData;
 }): JSX.Element {
-  const { useApp, env } = options;
-  const appFile = useApp ? getAppFile({ options }) : getDefaultAppFile();
+  const { env } = options;
+  const { appFile } = pageObject;
   const AppComponent = appFile[env].default;
 
-  // @TODO render expected client/server instance
   return (
     <AppComponent
-      Component={pageObject.page.client.default}
+      Component={pageObject.page[env].default}
       pageProps={pageData.props}
     />
   );
