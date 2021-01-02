@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { render as TLRender, screen } from '@testing-library/react';
+import { render as TLRender } from '@testing-library/react';
 import httpMocks from 'node-mocks-http';
 import { getPage } from '../../index';
 import { expectDOMElementsToMatch, makeNextRootElement } from '../__utils__';

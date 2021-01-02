@@ -1,45 +1,38 @@
-import React from 'react';
 import path from 'path';
-import { render } from '@testing-library/react';
-import PageInNaturalRoot from '../../../pages/page';
-import PageInRoot from './in-root/pages/page';
-import PageInSrc from './in-src/src/pages/page';
+import { getByText } from '@testing-library/react';
 import { getPage } from '../../index';
 
 describe('Pages directory discovery + "nextRoot" option', () => {
   it('discover "pages" directory in auto-detected root', async () => {
-    const { page } = await getPage({
+    const { renderHtml } = await getPage({
       route: '/page',
     });
 
-    const { container: actual } = render(page);
-    const { container: expected } = render(<PageInNaturalRoot />);
-    expect(actual).toEqual(expected);
+    renderHtml();
+    getByText(document.body, 'Page in natural root');
   });
 
   describe('With "nextRoot" option', () => {
     it('discover "pages" directory in provided root', async () => {
       const nextRoot = path.join(__dirname, '/in-root');
-      const { page } = await getPage({
+      const { renderHtml } = await getPage({
         route: '/page',
         nextRoot,
       });
 
-      const { container: actual } = render(page);
-      const { container: expected } = render(<PageInRoot />);
-      expect(actual).toEqual(expected);
+      renderHtml();
+      getByText(document.body, 'Page in root');
     });
 
     it('discover "pages" directory in root/src', async () => {
       const nextRoot = path.join(__dirname, '/in-src');
-      const { page } = await getPage({
+      const { renderHtml } = await getPage({
         route: '/page',
         nextRoot,
       });
 
-      const { container: actual } = render(page);
-      const { container: expected } = render(<PageInSrc />);
-      expect(actual).toEqual(expected);
+      renderHtml();
+      getByText(document.body, 'Page in src');
     });
 
     describe('"pages" directory not found', () => {

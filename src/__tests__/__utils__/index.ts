@@ -9,3 +9,4 @@ export {
   stripReactReactExtraMarkup,
 } from './expectDOMElementsToMatch';
 export { makeNextRootElement } from './makeNextRootElement';
+export { getNextRootElement } from './getNextRootElement';
