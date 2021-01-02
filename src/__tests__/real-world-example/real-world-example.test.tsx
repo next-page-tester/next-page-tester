@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import path from 'path';
 import userEvent from '@testing-library/user-event';
 
-describe('real-world-example', () => {
+describe.skip('real-world-example', () => {
   it('Should correctly render _document and work with client side interactions', async () => {
     const { page } = await getPage({
       nextRoot: path.join(__dirname, '__fixtures__'),

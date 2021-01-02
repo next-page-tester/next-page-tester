@@ -7,7 +7,7 @@ import CustomDocumentWithGIP_Page from './__fixtures__/custom-document-with-gip/
 import CustomApp from './__fixtures__/custom-document-with-gip/pages/_app';
 import { getMetaTagsContentByName } from '../__utils__/_document';
 
-describe('_document support', () => {
+describe.skip('_document support', () => {
   describe('_document with getInitialProps', () => {
     describe('with custom _app', () => {
       it('renders page wrapped in custom _app wrapped in _document', async () => {
