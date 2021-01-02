@@ -1,7 +1,7 @@
 import React from 'react';
-import getCustomAppFile from './getCustomAppFile';
-import DefaultApp from './DefaultApp';
+import { getAppFile, getDefaultAppFile } from './getAppFile';
 import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
+import { executeAsIfOnServerSync } from '../server';
 
 export default function renderApp({
   options,
@@ -11,17 +11,12 @@ export default function renderApp({
   options: ExtendedOptions;
   pageObject: PageObject;
   pageData: PageData;
-}) {
-  const { useApp } = options;
-  const customAppFile = getCustomAppFile({ options });
-  let AppComponent;
+}): JSX.Element {
+  const { useApp, env } = options;
+  const appFile = useApp ? getAppFile({ options }) : getDefaultAppFile();
+  const AppComponent = appFile[env].default;
 
-  if (useApp && customAppFile?.client?.default) {
-    AppComponent = customAppFile.client.default;
-  } else {
-    AppComponent = DefaultApp;
-  }
-
+  // @TODO render expected client/server instance
   return (
     <AppComponent
       Component={pageObject.page.client.default}
