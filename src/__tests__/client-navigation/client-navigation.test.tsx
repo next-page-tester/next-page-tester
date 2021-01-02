@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render as TLRender, waitFor, screen } from '@testing-library/react';
 import { getPage } from '../../index';
+import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import PageB from './__fixtures__/pages/b';
 import userEvent from '@testing-library/user-event';
 import type { NextRouter } from 'next/router';
@@ -14,11 +15,11 @@ describe('Client side navigation', () => {
     ${'programmatically'}     | ${'Go to B programmatically'}
   `('$title', ({ linkText }) => {
     it('navigates between pages', async () => {
-      const { page } = await getPage({
+      const { render } = await getPage({
         nextRoot,
         route: '/a',
       });
-      const screen = render(page);
+      const { nextRoot: actual } = render();
       screen.getByText('This is page A');
 
       // Navigate A -> B
@@ -27,8 +28,7 @@ describe('Client side navigation', () => {
       expect(screen.queryByText('This is page A')).not.toBeInTheDocument();
 
       // Ensure router mock update reflects route change
-      const { container: actual } = screen;
-      const { container: expected } = render(
+      const { container: expected } = renderWithinNextRoot(
         <PageB
           routerMock={
             {
@@ -41,15 +41,15 @@ describe('Client side navigation', () => {
           }
         />
       );
-      expect(actual).toEqual(expected);
+      expectDOMElementsToMatch(actual, expected);
     });
 
     it('GIP navigates between pages ', async () => {
-      const { page } = await getPage({
+      const { render } = await getPage({
         nextRoot,
         route: `/gip/a`,
       });
-      render(page);
+      render();
 
       screen.getByText(
         JSON.stringify({
@@ -74,11 +74,11 @@ describe('Client side navigation', () => {
     });
 
     it('SSR navigates between pages ', async () => {
-      const { page } = await getPage({
+      const { render } = await getPage({
         nextRoot,
         route: `/ssr/a`,
       });
-      render(page);
+      render();
 
       await screen.findByText(
         JSON.stringify({
@@ -109,7 +109,8 @@ describe('Client side navigation', () => {
       nextRoot,
       route: '/a',
     });
-    const { unmount } = render(page);
+
+    const { unmount } = TLRender(page);
     userEvent.click(screen.getByText('Go to B with Link'));
 
     unmount();
