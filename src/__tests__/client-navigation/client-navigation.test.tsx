@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render as TLRender, waitFor, within } from '@testing-library/react';
 import { getPage } from '../../index';
+import { expectDOMElementsToMatch, makeNextRootElement } from '../__utils__';
 import PageB from './__fixtures__/pages/b';
 import userEvent from '@testing-library/user-event';
 import type { NextRouter } from 'next/router';
@@ -14,21 +15,21 @@ describe('Client side navigation', () => {
     ${'programmatically'}     | ${'Go to B programmatically'}
   `('$title', ({ linkText }) => {
     it('navigates between pages', async () => {
-      const { page } = await getPage({
+      const { render } = await getPage({
         nextRoot,
         route: '/a',
       });
-      const screen = render(page);
-      screen.getByText('This is page A');
+      const { container: actual } = render();
+      const { getByText, findByText, queryByText } = within(document.body);
+      getByText('This is page A');
 
       // Navigate A -> B
-      userEvent.click(screen.getByText(linkText));
-      await screen.findByText('This is page B');
-      expect(screen.queryByText('This is page A')).not.toBeInTheDocument();
+      userEvent.click(getByText(linkText));
+      await findByText('This is page B');
+      expect(queryByText('This is page A')).not.toBeInTheDocument();
 
       // Ensure router mock update reflects route change
-      const { container: actual } = screen;
-      const { container: expected } = render(
+      const { container: expected } = TLRender(
         <PageB
           routerMock={
             {
@@ -39,19 +40,21 @@ describe('Client side navigation', () => {
               basePath: '',
             } as NextRouter
           }
-        />
+        />,
+        { container: makeNextRootElement() }
       );
-      expect(actual).toEqual(expected);
+      expectDOMElementsToMatch(actual, expected);
     });
 
     it('GIP navigates between pages ', async () => {
-      const { page } = await getPage({
+      const { render } = await getPage({
         nextRoot,
         route: `/gip/a`,
       });
-      render(page);
+      render();
+      const { getByText, findByText } = within(document.body);
 
-      screen.getByText(
+      getByText(
         JSON.stringify({
           isWindowDefined: false,
           isDocumentDefined: false,
@@ -60,10 +63,10 @@ describe('Client side navigation', () => {
         })
       );
 
-      userEvent.click(screen.getByText(linkText));
+      userEvent.click(getByText(linkText));
 
-      await screen.findByText('This is page B');
-      screen.getByText(
+      await findByText('This is page B');
+      getByText(
         JSON.stringify({
           isWindowDefined: true,
           isDocumentDefined: true,
@@ -74,13 +77,14 @@ describe('Client side navigation', () => {
     });
 
     it('SSR navigates between pages ', async () => {
-      const { page } = await getPage({
+      const { render } = await getPage({
         nextRoot,
         route: `/ssr/a`,
       });
-      render(page);
+      render();
+      const { getByText, findByText } = within(document.body);
 
-      await screen.findByText(
+      await findByText(
         JSON.stringify({
           isWindowDefined: false,
           isDocumentDefined: false,
@@ -89,10 +93,10 @@ describe('Client side navigation', () => {
         })
       );
 
-      userEvent.click(screen.getByText(linkText));
+      userEvent.click(getByText(linkText));
 
-      await screen.findByText('This is page B');
-      screen.getByText(
+      await findByText('This is page B');
+      getByText(
         JSON.stringify({
           isWindowDefined: false,
           isDocumentDefined: false,
@@ -105,12 +109,13 @@ describe('Client side navigation', () => {
 
   it('does not re-render (does not update router mock) if page gets unmounted', async () => {
     const warn = jest.spyOn(console, 'warn').mockImplementationOnce(() => {});
-    const { page } = await getPage({
+    const { render } = await getPage({
       nextRoot,
       route: '/a',
     });
-    const { unmount } = render(page);
-    userEvent.click(screen.getByText('Go to B with Link'));
+    const { unmount } = render();
+    const { getByText } = within(document.body);
+    userEvent.click(getByText('Go to B with Link'));
 
     unmount();
 
