@@ -1,7 +1,5 @@
 import { executeAsIfOnServerSync } from './server';
 
-require('react');
-require('react-dom');
 function isJSDOMEnvironment() {
   return navigator && navigator.userAgent.includes('jsdom');
 }

@@ -106,7 +106,13 @@ export function useMountedState(): () => boolean {
   return get;
 }
 
-const nonIsolatedModules = ['react', 'next/document'];
+const nonIsolatedModules = [
+  'react',
+  'next/document',
+  'next/router',
+  'next/head',
+  'next/dist/next-server/lib/router-context',
+];
 export function executeWithFreshModules<T>(f: () => T): T {
   /* istanbul ignore else */
   if (typeof jest !== 'undefined') {
