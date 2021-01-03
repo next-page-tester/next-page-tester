@@ -1,4 +1,4 @@
-import { render as TLRender } from '@testing-library/react';
+import ReactDOM from 'react-dom';
 
 // @TODO: Make this methods overridable via options
 export default function makeRenderMethods({
@@ -7,7 +7,10 @@ export default function makeRenderMethods({
 }: {
   html: string;
   pageElement: JSX.Element;
-}) {
+}): {
+  renderHTML: () => void;
+  render: () => HTMLElement;
+} {
   // Replace the whole document content with SSR html
   function renderHTML() {
     document.documentElement.innerHTML = html;
@@ -21,10 +24,8 @@ export default function makeRenderMethods({
     }
 
     // Hydrate page element in existing DOM
-    TLRender(pageElement, {
-      hydrate: true,
-      container: nextRootElement,
-    });
+    ReactDOM.hydrate(pageElement, nextRootElement);
+    return nextRootElement;
   }
 
   return {
