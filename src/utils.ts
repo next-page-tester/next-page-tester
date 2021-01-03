@@ -106,18 +106,19 @@ export function useMountedState(): () => boolean {
   return get;
 }
 
+const nonIsolatedModules = ['react', 'next/document'];
 export function executeWithFreshModules<T>(f: () => T): T {
   /* istanbul ignore else */
   if (typeof jest !== 'undefined') {
     let result: T;
-    // @NOTE for some reason Jest needs us to pre-import the modules
-    // we want to require with jest.requireActual
-    require('react');
 
-    // Ensure every page gets the same 'react' and 'next/document' instances.
-    // 'next/document' is imported before tests by "src/testHelpers.ts"
-    jest.mock('react', () => jest.requireActual('react'));
-    jest.mock('next/document', () => jest.requireActual('next/document'));
+    for (const moduleName of nonIsolatedModules) {
+      // @NOTE for some reason Jest needs us to pre-import the modules
+      // we want to require with jest.requireActual
+      require(moduleName);
+      jest.mock(moduleName, () => jest.requireActual(moduleName));
+    }
+
     jest.isolateModules(() => {
       result = f();
     });
@@ -130,8 +131,9 @@ export function executeWithFreshModules<T>(f: () => T): T {
       require.cache,
       f,
       () => {
-        require('react');
-        require('next/document');
+        for (const moduleName of nonIsolatedModules) {
+          require(moduleName);
+        }
       },
       module
     );
