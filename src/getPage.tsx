@@ -7,6 +7,7 @@ import { renderDocument } from './_document';
 import { renderApp } from './_app';
 import initHeadManager from 'next/dist/client/head-manager';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
+import { executeAsIfOnServerSync } from './server';
 import {
   defaultNextRoot,
   findPagesDirectory,
@@ -127,13 +128,15 @@ export default async function getPage({
     });
   }
 
-  const html: string = ReactDOMServer.renderToString(
-    <html>
-      <head></head>
-      <body>
-        <div id="__next">{serverPageElement}</div>
-      </body>
-    </html>
+  const html: string = executeAsIfOnServerSync(() =>
+    ReactDOMServer.renderToString(
+      <html>
+        <head></head>
+        <body>
+          <div id="__next">{serverPageElement}</div>
+        </body>
+      </html>
+    )
   );
 
   return {
