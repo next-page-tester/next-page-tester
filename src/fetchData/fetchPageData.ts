@@ -4,6 +4,7 @@ import type {
   GetStaticPropsContext,
 } from 'next';
 import type { AppInitialProps } from 'next/app';
+import { parse } from 'cookie';
 import {
   makeGetInitialPropsContext,
   makeGetServerSidePropsContext,
@@ -138,6 +139,9 @@ export default async function fetchPageData({
     const ctx: GetServerSidePropsContext<
       typeof params
     > = makeGetServerSidePropsContext({ options, pageObject });
+    // parsed "cookies" are only available in "getServerSideProps" data fetching method
+    // https://github.com/vercel/next.js/pull/19724/files#diff-f1cccfe490138be7dae0d63562f6a2834af92d21130e0ff10d6de7ad30613f6bR132
+    ctx.req.cookies = parse(ctx.req.headers.cookie || '');
     const pageData = await executeAsIfOnServer(() => getServerSideProps(ctx));
     ensurePageDataHasProps({ pageData });
     return mergePageDataWithAppData({ pageData, appInitialProps });

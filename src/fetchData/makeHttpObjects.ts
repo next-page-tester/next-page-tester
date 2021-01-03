@@ -1,17 +1,16 @@
 import httpMocks from 'node-mocks-http';
 import type { OptionsWithDefaults, PageObject } from '../commonTypes';
+import { parse } from 'cookie';
 
 export default function makeHttpObjects({
   pageObject: { params, route },
   reqMocker,
   resMocker,
-  appendCookie,
   refererRoute,
 }: {
   pageObject: PageObject;
   reqMocker: OptionsWithDefaults['req'];
   resMocker: OptionsWithDefaults['res'];
-  appendCookie?: boolean;
   refererRoute?: string;
 }) {
   const req = httpMocks.createRequest({
@@ -19,9 +18,7 @@ export default function makeHttpObjects({
     params: { ...params },
   });
 
-  // Make document.cookie available in req.headers
-  // @NOTE: SHall we make available req.headers, too?
-  if (appendCookie && document && document.cookie) {
+  if (document && document.cookie) {
     req.headers.cookie = document.cookie;
   }
 

@@ -34,7 +34,6 @@ export function makeGetInitialPropsContext({
       pageObject,
       reqMocker,
       resMocker,
-      appendCookie: true,
       refererRoute: previousRoute,
     });
 
@@ -57,7 +56,6 @@ export function makeGetServerSidePropsContext({
     pageObject,
     reqMocker,
     resMocker,
-    appendCookie: true,
     refererRoute: previousRoute,
   });
 
