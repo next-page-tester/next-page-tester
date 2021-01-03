@@ -1,6 +1,7 @@
 import getPagePaths from './getPagePaths';
 import pagePathToRouteRegex from './pagePathToRouteRegex';
 import { loadPage } from './loadPage';
+import { getAppFile } from './_app';
 import { parseRoute, parseQueryString, stringifyQueryString } from './utils';
 import type {
   ExtendedOptions,
@@ -26,8 +27,8 @@ export default async function getPageObject({
         '[next-page-tester]: No default export found for given route'
       );
     }
-
-    return { page, ...pageInfo };
+    const appFile = getAppFile({ options });
+    return { page, appFile, ...pageInfo };
   }
   throw new Error('[next page tester] No matching page found for given route');
 }

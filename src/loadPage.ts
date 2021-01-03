@@ -3,6 +3,17 @@ import { existsSync } from 'fs';
 import { requireAsIfOnServer } from './server';
 import type { ExtendedOptions, PageFile } from './commonTypes';
 
+export function loadFile<FileType>({
+  absolutePath,
+}: {
+  absolutePath: string;
+}): PageFile<FileType> {
+  return {
+    client: require(absolutePath),
+    server: requireAsIfOnServer<FileType>(absolutePath),
+  };
+}
+
 export function loadPage<FileType>({
   pagePath,
   options,
@@ -17,10 +28,7 @@ export function loadPage<FileType>({
   for (let pageExtension of pageExtensions) {
     const pathWithExtension = absolutePath + `.${pageExtension}`;
     if (existsSync(pathWithExtension)) {
-      return {
-        client: require(pathWithExtension),
-        server: requireAsIfOnServer<FileType>(pathWithExtension),
-      };
+      return loadFile({ absolutePath: pathWithExtension });
     }
   }
 
