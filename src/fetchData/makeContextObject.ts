@@ -4,6 +4,7 @@ import type {
   GetServerSidePropsContext,
   GetStaticPropsContext,
 } from 'next';
+import { parse } from 'cookie';
 import makeHttpObjects from './makeHttpObjects';
 import type { ExtendedOptions, PageObject } from '../commonTypes';
 
@@ -58,6 +59,12 @@ export function makeGetServerSidePropsContext({
     resMocker,
     refererRoute: previousRoute,
   });
+
+  // parsed "cookies" are only available in "getServerSideProps" data fetching method
+  // https://github.com/vercel/next.js/pull/19724/files#diff-f1cccfe490138be7dae0d63562f6a2834af92d21130e0ff10d6de7ad30613f6bR132
+  if (req.headers.cookie) {
+    req.cookies = parse(req.headers.cookie);
+  }
 
   // @TODO complete ctx object
   // https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
