@@ -4,9 +4,10 @@ import { GetServerSideProps } from 'next';
 
 type Props = {
   reqHeadersCookie?: string;
+  reqCookies?: object;
 };
 
-export default function Login({ reqHeadersCookie }: Props) {
+export default function Login({ reqHeadersCookie, reqCookies }: Props) {
   const router = useRouter();
 
   const handleLogin = () => {
@@ -18,6 +19,7 @@ export default function Login({ reqHeadersCookie }: Props) {
     <div>
       <button onClick={handleLogin}>Login</button>
       <div>req.headers.cookies: "{reqHeadersCookie}"</div>
+      <div>req.cookies: "{JSON.stringify(reqCookies)}"</div>
     </div>
   );
 }
@@ -25,5 +27,10 @@ export default function Login({ reqHeadersCookie }: Props) {
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   req,
 }) => {
-  return { props: { reqHeadersCookie: req.headers.cookie } };
+  return {
+    props: {
+      reqHeadersCookie: req.headers.cookie,
+      reqCookies: req.cookies,
+    },
+  };
 };

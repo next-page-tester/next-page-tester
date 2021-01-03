@@ -15,12 +15,12 @@ export const executeAsIfOnServer = async <T>(f: () => T) => {
   // @ts-ignore
   delete global.document;
 
-  const result = await f();
-
-  global.window = tmpWindow;
-  global.document = tmpDocument;
-
-  return result;
+  try {
+    return await f();
+  } finally {
+    global.window = tmpWindow;
+    global.document = tmpDocument;
+  }
 };
 
 export const executeAsIfOnServerSync = <T>(f: () => T): T => {
@@ -32,10 +32,10 @@ export const executeAsIfOnServerSync = <T>(f: () => T): T => {
   // @ts-ignore
   delete global.document;
 
-  const result = f();
-
-  global.window = tmpWindow;
-  global.document = tmpDocument;
-
-  return result;
+  try {
+    return f();
+  } finally {
+    global.window = tmpWindow;
+    global.document = tmpDocument;
+  }
 };

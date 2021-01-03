@@ -4,9 +4,10 @@ import Link from 'next/link';
 
 type Props = {
   reqHeadersCookie?: string;
+  reqCookies?: object;
 };
 
-export default function Authenticated({ reqHeadersCookie }: Props) {
+export default function Authenticated({ reqHeadersCookie, reqCookies }: Props) {
   return (
     <div>
       <span>Authenticated content</span>
@@ -14,6 +15,7 @@ export default function Authenticated({ reqHeadersCookie }: Props) {
         <a>To login</a>
       </Link>
       <div>req.headers.cookies: "{reqHeadersCookie}"</div>
+      <div>req.cookies: "{JSON.stringify(reqCookies)}"</div>
     </div>
   );
 }
@@ -21,5 +23,10 @@ export default function Authenticated({ reqHeadersCookie }: Props) {
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   req,
 }) => {
-  return { props: { reqHeadersCookie: req.headers.cookie } };
+  return {
+    props: {
+      reqHeadersCookie: req.headers.cookie,
+      reqCookies: req.cookies,
+    },
+  };
 };
