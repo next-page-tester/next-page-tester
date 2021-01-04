@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { render as TLRender } from '@testing-library/react';
+import { render as TLRender, screen } from '@testing-library/react';
 import { getPage } from '../../index';
 import path from 'path';
 import App from './__fixtures__/pages/_app';
@@ -48,6 +48,17 @@ describe('New returns', () => {
       );
 
       expectDOMElementsToMatch(actualHtml, expectedHtml);
+    });
+
+    describe('global @testing-library screen', () => {
+      it('hooks into current body element', async () => {
+        const { renderHTML } = await getPage({
+          nextRoot: path.join(__dirname, '__fixtures__'),
+          route: '/page',
+        });
+        renderHTML();
+        screen.getByText('new-returns/page');
+      });
     });
   });
 

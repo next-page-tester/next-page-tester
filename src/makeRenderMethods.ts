@@ -11,9 +11,18 @@ export default function makeRenderMethods({
   renderHTML: () => { nextRoot: HTMLElement };
   render: () => { nextRoot: HTMLElement };
 } {
-  // Replace the whole document content with SSR html
+  // Update whole document content with SSR html
+  // @NOTE we have to preserve document.body element identity
+  // to not break @testing-library global "screen" object
   function renderHTML() {
+    const originalBody = document.body;
+
     document.documentElement.innerHTML = html;
+    const bodyContent = document.body.childNodes;
+    originalBody.innerHTML = '';
+    originalBody.append(...bodyContent);
+    document.documentElement.replaceChild(originalBody, document.body);
+
     const nextRoot = document.getElementById('__next');
     if (!nextRoot) {
       throw new Error('[next-page-tester] Missing __next div');
