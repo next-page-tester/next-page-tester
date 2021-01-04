@@ -28,7 +28,9 @@ describe('New returns', () => {
         nextRoot: path.join(__dirname, '__fixtures__'),
         route: '/page',
       });
-      renderHTML();
+      const { nextRoot } = renderHTML();
+      const actualNextRoot = document.getElementById('__next');
+      expect(nextRoot).toBe(actualNextRoot);
 
       const actualHtml = document.documentElement;
       const { container: expectedHtml } = TLRender(
@@ -55,7 +57,9 @@ describe('New returns', () => {
         nextRoot: path.join(__dirname, '__fixtures__'),
         route: '/page',
       });
-      render();
+      const { nextRoot } = render();
+      const actualNextRoot = document.getElementById('__next');
+      expect(nextRoot).toBe(actualNextRoot);
 
       const actualHtml = document.documentElement;
       const { container: expectedHtml } = TLRender(
