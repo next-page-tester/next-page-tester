@@ -109,7 +109,7 @@ export function useMountedState(): () => boolean {
 const nonIsolatedModules = [
   'react',
   'next/router',
-  'next/head',
+  'next/dist/next-server/lib/head-manager-context',
   'next/dist/next-server/lib/router-context',
 ];
 export function executeWithFreshModules<T>(f: () => T): T {
