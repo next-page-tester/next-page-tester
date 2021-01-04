@@ -26,7 +26,6 @@ export default function RouterProvider({
     const { pageElement, pageObject } = await makePage({
       route: nextRoute,
       previousRoute,
-      isClientSideNavigation: true,
       env: 'client',
     });
     previousRouteRef.current = nextRoute;

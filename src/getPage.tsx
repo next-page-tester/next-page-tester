@@ -70,7 +70,7 @@ export default async function getPage({
       options: mergedOptions,
     });
 
-    if (useDocument && mergedOptions.isClientSideNavigation && headManager) {
+    if (useDocument && mergedOptions.env === 'client' && headManager) {
       pageElement = (
         // @NOTE: implemented from:
         // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/client/index.tsx#L574
