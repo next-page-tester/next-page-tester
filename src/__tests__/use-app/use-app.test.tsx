@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import httpMocks from 'node-mocks-http';
 import { getPage } from '../../index';
 import CustomAppWithGIP from './__fixtures__/custom-app-with-gip/pages/_app';
@@ -148,14 +148,15 @@ describe('_app support', () => {
 
   describe('route matching "_app" page', () => {
     it('throws "page not found" error', async () => {
-      await expect(
-        getPage({
-          nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
-          route: '/_app',
-        })
-      ).rejects.toThrow(
-        '[next page tester] No matching page found for given route'
-      );
+      const { page } = await getPage({
+        nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
+        route: '/_app',
+      });
+
+      render(page);
+      expect(
+        screen.getByText('This page could not be found.')
+      ).toBeInTheDocument();
     });
   });
 

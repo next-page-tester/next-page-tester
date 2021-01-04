@@ -3,6 +3,7 @@ import { existsSync } from 'fs';
 import makePageElement from './makePageElement';
 import RouterProvider from './RouterProvider';
 import { renderDocument } from './_document';
+import { renderErrorPage } from './_error';
 import initHeadManager from 'next/dist/client/head-manager';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import {
@@ -16,6 +17,8 @@ import type {
   ExtendedOptions,
   Page,
 } from './commonTypes';
+import { ServerResponse } from 'http';
+import { InternalError } from './_error/Error';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
   if (!route.startsWith('/')) {
@@ -79,29 +82,46 @@ export default async function getPage({
     return { pageElement, pageData, pageObject };
   };
 
-  let { pageElement, pageData, pageObject } = await makePage();
+  try {
+    let { pageElement, pageData, pageObject } = await makePage();
 
-  pageElement = (
-    <RouterProvider
-      pageObject={pageObject}
-      options={options}
-      makePage={makePage}
-    >
-      {pageElement}
-    </RouterProvider>
-  );
+    pageElement = (
+      <RouterProvider
+        pageObject={pageObject}
+        options={options}
+        makePage={makePage}
+      >
+        {pageElement}
+      </RouterProvider>
+    );
 
-  // Optionally wrap with custom Document
-  if (useDocument) {
-    pageElement = await renderDocument({
-      pageElement,
+    // Optionally wrap with custom Document
+    if (useDocument) {
+      pageElement = await renderDocument({
+        pageElement,
+        options,
+        pageObject,
+        pageData,
+      });
+    }
+
+    return { page: pageElement };
+  } catch (err) {
+    if (err.name === InternalError.NAME) {
+      throw err;
+    }
+
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+
+    const page = await renderErrorPage({
+      err,
       options,
-      pageObject,
-      pageData,
+      res: {} as ServerResponse,
+      route: options.route,
     });
-  }
 
-  return {
-    page: pageElement,
-  };
+    return { page };
+  }
 }

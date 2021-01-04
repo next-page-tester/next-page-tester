@@ -17,6 +17,7 @@ import type {
 } from '../commonTypes';
 import type { CustomError } from '../commonTypes';
 import { executeAsIfOnServer } from '../server';
+import { InternalError } from '../_error/Error';
 
 function ensureNoMultipleDataFetchingMethods({
   page,
@@ -34,7 +35,7 @@ function ensureNoMultipleDataFetchingMethods({
     methodsCounter++;
   }
   if (methodsCounter > 1) {
-    throw new Error(
+    throw new InternalError(
       '[next page tester] Only one data fetching method is allowed'
     );
   }
@@ -46,7 +47,7 @@ function ensurePageDataHasProps({
 }: {
   pageData: { [key: string]: any };
 }) {
-  const allowedKeys = ['props', 'redirect'];
+  const allowedKeys = ['props', 'redirect', 'notFound'];
   for (const key of allowedKeys) {
     if (key in pageData) {
       return;

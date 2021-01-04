@@ -1,13 +1,18 @@
 import getPagePaths from './getPagePaths';
 import pagePathToRouteRegex from './pagePathToRouteRegex';
 import { loadPage } from './loadPage';
-import { parseRoute, parseQueryString, stringifyQueryString } from './utils';
+import {
+  parseRouteData,
+  parseQueryString,
+  stringifyQueryString,
+} from './utils';
 import type {
   ExtendedOptions,
   PageObject,
   PageParams,
   NextPageFile,
 } from './commonTypes';
+import { InternalError, NotFoundError } from './_error/Error';
 
 export default async function getPageObject({
   options,
@@ -22,14 +27,15 @@ export default async function getPageObject({
     });
 
     if (!page.client.default) {
-      throw new Error(
+      throw new InternalError(
         '[next-page-tester]: No default export found for given route'
       );
     }
 
     return { page, ...pageInfo };
   }
-  throw new Error('[next page tester] No matching page found for given route');
+
+  throw new NotFoundError();
 }
 
 type RegexCaptureGroups =
@@ -58,18 +64,18 @@ type PageInfo = Pick<
   PageObject,
   'route' | 'pagePath' | 'params' | 'paramsNumber' | 'query' | 'resolvedUrl'
 >;
+
 async function getPageInfo({ options }: { options: ExtendedOptions }) {
   const { route } = options;
   const pagePaths = await getPagePaths({ options });
 
   const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
-  const { pathname: routePathName, search } = parseRoute({ route });
-  const query = parseQueryString({ queryString: search });
+  const { query, pathname } = parseRouteData(route);
 
   // Match provided route through route regexes generated from /page components
   const matchingPageInfo: PageInfo[] = pagePaths
     .map((originalPath, index) => {
-      const result = routePathName.match(pagePathRegexes[index]);
+      const result = pathname.match(pagePathRegexes[index]);
       if (result) {
         const params = makeParamsObject({
           regexCaptureGroups: result.groups,
@@ -81,7 +87,7 @@ async function getPageInfo({ options }: { options: ExtendedOptions }) {
           paramsNumber: Object.keys(params).length,
           query,
           resolvedUrl:
-            routePathName +
+            pathname +
             stringifyQueryString({
               object: {
                 ...params,

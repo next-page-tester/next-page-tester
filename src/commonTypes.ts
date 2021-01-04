@@ -64,6 +64,7 @@ export type PageProps = {
 export type PageData<P extends PageProps = PageProps> = {
   props?: P;
   redirect?: Redirect;
+  notFound?: true;
 };
 
 export type NextPageFile = {

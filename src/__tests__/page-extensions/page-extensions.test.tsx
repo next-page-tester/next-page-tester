@@ -17,14 +17,11 @@ describe('page file extensions', () => {
 
     describe('unknown extension', () => {
       it('throws "page not found" error', async () => {
-        await expect(
-          getPage({
-            nextRoot,
-            route: '/invalid',
-          })
-        ).rejects.toThrow(
-          '[next page tester] No matching page found for given route'
-        );
+        const { page } = await getPage({ nextRoot, route: '/invalid' });
+        render(page);
+        expect(
+          screen.getByText('This page could not be found.')
+        ).toBeInTheDocument();
       });
     });
   });
@@ -33,24 +30,18 @@ describe('page file extensions', () => {
     const nextRoot = __dirname + '/__fixtures__' + '/custom-config';
     describe('allowed extensions', () => {
       it('renders expected page', async () => {
-        const { page } = await getPage({
-          nextRoot,
-          route: '/ts',
-        });
+        const { page } = await getPage({ nextRoot, route: '/ts' });
         render(page);
         screen.getByText('ts page');
       });
     });
     describe('not allowed extensions', () => {
       it('throws "page not found" error', async () => {
-        await expect(
-          getPage({
-            nextRoot,
-            route: '/js',
-          })
-        ).rejects.toThrow(
-          '[next page tester] No matching page found for given route'
-        );
+        const { page } = await getPage({ nextRoot, route: '/js' });
+        render(page);
+        expect(
+          screen.getByText('This page could not be found.')
+        ).toBeInTheDocument();
       });
     });
   });

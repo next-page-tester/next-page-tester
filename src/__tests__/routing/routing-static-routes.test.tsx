@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { getPage } from '../../';
 import IndexPage from './__fixtures__/pages/index';
 import BlogIndexPage from './__fixtures__/pages/blog/index';
@@ -18,14 +18,15 @@ describe('Static routes', () => {
 
   describe('route not matching any page', () => {
     it('throws "page not found" error', async () => {
-      await expect(
-        getPage({
-          nextRoot,
-          route: '/blog/5/doesntexists',
-        })
-      ).rejects.toThrow(
-        '[next page tester] No matching page found for given route'
-      );
+      const { page } = await getPage({
+        nextRoot,
+        route: '/blog/5/doesntexists',
+      });
+
+      render(page);
+      expect(
+        screen.getByText('This page could not be found.')
+      ).toBeInTheDocument();
     });
   });
 
@@ -40,9 +41,12 @@ describe('Static routes', () => {
 
   describe('route === "_document"', () => {
     it('throws "page not found" error', async () => {
-      await expect(getPage({ nextRoot, route: '/_document' })).rejects.toThrow(
-        '[next page tester] No matching page found for given route'
-      );
+      const { page } = await getPage({ nextRoot, route: '/_document' });
+
+      render(page);
+      expect(
+        screen.getByText('This page could not be found.')
+      ).toBeInTheDocument();
     });
   });
 
@@ -64,14 +68,12 @@ describe('Static routes', () => {
 
   describe('route matching /api pages', () => {
     it('throws "page not found" error', async () => {
-      await expect(
-        getPage({
-          nextRoot,
-          route: '/api',
-        })
-      ).rejects.toThrow(
-        '[next page tester] No matching page found for given route'
-      );
+      const { page } = await getPage({ nextRoot, route: '/api' });
+
+      render(page);
+      expect(
+        screen.getByText('This page could not be found.')
+      ).toBeInTheDocument();
     });
   });
 });

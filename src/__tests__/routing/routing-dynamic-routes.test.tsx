@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { getPage } from '../../index';
 import BlogPage from './__fixtures__/pages/blog/[id]';
 import BlogPage99 from './__fixtures__/pages/blog/99';
@@ -80,14 +80,11 @@ describe('Dynamic routes', () => {
     });
 
     it('throws "page not found" error when no optional params are provided', async () => {
-      await expect(
-        getPage({
-          nextRoot,
-          route: '/catch-all/5',
-        })
-      ).rejects.toThrow(
-        '[next page tester] No matching page found for given route'
-      );
+      const { page } = await getPage({ nextRoot, route: '/catch-all/5' });
+      render(page);
+      expect(
+        screen.getByText('This page could not be found.')
+      ).toBeInTheDocument();
     });
   });
 
