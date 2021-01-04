@@ -19,8 +19,21 @@ export default async function renderDocument({
   pageObject: PageObject;
   pageData: PageData;
 }): Promise<JSX.Element> {
-  const customDocumentFile = getCustomDocumentFile({ options });
+  const { useDocument } = options;
 
+  // Return an empty dummy document useDocument is not enabled
+  if (!useDocument) {
+    return (
+      <html>
+        <head></head>
+        <body>
+          <div id="__next">{pageElement}</div>
+        </body>
+      </html>
+    );
+  }
+
+  const customDocumentFile = getCustomDocumentFile({ options });
   const Document = customDocumentFile
     ? customDocumentFile.server.default
     : DefaultDocument;
