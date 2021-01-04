@@ -135,14 +135,16 @@ export default async function getPage({
   }
 
   const html: string = executeAsIfOnServerSync(() =>
-    ReactDOMServer.renderToString(
-      <html>
-        <head></head>
-        <body>
-          <div id="__next">{serverPageElement}</div>
-        </body>
-      </html>
-    )
+    useDocument
+      ? ReactDOMServer.renderToString(serverPageElement)
+      : ReactDOMServer.renderToString(
+          <html>
+            <head></head>
+            <body>
+              <div id="__next">{serverPageElement}</div>
+            </body>
+          </html>
+        )
   );
 
   return {

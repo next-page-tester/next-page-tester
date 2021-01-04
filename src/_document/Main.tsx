@@ -12,7 +12,7 @@ export type DocumentProps = NextDocumentProps & {
 // string rendered above. This works, but will break all client side interactions
 // as event handlers are lost in static markup
 const Main = () => {
-  const { inAmpMode, docComponentsRendered, pageElement } = useContext(
+  const { inAmpMode, docComponentsRendered, pageElement, html } = useContext(
     DocumentContext
   ) as DocumentProps;
 
@@ -20,7 +20,8 @@ const Main = () => {
   // ampMode is not (yet) supported, but code is here to match the upstream (NextJS) implementation
   /* istanbul ignore next */
   if (inAmpMode) return <>{AMP_RENDER_TARGET}</>;
-  return <div id="__next">{pageElement}</div>;
+  // return <div id="__next">{pageElement}</div>;
+  return <div id="__next" dangerouslySetInnerHTML={{ __html: html }} />;
 };
 
 export default Main;

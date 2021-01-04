@@ -14,9 +14,10 @@ export default function makeRenderMethods({
   // Update whole document content with SSR html
   // @NOTE we have to preserve document.body element identity
   // to not break @testing-library global "screen" object
+
+  // @TODO: Update html element attributes
   function renderHTML() {
     const originalBody = document.body;
-
     document.documentElement.innerHTML = html;
     const bodyContent = document.body.childNodes;
     originalBody.innerHTML = '';

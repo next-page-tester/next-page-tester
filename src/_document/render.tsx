@@ -4,7 +4,7 @@ import fetchDocumentData from './fetchDocumentData';
 import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
 import type { RenderPage } from 'next/dist/next-server/lib/utils';
 import { APP_PATH } from '../constants';
-import { renderToStaticMarkup } from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import DefaultDocument, { DocumentProps } from './DefaultDocument';
 
@@ -28,7 +28,7 @@ export default async function renderDocument({
   let head: JSX.Element[] = [];
 
   const renderPage: RenderPage = () => {
-    const html = renderToStaticMarkup(
+    const html = renderToString(
       // @NOTE: implemented from:
       // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/next-server/server/render.tsx#L561
       <HeadManagerContext.Provider
