@@ -1,12 +1,12 @@
 import React from 'react';
-import getCustomDocumentFile from './getCustomDocumentFile';
+import getDocumentFile from './getDocumentFile';
 import fetchDocumentData from './fetchDocumentData';
 import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
 import type { RenderPage } from 'next/dist/next-server/lib/utils';
 import { APP_PATH } from '../constants';
 import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
-import DefaultDocument, { DocumentProps } from './DefaultDocument';
+import type { DocumentProps } from './DefaultDocument';
 
 export default async function renderDocument({
   pageElement,
@@ -33,10 +33,8 @@ export default async function renderDocument({
     );
   }
 
-  const customDocumentFile = getCustomDocumentFile({ options });
-  const Document = customDocumentFile
-    ? customDocumentFile.server.default
-    : DefaultDocument;
+  const customDocumentFile = getDocumentFile({ options });
+  const Document = customDocumentFile.server.default;
 
   let head: JSX.Element[] = [];
 
