@@ -1,14 +1,6 @@
 import '@testing-library/jest-dom';
 import { initTestHelpers } from '../index';
-const { setup, teardown } = initTestHelpers();
-
-beforeAll(() => {
-  setup();
-});
-
-afterAll(() => {
-  teardown();
-});
+initTestHelpers();
 
 afterEach(() => {
   // Clear all cookies
