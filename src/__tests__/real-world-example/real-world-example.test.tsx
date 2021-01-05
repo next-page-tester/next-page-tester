@@ -12,9 +12,8 @@ describe('real-world-example', () => {
     });
     render();
 
-    // @TODO Uncomment these lines when renderHTML will update html element attributes
-    // const html = document.documentElement;
-    // expect(html).toHaveAttribute('lang', 'en');
+    const html = document.documentElement;
+    expect(html).toHaveAttribute('lang', 'en');
 
     const head = document.querySelector('head') as HTMLHeadElement;
     expect(head.querySelector('meta[name="Description"]')).toHaveAttribute(

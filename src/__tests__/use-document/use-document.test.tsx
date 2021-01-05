@@ -19,9 +19,8 @@ describe('_document support', () => {
         });
         renderHTML();
 
-        // @TODO Uncomment these lines when renderHTML will update html element attributes
-        // const html = document.documentElement as HTMLHtmlElement;
-        // expect(html).toHaveAttribute('lang', 'en');
+        const html = document.documentElement;
+        expect(html).toHaveAttribute('lang', 'en');
 
         const actual = document.querySelector('#__next') as HTMLDivElement;
         actual.removeAttribute('id');
@@ -91,10 +90,6 @@ describe('_document support', () => {
           useDocument: true,
         });
         render();
-
-        // @TODO Uncomment these lines when renderHTML will update html element attributes
-        // const html = document.documentElement as HTMLHtmlElement;
-        // expect(html).toHaveAttribute('lang', 'en');
 
         screen.getByText('Count: 0');
         userEvent.click(screen.getByText('Count me!'));
