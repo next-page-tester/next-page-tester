@@ -20,7 +20,6 @@ class CustomDocument extends Document {
 
   render() {
     const { gip_runTime_window, gip_runTime_document } = this.props;
-
     const component_runTime_window = typeof window !== 'undefined';
     const component_runTime_document = typeof document !== 'undefined';
 

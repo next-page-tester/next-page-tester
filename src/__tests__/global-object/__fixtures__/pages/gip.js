@@ -12,6 +12,7 @@ export default function gip(props) {
     <>
       <h2>Page</h2>
       <PropsPrinter
+        suppressHydrationWarning={true}
         props={{
           component_importTime_window: importTime_window,
           component_importTime_document: importTime_document,
