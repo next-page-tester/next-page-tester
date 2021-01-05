@@ -6,19 +6,19 @@
 
 The missing DOM integration testing tool for [Next.js][next-github].
 
-Given a Next.js route, this library will return an instance of the matching page component instantiated with the **properties** derived by Next.js' [**routing system**][next-docs-routing] and [**data fetching methods**][next-docs-data-fetching].
+Given a Next.js route, this library will **mount the matching page in JSDOM**, provided with the expected **props** derived from Next.js' [**routing system**][next-docs-routing] and [**data fetching methods**][next-docs-data-fetching].
 
 ```js
-import { render, screen, fireEvent } from '@testing-library/react';
 import { getPage } from 'next-page-tester';
+import { screen, fireEvent } from '@testing-library/dom';
 
 describe('Blog page', () => {
   it('renders blog page', async () => {
-    const { page } = await getPage({
+    const { render } = await getPage({
       route: '/blog/1',
     });
 
-    render(page);
+    render();
     expect(screen.getByText('Blog')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Link'));
@@ -29,19 +29,56 @@ describe('Blog page', () => {
 
 ## What
 
-The idea behind this library is to enable DOM integration tests on Next.js pages along with [data fetching][next-docs-data-fetching] and [routing][next-docs-routing].
+The idea behind this library is to reproduce as closer as possible the way Next.js works without spinning up servers, and render the output in a local JSDOM environment.
 
-The testing approach suggested here consists of manually mocking external API's dependencies and get the component instance matching a given route.
+In order to provide a valuable testing experience `next-page-tester` replicates the **rendering flow of an actual `next.js` application**:
 
-Next page tester will take care of:
+1. **fetch data** for a given route
+2. **render** the server-side rendered result to JSDOM as plain html (including `head` element)
+3. **mount/hydrate** the client application to the previously rendered html
 
+The mounted application is **interactive** and can be tested with any DOM testing library (like [`@testing-library/dom`](https://testing-library.com/docs/dom-testing-library/intro)).
+
+`next-page-tester` will take care of:
+
+- load and execute modules in the **expected browser or server environments**
 - **resolving** provided **routes** into matching page component
 - calling **Next.js data fetching methods** (`getServerSideProps`, `getInitialProps` or `getStaticProps`) if the case
 - set up a **mocked `next/router` provider** initialized with the expected values (to test `useRouter` and `withRouter`)
 - wrapping page with custom `_app` and `_document` components
-- **instantiating** page component with **expected page props**
-- emulating client side navigation via `Link`, `router.push`, `router.replace`
+- emulating **client side navigation** via `Link`, `router.push`, `router.replace`
 - handling pages' `redirect` returns
+
+## API
+
+### getPage
+
+`getPage` accepts an [option object](/#options) and returns 4 values:
+
+```ts
+function getPage(options: Options): Promise<
+  renderHTML: () => HTMLElement<NextRoot>
+  render: () => HTMLElement<NextRoot>
+  html: string
+  page: React.ReactElement<AppElement>
+>;
+```
+
+#### `renderHTML()`
+
+Inject server side rendering output to the DOM. Returns `#__next` root element element.
+
+#### `render()`
+
+Calls `renderHTML()` and mounts/hydrate the the application on `#__next` root element. Returns `#__next` root element element.
+
+#### `html`
+
+HTML string representing server side rendering output.
+
+#### `page`
+
+React element the application
 
 ## Options
 
@@ -81,12 +118,12 @@ Until **Jest v27** is published, you might need to patch `jest` in order to load
 ## Notes
 
 - Data fetching methods' context `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http]
-- Next page tester can be used with any testing framework/library (not tied to Testing library)
+- Next page tester can be used with any testing framework/library (it's not tied to Jest or Testing library)
 - It might be necessary to install `@types/react-dom` and `@types/webpack` when using Typescript in `strict` mode due to [this bug][next-gh-strict-bug]
 
 ### Experimental `useDocument` option
 
-`useDocument` option is partially implemented and might be unstable. It might produce a `UnhandledPromiseRejectionWarning` warning on client side navigation.
+`useDocument` option is partially implemented and might be unstable.
 
 ### Next.js versions support
 
@@ -108,7 +145,7 @@ test('authenticated page', async () => {
   document.cookie = 'SessionId=super=secret';
   document.cookie = 'SomeOtherCookie=SomeOtherValue';
 
-  const { page } = await getPage({
+  const { render } = await getPage({
     route: '/authenticated',
   });
 });
