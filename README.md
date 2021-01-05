@@ -53,32 +53,42 @@ The mounted application is **interactive** and can be tested with any DOM testin
 
 ### getPage
 
-`getPage` accepts an [option object](/#options) and returns 4 values:
+`getPage` accepts an [option object](#options) and returns 4 values:
 
-```ts
-function getPage(options: Options): Promise<
-  renderHTML: () => HTMLElement<NextRoot>
-  render: () => HTMLElement<NextRoot>
-  html: string
-  page: React.ReactElement<AppElement>
->;
+```js
+import { getPage } from 'next-page-tester';
+const { render, renderHTML, html, page } = await getPage({ options });
 ```
 
-#### `renderHTML()`
+### render()
 
-Inject server side rendering output to the DOM. Returns `#__next` root element element.
+Type: `() => HTMLElement<NextRoot>`<br/>
+Returns: `#__next` root element element.
 
-#### `render()`
+You will mostly use this render method. It calls `renderHTML()` and then mounts/hydrates the React application into JSDOM `#__next` root element. This is what the user gets when she visits a page.
 
-Calls `renderHTML()` and mounts/hydrate the the application on `#__next` root element. Returns `#__next` root element element.
+### renderHTML()
 
-#### `html`
+Type: `() => HTMLElement<NextRoot>`<br/>
+Returns: `#__next` root element element.
+
+Inject the output of server side rendering into the DOM and doesn't mount React. Use it to test how Next.js renders in the following scenarios:
+
+- before Reacts mounts
+- when JS is disabled
+- SEO tests
+
+### html
+
+Type: `string`
 
 HTML string representing output of server side rendering.
 
-#### `page`
+### page
 
-React element of the application
+Type: `React.ReactElement<AppElement>`
+
+React element of the application.
 
 ## Options
 
@@ -148,6 +158,7 @@ test('authenticated page', async () => {
   const { render } = await getPage({
     route: '/authenticated',
   });
+  render();
 });
 ```
 
@@ -155,7 +166,7 @@ Note: `document.cookie` does not get cleaned up automatically. You'll have to cl
 
 ### Error: Not implemented: window.scrollTo
 
-Next.js `Link` component invokes `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
+Next.js `Link` component invokes `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should [set up your test environment](#set-up-your-test-environment) or provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
 
 ## Todo's
 
