@@ -124,30 +124,20 @@ export default async function getPage({
     </RouterProvider>
   );
 
-  // Optionally wrap with custom Document
-  if (useDocument) {
-    serverPageElement = await renderDocument({
-      pageElement: serverPageElement,
-      options,
-      pageObject,
-      pageData,
-    });
-  }
+  // Wrap page with document element
+  const documentElement = await renderDocument({
+    pageElement: serverPageElement,
+    options,
+    pageObject,
+    pageData,
+  });
 
   const html: string = executeAsIfOnServerSync(() =>
-    ReactDOMServer.renderToString(
-      <html>
-        <head></head>
-        <body>
-          <div id="__next">{serverPageElement}</div>
-        </body>
-      </html>
-    )
+    ReactDOMServer.renderToString(documentElement)
   );
 
   return {
-    // @NOTE Temporary hack to keep tests green
-    page: useDocument ? serverPageElement : clientPageElement,
+    page: clientPageElement,
     html,
     ...makeRenderMethods({ pageElement: clientPageElement, html }),
   };

@@ -5,18 +5,18 @@ import userEvent from '@testing-library/user-event';
 
 describe('real-world-example', () => {
   it('Should correctly render _document and work with client side interactions', async () => {
-    const { page } = await getPage({
+    const { render } = await getPage({
       nextRoot: path.join(__dirname, '__fixtures__'),
       route: '/?name=Matthew',
       useDocument: true,
     });
+    render();
 
-    const { container } = render(page);
+    // @TODO Uncomment these lines when renderHTML will update html element attributes
+    // const html = document.documentElement;
+    // expect(html).toHaveAttribute('lang', 'en');
 
-    const head = container.querySelector('head') as HTMLHeadElement;
-    const html = container.querySelector('html') as HTMLHtmlElement;
-
-    expect(html).toHaveAttribute('lang', 'en');
+    const head = document.querySelector('head') as HTMLHeadElement;
     expect(head.querySelector('meta[name="Description"]')).toHaveAttribute(
       'Content',
       'Custom document description'

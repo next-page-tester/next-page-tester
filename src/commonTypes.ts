@@ -93,7 +93,7 @@ export type NextAppFile = {
   default: NextApp;
 };
 
-export type NextCustomDocumentFile = {
+export type NextDocumentFile = {
   default: DocumentType;
 };
 
