@@ -74,7 +74,7 @@ Calls `renderHTML()` and mounts/hydrate the the application on `#__next` root el
 
 #### `html`
 
-HTML string representing server side rendering output.
+HTML string representing output of server side rendering.
 
 #### `page`
 
