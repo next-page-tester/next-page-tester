@@ -1,4 +1,3 @@
-import path from 'path';
 import type {
   ExtendedOptions,
   NextDocumentFile,
@@ -26,6 +25,6 @@ export default function getDocumentFile({
 
 function getDefaultDocumentFile(): PageFile<NextDocumentFile> {
   return loadFile<NextDocumentFile>({
-    absolutePath: path.resolve(__dirname, 'DefaultDocument.tsx'),
+    absolutePath: 'next/document',
   });
 }

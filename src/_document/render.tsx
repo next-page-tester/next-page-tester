@@ -6,7 +6,7 @@ import type { RenderPage } from 'next/dist/next-server/lib/utils';
 import { APP_PATH } from '../constants';
 import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
-import type { DocumentProps } from './DefaultDocument';
+import type { DocumentProps } from 'next/document';
 
 export default async function renderDocument({
   pageElement,
@@ -93,7 +93,6 @@ export default async function renderDocument({
     canonicalBase: '',
     headTags: [],
     devOnlyCacheBusterQueryString: '',
-    pageElement,
   };
 
   return Document.renderDocument(Document, documentProps);
