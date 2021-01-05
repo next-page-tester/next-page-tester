@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { render as TLRender, screen } from '@testing-library/react';
+import { render as TLRender } from '@testing-library/react';
 import { getPage } from '../../index';
 import path from 'path';
 import App from './__fixtures__/pages/_app';
@@ -8,9 +8,11 @@ import Page from './__fixtures__/pages/page';
 import { wrapWithNextRoot } from '../__utils__';
 import { expectDOMElementsToMatch } from '../__utils__';
 
-describe('New returns', () => {
+// @NOTE These tests are not extensive.
+// They provide a rough idea of the values returned by getPage
+describe('getPage() return', () => {
   describe('html', () => {
-    it('renders expected string', async () => {
+    it("is an HTML string representing the apps's SSR output", async () => {
       const { html } = await getPage({
         nextRoot: path.join(__dirname, '__fixtures__'),
         route: '/page',
@@ -50,15 +52,14 @@ describe('New returns', () => {
       expectDOMElementsToMatch(actualHtml, expectedHtml);
     });
 
-    describe('global @testing-library screen', () => {
-      it('hooks into current body element', async () => {
-        const { renderHTML } = await getPage({
-          nextRoot: path.join(__dirname, '__fixtures__'),
-          route: '/page',
-        });
-        renderHTML();
-        screen.getByText('new-returns/page');
+    it('preserves existing body element', async () => {
+      const initialBody = document.body;
+      const { renderHTML } = await getPage({
+        nextRoot: path.join(__dirname, '__fixtures__'),
+        route: '/page',
       });
+      renderHTML();
+      expect(initialBody).toBe(document.body);
     });
   });
 
