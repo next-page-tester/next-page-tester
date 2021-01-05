@@ -21,7 +21,7 @@ export default async function renderDocument({
 }): Promise<JSX.Element> {
   const { useDocument } = options;
 
-  // Return an empty dummy document useDocument is not enabled
+  // Return an empty dummy document if useDocument is not enabled
   if (!useDocument) {
     return (
       <html>
@@ -36,9 +36,8 @@ export default async function renderDocument({
   const customDocumentFile = getDocumentFile({ options });
   const Document = customDocumentFile.server.default;
 
-  let head: JSX.Element[] = [];
-
   const renderPage: RenderPage = () => {
+    let head: JSX.Element[] = [];
     const html = renderToString(
       // @NOTE: implemented from:
       // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/next-server/server/render.tsx#L561

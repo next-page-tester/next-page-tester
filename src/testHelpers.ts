@@ -1,3 +1,5 @@
+import { cleanup } from './makeRenderMethods';
+
 function isJSDOMEnvironment() {
   return navigator && navigator.userAgent.includes('jsdom');
 }
@@ -18,5 +20,9 @@ export function initTestHelpers() {
 
     // Mock window.scrollTo (Link component triggers it)
     global.scrollTo = () => {};
+  }
+
+  if (typeof document !== 'undefined' && typeof afterEach === 'function') {
+    afterEach(cleanup);
   }
 }

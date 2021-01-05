@@ -57,38 +57,17 @@ Next page tester will take care of:
 
 ## Set up your test environment
 
-Since Next.js is not designed to run in a JSDOM environment we need to **tweak the default JSDOM environment** to avoid unexpected errors and allow a smoother testing experience:
+Since Next.js is not designed to run in a JSDOM environment we need to **setup the default JSDOM** to allow a smoother testing experience:
 
 - Provide a `window.scrollTo` mock
 - Provide a `IntersectionObserver` mock
-- Silence `validateDOMNesting(...)` error
-- Remove initial `<head/>` element
-- Resolve `next/dist/next-server/lib/side-effect` module in non-brwoser environment
+- Cleanup DOM after each test
 
-Next page tester provides a [helper to setup the expected JSDOM environment](/src/testHelpers.ts) as described.
-
-Run `initTestHelpers` in your global tests setup (in case of Jest It is `setupFilesAfterEnv` file):
+Run [`initTestHelpers`](/src/testHelpers.ts) in your global tests setup (in case of Jest It is `setupFilesAfterEnv` file):
 
 ```js
 import { initTestHelpers } from 'next-page-tester';
 initTestHelpers();
-```
-
-### If `useDocument` option enabled
-
-In case your tests make use of **experimental `useDocument` option**, take the following additional steps:
-
-```js
-import { initTestHelpers } from 'next-page-tester';
-const { setup, teardown } = initTestHelpers();
-
-beforeAll(() => {
-  setup();
-});
-
-afterAll(() => {
-  teardown();
-});
 ```
 
 ### Optional: patch Jest
@@ -140,14 +119,6 @@ Note: `document.cookie` does not get cleaned up automatically. You'll have to cl
 ### Error: Not implemented: window.scrollTo
 
 Next.js `Link` component invokes `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
-
-### `useDocument` option and `validateDOMNesting(...)` error
-
-Rendering the page instance returned by `next-page-tester` with `useDocument` option enabled in a JSDOM environment, causes `react-dom` to trigger a `validateDOMNesting(...)` error.
-
-This happens because the tested page includes tags like `<html>`, `<head>` and `<body>` which are already declared by JSDOM default document.
-
-A temporary workaround consists of [mocking global `console.error` to ignore the specific error][error-log-mock].
 
 ## Todo's
 

@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 
 // @TODO: Make this methods overridable via options
-export default function makeRenderMethods({
+export function makeRenderMethods({
   html,
   pageElement,
 }: {
@@ -20,7 +20,6 @@ export default function makeRenderMethods({
     const originalBody = document.body;
     document.documentElement.innerHTML = html;
     const bodyContent = document.body.childNodes;
-    originalBody.innerHTML = '';
     originalBody.append(...bodyContent);
     document.documentElement.replaceChild(originalBody, document.body);
 
@@ -46,4 +45,14 @@ export default function makeRenderMethods({
     renderHTML,
     render,
   };
+}
+
+export function cleanup() {
+  document.body.innerHTML = '';
+  document.head.innerHTML = '';
+
+  const html = document.documentElement;
+  while (html.attributes.length > 0) {
+    html.removeAttribute(html.attributes[0].name);
+  }
 }

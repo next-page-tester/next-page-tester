@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { existsSync } from 'fs';
 import makePageElement from './makePageElement';
-import makeRenderMethods from './makeRenderMethods';
+import { makeRenderMethods } from './makeRenderMethods';
 import RouterProvider from './RouterProvider';
 import { renderDocument } from './_document';
 import { renderApp } from './_app';
