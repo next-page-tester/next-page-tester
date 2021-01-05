@@ -48,8 +48,8 @@ Next page tester will take care of:
 | Property                       | Description                                                   | type               | Default         |
 | ------------------------------ | ------------------------------------------------------------- | ------------------ | --------------- |
 | **route** (mandatory)          | Next route (must start with `/`)                              | `string`           | -               |
-| **req**                        | Enhance default mocked [request object][req-docs]             | `res => res`       | -               |
-| **res**                        | Enhance default mocked [response object][res-docs]            | `req => req`       | -               |
+| **req**                        | Enhance default mocked [request object][req-docs]             | `req => req`       | -               |
+| **res**                        | Enhance default mocked [response object][res-docs]            | `res => res`       | -               |
 | **router**                     | Enhance default mocked [Next router object][next-docs-router] | `router => router` | -               |
 | **useApp**                     | Render [custom App component][next-docs-custom-app]           | `boolean`          | `true`          |
 | **useDocument** (experimental) | Render [Document component][next-docs-custom-document]        | `boolean`          | `false`         |
