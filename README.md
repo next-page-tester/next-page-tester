@@ -78,7 +78,7 @@ HTML string representing server side rendering output.
 
 #### `page`
 
-React element the application
+React element of the application
 
 ## Options
 
