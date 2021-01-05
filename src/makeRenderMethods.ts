@@ -24,6 +24,8 @@ export default function makeRenderMethods({
     document.documentElement.replaceChild(originalBody, document.body);
 
     const nextRoot = document.getElementById('__next');
+
+    /* istanbul ignore next */
     if (!nextRoot) {
       throw new Error('[next-page-tester] Missing __next div');
     }

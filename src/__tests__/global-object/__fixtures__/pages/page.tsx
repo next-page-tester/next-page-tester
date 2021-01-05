@@ -5,7 +5,7 @@ export default function Page(props: { [key: string]: any }) {
   return (
     <>
       <h2>Page</h2>
-      <PropsPrinter props={props} />
+      <PropsPrinter suppressHydrationWarning={true} props={props} />
     </>
   );
 }
