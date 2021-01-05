@@ -29,7 +29,7 @@ describe('Blog page', () => {
 
 ## What
 
-The idea behind this library is to reproduce as closer as possible the way Next.js works without spinning up servers, and render the output in a local JSDOM environment.
+The idea behind this library is to reproduce as closely as possible the way Next.js works without spinning up servers, and render the output in a local JSDOM environment.
 
 In order to provide a valuable testing experience `next-page-tester` replicates the **rendering flow of an actual `next.js` application**:
 
