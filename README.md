@@ -6,7 +6,7 @@
 
 The missing DOM integration testing tool for [Next.js][next-github].
 
-Given a Next.js route, this library will **mount the matching page in JSDOM**, provided with the expected **props** derived from Next.js' [**routing system**][next-docs-routing] and [**data fetching methods**][next-docs-data-fetching].
+Given a Next.js route, this library will **render the matching page in JSDOM**, provided with the expected **props** derived from Next.js' [**routing system**][next-docs-routing] and [**data fetching methods**][next-docs-data-fetching].
 
 ```js
 import { getPage } from 'next-page-tester';
