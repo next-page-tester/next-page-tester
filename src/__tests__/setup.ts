@@ -1,5 +1,8 @@
 import '@testing-library/jest-dom';
 import { initTestHelpers } from '../index';
+import Enzyme from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+
 initTestHelpers();
 
 afterEach(() => {
@@ -12,3 +15,5 @@ afterEach(() => {
     });
   }
 });
+
+Enzyme.configure({ adapter: new Adapter() });
