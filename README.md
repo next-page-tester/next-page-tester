@@ -65,7 +65,7 @@ const { render, renderHTML, html, page } = await getPage({ options });
 Type: `() => HTMLElement<NextRoot>`<br/>
 Returns: `#__next` root element element.
 
-Unless you have an advances use-case, you should mostly use this method. Under the hood it calls a lower level `renderHTML()` method and then mounts/hydrates the React application into JSDOM `#__next` root element. This is what the user would get/see when they visit a page.
+Unless you have an advanced use-case, you should mostly use this method. Under the hood it calls `renderHTML()` and then mounts/hydrates the React application into JSDOM `#__next` root element. This is what users would get/see when they visit a page.
 
 ### renderHTML()
 
