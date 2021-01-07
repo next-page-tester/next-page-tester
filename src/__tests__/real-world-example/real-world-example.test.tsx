@@ -1,5 +1,5 @@
 import { getPage } from '../../index';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import path from 'path';
 import userEvent from '@testing-library/user-event';
 
@@ -15,7 +15,7 @@ describe('real-world-example', () => {
     const html = document.documentElement;
     expect(html).toHaveAttribute('lang', 'en');
 
-    const head = document.querySelector('head') as HTMLHeadElement;
+    const head = document.head;
     expect(head.querySelector('meta[name="Description"]')).toHaveAttribute(
       'Content',
       'Custom document description'

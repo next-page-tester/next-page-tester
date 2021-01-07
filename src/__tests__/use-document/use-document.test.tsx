@@ -17,14 +17,12 @@ describe('_document support', () => {
           route: '/page',
           useDocument: true,
         });
-        renderHTML();
+        const { nextRoot: actual } = renderHTML();
 
         const html = document.documentElement;
         expect(html).toHaveAttribute('lang', 'en');
 
-        const actual = document.querySelector('#__next') as HTMLDivElement;
         actual.removeAttribute('id');
-
         const { container: expected } = render(
           <CustomApp Component={CustomDocumentWithGIP_Page} pageProps={{}} />
         );

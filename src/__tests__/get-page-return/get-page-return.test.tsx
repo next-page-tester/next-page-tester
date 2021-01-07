@@ -5,7 +5,6 @@ import { getPage } from '../../index';
 import path from 'path';
 import App from './__fixtures__/pages/_app';
 import Page from './__fixtures__/pages/page';
-import { wrapWithNextRoot } from '../__utils__';
 import { expectDOMElementsToMatch } from '../__utils__';
 
 // @NOTE These tests are not extensive.
@@ -18,7 +17,16 @@ describe('getPage() return', () => {
         route: '/page',
       });
 
-      const expectedPage = wrapWithNextRoot(<App Component={Page} />);
+      const expectedPage = (
+        <html>
+          <head />
+          <body>
+            <div id="__next">
+              <App Component={Page} />
+            </div>
+          </body>
+        </html>
+      );
       const expectedHtml = ReactDOMServer.renderToString(expectedPage);
       expect(html).toEqual(expectedHtml);
     });
