@@ -4,34 +4,34 @@ import { getPage } from '../../index';
 
 describe('Pages directory discovery + "nextRoot" option', () => {
   it('discover "pages" directory in auto-detected root', async () => {
-    const { renderHTML } = await getPage({
+    const { serverRender } = await getPage({
       route: '/page',
     });
 
-    renderHTML();
+    serverRender();
     screen.getByText('Page in natural root');
   });
 
   describe('With "nextRoot" option', () => {
     it('discover "pages" directory in provided root', async () => {
       const nextRoot = path.join(__dirname, '/in-root');
-      const { renderHTML } = await getPage({
+      const { serverRender } = await getPage({
         route: '/page',
         nextRoot,
       });
 
-      renderHTML();
+      serverRender();
       screen.getByText('Page in root');
     });
 
     it('discover "pages" directory in root/src', async () => {
       const nextRoot = path.join(__dirname, '/in-src');
-      const { renderHTML } = await getPage({
+      const { serverRender } = await getPage({
         route: '/page',
         nextRoot,
       });
 
-      renderHTML();
+      serverRender();
       screen.getByText('Page in src');
     });
 

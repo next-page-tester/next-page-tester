@@ -57,7 +57,7 @@ The mounted application is **interactive** and can be tested with any DOM testin
 
 ```js
 import { getPage } from 'next-page-tester';
-const { render, renderHTML, html, page } = await getPage({ options });
+const { render, serverRender, html, page } = await getPage({ options });
 ```
 
 ### render()
@@ -65,9 +65,9 @@ const { render, renderHTML, html, page } = await getPage({ options });
 Type: `() => HTMLElement<NextRoot>`<br/>
 Returns: `#__next` root element element.
 
-Unless you have an advanced use-case, you should mostly use this method. Under the hood it calls `renderHTML()` and then mounts/hydrates the React application into JSDOM `#__next` root element. This is what users would get/see when they visit a page.
+Unless you have an advanced use-case, you should mostly use this method. Under the hood it calls `serverRender()` and then mounts/hydrates the React application into JSDOM `#__next` root element. This is what users would get/see when they visit a page.
 
-### renderHTML()
+### serverRender()
 
 Type: `() => HTMLElement<NextRoot>`<br/>
 Returns: `#__next` root element element.

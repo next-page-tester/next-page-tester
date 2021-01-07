@@ -8,11 +8,11 @@ export function makeRenderMethods({
   html: string;
   pageElement: JSX.Element;
 }): {
-  renderHTML: () => { nextRoot: HTMLElement };
+  serverRender: () => { nextRoot: HTMLElement };
   render: () => { nextRoot: HTMLElement };
 } {
   // Update whole document content with SSR html
-  function renderHTML() {
+  function serverRender() {
     const originalBody = document.body;
     const domParser = new DOMParser();
     const newDocument = domParser.parseFromString(html, 'text/html');
@@ -38,7 +38,7 @@ export function makeRenderMethods({
   }
 
   function render() {
-    const { nextRoot } = renderHTML();
+    const { nextRoot } = serverRender();
 
     // Hydrate page element in existing DOM
     ReactDOM.hydrate(pageElement, nextRoot);
@@ -46,7 +46,7 @@ export function makeRenderMethods({
   }
 
   return {
-    renderHTML,
+    serverRender,
     render,
   };
 }
