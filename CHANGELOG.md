@@ -4,7 +4,7 @@
 
 ### New Features
 
-- Add req.cookies property in "getServerSideProps"
+- Add `req.cookies` property in "getServerSideProps"
 
 ## 0.14.0
 
