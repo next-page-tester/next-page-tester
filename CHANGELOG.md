@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.15.0
+
+### New Features
+
+- Add req.cookies property in "getServerSideProps"
+
 ## 0.14.0
 
 ### New Features
