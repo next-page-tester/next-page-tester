@@ -41,13 +41,13 @@ The mounted application is **interactive** and can be tested with any DOM testin
 
 `next-page-tester` will take care of:
 
-- load and execute modules in the **expected browser or server environments**
+- loading and execute modules in the **expected browser or server environments**
 - **resolving** provided **routes** into matching page component
 - calling **Next.js data fetching methods** (`getServerSideProps`, `getInitialProps` or `getStaticProps`) if the case
-- set up a **mocked `next/router` provider** initialized with the expected values (to test `useRouter` and `withRouter`)
 - wrapping page with custom `_app` and `_document` components
 - emulating **client side navigation** via `Link`, `router.push`, `router.replace`
 - handling pages' `redirect` returns
+- supporting `next/router`, `next/head`, `next/link`
 
 ## API
 
