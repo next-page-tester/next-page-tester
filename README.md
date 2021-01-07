@@ -125,6 +125,10 @@ Until **Jest v27** is published, you might need to patch `jest` in order to load
 2. Manually update `node_modules/jest-runtime/build/index.js` file and replicate [this commit](https://github.com/facebook/jest/commit/e5a84d92fc906a5bb140f9753b644319cea095da#diff-c0d5b59e96fdc7ffc98405e8afb46d525505bc7b1c24916b5c8482de5a186c00)
 3. Run `npx patch-package jest-runtime` or `yarn patch-package jest-runtime`
 
+## Examples
+
+Under [examples folder][examples-folder] we're documenting the testing cases which `next-page-tester` enables.
+
 ## Notes
 
 - Data fetching methods' context `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http]
@@ -218,3 +222,4 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [next-docs-custom-document]: https://nextjs.org/docs/advanced-features/custom-document
 [next-gh-strict-bug]: https://github.com/vercel/next.js/issues/16219
 [error-log-mock]: src/__tests__/use-document/use-document.test.tsx#L8
+[examples-folder]: examples
