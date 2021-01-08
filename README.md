@@ -72,7 +72,7 @@ Unless you have an advanced use-case, you should mostly use this method. Under t
 Type: `() => { nextRoot: HTMLElement<NextRoot> }`<br/>
 Returns: `#__next` root element element.
 
-Inject the output of server side rendering into the DOM and doesn't mount React. Use it to test how Next.js renders in the following scenarios:
+Inject the output of server side rendering into the DOM but doesn't mount React. Use it to test how Next.js renders in the following scenarios:
 
 - before Reacts mounts
 - when JS is disabled
@@ -82,7 +82,7 @@ Inject the output of server side rendering into the DOM and doesn't mount React.
 
 Type: `() => { html: string }`
 
-`html` is the HTML string representing output of server side rendering.
+Render the output of server side rendering as HTML string. This is a pure method without side-effects.
 
 ### page
 
