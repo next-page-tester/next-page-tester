@@ -10,7 +10,7 @@ Given a Next.js route, this library will **render the matching page in JSDOM**, 
 
 ```js
 import { getPage } from 'next-page-tester';
-import { screen, fireEvent } from '@testing-library/dom';
+import { screen, fireEvent } from '@testing-library/react';
 
 describe('Blog page', () => {
   it('renders blog page', async () => {
