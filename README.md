@@ -132,7 +132,7 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 ## Notes
 
 - Data fetching methods' context `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http]
-- Next page tester can be used with any testing framework/library (it's not tied to Jest or Testing library)
+- Next page tester is designed to be used with any testing framework/library but It's currently only tested with Jest and Testing Library. Feel free to open an issue if you had troubles with different setups
 - It might be necessary to install `@types/react-dom` and `@types/webpack` when using Typescript in `strict` mode due to [this bug][next-gh-strict-bug]
 
 ### Experimental `useDocument` option
