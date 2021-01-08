@@ -49,13 +49,13 @@ describe('Global object', () => {
       (renderType) => {
         it("executes app's exports with expected env globals", async () => {
           const initialRoute = renderType === 'client' ? '/' : '/page';
-          const { render, renderHTML } = await getPage({
+          const { render, serverRender } = await getPage({
             nextRoot: path.join(__dirname, '__fixtures__'),
             route: initialRoute,
           });
 
           const { nextRoot: actual } =
-            renderType === 'server' ? renderHTML() : render();
+            renderType === 'server' ? serverRender() : render();
 
           // Client side navigation to SSR page
           if (renderType === 'client') {

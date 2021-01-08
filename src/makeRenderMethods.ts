@@ -1,18 +1,28 @@
 import ReactDOM from 'react-dom';
+import ReactDOMServer from 'react-dom/server';
+import { executeAsIfOnServerSync } from './server';
 
-// @TODO: Make this methods overridable via options
 export function makeRenderMethods({
-  html,
-  pageElement,
+  serverPageElement,
+  clientPageElement,
 }: {
-  html: string;
-  pageElement: JSX.Element;
+  serverPageElement: JSX.Element;
+  clientPageElement: JSX.Element;
 }): {
-  renderHTML: () => { nextRoot: HTMLElement };
+  serverRenderToString: () => { html: string };
+  serverRender: () => { nextRoot: HTMLElement };
   render: () => { nextRoot: HTMLElement };
 } {
+  function serverRenderToString() {
+    return {
+      html: executeAsIfOnServerSync(() =>
+        ReactDOMServer.renderToString(serverPageElement)
+      ),
+    };
+  }
   // Update whole document content with SSR html
-  function renderHTML() {
+  function serverRender() {
+    const { html } = serverRenderToString();
     const originalBody = document.body;
     const domParser = new DOMParser();
     const newDocument = domParser.parseFromString(html, 'text/html');
@@ -38,15 +48,16 @@ export function makeRenderMethods({
   }
 
   function render() {
-    const { nextRoot } = renderHTML();
+    const { nextRoot } = serverRender();
 
     // Hydrate page element in existing DOM
-    ReactDOM.hydrate(pageElement, nextRoot);
+    ReactDOM.hydrate(clientPageElement, nextRoot);
     return { nextRoot };
   }
 
   return {
-    renderHTML,
+    serverRenderToString,
+    serverRender,
     render,
   };
 }

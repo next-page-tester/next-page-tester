@@ -12,13 +12,12 @@ describe('_document support', () => {
   describe('_document with getInitialProps', () => {
     describe('with custom _app', () => {
       it('renders page wrapped in custom _app wrapped in _document', async () => {
-        const { renderHTML } = await getPage({
+        const { serverRender } = await getPage({
           nextRoot: __dirname + '/__fixtures__/custom-document-with-gip',
           route: '/page',
           useDocument: true,
         });
-        const { nextRoot: actual } = renderHTML();
-
+        const { nextRoot: actual } = serverRender();
         const html = document.documentElement;
         expect(html).toHaveAttribute('lang', 'en');
 
@@ -34,12 +33,12 @@ describe('_document support', () => {
   describe('_document with special extensions', () => {
     it('renders expected document component', async () => {
       const route = '/page';
-      const { renderHTML } = await getPage({
+      const { serverRender } = await getPage({
         nextRoot: __dirname + '/__fixtures__/special-extension',
         route,
         useDocument: true,
       });
-      renderHTML();
+      serverRender();
 
       const metaDescriptions = getMetaTagsContentByName(
         document.documentElement,
@@ -51,12 +50,12 @@ describe('_document support', () => {
 
   describe('useCustomDocument === false', () => {
     it('renders default empty document', async () => {
-      const { renderHTML } = await getPage({
+      const { serverRender } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-document-with-gip',
         route: '/page',
         useDocument: false,
       });
-      renderHTML();
+      serverRender();
 
       const actual = document.documentElement;
       const { container: expected } = render(
@@ -99,7 +98,7 @@ describe('_document support', () => {
   describe('next/document Head and next/head', () => {
     describe('SSR render', () => {
       it('merges _document and page head elements', async () => {
-        const { renderHTML } = await getPage({
+        const { serverRender } = await getPage({
           nextRoot: path.join(
             __dirname,
             '/__fixtures__/custom-document-with-gip'
@@ -107,7 +106,7 @@ describe('_document support', () => {
           route: '/page',
           useDocument: true,
         });
-        renderHTML();
+        serverRender();
 
         const metaDescriptions = getMetaTagsContentByName(
           document.documentElement,

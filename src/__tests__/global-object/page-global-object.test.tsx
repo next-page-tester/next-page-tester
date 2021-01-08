@@ -62,13 +62,13 @@ describe('Global object', () => {
         (renderType) => {
           it("executes page's exports with expected env globals", async () => {
             const initialRoute = renderType === 'client' ? '/' : '/ssr';
-            const { renderHTML, render } = await getPage({
+            const { serverRender, render } = await getPage({
               nextRoot: path.join(__dirname, '__fixtures__'),
               route: initialRoute,
               useApp: false,
             });
             const { nextRoot: actual } =
-              renderType === 'server' ? renderHTML() : render();
+              renderType === 'server' ? serverRender() : render();
 
             // Client side navigation to SSR page
             if (renderType === 'client') {
@@ -93,13 +93,13 @@ describe('Global object', () => {
         (renderType) => {
           it("executes page's exports with expected env globals", async () => {
             const initialRoute = renderType === 'client' ? '/' : '/gip';
-            const { renderHTML, render } = await getPage({
+            const { serverRender, render } = await getPage({
               nextRoot: path.join(__dirname, '__fixtures__'),
               route: initialRoute,
               useApp: false,
             });
             const { nextRoot: actual } =
-              renderType === 'server' ? renderHTML() : render();
+              renderType === 'server' ? serverRender() : render();
 
             // Client side navigation to SSR page
             if (renderType === 'client') {

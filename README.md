@@ -57,32 +57,32 @@ The mounted application is **interactive** and can be tested with any DOM testin
 
 ```js
 import { getPage } from 'next-page-tester';
-const { render, renderHTML, html, page } = await getPage({ options });
+const { render, serverRender, html, page } = await getPage({ options });
 ```
 
 ### render()
 
-Type: `() => HTMLElement<NextRoot>`<br/>
+Type: `() => { nextRoot: HTMLElement<NextRoot> }`<br/>
 Returns: `#__next` root element element.
 
-Unless you have an advanced use-case, you should mostly use this method. Under the hood it calls `renderHTML()` and then mounts/hydrates the React application into JSDOM `#__next` root element. This is what users would get/see when they visit a page.
+Unless you have an advanced use-case, you should mostly use this method. Under the hood it calls `serverRender()` and then mounts/hydrates the React application into JSDOM `#__next` root element. This is what users would get/see when they visit a page.
 
-### renderHTML()
+### serverRender()
 
-Type: `() => HTMLElement<NextRoot>`<br/>
+Type: `() => { nextRoot: HTMLElement<NextRoot> }`<br/>
 Returns: `#__next` root element element.
 
-Inject the output of server side rendering into the DOM and doesn't mount React. Use it to test how Next.js renders in the following scenarios:
+Inject the output of server side rendering into the DOM but doesn't mount React. Use it to test how Next.js renders in the following scenarios:
 
 - before Reacts mounts
 - when JS is disabled
 - SEO tests
 
-### html
+### serverRenderToString()
 
-Type: `string`
+Type: `() => { html: string }`
 
-HTML string representing output of server side rendering.
+Render the output of server side rendering as HTML string. This is a pure method without side-effects.
 
 ### page
 

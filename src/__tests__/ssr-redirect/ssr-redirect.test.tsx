@@ -8,12 +8,12 @@ describe('ssr-redirect', () => {
     'Page with %s',
     (_dataFetchingType, directory) => {
       it('Correctly handles single redirect', async () => {
-        const { renderHTML } = await getPage({
+        const { serverRender } = await getPage({
           nextRoot: path.join(__dirname, '__fixtures__', directory),
           route: '/proxy-to-page-a',
         });
 
-        renderHTML();
+        serverRender();
         expect(screen.getByText('Page A')).toBeInTheDocument();
       });
     }
@@ -23,12 +23,12 @@ describe('ssr-redirect', () => {
     'Page with %s',
     (_dataFetchingType, directory) => {
       it('Correctly handles multiple redirects', async () => {
-        const { renderHTML } = await getPage({
+        const { serverRender } = await getPage({
           nextRoot: path.join(__dirname, '__fixtures__', directory),
           route: '/proxy-page?destination=/proxy-to-page-a',
         });
 
-        renderHTML();
+        serverRender();
         expect(screen.getByText('Page A')).toBeInTheDocument();
       });
     }

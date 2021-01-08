@@ -10,12 +10,13 @@ import { expectDOMElementsToMatch } from '../__utils__';
 // @NOTE These tests are not extensive.
 // They provide a rough idea of the values returned by getPage
 describe('getPage() return', () => {
-  describe('html', () => {
-    it("is an HTML string representing the apps's SSR output", async () => {
-      const { html } = await getPage({
+  describe('serverRenderToString', () => {
+    it("returns HTML string representing the apps's SSR output", async () => {
+      const { serverRenderToString } = await getPage({
         nextRoot: path.join(__dirname, '__fixtures__'),
         route: '/page',
       });
+      const { html } = serverRenderToString();
 
       const expectedPage = (
         <html>
@@ -32,13 +33,13 @@ describe('getPage() return', () => {
     });
   });
 
-  describe('renderHTML', () => {
+  describe('serverRender', () => {
     it('append to DOM expected elements', async () => {
-      const { renderHTML } = await getPage({
+      const { serverRender } = await getPage({
         nextRoot: path.join(__dirname, '__fixtures__'),
         route: '/page',
       });
-      const { nextRoot } = renderHTML();
+      const { nextRoot } = serverRender();
       const actualNextRoot = document.getElementById('__next');
       expect(nextRoot).toBe(actualNextRoot);
 
@@ -62,11 +63,11 @@ describe('getPage() return', () => {
 
     it('preserves existing body element', async () => {
       const initialBody = document.body;
-      const { renderHTML } = await getPage({
+      const { serverRender } = await getPage({
         nextRoot: path.join(__dirname, '__fixtures__'),
         route: '/page',
       });
-      renderHTML();
+      serverRender();
       expect(initialBody).toBe(document.body);
     });
   });
