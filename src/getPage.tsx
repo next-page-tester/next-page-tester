@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOMServer from 'react-dom/server';
 import { existsSync } from 'fs';
 import makePageElement from './makePageElement';
 import { makeRenderMethods } from './makeRenderMethods';
@@ -8,7 +7,6 @@ import { renderDocument } from './_document';
 import { renderApp } from './_app';
 import initHeadManager from 'next/dist/client/head-manager';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
-import { executeAsIfOnServerSync } from './server';
 import {
   defaultNextRoot,
   findPagesDirectory,
@@ -42,10 +40,7 @@ export default async function getPage({
   useApp = true,
   useDocument = false,
 }: Options): Promise<
-  {
-    page: React.ReactElement;
-    html: string;
-  } & ReturnType<typeof makeRenderMethods>
+  { page: React.ReactElement } & ReturnType<typeof makeRenderMethods>
 > {
   const optionsWithDefaults: OptionsWithDefaults = {
     route,
@@ -95,15 +90,6 @@ export default async function getPage({
     pageObject,
   } = await makePage();
 
-  let clientPageElement = renderApp({
-    options: {
-      ...options,
-      env: 'client',
-    },
-    pageObject,
-    pageData,
-  });
-
   serverPageElement = (
     <RouterProvider
       pageObject={pageObject}
@@ -113,6 +99,23 @@ export default async function getPage({
       {serverPageElement}
     </RouterProvider>
   );
+
+  // Wrap server page with document element
+  serverPageElement = await renderDocument({
+    pageElement: serverPageElement,
+    options,
+    pageObject,
+    pageData,
+  });
+
+  let clientPageElement = renderApp({
+    options: {
+      ...options,
+      env: 'client',
+    },
+    pageObject,
+    pageData,
+  });
 
   clientPageElement = (
     <RouterProvider
@@ -124,21 +127,8 @@ export default async function getPage({
     </RouterProvider>
   );
 
-  // Wrap page with document element
-  const documentElement = await renderDocument({
-    pageElement: serverPageElement,
-    options,
-    pageObject,
-    pageData,
-  });
-
-  const html: string = executeAsIfOnServerSync(() =>
-    ReactDOMServer.renderToString(documentElement)
-  );
-
   return {
     page: clientPageElement,
-    html,
-    ...makeRenderMethods({ pageElement: clientPageElement, html }),
+    ...makeRenderMethods({ serverPageElement, clientPageElement }),
   };
 }

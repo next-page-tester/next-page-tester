@@ -62,14 +62,14 @@ const { render, serverRender, html, page } = await getPage({ options });
 
 ### render()
 
-Type: `() => HTMLElement<NextRoot>`<br/>
+Type: `() => { nextRoot: HTMLElement<NextRoot> }`<br/>
 Returns: `#__next` root element element.
 
 Unless you have an advanced use-case, you should mostly use this method. Under the hood it calls `serverRender()` and then mounts/hydrates the React application into JSDOM `#__next` root element. This is what users would get/see when they visit a page.
 
 ### serverRender()
 
-Type: `() => HTMLElement<NextRoot>`<br/>
+Type: `() => { nextRoot: HTMLElement<NextRoot> }`<br/>
 Returns: `#__next` root element element.
 
 Inject the output of server side rendering into the DOM and doesn't mount React. Use it to test how Next.js renders in the following scenarios:
@@ -78,11 +78,11 @@ Inject the output of server side rendering into the DOM and doesn't mount React.
 - when JS is disabled
 - SEO tests
 
-### html
+### serverRenderToString()
 
-Type: `string`
+Type: `() => { html: string }`
 
-HTML string representing output of server side rendering.
+`html` is the HTML string representing output of server side rendering.
 
 ### page
 
