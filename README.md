@@ -57,7 +57,10 @@ The mounted application is **interactive** and can be tested with any DOM testin
 
 ```js
 import { getPage } from 'next-page-tester';
-const { render, serverRender, html, page } = await getPage({ options });
+
+const { render, serverRender, serverRenderToString, page } = await getPage({
+  options,
+});
 ```
 
 ### render()
