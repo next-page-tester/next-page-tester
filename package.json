@@ -75,7 +75,8 @@
   },
   "peerDependencies": {
     "next": "^10.0.0",
-    "react": "^16.6.0 || ^17"
+    "react": "^16.6.0 || ^17",
+    "react-dom": "^16.6.0 || ^17"
   },
   "jest": {
     "preset": "ts-jest/presets/js-with-ts",
