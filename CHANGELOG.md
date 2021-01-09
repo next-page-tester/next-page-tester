@@ -5,7 +5,7 @@
 ### New Features
 
 - Expose new `render`, `documentRender` and `documentRenderAsString` methods
-- Render page twice, in server and browser environment
+- Correctly "simulate" browser behaviour by initial rendering on "server" and hydration on "client"
 - Mount/hydrate with `react-dom/server` `hydrate`
 
 ### Breaking Changes
