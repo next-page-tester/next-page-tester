@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.16.0
+
+### New Features
+
+- Expose new `render`, `serverRender` and `serverRenderAsString` methods
+- Correctly "simulate" browser behaviour by initial rendering on "server" and hydration on "client"
+- Mount/hydrate with `react-dom/server` `hydrate`
+
+### Breaking Changes
+
+- `page` doesn't render `_document` when `useDocument` is `true`
+
 ## 0.15.0
 
 ### New Features
