@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import path from 'path';
 import { getPage } from '../../index';
+import { expectDOMElementsToMatch } from '../__utils__';
 import CustomDocumentWithGIP_Page from './__fixtures__/custom-document-with-gip/pages/page';
 import CustomApp from './__fixtures__/custom-document-with-gip/pages/_app';
 import { getMetaTagsContentByName } from '../__utils__/_document';
@@ -11,24 +12,20 @@ describe('_document support', () => {
   describe('_document with getInitialProps', () => {
     describe('with custom _app', () => {
       it('renders page wrapped in custom _app wrapped in _document', async () => {
-        const { page } = await getPage({
+        const { serverRender } = await getPage({
           nextRoot: __dirname + '/__fixtures__/custom-document-with-gip',
           route: '/page',
           useDocument: true,
         });
-        const { container } = render(page);
-
-        const html = container.querySelector('html') as HTMLHtmlElement;
+        const { nextRoot: actual } = serverRender();
+        const html = document.documentElement;
         expect(html).toHaveAttribute('lang', 'en');
 
-        const actual = container.querySelector('#__next') as HTMLDivElement;
         actual.removeAttribute('id');
-
         const { container: expected } = render(
           <CustomApp Component={CustomDocumentWithGIP_Page} pageProps={{}} />
         );
-
-        expect(actual).toEqual(expected);
+        expectDOMElementsToMatch(actual, expected);
       });
     });
   });
@@ -36,15 +33,15 @@ describe('_document support', () => {
   describe('_document with special extensions', () => {
     it('renders expected document component', async () => {
       const route = '/page';
-      const { page } = await getPage({
+      const { serverRender } = await getPage({
         nextRoot: __dirname + '/__fixtures__/special-extension',
         route,
         useDocument: true,
       });
+      serverRender();
 
-      const { container } = render(page);
       const metaDescriptions = getMetaTagsContentByName(
-        container,
+        document.documentElement,
         'description'
       );
       expect(metaDescriptions[0]).toBe('Document with special extension');
@@ -52,19 +49,31 @@ describe('_document support', () => {
   });
 
   describe('useCustomDocument === false', () => {
-    it("doesn't render wrapping document", async () => {
-      const { page } = await getPage({
+    it('renders default empty document', async () => {
+      const { serverRender } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-document-with-gip',
         route: '/page',
         useDocument: false,
       });
+      serverRender();
 
-      const { container: actual } = render(page);
+      const actual = document.documentElement;
       const { container: expected } = render(
-        <CustomApp Component={CustomDocumentWithGIP_Page} pageProps={{}} />
+        <>
+          <head></head>
+          <body>
+            <div id="__next">
+              <CustomApp
+                Component={CustomDocumentWithGIP_Page}
+                pageProps={{}}
+              />
+            </div>
+          </body>
+        </>,
+        { container: document.createElement('html') }
       );
 
-      expect(actual).toEqual(expected);
+      expectDOMElementsToMatch(actual, expected);
     });
   });
 
@@ -72,15 +81,13 @@ describe('_document support', () => {
     'Page with %s',
     (directory) => {
       it('User events are propagated', async () => {
-        const { page } = await getPage({
+        const { render } = await getPage({
           nextRoot: path.join(__dirname, '__fixtures__', directory),
           route: '/page',
           useDocument: true,
         });
+        render();
 
-        const { container } = render(page);
-
-        expect(container.querySelector('head')).toBeInTheDocument();
         screen.getByText('Count: 0');
         userEvent.click(screen.getByText('Count me!'));
         screen.getByText('Count: 1');
@@ -89,9 +96,9 @@ describe('_document support', () => {
   );
 
   describe('next/document Head and next/head', () => {
-    describe('first render', () => {
+    describe('SSR render', () => {
       it('merges _document and page head elements', async () => {
-        const { page } = await getPage({
+        const { serverRender } = await getPage({
           nextRoot: path.join(
             __dirname,
             '/__fixtures__/custom-document-with-gip'
@@ -99,10 +106,10 @@ describe('_document support', () => {
           route: '/page',
           useDocument: true,
         });
-        const { container } = render(page);
+        serverRender();
 
         const metaDescriptions = getMetaTagsContentByName(
-          container,
+          document.documentElement,
           'description'
         );
         expect(metaDescriptions.length).toBe(2);
@@ -113,7 +120,7 @@ describe('_document support', () => {
 
     describe('on client navigation', () => {
       it('merges _document and page head elements', async () => {
-        const { page } = await getPage({
+        const { render } = await getPage({
           nextRoot: path.join(
             __dirname,
             '/__fixtures__/custom-document-with-gip'
@@ -121,12 +128,13 @@ describe('_document support', () => {
           route: '/page',
           useDocument: true,
         });
-        const { container } = render(page);
+        render();
+
         userEvent.click(screen.getByText('Go to A'));
         await screen.findByText('This is page A');
 
         const metaDescriptions = getMetaTagsContentByName(
-          container,
+          document.documentElement,
           'description'
         );
         expect(metaDescriptions.length).toBe(2);

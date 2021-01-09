@@ -1,6 +1,4 @@
 import React from 'react';
-import getCustomAppFile from './getCustomAppFile';
-import DefaultApp from './DefaultApp';
 import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
 
 export default function renderApp({
@@ -11,20 +9,14 @@ export default function renderApp({
   options: ExtendedOptions;
   pageObject: PageObject;
   pageData: PageData;
-}) {
-  const { useApp } = options;
-  const customAppFile = getCustomAppFile({ options });
-  let AppComponent;
-
-  if (useApp && customAppFile?.client?.default) {
-    AppComponent = customAppFile.client.default;
-  } else {
-    AppComponent = DefaultApp;
-  }
+}): JSX.Element {
+  const { env } = options;
+  const { appFile } = pageObject;
+  const AppComponent = appFile[env].default;
 
   return (
     <AppComponent
-      Component={pageObject.page.client.default}
+      Component={pageObject.page[env].default}
       pageProps={pageData.props}
     />
   );

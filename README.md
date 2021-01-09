@@ -6,19 +6,19 @@
 
 The missing DOM integration testing tool for [Next.js][next-github].
 
-Given a Next.js route, this library will return an instance of the matching page component instantiated with the **properties** derived by Next.js' [**routing system**][next-docs-routing] and [**data fetching methods**][next-docs-data-fetching].
+Given a Next.js route, this library will **render the matching page in JSDOM**, provided with the expected **props** derived from Next.js' [**routing system**][next-docs-routing] and [**data fetching methods**][next-docs-data-fetching].
 
 ```js
-import { render, screen, fireEvent } from '@testing-library/react';
 import { getPage } from 'next-page-tester';
+import { screen, fireEvent } from '@testing-library/react';
 
 describe('Blog page', () => {
   it('renders blog page', async () => {
-    const { page } = await getPage({
+    const { render } = await getPage({
       route: '/blog/1',
     });
 
-    render(page);
+    render();
     expect(screen.getByText('Blog')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Link'));
@@ -29,19 +29,69 @@ describe('Blog page', () => {
 
 ## What
 
-The idea behind this library is to enable DOM integration tests on Next.js pages along with [data fetching][next-docs-data-fetching] and [routing][next-docs-routing].
+The idea behind this library is to reproduce as closely as possible the way Next.js works without spinning up servers, and render the output in a local JSDOM environment.
 
-The testing approach suggested here consists of manually mocking external API's dependencies and get the component instance matching a given route.
+In order to provide a valuable testing experience `next-page-tester` replicates the **rendering flow of an actual `next.js` application**:
 
-Next page tester will take care of:
+1. **fetch data** for a given route
+2. **render** the server-side rendered result to JSDOM as plain html (including `head` element)
+3. **mount/hydrate** the client application to the previously rendered html
 
+The mounted application is **interactive** and can be tested with any DOM testing library (like [`@testing-library/dom`](https://testing-library.com/docs/dom-testing-library/intro)).
+
+`next-page-tester` will take care of:
+
+- loading and execute modules in the **expected browser or server environments**
 - **resolving** provided **routes** into matching page component
 - calling **Next.js data fetching methods** (`getServerSideProps`, `getInitialProps` or `getStaticProps`) if the case
-- set up a **mocked `next/router` provider** initialized with the expected values (to test `useRouter` and `withRouter`)
 - wrapping page with custom `_app` and `_document` components
-- **instantiating** page component with **expected page props**
-- emulating client side navigation via `Link`, `router.push`, `router.replace`
+- emulating **client side navigation** via `Link`, `router.push`, `router.replace`
 - handling pages' `redirect` returns
+- supporting `next/router`, `next/head`, `next/link`
+
+## API
+
+### getPage
+
+`getPage` accepts an [option object](#options) and returns 4 values:
+
+```js
+import { getPage } from 'next-page-tester';
+
+const { render, serverRender, serverRenderToString, page } = await getPage({
+  options,
+});
+```
+
+### render()
+
+Type: `() => { nextRoot: HTMLElement<NextRoot> }`<br/>
+Returns: `#__next` root element element.
+
+Unless you have an advanced use-case, you should mostly use this method. Under the hood it calls `serverRender()` and then mounts/hydrates the React application into JSDOM `#__next` root element. This is what users would get/see when they visit a page.
+
+### serverRender()
+
+Type: `() => { nextRoot: HTMLElement<NextRoot> }`<br/>
+Returns: `#__next` root element element.
+
+Inject the output of server side rendering into the DOM but doesn't mount React. Use it to test how Next.js renders in the following scenarios:
+
+- before Reacts mounts
+- when JS is disabled
+- SEO tests
+
+### serverRenderToString()
+
+Type: `() => { html: string }`
+
+Render the output of server side rendering as HTML string. This is a pure method without side-effects.
+
+### page
+
+Type: `React.ReactElement<AppElement>`
+
+React element of the application.
 
 ## Options
 
@@ -57,38 +107,17 @@ Next page tester will take care of:
 
 ## Set up your test environment
 
-Since Next.js is not designed to run in a JSDOM environment we need to **tweak the default JSDOM environment** to avoid unexpected errors and allow a smoother testing experience:
+Since Next.js is not designed to run in a JSDOM environment we need to **setup the default JSDOM** to allow a smoother testing experience:
 
 - Provide a `window.scrollTo` mock
 - Provide a `IntersectionObserver` mock
-- Silence `validateDOMNesting(...)` error
-- Remove initial `<head/>` element
-- Resolve `next/dist/next-server/lib/side-effect` module in non-brwoser environment
+- Cleanup DOM after each test
 
-Next page tester provides a [helper to setup the expected JSDOM environment](/src/testHelpers.ts) as described.
-
-Run `initTestHelpers` in your global tests setup (in case of Jest It is `setupFilesAfterEnv` file):
+Run [`initTestHelpers`](/src/testHelpers.ts) in your global tests setup (in case of Jest It is `setupFilesAfterEnv` file):
 
 ```js
 import { initTestHelpers } from 'next-page-tester';
 initTestHelpers();
-```
-
-### If `useDocument` option enabled
-
-In case your tests make use of **experimental `useDocument` option**, take the following additional steps:
-
-```js
-import { initTestHelpers } from 'next-page-tester';
-const { setup, teardown } = initTestHelpers();
-
-beforeAll(() => {
-  setup();
-});
-
-afterAll(() => {
-  teardown();
-});
 ```
 
 ### Optional: patch Jest
@@ -99,15 +128,19 @@ Until **Jest v27** is published, you might need to patch `jest` in order to load
 2. Manually update `node_modules/jest-runtime/build/index.js` file and replicate [this commit](https://github.com/facebook/jest/commit/e5a84d92fc906a5bb140f9753b644319cea095da#diff-c0d5b59e96fdc7ffc98405e8afb46d525505bc7b1c24916b5c8482de5a186c00)
 3. Run `npx patch-package jest-runtime` or `yarn patch-package jest-runtime`
 
+## Examples
+
+Under [examples folder][examples-folder] we're documenting the testing cases which `next-page-tester` enables.
+
 ## Notes
 
 - Data fetching methods' context `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http]
-- Next page tester can be used with any testing framework/library (not tied to Testing library)
+- Next page tester is designed to be used with any testing framework/library but It's currently only tested with Jest and Testing Library. Feel free to open an issue if you had troubles with different setups
 - It might be necessary to install `@types/react-dom` and `@types/webpack` when using Typescript in `strict` mode due to [this bug][next-gh-strict-bug]
 
 ### Experimental `useDocument` option
 
-`useDocument` option is partially implemented and might be unstable. It might produce a `UnhandledPromiseRejectionWarning` warning on client side navigation.
+`useDocument` option is partially implemented and might be unstable.
 
 ### Next.js versions support
 
@@ -129,9 +162,10 @@ test('authenticated page', async () => {
   document.cookie = 'SessionId=super=secret';
   document.cookie = 'SomeOtherCookie=SomeOtherValue';
 
-  const { page } = await getPage({
+  const { render } = await getPage({
     route: '/authenticated',
   });
+  render();
 });
 ```
 
@@ -139,15 +173,7 @@ Note: `document.cookie` does not get cleaned up automatically. You'll have to cl
 
 ### Error: Not implemented: window.scrollTo
 
-Next.js `Link` component invokes `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
-
-### `useDocument` option and `validateDOMNesting(...)` error
-
-Rendering the page instance returned by `next-page-tester` with `useDocument` option enabled in a JSDOM environment, causes `react-dom` to trigger a `validateDOMNesting(...)` error.
-
-This happens because the tested page includes tags like `<html>`, `<head>` and `<body>` which are already declared by JSDOM default document.
-
-A temporary workaround consists of [mocking global `console.error` to ignore the specific error][error-log-mock].
+Next.js `Link` component invokes `window.scrollTo` on click which is not implemented in JSDOM environment. In order to fix the error you should [set up your test environment](#set-up-your-test-environment) or provide [your own `window.scrollTo` mock](https://qiita.com/akameco/items/0edfdae02507204b24c8).
 
 ## Todo's
 
@@ -199,3 +225,4 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [next-docs-custom-document]: https://nextjs.org/docs/advanced-features/custom-document
 [next-gh-strict-bug]: https://github.com/vercel/next.js/issues/16219
 [error-log-mock]: src/__tests__/use-document/use-document.test.tsx#L8
+[examples-folder]: examples

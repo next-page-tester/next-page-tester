@@ -1,22 +1,21 @@
 import { getPage } from '../../index';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import path from 'path';
 import userEvent from '@testing-library/user-event';
 
 describe('real-world-example', () => {
   it('Should correctly render _document and work with client side interactions', async () => {
-    const { page } = await getPage({
+    const { render } = await getPage({
       nextRoot: path.join(__dirname, '__fixtures__'),
       route: '/?name=Matthew',
       useDocument: true,
     });
+    render();
 
-    const { container } = render(page);
-
-    const head = container.querySelector('head') as HTMLHeadElement;
-    const html = container.querySelector('html') as HTMLHtmlElement;
-
+    const html = document.documentElement;
     expect(html).toHaveAttribute('lang', 'en');
+
+    const head = document.head;
     expect(head.querySelector('meta[name="Description"]')).toHaveAttribute(
       'Content',
       'Custom document description'

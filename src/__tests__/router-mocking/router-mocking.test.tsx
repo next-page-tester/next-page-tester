@@ -1,6 +1,6 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 import { getPage } from '../../index';
+import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import WithRouter from './__fixtures__/pages/with-router/[id]';
 
 const nextRoot = __dirname + '/__fixtures__';
@@ -8,13 +8,13 @@ const nextRoot = __dirname + '/__fixtures__';
 describe('Router mocking', () => {
   describe('page using "useRouter"', () => {
     it('receives expected router object', async () => {
-      const { page } = await getPage({
+      const { render } = await getPage({
         nextRoot,
         route: '/with-router/99?foo=bar#moo',
       });
 
-      const { container: actual } = render(page);
-      const { container: expected } = render(
+      const { nextRoot: actual } = render();
+      const { container: expected } = renderWithinNextRoot(
         <WithRouter
           routerMock={{
             asPath: '/with-router/99?foo=bar#moo',
@@ -28,7 +28,7 @@ describe('Router mocking', () => {
           }}
         />
       );
-      expect(actual).toEqual(expected);
+      expectDOMElementsToMatch(actual, expected);
     });
   });
 
@@ -37,17 +37,17 @@ describe('Router mocking', () => {
       const routerMock = {
         route: 'mocked',
       };
-      const { page } = await getPage({
+      const { render } = await getPage({
         nextRoot,
         route: '/with-router/99',
         // @ts-ignore
         router: (router) => routerMock,
       });
-      const { container: actual } = render(page);
-      const { container: expected } = render(
+      const { nextRoot: actual } = render();
+      const { container: expected } = renderWithinNextRoot(
         <WithRouter routerMock={routerMock} />
       );
-      expect(actual).toEqual(expected);
+      expectDOMElementsToMatch(actual, expected);
     });
   });
 });

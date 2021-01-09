@@ -10,12 +10,7 @@ import type { ExtendedOptions, PageObject } from '../commonTypes';
 
 export function makeGetInitialPropsContext({
   pageObject,
-  options: {
-    req: reqMocker,
-    res: resMocker,
-    previousRoute,
-    isClientSideNavigation,
-  },
+  options: { req: reqMocker, res: resMocker, previousRoute, env },
 }: {
   pageObject: PageObject;
   options: ExtendedOptions;
@@ -30,7 +25,7 @@ export function makeGetInitialPropsContext({
     asPath: route,
   };
 
-  if (!isClientSideNavigation) {
+  if (env === 'server') {
     const { req, res } = makeHttpObjects({
       pageObject,
       reqMocker,

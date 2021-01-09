@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { getPage } from '../../';
 
 describe('page file extensions', () => {
@@ -6,11 +6,11 @@ describe('page file extensions', () => {
     const nextRoot = __dirname + '/__fixtures__' + '/default-config';
     describe.each(['js', 'jsx', 'ts', 'tsx'])('%s extension', (extension) => {
       it('renders expected page', async () => {
-        const { page } = await getPage({
+        const { render } = await getPage({
           nextRoot,
           route: `/${extension}`,
         });
-        render(page);
+        render();
         screen.getByText(`${extension} page`);
       });
     });
@@ -33,11 +33,11 @@ describe('page file extensions', () => {
     const nextRoot = __dirname + '/__fixtures__' + '/custom-config';
     describe('allowed extensions', () => {
       it('renders expected page', async () => {
-        const { page } = await getPage({
+        const { render } = await getPage({
           nextRoot,
           route: '/ts',
         });
-        render(page);
+        render();
         screen.getByText('ts page');
       });
     });

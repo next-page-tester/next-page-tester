@@ -1,12 +1,12 @@
 import React from 'react';
-import getCustomDocumentFile from './getCustomDocumentFile';
+import getDocumentFile from './getDocumentFile';
 import fetchDocumentData from './fetchDocumentData';
 import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
 import type { RenderPage } from 'next/dist/next-server/lib/utils';
 import { APP_PATH } from '../constants';
-import { renderToStaticMarkup } from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
-import DefaultDocument, { DocumentProps } from './DefaultDocument';
+import type { DocumentProps } from 'next/document';
 
 export default async function renderDocument({
   pageElement,
@@ -19,16 +19,26 @@ export default async function renderDocument({
   pageObject: PageObject;
   pageData: PageData;
 }): Promise<JSX.Element> {
-  const customDocumentFile = getCustomDocumentFile({ options });
+  const { useDocument } = options;
 
-  const Document = customDocumentFile
-    ? customDocumentFile.server.default
-    : DefaultDocument;
+  // Return an empty dummy document if useDocument is not enabled
+  if (!useDocument) {
+    return (
+      <html>
+        <head></head>
+        <body>
+          <div id="__next">{pageElement}</div>
+        </body>
+      </html>
+    );
+  }
 
-  let head: JSX.Element[] = [];
+  const customDocumentFile = getDocumentFile({ options });
+  const Document = customDocumentFile.server.default;
 
   const renderPage: RenderPage = () => {
-    const html = renderToStaticMarkup(
+    let head: JSX.Element[] = [];
+    const html = renderToString(
       // @NOTE: implemented from:
       // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/next-server/server/render.tsx#L561
       <HeadManagerContext.Provider
@@ -83,7 +93,6 @@ export default async function renderDocument({
     canonicalBase: '',
     headTags: [],
     devOnlyCacheBusterQueryString: '',
-    pageElement,
   };
 
   return Document.renderDocument(Document, documentProps);
