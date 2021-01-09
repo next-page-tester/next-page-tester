@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.16.0
+
+### New Features
+
+- Expose new `render`, `documentRender` and `documentRenderAsString` methods
+- Render page twice, in server and browser environment
+- Mount/hydrate with `react-dom/server` `hydrate`
+
+### Breaking Changes
+
+- `page` doesn't render `_document` when `useDocument` is `true`
+
 ## 0.15.0
 
 ### New Features
