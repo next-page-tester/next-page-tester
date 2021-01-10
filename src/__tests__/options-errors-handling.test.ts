@@ -9,7 +9,9 @@ describe('Options errors handling', () => {
           nextRoot,
           route: 'blog',
         })
-      ).rejects.toThrow('[next page tester] "route" option should start');
+      ).rejects.toThrow(
+        '[next-page-tester] "route" option should start with "/"'
+      );
     });
   });
 
@@ -20,7 +22,7 @@ describe('Options errors handling', () => {
           nextRoot: 'doesnt-exist',
           route: '/page',
         })
-      ).rejects.toThrow('[next page tester] Cannot find "nextRoot" directory');
+      ).rejects.toThrow('[next-page-tester] Cannot find "nextRoot" directory');
     });
   });
 });

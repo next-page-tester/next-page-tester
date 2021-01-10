@@ -117,7 +117,7 @@ describe('Client side navigation', () => {
 
     await waitFor(() => {
       expect(warn).toHaveBeenCalledWith(
-        '[next-page-tester]: Un-awaited client side navigation from "/a" to "/b". This might lead into unexpected bugs and errors.'
+        '[next-page-tester] Un-awaited client side navigation from "/a" to "/b". This might lead into unexpected bugs and errors.'
       );
     });
 

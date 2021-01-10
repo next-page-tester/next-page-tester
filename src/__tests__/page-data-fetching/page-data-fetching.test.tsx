@@ -95,7 +95,7 @@ describe('Data fetching', () => {
           route: '/multiple-data-fetching',
         })
       ).rejects.toThrow(
-        '[next page tester] Only one data fetching method is allowed'
+        '[next-page-tester] Only one data fetching method is allowed'
       );
     });
   });

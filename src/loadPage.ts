@@ -33,7 +33,7 @@ export function loadPage<FileType>({
   }
 
   throw new Error(
-    "[next page tester] Couldn't find required page file with matching extension"
+    "[next-page-tester] Couldn't find required page file with matching extension"
   );
 }
 

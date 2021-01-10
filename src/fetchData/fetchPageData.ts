@@ -35,7 +35,7 @@ function ensureNoMultipleDataFetchingMethods({
   }
   if (methodsCounter > 1) {
     throw new Error(
-      '[next page tester] Only one data fetching method is allowed'
+      '[next-page-tester] Only one data fetching method is allowed'
     );
   }
 }
@@ -53,7 +53,7 @@ function ensurePageDataHasProps({
     }
   }
 
-  const errorMessage = `[next page tester] Page's fetching method returned an object with unsupported fields. Supported fields are: "[${allowedKeys.join(
+  const errorMessage = `[next-page-tester] Page's fetching method returned an object with unsupported fields. Supported fields are: "[${allowedKeys.join(
     ', '
   )}]". Returned value is available in error.payload.`;
   const error: CustomError = new Error(errorMessage);

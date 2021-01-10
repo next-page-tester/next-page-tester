@@ -23,7 +23,7 @@ describe('page file extensions', () => {
             route: '/invalid',
           })
         ).rejects.toThrow(
-          '[next page tester] No matching page found for given route'
+          '[next-page-tester] No matching page found for given route'
         );
       });
     });
@@ -49,7 +49,7 @@ describe('page file extensions', () => {
             route: '/js',
           })
         ).rejects.toThrow(
-          '[next page tester] No matching page found for given route'
+          '[next-page-tester] No matching page found for given route'
         );
       });
     });

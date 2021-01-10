@@ -9,7 +9,7 @@ describe('no-default-export', () => {
         route: '/a',
       })
     ).rejects.toThrow(
-      '[next-page-tester]: No default export found for given route'
+      '[next-page-tester] No default export found for given route'
     );
   });
 });

@@ -42,7 +42,7 @@ describe('Pages directory discovery + "nextRoot" option', () => {
             nextRoot: __dirname,
             route: '/page',
           })
-        ).rejects.toThrow('[next page tester] Cannot find "pages" directory');
+        ).rejects.toThrow('[next-page-tester] Cannot find "pages" directory');
       });
     });
   });

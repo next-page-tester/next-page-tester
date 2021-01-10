@@ -156,7 +156,7 @@ describe('_app support', () => {
           route: '/_app',
         })
       ).rejects.toThrow(
-        '[next page tester] No matching page found for given route'
+        '[next-page-tester] No matching page found for given route'
       );
     });
   });
