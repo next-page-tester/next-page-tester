@@ -24,13 +24,13 @@ export default async function getPageObject({
 
     if (!page.client.default) {
       throw new Error(
-        '[next-page-tester]: No default export found for given route'
+        '[next-page-tester] No default export found for given route'
       );
     }
     const appFile = getAppFile({ options });
     return { page, appFile, ...pageInfo };
   }
-  throw new Error('[next page tester] No matching page found for given route');
+  throw new Error('[next-page-tester] No matching page found for given route');
 }
 
 type RegexCaptureGroups =

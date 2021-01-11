@@ -21,12 +21,12 @@ import type {
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
   if (!route.startsWith('/')) {
-    throw new Error('[next page tester] "route" option should start with "/"');
+    throw new Error('[next-page-tester] "route" option should start with "/"');
   }
 
   if (!existsSync(nextRoot)) {
     throw new Error(
-      '[next page tester] Cannot find "nextRoot" directory under: ${nextRoot}'
+      '[next-page-tester] Cannot find "nextRoot" directory under: ${nextRoot}'
     );
   }
 }

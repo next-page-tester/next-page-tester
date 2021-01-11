@@ -41,7 +41,7 @@ export default function RouterProvider({
       setState({ router: nextRouter, children: pageElement });
     } else {
       console.warn(
-        `[next-page-tester]: Un-awaited client side navigation from "${previousRoute}" to "${nextRoute}". This might lead into unexpected bugs and errors.`
+        `[next-page-tester] Un-awaited client side navigation from "${previousRoute}" to "${nextRoute}". This might lead into unexpected bugs and errors.`
       );
     }
   }, []);

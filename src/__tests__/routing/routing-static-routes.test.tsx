@@ -24,7 +24,7 @@ describe('Static routes', () => {
           route: '/blog/5/doesntexists',
         })
       ).rejects.toThrow(
-        '[next page tester] No matching page found for given route'
+        '[next-page-tester] No matching page found for given route'
       );
     });
   });
@@ -41,7 +41,7 @@ describe('Static routes', () => {
   describe('route === "_document"', () => {
     it('throws "page not found" error', async () => {
       await expect(getPage({ nextRoot, route: '/_document' })).rejects.toThrow(
-        '[next page tester] No matching page found for given route'
+        '[next-page-tester] No matching page found for given route'
       );
     });
   });
@@ -70,7 +70,7 @@ describe('Static routes', () => {
           route: '/api',
         })
       ).rejects.toThrow(
-        '[next page tester] No matching page found for given route'
+        '[next-page-tester] No matching page found for given route'
       );
     });
   });
