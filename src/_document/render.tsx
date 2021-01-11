@@ -8,6 +8,17 @@ import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import type { DocumentProps } from 'next/document';
 
+export const wrapWithDocument = (pageElement: JSX.Element) => {
+  return (
+    <html>
+      <head></head>
+      <body>
+        <div id="__next">{pageElement}</div>
+      </body>
+    </html>
+  );
+};
+
 export default async function renderDocument({
   pageElement,
   options,
@@ -23,14 +34,7 @@ export default async function renderDocument({
 
   // Return an empty dummy document if useDocument is not enabled
   if (!useDocument) {
-    return (
-      <html>
-        <head></head>
-        <body>
-          <div id="__next">{pageElement}</div>
-        </body>
-      </html>
-    );
+    return wrapWithDocument(pageElement);
   }
 
   const customDocumentFile = getDocumentFile({ options });

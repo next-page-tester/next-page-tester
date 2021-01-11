@@ -3,6 +3,7 @@ import { getPage } from '../../';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import IndexPage from './__fixtures__/pages/index';
 import BlogIndexPage from './__fixtures__/pages/blog/index';
+import { screen } from '@testing-library/react';
 
 const nextRoot = __dirname + '/__fixtures__';
 
@@ -17,15 +18,17 @@ describe('Static routes', () => {
   });
 
   describe('route not matching any page', () => {
-    it('throws "page not found" error', async () => {
-      await expect(
-        getPage({
-          nextRoot,
-          route: '/blog/5/doesntexists',
-        })
-      ).rejects.toThrow(
-        '[next-page-tester] No matching page found for given route'
-      );
+    it('throws "page not found" error page', async () => {
+      const { render } = await getPage({
+        nextRoot,
+        route: '/blog/5/doesntexists',
+      });
+      render();
+
+      expect(screen.getByText('404')).toBeInTheDocument();
+      expect(
+        screen.getByText('This page could not be found', { exact: false })
+      ).toBeInTheDocument();
     });
   });
 
@@ -39,10 +42,13 @@ describe('Static routes', () => {
   });
 
   describe('route === "_document"', () => {
-    it('throws "page not found" error', async () => {
-      await expect(getPage({ nextRoot, route: '/_document' })).rejects.toThrow(
-        '[next-page-tester] No matching page found for given route'
-      );
+    it('throws "page not found" error page', async () => {
+      const { render } = await getPage({ nextRoot, route: '/_document' });
+      render();
+      expect(screen.getByText('404')).toBeInTheDocument();
+      expect(
+        screen.getByText('This page could not be found', { exact: false })
+      ).toBeInTheDocument();
     });
   });
 
@@ -64,14 +70,15 @@ describe('Static routes', () => {
 
   describe('route matching /api pages', () => {
     it('throws "page not found" error', async () => {
-      await expect(
-        getPage({
-          nextRoot,
-          route: '/api',
-        })
-      ).rejects.toThrow(
-        '[next-page-tester] No matching page found for given route'
-      );
+      const { render } = await getPage({
+        nextRoot,
+        route: '/api',
+      });
+      render();
+      expect(screen.getByText('404')).toBeInTheDocument();
+      expect(
+        screen.getByText('This page could not be found', { exact: false })
+      ).toBeInTheDocument();
     });
   });
 });

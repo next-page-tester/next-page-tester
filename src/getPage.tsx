@@ -18,6 +18,9 @@ import type {
   ExtendedOptions,
   Page,
 } from './commonTypes';
+import { ServerResponse } from 'http';
+import { InternalError } from './_error/Error';
+import { renderErrorPage } from './_error';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
   if (!route.startsWith('/')) {
@@ -84,51 +87,71 @@ export default async function getPage({
     return { pageElement, pageData, pageObject };
   };
 
-  let {
-    pageElement: serverPageElement,
-    pageData,
-    pageObject,
-  } = await makePage();
+  try {
+    let {
+      pageElement: serverPageElement,
+      pageData,
+      pageObject,
+    } = await makePage();
 
-  serverPageElement = (
-    <RouterProvider
-      pageObject={pageObject}
-      options={options}
-      makePage={makePage}
-    >
-      {serverPageElement}
-    </RouterProvider>
-  );
+    serverPageElement = (
+      <RouterProvider
+        pageObject={pageObject}
+        options={options}
+        makePage={makePage}
+      >
+        {serverPageElement}
+      </RouterProvider>
+    );
 
-  // Wrap server page with document element
-  serverPageElement = await renderDocument({
-    pageElement: serverPageElement,
-    options,
-    pageObject,
-    pageData,
-  });
+    // Wrap server page with document element
+    serverPageElement = await renderDocument({
+      pageElement: serverPageElement,
+      options,
+      pageObject,
+      pageData,
+    });
 
-  let clientPageElement = renderApp({
-    options: {
-      ...options,
-      env: 'client',
-    },
-    pageObject,
-    pageData,
-  });
+    let clientPageElement = renderApp({
+      options: {
+        ...options,
+        env: 'client',
+      },
+      pageObject,
+      pageData,
+    });
 
-  clientPageElement = (
-    <RouterProvider
-      pageObject={pageObject}
-      options={options}
-      makePage={makePage}
-    >
-      {clientPageElement}
-    </RouterProvider>
-  );
+    clientPageElement = (
+      <RouterProvider
+        pageObject={pageObject}
+        options={options}
+        makePage={makePage}
+      >
+        {clientPageElement}
+      </RouterProvider>
+    );
 
-  return {
-    page: clientPageElement,
-    ...makeRenderMethods({ serverPageElement, clientPageElement }),
-  };
+    return {
+      page: clientPageElement,
+      ...makeRenderMethods({ serverPageElement, clientPageElement }),
+    };
+  } catch (err) {
+    if (err.name === InternalError.NAME) {
+      throw err;
+    }
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+
+    const { serverPageElement, clientPageElement } = await renderErrorPage({
+      err,
+      options,
+      res: {} as ServerResponse,
+    });
+
+    return {
+      page: clientPageElement,
+      ...makeRenderMethods({ serverPageElement, clientPageElement }),
+    };
+  }
 }

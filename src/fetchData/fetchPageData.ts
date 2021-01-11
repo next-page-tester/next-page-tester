@@ -17,6 +17,7 @@ import type {
 } from '../commonTypes';
 import type { CustomError } from '../commonTypes';
 import { executeAsIfOnServer } from '../server';
+import { InternalError } from '../_error/error';
 
 function ensureNoMultipleDataFetchingMethods({
   page,
@@ -34,9 +35,7 @@ function ensureNoMultipleDataFetchingMethods({
     methodsCounter++;
   }
   if (methodsCounter > 1) {
-    throw new Error(
-      '[next-page-tester] Only one data fetching method is allowed'
-    );
+    throw new InternalError('Only one data fetching method is allowed');
   }
 }
 
@@ -46,17 +45,17 @@ function ensurePageDataHasProps({
 }: {
   pageData: { [key: string]: any };
 }) {
-  const allowedKeys = ['props', 'redirect'];
+  const allowedKeys = ['props', 'redirect', 'notFound'];
   for (const key of allowedKeys) {
     if (key in pageData) {
       return;
     }
   }
 
-  const errorMessage = `[next-page-tester] Page's fetching method returned an object with unsupported fields. Supported fields are: "[${allowedKeys.join(
+  const errorMessage = `Page's fetching method returned an object with unsupported fields. Supported fields are: "[${allowedKeys.join(
     ', '
   )}]". Returned value is available in error.payload.`;
-  const error: CustomError = new Error(errorMessage);
+  const error: CustomError = new InternalError(errorMessage);
   error.payload = pageData;
   throw error;
 }

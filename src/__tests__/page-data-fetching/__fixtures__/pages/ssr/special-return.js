@@ -7,6 +7,6 @@ export default function ssr_notFound() {
 export async function getServerSideProps(ctx) {
   await sleep(1);
   return {
-    notFound: true,
+    x: true,
   };
 }

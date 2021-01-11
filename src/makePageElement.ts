@@ -2,6 +2,7 @@ import getPageObject from './getPageObject';
 import { fetchRouteData } from './fetchData';
 import { renderApp } from './_app';
 import type { ExtendedOptions, Page } from './commonTypes';
+import { NotFoundError } from './_error/error';
 
 /*
  * Return an instance of the page element corresponding
@@ -20,6 +21,10 @@ export default async function makePageElement({
     pageObject,
     options,
   });
+
+  if (pageData.notFound) {
+    throw new NotFoundError();
+  }
 
   if (pageData.redirect) {
     return makePageElement({

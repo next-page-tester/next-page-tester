@@ -36,6 +36,12 @@ export function parseQueryString({
   return querystring.parse(qs);
 }
 
+export function parseRouteData(route: string) {
+  const { pathname, search } = parseRoute({ route });
+  const query = parseQueryString({ queryString: search });
+  return { query, pathname };
+}
+
 export function stringifyQueryString({
   object,
   leadingQuestionMark,
