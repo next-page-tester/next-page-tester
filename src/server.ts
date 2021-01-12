@@ -1,3 +1,4 @@
+import setNextRuntimeConfig from './setNextRuntimeConfig';
 import { executeWithFreshModules } from './utils';
 
 export const requireAsIfOnServer = <FileType>(path: string): FileType => {
@@ -14,12 +15,14 @@ export const executeAsIfOnServer = async <T>(f: () => T) => {
   delete global.window;
   // @ts-ignore
   delete global.document;
+  setNextRuntimeConfig({ runtimeEnv: 'server' });
 
   try {
     return await f();
   } finally {
     global.window = tmpWindow;
     global.document = tmpDocument;
+    setNextRuntimeConfig({ runtimeEnv: 'client' });
   }
 };
 
@@ -31,11 +34,13 @@ export const executeAsIfOnServerSync = <T>(f: () => T): T => {
   delete global.window;
   // @ts-ignore
   delete global.document;
+  setNextRuntimeConfig({ runtimeEnv: 'server' });
 
   try {
     return f();
   } finally {
     global.window = tmpWindow;
     global.document = tmpDocument;
+    setNextRuntimeConfig({ runtimeEnv: 'client' });
   }
 };
