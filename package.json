@@ -22,7 +22,7 @@
     "postversion": "git push && git push --tags",
     "prettier:fix": "prettier --write .",
     "prettier:check": "prettier --check .",
-    "eslint:check": "eslint --max-warnings 0 --ext .ts,.tsx,.js 'src/**/*'"
+    "eslint:check": "eslint --max-warnings 0 --ext .ts,.tsx,.js 'src'"
   },
   "keywords": [
     "next",
