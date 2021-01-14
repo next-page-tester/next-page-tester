@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { getPage } from '../../';
+import { getPage } from '../../../src';
 
 describe('page file extensions', () => {
   describe('default next.config file', () => {

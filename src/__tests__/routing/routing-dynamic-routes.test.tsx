@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import BlogPage from './__fixtures__/pages/blog/[id]';
 import BlogPage99 from './__fixtures__/pages/blog/99';

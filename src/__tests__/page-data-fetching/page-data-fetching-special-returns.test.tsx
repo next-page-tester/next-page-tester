@@ -1,5 +1,5 @@
 import type { CustomError } from '../../commonTypes';
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 import * as NotFoundPage from './__fixtures__/pages/ssr/not-found';
 import path from 'path';
 
