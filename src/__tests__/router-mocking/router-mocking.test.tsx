@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import WithRouter from './__fixtures__/pages/with-router/[id]';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import path from 'path';
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 import { expectDOMElementsToMatch } from '../__utils__';
 import CustomDocumentWithGIP_Page from './__fixtures__/custom-document-with-gip/pages/page';
 import CustomApp from './__fixtures__/custom-document-with-gip/pages/_app';

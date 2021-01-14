@@ -1,4 +1,4 @@
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 import { screen } from '@testing-library/react';
 import path from 'path';
 

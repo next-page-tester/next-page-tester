@@ -1,5 +1,5 @@
 import path from 'path';
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 
 describe('no-default-export', () => {
   test('Should throw error if page has no default export', async () => {

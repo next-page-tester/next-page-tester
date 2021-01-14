@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { render as TLRender } from '@testing-library/react';
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 import path from 'path';
 import App from './__fixtures__/pages/_app';
 import Page from './__fixtures__/pages/page';

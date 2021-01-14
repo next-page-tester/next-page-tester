@@ -1,4 +1,4 @@
-import { getPage } from '../index';
+import { getPage } from '../../src';
 const nextRoot = __dirname + '/__fixtures__';
 
 describe('Options errors handling', () => {
