@@ -4,7 +4,7 @@ import { GetServerSideProps } from 'next';
 
 type Props = {
   reqHeadersCookie?: string;
-  reqCookies?: object;
+  reqCookies?: Record<string, unknown>;
 };
 
 export default function Login({ reqHeadersCookie, reqCookies }: Props) {

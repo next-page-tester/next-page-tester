@@ -14,7 +14,7 @@ export function initTestHelpers() {
   if (isJSDOMEnvironment()) {
     // Mock IntersectionObserver (Link component relies on it)
     if (!global.IntersectionObserver) {
-      //@ts-ignore
+      //@ts-expect-error missing DOM types
       global.IntersectionObserver = IntersectionObserver;
     }
 

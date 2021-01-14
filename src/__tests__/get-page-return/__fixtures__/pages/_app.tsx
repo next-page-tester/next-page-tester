@@ -5,7 +5,7 @@ export default function CustomApp({
   pageProps,
 }: {
   Component: React.ElementType;
-  pageProps?: {};
+  pageProps?: Record<string, unknown>;
 }) {
   return (
     <div className="APP">

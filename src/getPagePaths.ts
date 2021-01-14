@@ -13,7 +13,7 @@ async function getPagePaths({
     normalizePath(path.join(pagesDirectory, '**', '*')),
   ]);
 
-  const extensionsRegex = new RegExp(`\.(${pageExtensions.join('|')})$`);
+  const extensionsRegex = new RegExp(`.(${pageExtensions.join('|')})$`);
   return (
     files
       // Make page paths relative

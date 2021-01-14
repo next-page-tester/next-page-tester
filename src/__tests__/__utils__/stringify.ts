@@ -1,3 +1,3 @@
-export function stringify(entity: any): string {
+export function stringify(entity: unknown): string {
   return JSON.stringify(entity, null, ' ');
 }

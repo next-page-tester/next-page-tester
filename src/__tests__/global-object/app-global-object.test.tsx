@@ -46,8 +46,9 @@ describe('Global object', () => {
   describe('_app', () => {
     describe.each(['server', 'initial', 'client'])(
       '%s render',
-      (renderType) => {
+      (untypedRenderType) => {
         it("executes app's exports with expected env globals", async () => {
+          const renderType = untypedRenderType as keyof typeof expectedGlobals;
           const initialRoute = renderType === 'client' ? '/' : '/page';
           const { render, serverRender } = await getPage({
             nextRoot: path.join(__dirname, '__fixtures__'),
@@ -63,7 +64,6 @@ describe('Global object', () => {
             await screen.findByText('Page');
           }
 
-          // @ts-ignore
           const expectedProps = expectedGlobals[renderType];
           const { container: expected } = renderWithinNextRoot(
             <Page {...expectedProps} />

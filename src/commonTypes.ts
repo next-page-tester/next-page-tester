@@ -59,7 +59,7 @@ export type PageObject = {
 };
 
 export type PageProps = {
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 export type PageData<P extends PageProps = PageProps> = {
@@ -68,7 +68,7 @@ export type PageData<P extends PageProps = PageProps> = {
 };
 
 export type NextPageFile = {
-  [name: string]: any;
+  [name: string]: unknown;
   default: NextPage;
   getServerSideProps?: GetServerSideProps;
   getStaticProps?: GetStaticProps;
@@ -89,7 +89,7 @@ export type NextApp = React.FunctionComponent<{
 };
 
 export type NextAppFile = {
-  [name: string]: any;
+  [name: string]: unknown;
   default: NextApp;
 };
 
@@ -98,7 +98,7 @@ export type NextDocumentFile = {
 };
 
 export class CustomError extends Error {
-  payload?: any;
+  payload?: unknown;
 }
 
 export type Page = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { sleep, PropsPrinter } from '../../../../__utils__/';
 
-export default function CustomAppWithGIP_GIP({ ctx, ...props }) {
+export default function CustomAppWithGIP_GIP({ ctx: _ctx, ...props }) {
   return (
     <>
       /custom-app-with-gip/gip -
