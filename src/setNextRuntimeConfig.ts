@@ -9,7 +9,7 @@ export default function setNextRuntimeConfig({
   const config = getNextConfig();
   const { serverRuntimeConfig, publicRuntimeConfig } = config;
 
-  envConfig.setConfig({
+  setConfig({
     serverRuntimeConfig: runtimeEnv === 'server' ? serverRuntimeConfig : {},
     publicRuntimeConfig,
   });
