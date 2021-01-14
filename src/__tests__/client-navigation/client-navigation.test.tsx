@@ -1,6 +1,6 @@
 import React from 'react';
 import { render as TLRender, waitFor, screen } from '@testing-library/react';
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import PageB from './__fixtures__/pages/b';
 import userEvent from '@testing-library/user-event';

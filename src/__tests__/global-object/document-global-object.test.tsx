@@ -1,7 +1,7 @@
 import path from 'path';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 import { getMetaTagsContentByName } from '../__utils__/_document';
 
 describe('Global object', () => {

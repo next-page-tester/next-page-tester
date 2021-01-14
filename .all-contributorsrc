@@ -39,6 +39,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "tomaszrondio",
+      "name": "Tomasz Rondio",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/4939724?v=4",
+      "profile": "https://github.com/tomaszrondio",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,

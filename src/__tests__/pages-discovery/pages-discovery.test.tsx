@@ -1,6 +1,6 @@
 import path from 'path';
 import { screen } from '@testing-library/react';
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 
 describe('Pages directory discovery + "nextRoot" option', () => {
   it('discover "pages" directory in auto-detected root', async () => {

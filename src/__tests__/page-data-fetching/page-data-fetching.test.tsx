@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import httpMocks from 'node-mocks-http';
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import SSRPage from './__fixtures__/pages/ssr/[id]';
 import SSGPage from './__fixtures__/pages/ssg/[id]';

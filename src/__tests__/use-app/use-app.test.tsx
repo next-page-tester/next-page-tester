@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import httpMocks from 'node-mocks-http';
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import CustomAppWithGIP from './__fixtures__/custom-app-with-gip/pages/_app';
 import CustomAppWithGIP_AppContextPage from './__fixtures__/custom-app-with-gip/pages/app-context';

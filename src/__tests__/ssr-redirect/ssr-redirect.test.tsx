@@ -1,5 +1,5 @@
-import { getPage } from '../../index';
-import { getByText, screen } from '@testing-library/react';
+import { getPage } from '../../../src';
+import { screen } from '@testing-library/react';
 import path from 'path';
 import userEvent from '@testing-library/user-event';
 
