@@ -202,11 +202,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-<!-- markdownlint-disable -->
+<!-- prettier-ignore-start -->
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
- 
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
