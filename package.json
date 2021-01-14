@@ -12,7 +12,7 @@
     "clean": "rm -rf dist",
     "compile": "npm run clean && tsc",
     "test": "jest ./src",
-    "test:source": "npm run test:format && npm run test:ts && npm t -- --coverage",
+    "test:source": "concurrently \"npm run test:format\" \"npm run test:ts\" \"npm t -- --coverage\"",
     "test:dist": "jest ./src --config ./jest/dist.config.js",
     "test:ts": "tsc --noEmit",
     "test:format": "concurrently \"npm run prettier:check\" \"npm run eslint:check\"",
