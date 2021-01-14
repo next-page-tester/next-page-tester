@@ -1,4 +1,4 @@
-import * as envConfig from 'next/dist/next-server/lib/runtime-config';
+import { setConfig } from 'next/dist/next-server/lib/runtime-config';
 import { getNextConfig } from './nextConfig';
 
 export default function setNextRuntimeConfig({
