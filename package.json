@@ -20,7 +20,7 @@
     "preversion": "npm run prepare",
     "version": "git add package.json",
     "postversion": "git push && git push --tags",
-    "format": "prettier --write .",
+    "prettier:fix": "prettier --write .",
     "prettier:check": "prettier --check .",
     "eslint:check": "eslint --max-warnings 0 --ext .ts,.tsx,.js 'src/**/*'"
   },
