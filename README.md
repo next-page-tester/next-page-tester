@@ -193,6 +193,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://www.matej.snuderl.si/"><img src="https://avatars3.githubusercontent.com/u/8524109?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Matej Šnuderl</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/commits?author=Meemaw" title="Code">💻</a> <a href="#infra-Meemaw" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/toomuchdesign/next-page-tester/commits?author=Meemaw" title="Tests">⚠️</a> <a href="https://github.com/toomuchdesign/next-page-tester/pulls?q=is%3Apr+reviewed-by%3AMeemaw" title="Reviewed Pull Requests">👀</a> <a href="#ideas-Meemaw" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/toomuchdesign/next-page-tester/commits?author=Meemaw" title="Documentation">📖</a></td>
     <td align="center"><a href="https://jason-williams.co.uk"><img src="https://avatars3.githubusercontent.com/u/936006?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jason Williams</b></sub></a><br /><a href="#ideas-jasonwilliams" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/kfazinic"><img src="https://avatars0.githubusercontent.com/u/8618138?v=4?s=100" width="100px;" alt=""/><br /><sub><b>kfazinic</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Akfazinic" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/tomaszrondio"><img src="https://avatars0.githubusercontent.com/u/4939724?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tomasz Rondio</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Atomaszrondio" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
@@ -201,9 +202,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
+<!-- markdownlint-disable -->
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
  
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+<!-- markdownlint-restore -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
