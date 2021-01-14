@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.1
+
+### Bugfixes
+
+- Fix missing DefaultApp.tsx file in dist folder
+- Uniform error messages
+
 ## 0.16.0
 
 ### New Features
