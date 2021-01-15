@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.16.2
+
+### Bugfixes
+
+- Fix missing cookie package dependency
+
 ## 0.16.1
 
 ### Bugfixes
