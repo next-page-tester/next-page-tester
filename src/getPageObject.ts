@@ -38,17 +38,21 @@ export default async function getPageObject({
 }
 
 function makeParamsObject({
+  pagePath,
   regexCaptureGroups,
-  dynamicRouteParams,
 }: {
+  pagePath: string;
   regexCaptureGroups?: { [name: string]: string };
-  dynamicRouteParams: { [pathSegment: string]: ROUTE_PARAMS_TYPES };
 }) {
   const params = {} as PageParams;
+  const pagePathParams = extractDynamicPagePathParams({
+    pagePath,
+  });
+
   if (regexCaptureGroups) {
     for (const [key, value] of Object.entries(regexCaptureGroups)) {
       if (value !== undefined) {
-        const paramType = dynamicRouteParams[key];
+        const paramType = pagePathParams[key];
         if (
           paramType === ROUTE_PARAMS_TYPES.CATCH_ALL ||
           paramType === ROUTE_PARAMS_TYPES.OPTIONAL_CATCH_ALL
@@ -81,10 +85,8 @@ async function getPageInfo({ options }: { options: ExtendedOptions }) {
       const result = routePathName.match(pagePathRegexes[index]);
       if (result) {
         const params = makeParamsObject({
+          pagePath: originalPath,
           regexCaptureGroups: result.groups,
-          dynamicRouteParams: extractDynamicPagePathParams({
-            pagePath: originalPath,
-          }),
         });
         return {
           route,
