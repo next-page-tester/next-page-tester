@@ -1,12 +1,12 @@
 import {
-  extractDynamicPagePathParams,
+  extractPagePathParamsType,
   ROUTE_PARAMS_TYPES,
 } from '../pagePathParser';
 
-describe('extractDynamicPagePathParams', () => {
+describe('extractPagePathParamsType', () => {
   describe('predefined routes', () => {
     it('gets expected regex', () => {
-      const actual = extractDynamicPagePathParams({ pagePath: '/index' });
+      const actual = extractPagePathParamsType({ pagePath: '/index' });
       const expected = {};
       expect(actual).toEqual(expected);
     });
@@ -14,7 +14,7 @@ describe('extractDynamicPagePathParams', () => {
 
   describe('dynamic segments', () => {
     it('gets expected regex', () => {
-      const actual = extractDynamicPagePathParams({
+      const actual = extractPagePathParamsType({
         pagePath: '/blog/[id]/[foo]/index',
       });
       const expected = {
@@ -27,7 +27,7 @@ describe('extractDynamicPagePathParams', () => {
 
   describe('catch all segments', () => {
     it('gets expected regex', () => {
-      const actual = extractDynamicPagePathParams({
+      const actual = extractPagePathParamsType({
         pagePath: '/blog/[id]/[...foo]/index',
       });
       const expected = {
@@ -40,7 +40,7 @@ describe('extractDynamicPagePathParams', () => {
 
   describe('optional catch all segments', () => {
     it('gets expected regex', () => {
-      const actual = extractDynamicPagePathParams({
+      const actual = extractPagePathParamsType({
         pagePath: '/blog/[id]/[[...foo]]/index',
       });
       const expected = {

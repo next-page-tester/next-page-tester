@@ -1,7 +1,7 @@
 import getPagePaths from './getPagePaths';
 import {
   pagePathToRouteRegex,
-  extractDynamicPagePathParams,
+  extractPagePathParamsType,
   ROUTE_PARAMS_TYPES,
 } from './pagePathParser';
 import { loadPage } from './loadPage';
@@ -45,7 +45,7 @@ function makeParamsObject({
   regexCaptureGroups?: { [name: string]: string };
 }) {
   const params = {} as PageParams;
-  const pagePathParams = extractDynamicPagePathParams({
+  const pagePathParams = extractPagePathParamsType({
     pagePath,
   });
 

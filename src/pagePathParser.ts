@@ -66,8 +66,8 @@ export enum ROUTE_PARAMS_TYPES {
   OPTIONAL_CATCH_ALL = 'optional_catch_all',
 }
 
-// Create an object listing the dynamic segments of a given Next.js page path.
-export function extractDynamicPagePathParams({
+// Create an object listing the param types of a given Next.js page path.
+export function extractPagePathParamsType({
   pagePath,
 }: {
   pagePath: string;
@@ -104,8 +104,8 @@ export function extractDynamicPagePathParams({
   ].forEach(({ matches, type }) => {
     for (const match of matches) {
       if (match) {
-        const param = match[1];
-        routeParams[param] = type;
+        const paramName = match[1];
+        routeParams[paramName] = type;
       }
     }
   });
