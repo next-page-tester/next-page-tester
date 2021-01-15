@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.17.0
+
+### Breaking Changes
+
+- Minimum Node.js supported version >= 12
+
+### Bugfixes
+
+- Catch-all and optional cath-all route segments return `params` entries as array of values
+
+### New Features
+
+- Support next/config runtime configuration
+
 ## 0.16.2
 
 ### Bugfixes
