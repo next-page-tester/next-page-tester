@@ -75,7 +75,7 @@ export function extractPagePathParamsType({
   Record<string, ROUTE_PARAMS_TYPES>
 } {
   const routeParams: {
-    [pathSegment: string]: ROUTE_PARAMS_TYPES;
+    Record<string, ROUTE_PARAMS_TYPES>
   } = {};
 
   const optionalCatchAllParams = [
