@@ -28,7 +28,7 @@ describe('Dynamic routes', () => {
       expectDOMElementsToMatch(actual, expected);
     });
 
-    it('gets expected page object with params and querystring', async () => {
+    it('gets expected page and router object', async () => {
       const { render } = await getPage({
         nextRoot,
         route: '/blog/5?foo=bar',
@@ -59,24 +59,47 @@ describe('Dynamic routes', () => {
   });
 
   describe('Catch all routes', () => {
-    it('gets expected page object with params and querystring', async () => {
-      const { render } = await getPage({
-        nextRoot,
-        route: '/catch-all/5/foo/bar/moo?foo=bar',
+    describe('single catch-all param', () => {
+      it('gets expected page and router object', async () => {
+        const { render } = await getPage({
+          nextRoot,
+          route: '/catch-all/5/aaa',
+        });
+        const { nextRoot: actual } = render();
+        const { container: expected } = renderWithinNextRoot(
+          <CatchAllPage
+            routerMock={{
+              query: {
+                id: '5',
+                slug: ['aaa'],
+              },
+            }}
+          />
+        );
+        expectDOMElementsToMatch(actual, expected);
       });
-      const { nextRoot: actual } = render();
-      const { container: expected } = renderWithinNextRoot(
-        <CatchAllPage
-          routerMock={{
-            query: {
-              id: '5',
-              slug: ['foo', 'bar', 'moo'],
-              foo: 'bar',
-            },
-          }}
-        />
-      );
-      expectDOMElementsToMatch(actual, expected);
+    });
+
+    describe('multiple catch-all params + querystring', () => {
+      it('gets expected page and router object', async () => {
+        const { render } = await getPage({
+          nextRoot,
+          route: '/catch-all/5/aaa/bbb/ccc?foo=bar',
+        });
+        const { nextRoot: actual } = render();
+        const { container: expected } = renderWithinNextRoot(
+          <CatchAllPage
+            routerMock={{
+              query: {
+                id: '5',
+                slug: ['aaa', 'bbb', 'ccc'],
+                foo: 'bar',
+              },
+            }}
+          />
+        );
+        expectDOMElementsToMatch(actual, expected);
+      });
     });
 
     it('throws "page not found" error when no optional params are provided', async () => {
@@ -92,11 +115,11 @@ describe('Dynamic routes', () => {
   });
 
   describe('Optional catch all routes', () => {
-    describe('Optional catch all routes', () => {
-      it('gets expected page object with params and querystring', async () => {
+    describe('multiple catch-all params + querystring', () => {
+      it('gets expected page and router object', async () => {
         const { render } = await getPage({
           nextRoot,
-          route: '/optional-catch-all/5/foo/bar/moo?foo=bar',
+          route: '/optional-catch-all/5/aaa/bbb/ccc?foo=bar',
         });
         const { nextRoot: actual } = render();
         const { container: expected } = renderWithinNextRoot(
@@ -104,7 +127,7 @@ describe('Dynamic routes', () => {
             routerMock={{
               query: {
                 id: '5',
-                slug: ['foo', 'bar', 'moo'],
+                slug: ['aaa', 'bbb', 'ccc'],
                 foo: 'bar',
               },
             }}

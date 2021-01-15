@@ -2,6 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2018",
+    "lib": ["DOM", "ES6", "DOM.Iterable", "es2020.string"],
     "strict": true,
     "esModuleInterop": true,
     "noErrorTruncation": true,
