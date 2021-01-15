@@ -3,10 +3,9 @@ import { useRef, useEffect, useCallback } from 'react';
 import querystring from 'querystring';
 import findRoot from 'find-root';
 import { existsSync } from 'fs';
-import loadConfig from 'next/dist/next-server/server/config';
-import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
 import path from 'path';
 import stealthyRequire from 'stealthy-require';
+import { getNextConfig } from './nextConfig';
 
 export function parseRoute({ route }: { route: string }) {
   const urlObject = new URL(`http://test.com${route}`);
@@ -72,23 +71,8 @@ export function findPagesDirectory({ nextRoot }: { nextRoot: string }) {
   );
 }
 
-/*
- * Retrieve Next.js config using Next.js internals
- * https://github.com/vercel/next.js/blob/v10.0.1/test/isolated/config.test.js#L12
- *
- * Default config:
- * https://github.com/vercel/next.js/blob/canary/packages/next/next-server/server/config.ts
- */
-function getNextConfig({ pathToConfig }: { pathToConfig: string }) {
-  return loadConfig(PHASE_DEVELOPMENT_SERVER, pathToConfig);
-}
-
-export function getPageExtensions({
-  nextRoot,
-}: {
-  nextRoot: string;
-}): string[] {
-  const config = getNextConfig({ pathToConfig: nextRoot });
+export function getPageExtensions(): string[] {
+  const config = getNextConfig();
   return config.pageExtensions as string[];
 }
 
@@ -111,6 +95,7 @@ const nonIsolatedModules = [
   'next/router',
   'next/dist/next-server/lib/head-manager-context',
   'next/dist/next-server/lib/router-context',
+  'next/dist/next-server/lib/runtime-config',
 ];
 export function executeWithFreshModules<T>(f: () => T): T {
   /* istanbul ignore else */

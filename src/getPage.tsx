@@ -8,6 +8,8 @@ import { renderDocument } from './_document';
 import { renderApp } from './_app';
 import initHeadManager from 'next/dist/client/head-manager';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
+import { loadNextConfig } from './nextConfig';
+import setNextRuntimeConfig from './setNextRuntimeConfig';
 import {
   defaultNextRoot,
   findPagesDirectory,
@@ -53,11 +55,13 @@ export default async function getPage({
     useDocument,
   };
   validateOptions(optionsWithDefaults);
+  loadNextConfig({ nextRoot });
+  setNextRuntimeConfig({ runtimeEnv: 'client' });
 
   const options: ExtendedOptions = {
     ...optionsWithDefaults,
     pagesDirectory: findPagesDirectory({ nextRoot }),
-    pageExtensions: getPageExtensions({ nextRoot }),
+    pageExtensions: getPageExtensions(),
     env: 'server',
   };
   // @TODO: Consider printing extended options value behind a debug flag
