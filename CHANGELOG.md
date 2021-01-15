@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.17.0
+
+### Breaking Changes
+
+- Minimum Node.js supported version >= 12
+
+### Bugfixes
+
+- Fix missing cookie package dependency
+- Catch-all route segments return an array of values
+
 ## 0.16.1
 
 ### Bugfixes
