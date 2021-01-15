@@ -42,7 +42,7 @@ function makeParamsObject({
   regexCaptureGroups,
 }: {
   pagePath: string;
-  regexCaptureGroups?: Record<string, string>
+  regexCaptureGroups?: Record<string, string>;
 }) {
   const params = {} as PageParams;
   const pagePathParams = extractPagePathParamsType({

@@ -71,12 +71,8 @@ export function extractPagePathParamsType({
   pagePath,
 }: {
   pagePath: string;
-}): {
-  Record<string, ROUTE_PARAMS_TYPES>
-} {
-  const routeParams: {
-    Record<string, ROUTE_PARAMS_TYPES>
-  } = {};
+}): Record<string, ROUTE_PARAMS_TYPES> {
+  const routeParams: Record<string, ROUTE_PARAMS_TYPES> = {};
 
   const optionalCatchAllParams = [
     pagePath.match(OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_REGEX),
