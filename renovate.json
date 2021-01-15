@@ -65,6 +65,10 @@
       "groupName": "Update node-mocks-http"
     },
     {
+      "packageNames": ["cookie", "@types/cookie"],
+      "groupName": "Update cookie"
+    },
+    {
       "depTypeList": ["peerDependencies"],
       "enabled": false
     }
