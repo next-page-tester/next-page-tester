@@ -12,6 +12,20 @@
   "postUpdateOptions": ["npmDedupe"],
   "packageRules": [
     {
+      "packageNames": [
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/parser",
+        "eslint",
+        "eslint-config-prettier",
+        "eslint-plugin-jest",
+        "eslint-plugin-prettier",
+        "eslint-plugin-react",
+        "eslint-plugin-react-hooks",
+        "eslint-plugin-testing-library"
+      ],
+      "groupName": "Update eslint packages"
+    },
+    {
       "packageNames": ["next", "@types/webpack"],
       "groupName": "Update next.js packages"
     },
