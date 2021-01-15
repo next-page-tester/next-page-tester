@@ -6,7 +6,7 @@ const config = getConfig();
 export default function RuntimeConfigPage({
   configMock,
 }: {
-  configMock: { [key: string]: any };
+  configMock: { [key: string]: unknown };
 }) {
   return (
     <PropsPrinter

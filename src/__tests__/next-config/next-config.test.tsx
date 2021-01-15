@@ -14,7 +14,7 @@ describe('Runtime Configuration with next/config', () => {
        * Page component stores next/config value at module load time when runtime config
        * value is still undefined (This would also happen in an actual Next.js application)
        */
-      const Page = require('./__fixtures__/pages/page').default;
+      const { default: Page } = await import('./__fixtures__/pages/page');
       const { nextRoot: actual } = serverRender();
       const { container: expected } = renderWithinNextRoot(
         <Page
@@ -38,7 +38,7 @@ describe('Runtime Configuration with next/config', () => {
         nextRoot: __dirname + '/__fixtures__',
         route: '/page',
       });
-      const Page = require('./__fixtures__/pages/page').default;
+      const { default: Page } = await import('./__fixtures__/pages/page');
       const { nextRoot: actual } = render();
       const { container: expected } = renderWithinNextRoot(
         <Page
