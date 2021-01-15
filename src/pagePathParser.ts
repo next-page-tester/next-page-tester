@@ -28,7 +28,7 @@ function makeOptionalNamedCapturingGroup({ name, regex }: namedCapture) {
 }
 
 // Build a regex from a page path to catch its matching routes
-function pagePathToRouteRegex(pagePath: string): RegExp {
+export function pagePathToRouteRegex(pagePath: string): RegExp {
   // Special case for /index page which should match both "/" and "/index" pathnames
   if (pagePath === '/index') {
     return /^\/(?:index)?$/;
@@ -60,4 +60,51 @@ function pagePathToRouteRegex(pagePath: string): RegExp {
   return new RegExp(`^${regex}$`);
 }
 
-export default pagePathToRouteRegex;
+export enum ROUTE_PARAMS_TYPES {
+  DYNAMIC = 'dynamic',
+  CATCH_ALL = 'catch_all',
+  OPTIONAL_CATCH_ALL = 'optional_catch_all',
+}
+
+// Create an object listing the param types of a given Next.js page path.
+export function extractPagePathParamsType({
+  pagePath,
+}: {
+  pagePath: string;
+}): Record<string, ROUTE_PARAMS_TYPES> {
+  const routeParams: Record<string, ROUTE_PARAMS_TYPES> = {};
+
+  const optionalCatchAllParams = [
+    pagePath.match(OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_REGEX),
+  ];
+  pagePath = pagePath.replace(OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_REGEX, '');
+
+  const catchAllParams = [pagePath.match(CATCH_ALL_ROUTE_SEGMENT_REGEX)];
+  pagePath = pagePath.replace(CATCH_ALL_ROUTE_SEGMENT_REGEX, '');
+
+  const dynamicParams = [...pagePath.matchAll(DYNAMIC_ROUTE_SEGMENT_REGEX)];
+
+  [
+    {
+      matches: optionalCatchAllParams,
+      type: ROUTE_PARAMS_TYPES.OPTIONAL_CATCH_ALL,
+    },
+    {
+      matches: catchAllParams,
+      type: ROUTE_PARAMS_TYPES.CATCH_ALL,
+    },
+    {
+      matches: dynamicParams,
+      type: ROUTE_PARAMS_TYPES.DYNAMIC,
+    },
+  ].forEach(({ matches, type }) => {
+    for (const match of matches) {
+      if (match) {
+        const paramName = match[1];
+        routeParams[paramName] = type;
+      }
+    }
+  });
+
+  return routeParams;
+}

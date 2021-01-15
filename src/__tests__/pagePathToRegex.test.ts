@@ -1,4 +1,4 @@
-import pagePathToRouteRegex from '../pagePathToRouteRegex';
+import { pagePathToRouteRegex } from '../pagePathParser';
 
 describe('pagePathToRouteRegex', () => {
   describe('predefined routes', () => {

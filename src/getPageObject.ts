@@ -1,5 +1,9 @@
 import getPagePaths from './getPagePaths';
-import pagePathToRouteRegex from './pagePathToRouteRegex';
+import {
+  pagePathToRouteRegex,
+  extractPagePathParamsType,
+  ROUTE_PARAMS_TYPES,
+} from './pagePathParser';
 import { loadPage } from './loadPage';
 import { getAppFile } from './_app';
 import { parseRoute, parseQueryString, stringifyQueryString } from './utils';
@@ -33,22 +37,30 @@ export default async function getPageObject({
   throw new Error('[next-page-tester] No matching page found for given route');
 }
 
-type RegexCaptureGroups =
-  | {
-      [name: string]: string;
-    }
-  | undefined;
-
 function makeParamsObject({
+  pagePath,
   regexCaptureGroups,
 }: {
-  regexCaptureGroups: RegexCaptureGroups;
+  pagePath: string;
+  regexCaptureGroups?: Record<string, string>;
 }) {
   const params = {} as PageParams;
+  const pagePathParams = extractPagePathParamsType({
+    pagePath,
+  });
+
   if (regexCaptureGroups) {
     for (const [key, value] of Object.entries(regexCaptureGroups)) {
       if (value !== undefined) {
-        params[key] = value.includes('/') ? value.split('/') : value;
+        const paramType = pagePathParams[key];
+        if (
+          paramType === ROUTE_PARAMS_TYPES.CATCH_ALL ||
+          paramType === ROUTE_PARAMS_TYPES.OPTIONAL_CATCH_ALL
+        ) {
+          params[key] = value.split('/');
+        } else {
+          params[key] = value;
+        }
       }
     }
   }
@@ -73,6 +85,7 @@ async function getPageInfo({ options }: { options: ExtendedOptions }) {
       const result = routePathName.match(pagePathRegexes[index]);
       if (result) {
         const params = makeParamsObject({
+          pagePath: originalPath,
           regexCaptureGroups: result.groups,
         });
         return {
