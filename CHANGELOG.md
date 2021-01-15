@@ -4,7 +4,7 @@
 
 ### Bugfixes
 
-- Catch-all route segments return an array of values
+- Fix missing cookie package dependency
 
 ## 0.16.1
 
