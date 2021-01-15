@@ -59,8 +59,9 @@ describe('Global object', () => {
     describe('with getServerSideProps', () => {
       describe.each(['server', 'initial', 'client'])(
         '%s render',
-        (renderType) => {
+        (untypedRenderType) => {
           it("executes page's exports with expected env globals", async () => {
+            const renderType = untypedRenderType as keyof typeof expectedGlobals;
             const initialRoute = renderType === 'client' ? '/' : '/ssr';
             const { serverRender, render } = await getPage({
               nextRoot: path.join(__dirname, '__fixtures__'),
@@ -76,7 +77,6 @@ describe('Global object', () => {
               await screen.findByText('Page');
             }
 
-            //@ts-ignore
             const expectedProps = expectedGlobals[renderType];
             const { container: expected } = renderWithinNextRoot(
               <SSRPage {...expectedProps} />
@@ -90,8 +90,9 @@ describe('Global object', () => {
     describe('with getInitialProps', () => {
       describe.each(['server', 'initial', 'client'])(
         '%s render',
-        (renderType) => {
+        (untypedRenderType) => {
           it("executes page's exports with expected env globals", async () => {
+            const renderType = untypedRenderType as keyof typeof expectedGlobals;
             const initialRoute = renderType === 'client' ? '/' : '/gip';
             const { serverRender, render } = await getPage({
               nextRoot: path.join(__dirname, '__fixtures__'),
@@ -110,8 +111,7 @@ describe('Global object', () => {
             const expectedProps =
               renderType === 'client'
                 ? expectedGlobals.clientWithGIP
-                : //@ts-ignore
-                  expectedGlobals[renderType];
+                : expectedGlobals[renderType];
 
             const { container: expected } = renderWithinNextRoot(
               <GIPPage {...expectedProps} />

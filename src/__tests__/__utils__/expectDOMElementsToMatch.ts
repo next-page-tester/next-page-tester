@@ -1,5 +1,5 @@
 const REACT_NEW_LINE_COMMENTS_REGEX = /<!-- -->/g;
-const REACT_DATA_REACT_ROOT = / data-reactroot=\"\"/g;
+const REACT_DATA_REACT_ROOT = / data-reactroot=""/g;
 export function stripReactExtraMarkup(string: string): string {
   return string
     .replace(REACT_NEW_LINE_COMMENTS_REGEX, '')

@@ -1,13 +1,13 @@
 // [param]
-const DYNAMIC_ROUTE_SEGMENT_REGEX = /\[([^\.\/\[\]]*)\]/g;
+const DYNAMIC_ROUTE_SEGMENT_REGEX = /\[([^./[\]]*)\]/g;
 const DYNAMIC_PATH_SEGMENT_REGEX_STRING = '[^/?]*';
 
 // [...slug]
-const CATCH_ALL_ROUTE_SEGMENT_REGEX = /\[\.{3}([^\/\[\]]*)\]/;
+const CATCH_ALL_ROUTE_SEGMENT_REGEX = /\[\.{3}([^/[\]]*)\]/;
 const CATCH_ALL_PATH_SEGMENT_REGEX_STRING = '.*?';
 
 // [[...slug]]
-const OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_REGEX = /\/?\[\[\.{3}([^\/\[\]]*)\]\]/;
+const OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_REGEX = /\/?\[\[\.{3}([^/[\]]*)\]\]/;
 const OPTIONAL_CATCH_ALL_PATH_SEGMENT_REGEX_STRING = '.*?';
 
 const TRAILING_INDEX_REGEX = /\/index$/;
@@ -41,7 +41,7 @@ function pagePathToRouteRegex(pagePath: string): RegExp {
         name: paramName,
         regex: OPTIONAL_CATCH_ALL_PATH_SEGMENT_REGEX_STRING,
       });
-      return `(?:\/)?${captureGroup}`;
+      return `(?:/)?${captureGroup}`;
     })
     .replace(CATCH_ALL_ROUTE_SEGMENT_REGEX, (match, paramName) => {
       return makeNamedCaptureGroup({

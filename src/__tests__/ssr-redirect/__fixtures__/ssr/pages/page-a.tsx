@@ -1,6 +1,5 @@
 import React from 'react';
 import type { GetServerSideProps } from 'next';
-import Link from 'next/link';
 
 type Props = {
   referer: string;

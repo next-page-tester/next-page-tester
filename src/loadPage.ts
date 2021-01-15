@@ -25,7 +25,7 @@ export function loadPage<FileType>({
   // @NOTE Here we have to remove pagePath's leading "/"
   const absolutePath = path.resolve(pagesDirectory, pagePath.substring(1));
 
-  for (let pageExtension of pageExtensions) {
+  for (const pageExtension of pageExtensions) {
     const pathWithExtension = absolutePath + `.${pageExtension}`;
     if (existsSync(pathWithExtension)) {
       return loadFile({ absolutePath: pathWithExtension });

@@ -31,7 +31,7 @@ export default async function fetchAppData({
         pageObject,
         options,
       }),
-      // @ts-ignore: Incomplete router object
+      // @ts-expect-error incomplete router object
       router: { asPath, pathname, query, route, basePath },
     };
 

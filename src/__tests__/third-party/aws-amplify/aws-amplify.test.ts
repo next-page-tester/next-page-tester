@@ -10,7 +10,7 @@ describe('aws-amplify', () => {
     });
 
     render();
-    screen.findByText('The user is not authenticated');
+    await screen.findByText('The user is not authenticated');
 
     expect(error).toHaveBeenCalledWith(
       expect.stringMatching(/Error: Amplify has not been configured correctly./)

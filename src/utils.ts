@@ -10,7 +10,7 @@ import stealthyRequire from 'stealthy-require';
 
 export function parseRoute({ route }: { route: string }) {
   const urlObject = new URL(`http://test.com${route}`);
-  let { pathname } = urlObject;
+  const { pathname } = urlObject;
 
   /*
    * Next.js redirects by default routes with trailing slash to the counterpart without trailing slash
@@ -127,7 +127,7 @@ export function executeWithFreshModules<T>(f: () => T): T {
     jest.isolateModules(() => {
       result = f();
     });
-    // @ts-ignore
+    // @ts-expect-error result is surely defined here
     return result;
   }
   // @NOTE this branch will never be execute by Jest

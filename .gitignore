@@ -16,3 +16,5 @@ dist/
 !.prettierrc
 !.github
 !.gitattributes
+!.eslintrc.js
+!.eslintignore

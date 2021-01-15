@@ -1,3 +1,4 @@
+import type { NextRouter } from 'next/router';
 import React from 'react';
 import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
@@ -40,8 +41,7 @@ describe('Router mocking', () => {
       const { render } = await getPage({
         nextRoot,
         route: '/with-router/99',
-        // @ts-ignore
-        router: (router) => routerMock,
+        router: () => routerMock as NextRouter,
       });
       const { nextRoot: actual } = render();
       const { container: expected } = renderWithinNextRoot(

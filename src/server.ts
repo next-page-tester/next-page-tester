@@ -10,9 +10,9 @@ export const executeAsIfOnServer = async <T>(f: () => T) => {
   const tmpWindow = global.window;
   const tmpDocument = global.document;
 
-  // @ts-ignore
+  // @ts-expect-error its okay
   delete global.window;
-  // @ts-ignore
+  // @ts-expect-error its okay
   delete global.document;
 
   try {
@@ -27,9 +27,9 @@ export const executeAsIfOnServerSync = <T>(f: () => T): T => {
   const tmpWindow = global.window;
   const tmpDocument = global.document;
 
-  // @ts-ignore
+  // @ts-expect-error its okay
   delete global.window;
-  // @ts-ignore
+  // @ts-expect-error its okay
   delete global.document;
 
   try {

@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import React from 'react';
 import { existsSync } from 'fs';
 import makePageElement from './makePageElement';

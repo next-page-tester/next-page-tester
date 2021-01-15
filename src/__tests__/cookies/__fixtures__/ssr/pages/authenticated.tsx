@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 type Props = {
   reqHeadersCookie?: string;
-  reqCookies?: object;
+  reqCookies?: Record<string, unknown>;
 };
 
 export default function Authenticated({ reqHeadersCookie, reqCookies }: Props) {

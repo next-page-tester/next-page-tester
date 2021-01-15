@@ -1,7 +1,7 @@
 import React from 'react';
 import { sleep, PropsPrinter } from '../../../../__utils__/';
 
-export default function CustomAppWithGIP_SSG({ ctx, ...props }) {
+export default function CustomAppWithGIP_SSG({ ctx: _ctx, ...props }) {
   return (
     <>
       custom-app-with-gip/ssg -
@@ -10,7 +10,7 @@ export default function CustomAppWithGIP_SSG({ ctx, ...props }) {
   );
 }
 
-export async function getStaticProps(ctx) {
+export async function getStaticProps() {
   await sleep(1);
   return {
     props: {

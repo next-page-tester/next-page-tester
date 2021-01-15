@@ -1,7 +1,7 @@
 import React from 'react';
 import { stringify } from './index';
 
-export function PropsPrinter<T extends object>({
+export function PropsPrinter<T extends Record<string, unknown>>({
   suppressHydrationWarning,
   ...props
 }: {
