@@ -1,6 +1,6 @@
 import { RuntimeEnvironment } from './constants';
 import setNextRuntimeConfig from './setNextRuntimeConfig';
-import setEnvVars from './setEnvVars';
+import { setEnvVars } from './setEnvVars';
 import { executeWithFreshModules } from './utils';
 
 export const requireAsIfOnServer = <FileType>({
