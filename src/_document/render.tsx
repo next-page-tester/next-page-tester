@@ -18,7 +18,7 @@ import { APP_PATH, NEXT_ROOT_ELEMENT_ID } from '../constants';
 import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import type { DocumentProps } from 'next/document';
-import { makePageConstructs } from '../makePageElement';
+import { getPageComponents } from '../makePageElement';
 import { NextPage } from 'next';
 
 // Copied from next.js
@@ -59,7 +59,7 @@ export default async function renderDocument({
   wrapWithRouter: (children: JSX.Element) => JSX.Element;
 }): Promise<JSX.Element> {
   const { useDocument } = options;
-  const { AppComponent, PageComponent, routeData } = makePageConstructs({
+  const { AppComponent, PageComponent } = getPageComponents({
     pageObject,
     env: RuntimeEnvironment.SERVER,
   });
@@ -112,7 +112,7 @@ export default async function renderDocument({
   const initialProps = await fetchDocumentData({
     Document,
     renderPage,
-    routeData,
+    routeData: pageObject,
   });
 
   const documentProps: DocumentProps = {

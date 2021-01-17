@@ -120,8 +120,7 @@ export type PageInfo = {
   pageData: PageData;
 };
 
-export type PageConstructs = {
+export type PageComponents = {
   AppComponent: NextApp;
   PageComponent: NextPage;
-  routeData: RouteData;
 };

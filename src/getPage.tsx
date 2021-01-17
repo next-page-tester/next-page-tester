@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import React from 'react';
 import { existsSync } from 'fs';
-import { getPageInfo, makePageConstructs } from './makePageElement';
+import { getPageInfo, getPageComponents } from './makePageElement';
 import { makeRenderMethods } from './makeRenderMethods';
 import RouterProvider from './RouterProvider';
 import { renderDocument } from './_document';
@@ -77,33 +77,28 @@ export default async function getPage({
     options: ExtendedOptions
   ): Promise<MakePageResult> => {
     const { pageData, pageObject } = await getPageInfo({ options });
-    const { AppComponent, PageComponent, routeData } = makePageConstructs({
+    const { AppComponent, PageComponent } = getPageComponents({
       pageObject,
       env: options.env,
     });
 
-    const pageElement = (
+    let pageElement = (
       <AppComponent Component={PageComponent} pageProps={pageData.props} />
     );
 
     if (
-      !useDocument ||
-      options.env !== RuntimeEnvironment.CLIENT ||
-      !headManager
+      useDocument &&
+      options.env === RuntimeEnvironment.CLIENT &&
+      headManager
     ) {
-      return { pageElement, routeData };
-    }
-
-    return {
-      routeData,
-      pageElement: (
-        // @NOTE: implemented from:
-        // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/client/index.tsx#L574
+      pageElement = (
         <HeadManagerContext.Provider value={headManager}>
           {pageElement}
         </HeadManagerContext.Provider>
-      ),
-    };
+      );
+    }
+
+    return { routeData: pageObject, pageElement };
   };
 
   let { pageData, pageObject } = await getPageInfo({ options });

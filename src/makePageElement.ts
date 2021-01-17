@@ -2,7 +2,7 @@ import getPageObject from './getPageObject';
 import { fetchRouteData } from './fetchData';
 import type {
   ExtendedOptions,
-  PageConstructs,
+  PageComponents,
   PageInfo,
   PageObject,
   RuntimeEnvironment,
@@ -31,19 +31,15 @@ export async function getPageInfo({
   return { pageObject, pageData };
 }
 
-export function makePageConstructs({
+export function getPageComponents({
   pageObject,
   env,
 }: {
   pageObject: PageObject;
   env: RuntimeEnvironment;
-}): PageConstructs {
+}): PageComponents {
   const AppComponent = pageObject.appFile[env].default;
   const PageComponent = pageObject.page[env].default;
 
-  return {
-    AppComponent,
-    PageComponent,
-    routeData: pageObject,
-  };
+  return { AppComponent, PageComponent };
 }
