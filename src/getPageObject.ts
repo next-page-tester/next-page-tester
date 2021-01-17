@@ -13,28 +13,32 @@ import type {
   PageParams,
   NextPageFile,
 } from './commonTypes';
+import { InternalError } from './_error/error';
 
 export default async function getPageObject({
-  options,
-}: {
-  options: ExtendedOptions;
-}): Promise<PageObject> {
-  const pageInfo = await getPageInfo({ options });
+  pageExtensions,
+  pagesDirectory,
+  route,
+  useApp,
+}: Pick<
+  ExtendedOptions,
+  'pageExtensions' | 'pagesDirectory' | 'route' | 'useApp'
+>): Promise<PageObject> {
+  const pageInfo = await getPageInfo({ pageExtensions, pagesDirectory, route });
   if (pageInfo) {
     const page = loadPage<NextPageFile>({
       pagePath: pageInfo.pagePath,
-      options,
+      pageExtensions,
+      pagesDirectory,
     });
 
     if (!page.client.default) {
-      throw new Error(
-        '[next-page-tester] No default export found for given route'
-      );
+      throw new InternalError('No default export found for given route');
     }
-    const appFile = getAppFile({ options });
+    const appFile = getAppFile({ pageExtensions, pagesDirectory, useApp });
     return { page, appFile, ...pageInfo };
   }
-  throw new Error('[next-page-tester] No matching page found for given route');
+  throw new InternalError('No matching page found for given route');
 }
 
 function makeParamsObject({
@@ -71,9 +75,12 @@ type PageInfo = Pick<
   PageObject,
   'route' | 'pagePath' | 'params' | 'paramsNumber' | 'query' | 'resolvedUrl'
 >;
-async function getPageInfo({ options }: { options: ExtendedOptions }) {
-  const { route } = options;
-  const pagePaths = await getPagePaths({ options });
+async function getPageInfo({
+  route,
+  pageExtensions,
+  pagesDirectory,
+}: Pick<ExtendedOptions, 'pageExtensions' | 'pagesDirectory' | 'route'>) {
+  const pagePaths = await getPagePaths({ pageExtensions, pagesDirectory });
 
   const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
   const { pathname: routePathName, search } = parseRoute({ route });

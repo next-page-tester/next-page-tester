@@ -1,6 +1,6 @@
 import type { NextRouter } from 'next/router';
 import { removeFileExtension, parseRoute } from './utils';
-import type { OptionsWithDefaults, PageObject } from './commonTypes';
+import type { OptionsWithDefaults, RouteData } from './commonTypes';
 
 type NextPushArgs = Parameters<NextRouter['push']>;
 export type PushHandler = (
@@ -45,12 +45,12 @@ function makeDefaultRouterMock({
 }
 
 export default function makeRouterMock({
-  options,
-  pageObject: { pagePath, params, route, query },
+  routerEnhancer,
+  routeData: { pagePath, params, route, query },
   pushHandler,
 }: {
-  options: OptionsWithDefaults;
-  pageObject: PageObject;
+  routerEnhancer: OptionsWithDefaults['router'];
+  routeData: RouteData;
   pushHandler?: PushHandler;
 }): NextRouter {
   const { pathname, search, hash } = parseRoute({ route });
@@ -63,5 +63,5 @@ export default function makeRouterMock({
     basePath: '',
   };
 
-  return options.router(router);
+  return routerEnhancer(router);
 }

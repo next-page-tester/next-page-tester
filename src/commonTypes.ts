@@ -29,12 +29,17 @@ export type Options = {
 
 export type OptionsWithDefaults = Required<Options>;
 
+export enum RuntimeEnvironment {
+  SERVER = 'server',
+  CLIENT = 'client',
+}
+
 // Options object is extended with some extra derived props
 export type ExtendedOptions = OptionsWithDefaults & {
   pagesDirectory: string;
   pageExtensions: string[];
   previousRoute?: string;
-  env: 'server' | 'client';
+  env: RuntimeEnvironment;
 };
 
 /*
@@ -47,14 +52,17 @@ export type PageFile<FileType> = {
 
 export type PageParams = ParsedUrlQuery;
 
-export type PageObject = {
-  page: PageFile<NextPageFile>;
-  appFile: PageFile<NextAppFile>;
+export type RouteData = {
+  params: PageParams;
+  query: PageParams;
   route: string;
   pagePath: string;
-  params: PageParams;
+};
+
+export type PageObject = RouteData & {
+  page: PageFile<NextPageFile>;
+  appFile: PageFile<NextAppFile>;
   paramsNumber: number;
-  query: PageParams;
   resolvedUrl: string;
 };
 

@@ -15,21 +15,23 @@ import {
   findPagesDirectory,
   getPageExtensions,
 } from './utils';
-import type {
+import {
   Options,
   OptionsWithDefaults,
   ExtendedOptions,
   Page,
+  RuntimeEnvironment,
 } from './commonTypes';
+import { InternalError } from './_error/error';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
   if (!route.startsWith('/')) {
-    throw new Error('[next-page-tester] "route" option should start with "/"');
+    throw new InternalError('"route" option should start with "/"');
   }
 
   if (!existsSync(nextRoot)) {
-    throw new Error(
-      '[next-page-tester] Cannot find "nextRoot" directory under: ${nextRoot}'
+    throw new InternalError(
+      'Cannot find "nextRoot" directory under: ${nextRoot}'
     );
   }
 }
@@ -56,13 +58,13 @@ export default async function getPage({
   };
   validateOptions(optionsWithDefaults);
   loadNextConfig({ nextRoot });
-  setNextRuntimeConfig({ runtimeEnv: 'client' });
+  setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.CLIENT });
 
   const options: ExtendedOptions = {
     ...optionsWithDefaults,
     pagesDirectory: findPagesDirectory({ nextRoot }),
     pageExtensions: getPageExtensions(),
-    env: 'server',
+    env: RuntimeEnvironment.SERVER,
   };
   // @TODO: Consider printing extended options value behind a debug flag
 
@@ -76,7 +78,11 @@ export default async function getPage({
       options: mergedOptions,
     });
 
-    if (useDocument && mergedOptions.env === 'client' && headManager) {
+    if (
+      useDocument &&
+      mergedOptions.env === RuntimeEnvironment.CLIENT &&
+      headManager
+    ) {
       pageElement = (
         // @NOTE: implemented from:
         // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/client/index.tsx#L574
@@ -97,8 +103,8 @@ export default async function getPage({
 
   serverPageElement = (
     <RouterProvider
-      pageObject={pageObject}
-      options={options}
+      routerEnhancer={options.router}
+      routeData={pageObject}
       makePage={makePage}
     >
       {serverPageElement}
@@ -114,18 +120,15 @@ export default async function getPage({
   });
 
   let clientPageElement = renderApp({
-    options: {
-      ...options,
-      env: 'client',
-    },
+    options: { ...options, env: RuntimeEnvironment.CLIENT },
     pageObject,
     pageData,
   });
 
   clientPageElement = (
     <RouterProvider
-      pageObject={pageObject}
-      options={options}
+      routeData={pageObject}
+      routerEnhancer={options.router}
       makePage={makePage}
     >
       {clientPageElement}

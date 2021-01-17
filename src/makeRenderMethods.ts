@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import { executeAsIfOnServerSync } from './server';
+import { InternalError } from './_error/error';
 
 export function makeRenderMethods({
   serverPageElement,
@@ -41,7 +42,7 @@ export function makeRenderMethods({
     const nextRoot = document.getElementById('__next');
     /* istanbul ignore next */
     if (!nextRoot) {
-      throw new Error('[next-page-tester] Missing __next div');
+      throw new InternalError('Missing __next div');
     }
 
     return { nextRoot };

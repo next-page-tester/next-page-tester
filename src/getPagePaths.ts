@@ -5,10 +5,11 @@ import type { ExtendedOptions } from './commonTypes';
 
 // Returns available page paths without file extension
 async function getPagePaths({
-  options: { pagesDirectory, pageExtensions },
-}: {
-  options: ExtendedOptions;
-}): Promise<string[]> {
+  pagesDirectory,
+  pageExtensions,
+}: Pick<ExtendedOptions, 'pageExtensions' | 'pagesDirectory'>): Promise<
+  string[]
+> {
   const files = await fastGlob([
     normalizePath(path.join(pagesDirectory, '**', '*')),
   ]);

@@ -2,6 +2,7 @@ import path from 'path';
 import { existsSync } from 'fs';
 import { requireAsIfOnServer } from './server';
 import type { ExtendedOptions, PageFile } from './commonTypes';
+import { InternalError } from './_error/error';
 
 export function loadFile<FileType>({
   absolutePath,
@@ -14,14 +15,18 @@ export function loadFile<FileType>({
   };
 }
 
+type LoadPageOptions = Pick<
+  ExtendedOptions,
+  'pageExtensions' | 'pagesDirectory'
+> & {
+  pagePath: string;
+};
+
 export function loadPage<FileType>({
   pagePath,
-  options,
-}: {
-  pagePath: string;
-  options: ExtendedOptions;
-}): PageFile<FileType> {
-  const { pagesDirectory, pageExtensions } = options;
+  pageExtensions,
+  pagesDirectory,
+}: LoadPageOptions): PageFile<FileType> {
   // @NOTE Here we have to remove pagePath's leading "/"
   const absolutePath = path.resolve(pagesDirectory, pagePath.substring(1));
 
@@ -32,20 +37,16 @@ export function loadPage<FileType>({
     }
   }
 
-  throw new Error(
-    "[next-page-tester] Couldn't find required page file with matching extension"
+  throw new InternalError(
+    "Couldn't find required page file with matching extension"
   );
 }
 
-export function loadPageIfExists<FileType>({
-  pagePath,
-  options,
-}: {
-  pagePath: string;
-  options: ExtendedOptions;
-}): PageFile<FileType> | undefined {
+export function loadPageIfExists<FileType>(
+  options: LoadPageOptions
+): PageFile<FileType> | undefined {
   try {
-    return loadPage({ pagePath, options });
+    return loadPage(options);
   } catch (e) {
     return undefined;
   }

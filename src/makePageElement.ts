@@ -12,9 +12,7 @@ export default async function makePageElement({
 }: {
   options: ExtendedOptions;
 }): Promise<Page> {
-  const pageObject = await getPageObject({
-    options,
-  });
+  const pageObject = await getPageObject(options);
 
   const pageData = await fetchRouteData({
     pageObject,

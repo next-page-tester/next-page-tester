@@ -33,7 +33,7 @@ export default async function renderDocument({
     );
   }
 
-  const customDocumentFile = getDocumentFile({ options });
+  const customDocumentFile = getDocumentFile(options);
   const Document = customDocumentFile.server.default;
 
   const renderPage: RenderPage = () => {

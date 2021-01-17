@@ -7,13 +7,16 @@ import { loadPageIfExists, loadFile } from '../loadPage';
 import { DOCUMENT_PATH } from '../constants';
 
 export default function getDocumentFile({
-  options,
-}: {
-  options: ExtendedOptions;
-}): PageFile<NextDocumentFile> {
+  pageExtensions,
+  pagesDirectory,
+}: Pick<
+  ExtendedOptions,
+  'pageExtensions' | 'pagesDirectory'
+>): PageFile<NextDocumentFile> {
   const customDocumentFile = loadPageIfExists<NextDocumentFile>({
-    options,
     pagePath: DOCUMENT_PATH,
+    pageExtensions,
+    pagesDirectory,
   });
 
   if (customDocumentFile) {

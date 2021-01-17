@@ -6,6 +6,7 @@ import { existsSync } from 'fs';
 import path from 'path';
 import stealthyRequire from 'stealthy-require';
 import { getNextConfig } from './nextConfig';
+import { InternalError } from './_error/error';
 
 export function parseRoute({ route }: { route: string }) {
   const urlObject = new URL(`http://test.com${route}`);
@@ -66,9 +67,7 @@ export function findPagesDirectory({ nextRoot }: { nextRoot: string }) {
     }
   }
 
-  throw new Error(
-    `[next-page-tester] Cannot find "pages" directory under: ${nextRoot}`
-  );
+  throw new InternalError(`Cannot find "pages" directory under: ${nextRoot}`);
 }
 
 export function getPageExtensions(): string[] {

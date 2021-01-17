@@ -7,15 +7,18 @@ import { APP_PATH } from '../constants';
 import DefaultApp from './DefaultApp';
 
 export function getAppFile({
-  options,
-}: {
-  options: ExtendedOptions;
-}): PageFile<NextAppFile> {
-  const { useApp } = options;
+  pageExtensions,
+  pagesDirectory,
+  useApp,
+}: Pick<
+  ExtendedOptions,
+  'pageExtensions' | 'pagesDirectory' | 'useApp'
+>): PageFile<NextAppFile> {
   if (useApp) {
     const customAppFile = loadPageIfExists<NextAppFile>({
       pagePath: APP_PATH,
-      options,
+      pageExtensions,
+      pagesDirectory,
     });
 
     if (customAppFile) {
