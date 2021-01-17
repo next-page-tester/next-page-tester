@@ -10,6 +10,7 @@ import initHeadManager from 'next/dist/client/head-manager';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import { loadNextConfig } from './nextConfig';
 import setNextRuntimeConfig from './setNextRuntimeConfig';
+import setEnvVars from './setEnvVars';
 import {
   defaultNextRoot,
   findPagesDirectory,
@@ -62,6 +63,7 @@ export default async function getPage({
   validateOptions(optionsWithDefaults);
   loadNextConfig({ nextRoot });
   setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.CLIENT });
+  setEnvVars({ runtimeEnv: RuntimeEnvironment.CLIENT });
 
   const options: ExtendedOptions = {
     ...optionsWithDefaults,
