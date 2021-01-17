@@ -1,5 +1,5 @@
 import React from 'react';
-import { PropsPrinter } from '../../../__utils__';
+import { PropsPrinter } from '../../../../__utils__';
 
 export default function EnvironmentVariablesPage({
   envVarsMock,

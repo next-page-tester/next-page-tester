@@ -13,7 +13,7 @@ export function loadDotFile({ nextRoot }: { nextRoot: string }) {
   }
 }
 
-const originalEnvVars = process.env;
+let originalEnvVars = process.env;
 let envVars:
   | {
       [SERVER]: Record<string, string>;
@@ -29,6 +29,8 @@ export function setEnvVars({
   runtimeEnv: RuntimeEnvironment;
 }): void {
   if (!envVars) {
+    // Keep a reference to original process.env to restore between tests
+    originalEnvVars = process.env;
     const { env: envVarsFromConfig } = getNextConfig();
     const serverEnvVarsFromDotFile = { ...dotFile };
     const clientEnvVarsFromDotFile = { ...dotFile };
@@ -55,5 +57,9 @@ export function setEnvVars({
 }
 
 export function cleanupEnvVars() {
-  process.env = originalEnvVars;
+  if (process.env !== originalEnvVars) {
+    process.env = originalEnvVars;
+  }
+  dotFile = undefined;
+  envVars = undefined;
 }
