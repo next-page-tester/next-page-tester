@@ -9,7 +9,6 @@ export default class MyApp extends App {
     return (
       <StyletronProvider value={styletron}>
         <Component {...pageProps} />
-        <div>Custom _app element</div>
       </StyletronProvider>
     );
   }

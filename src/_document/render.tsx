@@ -85,7 +85,6 @@ export default async function renderDocument({
   const customDocumentFile = getDocumentFile({ options });
   const Document = customDocumentFile.server.default;
 
-  /* istanbul ignore next */
   const renderPage: RenderPage = (options = {}) => {
     const {
       App: EnhancedApp,
