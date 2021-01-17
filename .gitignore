@@ -18,3 +18,4 @@ dist/
 !.gitattributes
 !.eslintrc.js
 !.eslintignore
+!.env*

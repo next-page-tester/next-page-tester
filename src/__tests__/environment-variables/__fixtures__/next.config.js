@@ -1,0 +1,6 @@
+module.exports = {
+  env: {
+    FROM_CONFIG: 'FROM_CONFIG',
+    NEXT_PUBLIC_NAME_CLASH: 'NEXT_PUBLIC_NAME_CLASH_FROM_CONFIG',
+  },
+};
