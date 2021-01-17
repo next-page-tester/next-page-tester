@@ -11,20 +11,24 @@ export default function getDocumentFile({
 }: {
   options: ExtendedOptions;
 }): PageFile<NextDocumentFile> {
+  const { nonIsolatedModules } = options;
   const customDocumentFile = loadPageIfExists<NextDocumentFile>({
-    options,
     pagePath: DOCUMENT_PATH,
+    options,
   });
 
   if (customDocumentFile) {
     return customDocumentFile;
   }
 
-  return getDefaultDocumentFile();
+  return getDefaultDocumentFile(nonIsolatedModules);
 }
 
-function getDefaultDocumentFile(): PageFile<NextDocumentFile> {
+function getDefaultDocumentFile(
+  nonIsolatedModules: string[]
+): PageFile<NextDocumentFile> {
   return loadFile<NextDocumentFile>({
     absolutePath: 'next/document',
+    nonIsolatedModules,
   });
 }

@@ -5,7 +5,7 @@ import type { ExtendedOptions } from './commonTypes';
 
 // Returns available page paths without file extension
 async function getPagePaths({
-  options: { pagesDirectory, pageExtensions },
+  options: { pageExtensions, pagesDirectory },
 }: {
   options: ExtendedOptions;
 }): Promise<string[]> {

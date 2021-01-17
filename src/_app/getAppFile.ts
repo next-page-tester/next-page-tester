@@ -11,7 +11,7 @@ export function getAppFile({
 }: {
   options: ExtendedOptions;
 }): PageFile<NextAppFile> {
-  const { useApp } = options;
+  const { useApp, nonIsolatedModules } = options;
   if (useApp) {
     const customAppFile = loadPageIfExists<NextAppFile>({
       pagePath: APP_PATH,
@@ -22,11 +22,14 @@ export function getAppFile({
       return customAppFile;
     }
   }
-  return getDefaultAppFile();
+  return getDefaultAppFile(nonIsolatedModules);
 }
 
-function getDefaultAppFile(): PageFile<NextAppFile> {
+function getDefaultAppFile(
+  nonIsolatedModules: string[]
+): PageFile<NextAppFile> {
   return loadFile<NextAppFile>({
     absolutePath: path.resolve(__dirname, 'DefaultApp'),
+    nonIsolatedModules,
   });
 }

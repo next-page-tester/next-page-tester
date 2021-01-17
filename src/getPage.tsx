@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import React from 'react';
 import { existsSync } from 'fs';
-import makePageElement from './makePageElement';
+import { getPageInfo, makePageConstructs } from './makePageElement';
 import { makeRenderMethods } from './makeRenderMethods';
 import RouterProvider from './RouterProvider';
 import { renderDocument } from './_document';
@@ -15,21 +15,23 @@ import {
   findPagesDirectory,
   getPageExtensions,
 } from './utils';
-import type {
+import {
   Options,
   OptionsWithDefaults,
   ExtendedOptions,
-  Page,
+  RuntimeEnvironment,
+  MakePageResult,
 } from './commonTypes';
+import { InternalError } from './_error/error';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
   if (!route.startsWith('/')) {
-    throw new Error('[next-page-tester] "route" option should start with "/"');
+    throw new InternalError('"route" option should start with "/"');
   }
 
   if (!existsSync(nextRoot)) {
-    throw new Error(
-      '[next-page-tester] Cannot find "nextRoot" directory under: ${nextRoot}'
+    throw new InternalError(
+      'Cannot find "nextRoot" directory under: ${nextRoot}'
     );
   }
 }
@@ -42,6 +44,7 @@ export default async function getPage({
   router = (router) => router,
   useApp = true,
   useDocument = false,
+  nonIsolatedModules = [],
 }: Options): Promise<
   { page: React.ReactElement } & ReturnType<typeof makeRenderMethods>
 > {
@@ -53,83 +56,85 @@ export default async function getPage({
     router,
     useApp,
     useDocument,
+    nonIsolatedModules,
   };
+
   validateOptions(optionsWithDefaults);
   loadNextConfig({ nextRoot });
-  setNextRuntimeConfig({ runtimeEnv: 'client' });
+  setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.CLIENT });
 
   const options: ExtendedOptions = {
     ...optionsWithDefaults,
     pagesDirectory: findPagesDirectory({ nextRoot }),
     pageExtensions: getPageExtensions(),
-    env: 'server',
+    env: RuntimeEnvironment.SERVER,
   };
   // @TODO: Consider printing extended options value behind a debug flag
 
   const headManager = useDocument && initHeadManager();
 
   const makePage = async (
-    optionsOverride?: Partial<ExtendedOptions>
-  ): Promise<Page> => {
-    const mergedOptions = { ...options, ...optionsOverride };
-    let { pageElement, pageData, pageObject } = await makePageElement({
-      options: mergedOptions,
+    options: ExtendedOptions
+  ): Promise<MakePageResult> => {
+    const { pageData, pageObject } = await getPageInfo({ options });
+    const { AppComponent, PageComponent, routeData } = makePageConstructs({
+      pageObject,
+      env: options.env,
     });
 
-    if (useDocument && mergedOptions.env === 'client' && headManager) {
-      pageElement = (
+    const pageElement = (
+      <AppComponent Component={PageComponent} pageProps={pageData.props} />
+    );
+
+    if (
+      !useDocument ||
+      options.env !== RuntimeEnvironment.CLIENT ||
+      !headManager
+    ) {
+      return { pageElement, routeData };
+    }
+
+    return {
+      routeData,
+      pageElement: (
         // @NOTE: implemented from:
         // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/client/index.tsx#L574
         <HeadManagerContext.Provider value={headManager}>
           {pageElement}
         </HeadManagerContext.Provider>
-      );
-    }
-
-    return { pageElement, pageData, pageObject };
+      ),
+    };
   };
 
-  let {
-    pageElement: serverPageElement,
-    pageData,
-    pageObject,
-  } = await makePage();
+  let { pageData, pageObject } = await getPageInfo({ options });
 
-  serverPageElement = (
-    <RouterProvider
-      pageObject={pageObject}
-      options={options}
-      makePage={makePage}
-    >
-      {serverPageElement}
-    </RouterProvider>
-  );
+  const wrapWithRouter = (children: JSX.Element) => {
+    return (
+      <RouterProvider
+        options={options}
+        routeData={pageObject}
+        makePage={(optionsOverrides) =>
+          makePage({ ...options, ...optionsOverrides })
+        }
+      >
+        {children}
+      </RouterProvider>
+    );
+  };
 
-  // Wrap server page with document element
-  serverPageElement = await renderDocument({
-    pageElement: serverPageElement,
+  const serverPageElement = await renderDocument({
     options,
     pageObject,
-    pageData,
+    wrapWithRouter,
+    pageProps: pageData.props,
   });
 
-  let clientPageElement = renderApp({
-    options: {
-      ...options,
-      env: 'client',
-    },
-    pageObject,
-    pageData,
-  });
-
-  clientPageElement = (
-    <RouterProvider
-      pageObject={pageObject}
-      options={options}
-      makePage={makePage}
-    >
-      {clientPageElement}
-    </RouterProvider>
+  const clientPageElement = wrapWithRouter(
+    renderApp({
+      options: { ...options, env: RuntimeEnvironment.CLIENT },
+      pageObject,
+      pageProps: pageData.props,
+    })
   );
 
   return {

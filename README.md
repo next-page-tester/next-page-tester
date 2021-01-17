@@ -95,15 +95,16 @@ React element of the application.
 
 ## Options
 
-| Property                       | Description                                                   | type               | Default         |
-| ------------------------------ | ------------------------------------------------------------- | ------------------ | --------------- |
-| **route** (mandatory)          | Next route (must start with `/`)                              | `string`           | -               |
-| **req**                        | Enhance default mocked [request object][req-docs]             | `req => req`       | -               |
-| **res**                        | Enhance default mocked [response object][res-docs]            | `res => res`       | -               |
-| **router**                     | Enhance default mocked [Next router object][next-docs-router] | `router => router` | -               |
-| **useApp**                     | Render [custom App component][next-docs-custom-app]           | `boolean`          | `true`          |
-| **useDocument** (experimental) | Render [Document component][next-docs-custom-document]        | `boolean`          | `false`         |
-| **nextRoot**                   | Absolute path to Next.js root folder                          | `string`           | _auto detected_ |
+| Property                       | Description                                                                                    | type               | Default         |
+| ------------------------------ | ---------------------------------------------------------------------------------------------- | ------------------ | --------------- |
+| **route** (mandatory)          | Next route (must start with `/`)                                                               | `string`           | -               |
+| **req**                        | Enhance default mocked [request object][req-docs]                                              | `req => req`       | -               |
+| **res**                        | Enhance default mocked [response object][res-docs]                                             | `res => res`       | -               |
+| **router**                     | Enhance default mocked [Next router object][next-docs-router]                                  | `router => router` | -               |
+| **useApp**                     | Render [custom App component][next-docs-custom-app]                                            | `boolean`          | `true`          |
+| **useDocument** (experimental) | Render [Document component][next-docs-custom-document]                                         | `boolean`          | `false`         |
+| **nextRoot**                   | Absolute path to Next.js root folder                                                           | `string`           | _auto detected_ |
+| **nonIsolatedModules**         | Array of modules that should use the same module instance in `server` and `client` environment | `string[]`         | -               |
 
 ## Set up your test environment
 

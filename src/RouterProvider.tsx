@@ -1,39 +1,47 @@
 import React, { useState, useCallback, useRef } from 'react';
+
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import makeRouterMock, { PushHandler } from './makeRouterMock';
 import { useMountedState } from './utils';
-import type { ExtendedOptions, Page, PageObject } from './commonTypes';
+import {
+  ExtendedOptions,
+  RuntimeEnvironment,
+  RouteData,
+  MakePageResult,
+} from './commonTypes';
+
+type Props = {
+  options: ExtendedOptions;
+  routeData: RouteData;
+  children: JSX.Element;
+  makePage: (
+    optionsOverride?: Partial<ExtendedOptions>
+  ) => Promise<MakePageResult>;
+};
 
 export default function RouterProvider({
-  pageObject,
-  options,
+  options: { router: routerEnhancer },
+  routeData,
   children: initialChildren,
   makePage,
-}: {
-  pageObject: PageObject;
-  options: ExtendedOptions;
-  children: JSX.Element;
-  makePage: (optionsOverride?: Partial<ExtendedOptions>) => Promise<Page>;
-}) {
+}: Props) {
   const isMounted = useMountedState();
-  const previousRouteRef = useRef(pageObject.route);
+  const previousRouteRef = useRef(routeData.route);
 
   const pushHandler = useCallback(async (url: Parameters<PushHandler>[0]) => {
     const nextRoute = url.toString();
-    const nextOptions = { ...options, route: nextRoute };
-
     const previousRoute = previousRouteRef.current;
-    const { pageElement, pageObject } = await makePage({
+    const { pageElement, routeData } = await makePage({
       route: nextRoute,
       previousRoute,
-      env: 'client',
+      env: RuntimeEnvironment.CLIENT,
     });
     previousRouteRef.current = nextRoute;
 
     const nextRouter = makeRouterMock({
-      options: nextOptions,
-      pageObject,
+      routeData,
       pushHandler,
+      routerEnhancer,
     });
 
     // Avoid errors if page gets unmounted
@@ -49,8 +57,8 @@ export default function RouterProvider({
   const [{ children, router }, setState] = useState(() => ({
     children: initialChildren,
     router: makeRouterMock({
-      options,
-      pageObject,
+      routerEnhancer,
+      routeData,
       pushHandler,
     }),
   }));

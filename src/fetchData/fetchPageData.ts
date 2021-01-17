@@ -9,14 +9,16 @@ import {
   makeGetServerSidePropsContext,
   makeStaticPropsContext,
 } from './makeContextObject';
-import type {
+import {
   ExtendedOptions,
   PageObject,
   PageData,
   NextPageFile,
+  RuntimeEnvironment,
 } from '../commonTypes';
 import type { CustomError } from '../commonTypes';
 import { executeAsIfOnServer } from '../server';
+import { InternalError } from '../_error/error';
 
 function ensureNoMultipleDataFetchingMethods({
   page,
@@ -34,9 +36,7 @@ function ensureNoMultipleDataFetchingMethods({
     methodsCounter++;
   }
   if (methodsCounter > 1) {
-    throw new Error(
-      '[next-page-tester] Only one data fetching method is allowed'
-    );
+    throw new InternalError('Only one data fetching method is allowed');
   }
 }
 
@@ -122,7 +122,7 @@ export default async function fetchPageData({
       pageObject,
     });
 
-    if (env === 'client') {
+    if (env === RuntimeEnvironment.CLIENT) {
       const initialProps = await getInitialProps(ctx);
       return { props: initialProps };
     } else {
