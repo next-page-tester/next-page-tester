@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function RouterProvider({
-  options: { router: routerEnhancer },
+  options,
   routeData,
   children: initialChildren,
   makePage,
@@ -37,7 +37,7 @@ export default function RouterProvider({
     const nextRouter = makeRouterMock({
       routeData,
       pushHandler,
-      routerEnhancer,
+      options,
     });
 
     // Avoid errors if page gets unmounted
@@ -53,7 +53,7 @@ export default function RouterProvider({
   const [{ children, router }, setState] = useState(() => ({
     children: initialChildren,
     router: makeRouterMock({
-      routerEnhancer,
+      options,
       routeData,
       pushHandler,
     }),

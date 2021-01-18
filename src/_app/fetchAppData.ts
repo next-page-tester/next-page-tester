@@ -21,7 +21,7 @@ export default async function fetchAppData({
   if (getInitialProps) {
     const { asPath, pathname, query, route, basePath } = makeRouterMock({
       routeData: pageObject,
-      routerEnhancer: options.router,
+      options,
     });
 
     const ctx: AppContext = {
