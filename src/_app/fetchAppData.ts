@@ -20,8 +20,8 @@ export default async function fetchAppData({
   const { getInitialProps } = AppComponent;
   if (getInitialProps) {
     const { asPath, pathname, query, route, basePath } = makeRouterMock({
-      pageObject,
       options,
+      pageObject,
     });
 
     const ctx: AppContext = {

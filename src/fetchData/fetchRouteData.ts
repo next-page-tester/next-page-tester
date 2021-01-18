@@ -10,8 +10,8 @@ export default async function fetchRouteData({
   options: ExtendedOptions;
 }) {
   const appInitialProps = await fetchAppData({
-    pageObject,
     options,
+    pageObject,
   });
   const pageData = await fetchPageData({
     pageObject,
