@@ -13,8 +13,8 @@ export default function getDocumentFile({
 }): PageFile<NextDocumentFile> {
   const { nonIsolatedModules } = options;
   const customDocumentFile = loadPageIfExists<NextDocumentFile>({
-    pagePath: DOCUMENT_PATH,
     options,
+    pagePath: DOCUMENT_PATH,
   });
 
   if (customDocumentFile) {
