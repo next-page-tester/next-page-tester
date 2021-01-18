@@ -108,7 +108,7 @@ export class CustomError extends Error {
 
 export type MakePageResult = {
   pageElement: JSX.Element;
-  routeInfo: RouteInfo;
+  pageObject: PageObject;
 };
 
 export type PageInfo = {

@@ -57,5 +57,5 @@ export default async function makePageElement({
     pageProps: pageData.props,
   });
 
-  return { pageElement, routeInfo: pageObject };
+  return { pageElement, pageObject };
 }

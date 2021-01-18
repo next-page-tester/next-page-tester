@@ -76,7 +76,7 @@ export default async function getPage({
   const makePage = async (
     options: ExtendedOptions
   ): Promise<MakePageResult> => {
-    let { pageElement, routeInfo } = await makePageElement({ options });
+    let { pageElement, pageObject } = await makePageElement({ options });
     if (
       useDocument &&
       options.env === RuntimeEnvironment.CLIENT &&
@@ -88,7 +88,7 @@ export default async function getPage({
         </HeadManagerContext.Provider>
       );
     }
-    return { routeInfo, pageElement };
+    return { pageObject, pageElement };
   };
 
   const { pageData, pageObject } = await getPageInfo({ options });
@@ -97,7 +97,7 @@ export default async function getPage({
     return (
       <RouterProvider
         options={options}
-        routeInfo={pageObject}
+        pageObject={pageObject}
         makePage={(optionsOverrides) =>
           makePage({ ...options, ...optionsOverrides })
         }
