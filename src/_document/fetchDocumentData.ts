@@ -6,8 +6,8 @@ import { executeAsIfOnServer } from '../server';
 
 export default async function fetchDocumentData({
   Document,
-  renderPage,
   pageObject,
+  renderPage,
 }: {
   Document: DocumentType;
   pageObject: PageObject;
