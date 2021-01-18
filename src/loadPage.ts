@@ -13,7 +13,10 @@ export function loadFile<FileType>({
 }): PageFile<FileType> {
   return {
     client: require(absolutePath),
-    server: requireAsIfOnServer<FileType>(absolutePath, nonIsolatedModules),
+    server: requireAsIfOnServer<FileType>({
+      path: absolutePath,
+      nonIsolatedModules,
+    }),
   };
 }
 

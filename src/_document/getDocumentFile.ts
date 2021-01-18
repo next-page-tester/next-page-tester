@@ -21,12 +21,14 @@ export default function getDocumentFile({
     return customDocumentFile;
   }
 
-  return getDefaultDocumentFile(nonIsolatedModules);
+  return getDefaultDocumentFile({ nonIsolatedModules });
 }
 
-function getDefaultDocumentFile(
-  nonIsolatedModules: string[]
-): PageFile<NextDocumentFile> {
+function getDefaultDocumentFile({
+  nonIsolatedModules,
+}: {
+  nonIsolatedModules: string[];
+}): PageFile<NextDocumentFile> {
   return loadFile<NextDocumentFile>({
     absolutePath: 'next/document',
     nonIsolatedModules,

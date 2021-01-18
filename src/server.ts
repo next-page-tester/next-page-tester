@@ -2,10 +2,13 @@ import { RuntimeEnvironment } from './commonTypes';
 import setNextRuntimeConfig from './setNextRuntimeConfig';
 import { executeWithFreshModules } from './utils';
 
-export const requireAsIfOnServer = <FileType>(
-  path: string,
-  nonIsolatedModules: string[]
-): FileType => {
+export const requireAsIfOnServer = <FileType>({
+  path,
+  nonIsolatedModules,
+}: {
+  path: string;
+  nonIsolatedModules: string[];
+}): FileType => {
   return executeWithFreshModules(() => {
     return executeAsIfOnServerSync<FileType>(() => require(path));
   }, nonIsolatedModules);
