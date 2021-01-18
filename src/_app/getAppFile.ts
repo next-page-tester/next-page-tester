@@ -22,12 +22,14 @@ export function getAppFile({
       return customAppFile;
     }
   }
-  return getDefaultAppFile(nonIsolatedModules);
+  return getDefaultAppFile({ nonIsolatedModules });
 }
 
-function getDefaultAppFile(
-  nonIsolatedModules: string[]
-): PageFile<NextAppFile> {
+function getDefaultAppFile({
+  nonIsolatedModules,
+}: {
+  nonIsolatedModules: string[];
+}): PageFile<NextAppFile> {
   return loadFile<NextAppFile>({
     absolutePath: path.resolve(__dirname, 'DefaultApp'),
     nonIsolatedModules,
