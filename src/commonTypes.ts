@@ -49,18 +49,18 @@ export type PageFile<FileType> = {
 
 export type PageParams = ParsedUrlQuery;
 
-export type RouteData = {
+export type RouteInfo = {
   params: PageParams;
   query: PageParams;
   route: string;
   pagePath: string;
-};
-
-export type PageObject = RouteData & {
-  page: PageFile<NextPageFile>;
-  appFile: PageFile<NextAppFile>;
   paramsNumber: number;
   resolvedUrl: string;
+};
+
+export type PageObject = RouteInfo & {
+  page: PageFile<NextPageFile>;
+  appFile: PageFile<NextAppFile>;
 };
 
 export type PageProps = {
@@ -108,7 +108,7 @@ export class CustomError extends Error {
 
 export type MakePageResult = {
   pageElement: JSX.Element;
-  routeData: RouteData;
+  routeInfo: RouteInfo;
 };
 
 export type PageInfo = {

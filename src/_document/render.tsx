@@ -115,7 +115,7 @@ export default async function renderDocument({
   const initialProps = await fetchDocumentData({
     Document,
     renderPage,
-    routeData: pageObject,
+    routeInfo: pageObject,
   });
 
   const documentProps: DocumentProps = {

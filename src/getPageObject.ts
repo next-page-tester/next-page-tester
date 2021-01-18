@@ -12,6 +12,7 @@ import type {
   PageObject,
   PageParams,
   NextPageFile,
+  RouteInfo,
 } from './commonTypes';
 import { InternalError } from './_error/error';
 
@@ -20,10 +21,10 @@ export default async function getPageObject({
 }: {
   options: ExtendedOptions;
 }): Promise<PageObject> {
-  const pageInfo = await getPageInfo({ options });
-  if (pageInfo) {
+  const routeInfo = await getRouteInfo({ options });
+  if (routeInfo) {
     const page = loadPage<NextPageFile>({
-      pagePath: pageInfo.pagePath,
+      pagePath: routeInfo.pagePath,
       options,
     });
 
@@ -31,7 +32,7 @@ export default async function getPageObject({
       throw new InternalError('No default export found for given route');
     }
     const appFile = getAppFile({ options });
-    return { page, appFile, ...pageInfo };
+    return { page, appFile, ...routeInfo };
   }
   throw new InternalError('No matching page found for given route');
 }
@@ -66,11 +67,7 @@ function makeParamsObject({
   return params;
 }
 
-type PageInfo = Pick<
-  PageObject,
-  'route' | 'pagePath' | 'params' | 'paramsNumber' | 'query' | 'resolvedUrl'
->;
-async function getPageInfo({ options }: { options: ExtendedOptions }) {
+async function getRouteInfo({ options }: { options: ExtendedOptions }) {
   const { route } = options;
   const pagePaths = await getPagePaths({ options });
 
@@ -79,7 +76,7 @@ async function getPageInfo({ options }: { options: ExtendedOptions }) {
   const query = parseQueryString({ queryString: search });
 
   // Match provided route through route regexes generated from /page components
-  const matchingPageInfo: PageInfo[] = pagePaths
+  const mathingRouteInfo: RouteInfo[] = pagePaths
     .map((originalPath, index) => {
       const result = routePathName.match(pagePathRegexes[index]);
       if (result) {
@@ -105,9 +102,9 @@ async function getPageInfo({ options }: { options: ExtendedOptions }) {
         };
       }
     })
-    .filter((result): result is PageInfo => Boolean(result))
+    .filter((result): result is RouteInfo => Boolean(result))
     .sort((a, b) => a.paramsNumber - b.paramsNumber);
 
   // Return the result with less page params
-  return matchingPageInfo[0];
+  return mathingRouteInfo[0];
 }
