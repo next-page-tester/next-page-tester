@@ -178,7 +178,7 @@ Next.js `Link` component invokes `window.scrollTo` on click which is not impleme
 
 ### Warning: Text content did not match. Server: "x" Client: "y"" error
 
-This warning can appear during client side migration of the page and can be due to a bug in your code or due to to the fact that `next-page-tester` has to isolate modules in `server` and `client` environment to avoid "environment leaking". In second case, modules that needs to use same instance in `server` and `client` environment (e.g. `React.Context`, or `css-in-js` libraries) can be marked as such by being passed in the `nonIsolatedModules` option of the `getPage` function; [styletron-react example](src/__tests__/third-party/styletron-react/styletron-react.test.ts#L13)
+This warning can appear during client side hydration of the page and can be due to a bug in your code or due to to the fact that `next-page-tester` has to isolate modules in `server` and `client` environment to avoid "environment leaking". In second case, modules that needs to use same instance in `server` and `client` environment (e.g. `React.Context`, or `css-in-js` libraries) can be marked as such by being passed in the `nonIsolatedModules` option of the `getPage` function; [styletron-react example](src/__tests__/third-party/styletron-react/styletron-react.test.ts#L13)
 
 ## Todo's
 
