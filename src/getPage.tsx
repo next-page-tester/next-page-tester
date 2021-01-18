@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import React from 'react';
 import { existsSync } from 'fs';
-import { getPageInfo, getPageComponents } from './makePageElement';
+import makePageElement, { getPageInfo } from './makePageElement';
 import { makeRenderMethods } from './makeRenderMethods';
 import RouterProvider from './RouterProvider';
 import { renderDocument } from './_document';
@@ -76,16 +76,7 @@ export default async function getPage({
   const makePage = async (
     options: ExtendedOptions
   ): Promise<MakePageResult> => {
-    const { pageData, pageObject } = await getPageInfo({ options });
-    const { AppComponent, PageComponent } = getPageComponents({
-      pageObject,
-      env: options.env,
-    });
-
-    let pageElement = (
-      <AppComponent Component={PageComponent} pageProps={pageData.props} />
-    );
-
+    let { pageElement, routeData } = await makePageElement({ options });
     if (
       useDocument &&
       options.env === RuntimeEnvironment.CLIENT &&
@@ -97,11 +88,10 @@ export default async function getPage({
         </HeadManagerContext.Provider>
       );
     }
-
-    return { routeData: pageObject, pageElement };
+    return { routeData, pageElement };
   };
 
-  let { pageData, pageObject } = await getPageInfo({ options });
+  const { pageData, pageObject } = await getPageInfo({ options });
 
   const wrapWithRouter = (children: JSX.Element) => {
     return (

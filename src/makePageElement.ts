@@ -7,6 +7,7 @@ import type {
   PageObject,
 } from './commonTypes';
 import { RuntimeEnvironment } from './constants';
+import { renderApp } from './_app';
 
 /*
  * Return page info associated with a given path
@@ -42,4 +43,19 @@ export function getPageComponents({
   const PageComponent = pageObject.page[env].default;
 
   return { AppComponent, PageComponent };
+}
+
+export default async function makePageElement({
+  options,
+}: {
+  options: ExtendedOptions;
+}) {
+  const { pageData, pageObject } = await getPageInfo({ options });
+  const pageElement = renderApp({
+    options,
+    pageObject,
+    pageProps: pageData.props,
+  });
+
+  return { pageElement, routeData: pageObject };
 }

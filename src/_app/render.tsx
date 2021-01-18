@@ -1,5 +1,6 @@
 import React from 'react';
 import type { ExtendedOptions, PageObject, PageProps } from '../commonTypes';
+import { getPageComponents } from '../makePageElement';
 
 export default function renderApp({
   options,
@@ -11,13 +12,10 @@ export default function renderApp({
   pageProps: PageProps | undefined;
 }): JSX.Element {
   const { env } = options;
-  const { appFile } = pageObject;
-  const AppComponent = appFile[env].default;
+  const { AppComponent, PageComponent } = getPageComponents({
+    pageObject,
+    env,
+  });
 
-  return (
-    <AppComponent
-      Component={pageObject.page[env].default}
-      pageProps={pageProps}
-    />
-  );
+  return <AppComponent Component={PageComponent} pageProps={pageProps} />;
 }
