@@ -4,6 +4,11 @@ import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import Page from './__fixtures__/env-vars/pages/page';
 import EnvVarsCleanupPage from './__fixtures__/env-vars-cleanup/pages/page';
 
+process.env.FROM_RUNTIME = 'FROM_RUNTIME';
+process.env.NAME_CLASH_RUNTIME_VS_CONFIG = 'FROM_RUNTIME';
+process.env.NAME_CLASH_RUNTIME_VS_DOTFILE = 'FROM_RUNTIME';
+process.env.NAME_CLASH_RUNTIME_VS_CONFIG_VS_DOTFILE = 'FROM_RUNTIME';
+
 describe('Environment variables', () => {
   describe('server runtime', () => {
     it('env vars from config and dotenv file both available (config takes precedence)', async () => {
@@ -15,10 +20,14 @@ describe('Environment variables', () => {
       const { container: expected } = renderWithinNextRoot(
         <Page
           envVarsMock={{
+            FROM_RUNTIME: 'FROM_RUNTIME',
             FROM_CONFIG: 'FROM_CONFIG',
             FROM_DOTFILE: 'FROM_DOTFILE',
             NEXT_PUBLIC_FROM_DOTFILE: 'NEXT_PUBLIC_FROM_DOTFILE',
-            NEXT_PUBLIC_NAME_CLASH: 'NEXT_PUBLIC_NAME_CLASH_FROM_CONFIG',
+
+            NAME_CLASH_RUNTIME_VS_CONFIG: 'FROM_CONFIG',
+            NAME_CLASH_RUNTIME_VS_DOTFILE: 'FROM_RUNTIME',
+            NAME_CLASH_RUNTIME_VS_CONFIG_VS_DOTFILE: 'FROM_CONFIG',
           }}
         />
       );
@@ -36,10 +45,14 @@ describe('Environment variables', () => {
       const { container: expected } = renderWithinNextRoot(
         <Page
           envVarsMock={{
+            FROM_RUNTIME: 'FROM_RUNTIME',
             FROM_CONFIG: 'FROM_CONFIG',
             FROM_DOTFILE: undefined,
             NEXT_PUBLIC_FROM_DOTFILE: 'NEXT_PUBLIC_FROM_DOTFILE',
-            NEXT_PUBLIC_NAME_CLASH: 'NEXT_PUBLIC_NAME_CLASH_FROM_CONFIG',
+
+            NAME_CLASH_RUNTIME_VS_CONFIG: 'FROM_CONFIG',
+            NAME_CLASH_RUNTIME_VS_DOTFILE: 'FROM_RUNTIME',
+            NAME_CLASH_RUNTIME_VS_CONFIG_VS_DOTFILE: 'FROM_CONFIG',
           }}
         />
       );
@@ -54,7 +67,14 @@ describe('Environment variables', () => {
     });
     const { nextRoot: actual } = render();
     const { container: expected } = renderWithinNextRoot(
-      <EnvVarsCleanupPage envVarsMock={{}} />
+      <EnvVarsCleanupPage
+        envVarsMock={{
+          FROM_RUNTIME: 'FROM_RUNTIME',
+          NAME_CLASH_RUNTIME_VS_CONFIG: 'FROM_RUNTIME',
+          NAME_CLASH_RUNTIME_VS_DOTFILE: 'FROM_RUNTIME',
+          NAME_CLASH_RUNTIME_VS_CONFIG_VS_DOTFILE: 'FROM_RUNTIME',
+        }}
+      />
     );
     expectDOMElementsToMatch(actual, expected);
   });
