@@ -1,6 +1,6 @@
 import React from 'react';
 import App from 'next/app';
-import { CounterContext } from '../counter';
+import { CounterContext } from '../../counter';
 
 export default class MyApp extends App {
   render() {

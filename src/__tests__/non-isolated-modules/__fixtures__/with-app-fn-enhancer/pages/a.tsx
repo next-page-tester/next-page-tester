@@ -1,5 +1,5 @@
 import React from 'react';
-import { CounterContext } from '../counter';
+import { CounterContext } from '../../counter';
 
 export default function PageA() {
   return (
