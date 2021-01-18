@@ -23,6 +23,7 @@ describe('Environment variables', () => {
             FROM_RUNTIME: 'FROM_RUNTIME',
             FROM_CONFIG: 'FROM_CONFIG',
             FROM_DOTFILE: 'FROM_DOTFILE',
+            FROM_DOTFILE_EXPANDED: 'FROM_DOTFILE_EXPANDED',
             NEXT_PUBLIC_FROM_DOTFILE: 'NEXT_PUBLIC_FROM_DOTFILE',
 
             NAME_CLASH_RUNTIME_VS_CONFIG: 'FROM_CONFIG',
@@ -48,6 +49,7 @@ describe('Environment variables', () => {
             FROM_RUNTIME: 'FROM_RUNTIME',
             FROM_CONFIG: 'FROM_CONFIG',
             FROM_DOTFILE: undefined,
+            FROM_DOTFILE_EXPANDED: undefined,
             NEXT_PUBLIC_FROM_DOTFILE: 'NEXT_PUBLIC_FROM_DOTFILE',
 
             NAME_CLASH_RUNTIME_VS_CONFIG: 'FROM_CONFIG',
