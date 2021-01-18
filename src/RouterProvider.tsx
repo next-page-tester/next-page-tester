@@ -12,8 +12,8 @@ export default function RouterProvider({
   children: initialChildren,
   makePage,
 }: {
-  options: ExtendedOptions;
   pageObject: PageObject;
+  options: ExtendedOptions;
   children: JSX.Element;
   makePage: (
     optionsOverride?: Partial<ExtendedOptions>
@@ -24,6 +24,7 @@ export default function RouterProvider({
 
   const pushHandler = useCallback(async (url: Parameters<PushHandler>[0]) => {
     const nextRoute = url.toString();
+    const nextOptions = { ...options, route: nextRoute };
     const previousRoute = previousRouteRef.current;
     const { pageElement, pageObject } = await makePage({
       route: nextRoute,
@@ -33,9 +34,9 @@ export default function RouterProvider({
     previousRouteRef.current = nextRoute;
 
     const nextRouter = makeRouterMock({
+      options: nextOptions,
       pageObject,
       pushHandler,
-      options,
     });
 
     // Avoid errors if page gets unmounted
