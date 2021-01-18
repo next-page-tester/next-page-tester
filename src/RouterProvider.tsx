@@ -3,12 +3,8 @@ import React, { useState, useCallback, useRef } from 'react';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import makeRouterMock, { PushHandler } from './makeRouterMock';
 import { useMountedState } from './utils';
-import {
-  ExtendedOptions,
-  RuntimeEnvironment,
-  RouteData,
-  MakePageResult,
-} from './commonTypes';
+import { ExtendedOptions, RouteData, MakePageResult } from './commonTypes';
+import { RuntimeEnvironment } from './constants';
 
 type Props = {
   options: ExtendedOptions;

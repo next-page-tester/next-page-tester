@@ -14,11 +14,11 @@ import {
   PageObject,
   PageData,
   NextPageFile,
-  RuntimeEnvironment,
+  CustomError,
 } from '../commonTypes';
-import type { CustomError } from '../commonTypes';
 import { executeAsIfOnServer } from '../server';
 import { InternalError } from '../_error/error';
+import { RuntimeEnvironment } from '../constants';
 
 function ensureNoMultipleDataFetchingMethods({
   page,

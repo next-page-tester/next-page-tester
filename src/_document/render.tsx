@@ -6,7 +6,6 @@ import {
   NextApp,
   PageObject,
   PageProps,
-  RuntimeEnvironment,
 } from '../commonTypes';
 import type {
   AppType,
@@ -14,7 +13,11 @@ import type {
   NextComponentType,
   RenderPage,
 } from 'next/dist/next-server/lib/utils';
-import { APP_PATH, NEXT_ROOT_ELEMENT_ID } from '../constants';
+import {
+  APP_PATH,
+  NEXT_ROOT_ELEMENT_ID,
+  RuntimeEnvironment,
+} from '../constants';
 import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import type { DocumentProps } from 'next/document';

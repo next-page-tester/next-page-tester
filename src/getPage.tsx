@@ -19,10 +19,10 @@ import {
   Options,
   OptionsWithDefaults,
   ExtendedOptions,
-  RuntimeEnvironment,
   MakePageResult,
 } from './commonTypes';
 import { InternalError } from './_error/error';
+import { RuntimeEnvironment } from './constants';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
   if (!route.startsWith('/')) {

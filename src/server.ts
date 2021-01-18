@@ -1,4 +1,4 @@
-import { RuntimeEnvironment } from './commonTypes';
+import { RuntimeEnvironment } from './constants';
 import setNextRuntimeConfig from './setNextRuntimeConfig';
 import { executeWithFreshModules } from './utils';
 

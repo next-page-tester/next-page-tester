@@ -5,8 +5,8 @@ import type {
   PageComponents,
   PageInfo,
   PageObject,
-  RuntimeEnvironment,
 } from './commonTypes';
+import { RuntimeEnvironment } from './constants';
 
 /*
  * Return page info associated with a given path

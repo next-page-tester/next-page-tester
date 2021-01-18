@@ -10,6 +10,7 @@ import type { NextRouter } from 'next/router';
 import type { createResponse, createRequest } from 'node-mocks-http';
 import type { ParsedUrlQuery } from 'querystring';
 import type { DocumentType } from 'next/dist/next-server/lib/utils';
+import { RuntimeEnvironment } from './constants';
 
 export type Req = ReturnType<typeof createRequest>;
 export type Res = ReturnType<typeof createResponse>;
@@ -29,11 +30,6 @@ export type Options = {
 };
 
 export type OptionsWithDefaults = Required<Options>;
-
-export enum RuntimeEnvironment {
-  SERVER = 'server',
-  CLIENT = 'client',
-}
 
 // Options object is extended with some extra derived props
 export type ExtendedOptions = OptionsWithDefaults & {
