@@ -3,12 +3,17 @@ import { RuntimeEnvironment } from './constants';
 import { loadEnvConfig } from '@next/env';
 const { SERVER, CLIENT } = RuntimeEnvironment;
 
+const Logger = {
+  info: () => {},
+  error: () => {},
+};
+
 let dotFile: Record<string, string> | undefined = undefined;
 export function loadDotFile({ nextRoot }: { nextRoot: string }) {
   // Temporarily hide global process.env to prevent "@next/env" from mutating it
   const currentProcessEnv = process.env;
   process.env = {};
-  const { combinedEnv } = loadEnvConfig(nextRoot);
+  const { combinedEnv } = loadEnvConfig(nextRoot, undefined, Logger);
   process.env = currentProcessEnv;
   dotFile = combinedEnv;
 }
