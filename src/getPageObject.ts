@@ -67,7 +67,11 @@ function makeParamsObject({
   return params;
 }
 
-async function getRouteInfo({ options }: { options: ExtendedOptions }) {
+async function getRouteInfo({
+  options,
+}: {
+  options: ExtendedOptions;
+}): Promise<RouteInfo> {
   const { route } = options;
   const pagePaths = await getPagePaths({ options });
 
@@ -84,6 +88,7 @@ async function getRouteInfo({ options }: { options: ExtendedOptions }) {
           pagePath: originalPath,
           regexCaptureGroups: result.groups,
         });
+
         return {
           route,
           pagePath: originalPath,
