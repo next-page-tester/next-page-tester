@@ -2,12 +2,13 @@ import { getPage } from '../../../src';
 import path from 'path';
 import { screen } from '@testing-library/react';
 
-describe('non-isolated-modules', () => {
+describe('custom-render-page', () => {
   describe.each([
     'with-app-fn-enhancer',
     'with-app-object-enhancer',
     'with-component-object-enhancer',
-  ])('%s render', (enhancerType) => {
+    'with-empty-enhancer',
+  ])('%s', (enhancerType) => {
     it("executes app's exports with expected env globals", async () => {
       const consoleError = jest
         .spyOn(console, 'error')
@@ -21,7 +22,7 @@ describe('non-isolated-modules', () => {
         nonIsolatedModules: [
           path.join(
             process.cwd(),
-            'src/__tests__/non-isolated-modules/__fixtures__/counter'
+            'src/__tests__/custom-render-page/__fixtures__/counter'
           ),
         ],
       });
