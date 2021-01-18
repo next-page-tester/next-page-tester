@@ -6,21 +6,19 @@ import { useMountedState } from './utils';
 import { ExtendedOptions, MakePageResult, PageObject } from './commonTypes';
 import { RuntimeEnvironment } from './constants';
 
-type Props = {
+export default function RouterProvider({
+  pageObject,
+  options,
+  children: initialChildren,
+  makePage,
+}: {
   options: ExtendedOptions;
   pageObject: PageObject;
   children: JSX.Element;
   makePage: (
     optionsOverride?: Partial<ExtendedOptions>
   ) => Promise<MakePageResult>;
-};
-
-export default function RouterProvider({
-  options,
-  pageObject,
-  children: initialChildren,
-  makePage,
-}: Props) {
+}) {
   const isMounted = useMountedState();
   const previousRouteRef = useRef(pageObject.route);
 
