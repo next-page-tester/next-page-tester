@@ -1,25 +1,15 @@
 import React from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { PageA } from '../../PageA';
 
 export default function ClientSideNavigationAGIP(props) {
-  const href = '/ssr/b';
-
-  const router = useRouter();
-  const goToPageB = () => {
-    router.replace(href);
-  };
-
   return (
-    <div>
-      <h2>This is page A</h2>
-      <Link href={href}>
-        <a>Go to B with Link</a>
-      </Link>
-      <a onClick={goToPageB}>Go to B programmatically</a>
-
+    <>
+      <PageA
+        href="/ssr/b?foo=bar"
+        hrefObject={{ pathname: '/ssr/b', query: { foo: 'bar' } }}
+      />
       <span>{JSON.stringify(props)}</span>
-    </div>
+    </>
   );
 }
 
