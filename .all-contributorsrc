@@ -66,6 +66,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "jansepke",
+      "name": "Jan Sepke",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/625043?v=4",
+      "profile": "https://github.com/jansepke",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
