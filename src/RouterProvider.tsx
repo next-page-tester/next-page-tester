@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
-
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import { formatUrl } from 'next/dist/next-server/lib/router/utils/format-url';
 import makeRouterMock, { PushHandler } from './makeRouterMock';
 import { useMountedState } from './utils';
 import { ExtendedOptions, MakePageResult, PageObject } from './commonTypes';
@@ -23,7 +23,7 @@ export default function RouterProvider({
   const previousRouteRef = useRef(pageObject.route);
 
   const pushHandler = useCallback(async (url: Parameters<PushHandler>[0]) => {
-    const nextRoute = url.toString();
+    const nextRoute = typeof url === 'string' ? url : formatUrl(url);
     const nextOptions = { ...options, route: nextRoute };
     const previousRoute = previousRouteRef.current;
     const { pageElement, pageObject } = await makePage({
