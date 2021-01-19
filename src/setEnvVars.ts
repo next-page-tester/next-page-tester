@@ -8,8 +8,8 @@ const { SERVER, CLIENT } = RuntimeEnvironment;
 
 // @NOTE Next.js env var handling implementation is available here:
 // https://github.com/vercel/next.js/tree/v10.0.5/test/integration/env-config
-// We currently don't use it because there is no way of returning an env vars object
-// instead of directly mutating global process.env object
+// We can't use it as long as this doesn't get fixed:
+// https://github.com/vercel/next.js/issues/21296
 let dotFile: Record<string, string> | undefined = undefined;
 export function loadDotFile({ nextRoot }: { nextRoot: string }) {
   const dotFilePath = path.resolve(nextRoot, '.env.local');
@@ -50,12 +50,10 @@ export function setEnvVars({
       [SERVER]: {
         ...serverEnvVarsFromDotFile,
         ...originalEnvVars,
-        ...originalEnvVars,
         ...envVarsFromConfig,
       },
       [CLIENT]: {
         ...clientEnvVarsFromDotFile,
-        ...originalEnvVars,
         ...originalEnvVars,
         ...envVarsFromConfig,
       },
