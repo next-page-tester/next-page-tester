@@ -1,4 +1,4 @@
-import { cleanup } from './makeRenderMethods';
+import { cleanup } from './cleanup';
 
 function isJSDOMEnvironment() {
   return navigator && navigator.userAgent.includes('jsdom');

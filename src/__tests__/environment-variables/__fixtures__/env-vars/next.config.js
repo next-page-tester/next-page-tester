@@ -1,0 +1,8 @@
+module.exports = {
+  env: {
+    FROM_CONFIG: 'FROM_CONFIG',
+
+    NAME_CLASH_RUNTIME_VS_CONFIG: 'FROM_CONFIG',
+    NAME_CLASH_RUNTIME_VS_CONFIG_VS_DOTFILE: 'FROM_CONFIG',
+  },
+};

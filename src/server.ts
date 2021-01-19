@@ -1,5 +1,6 @@
 import { RuntimeEnvironment } from './constants';
 import setNextRuntimeConfig from './setNextRuntimeConfig';
+import { setEnvVars } from './setEnvVars';
 import { executeWithFreshModules } from './utils';
 
 export const requireAsIfOnServer = <FileType>({
@@ -26,6 +27,7 @@ export const executeAsIfOnServer = async <T>(f: () => T) => {
   // @ts-expect-error its okay
   delete global.document;
   setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.SERVER });
+  setEnvVars({ runtimeEnv: RuntimeEnvironment.SERVER });
 
   try {
     return await f();
@@ -33,6 +35,7 @@ export const executeAsIfOnServer = async <T>(f: () => T) => {
     global.window = tmpWindow;
     global.document = tmpDocument;
     setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.CLIENT });
+    setEnvVars({ runtimeEnv: RuntimeEnvironment.CLIENT });
   }
 };
 
@@ -45,6 +48,7 @@ export const executeAsIfOnServerSync = <T>(f: () => T): T => {
   // @ts-expect-error its okay
   delete global.document;
   setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.SERVER });
+  setEnvVars({ runtimeEnv: RuntimeEnvironment.SERVER });
 
   try {
     return f();
@@ -52,5 +56,6 @@ export const executeAsIfOnServerSync = <T>(f: () => T): T => {
     global.window = tmpWindow;
     global.document = tmpDocument;
     setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.CLIENT });
+    setEnvVars({ runtimeEnv: RuntimeEnvironment.CLIENT });
   }
 };
