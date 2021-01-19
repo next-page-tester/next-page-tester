@@ -1,14 +1,14 @@
 import React from 'react';
+import type { NextPage } from 'next';
 import getDocumentFile from './getDocumentFile';
 import fetchDocumentData from './fetchDocumentData';
 import {
   ExtendedOptions,
-  NextApp,
   PageObject,
   PageProps,
+  NextApp,
 } from '../commonTypes';
 import type {
-  AppType,
   ComponentsEnhancer,
   NextComponentType,
   RenderPage,
@@ -22,16 +22,15 @@ import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import type { DocumentProps } from 'next/document';
 import { getPageComponents } from '../makePageElement';
-import { NextPage } from 'next';
 
 // Copied from next.js
 // https://github.com/vercel/next.js/blob/b944b06f30322076ceb9020c10cb9bf3448d2659/packages/next/next-server/server/render.tsx#L127
 function enhanceComponents(
   options: ComponentsEnhancer,
-  App: AppType,
+  App: NextApp,
   Component: NextComponentType
 ): {
-  App: AppType;
+  App: NextApp;
   Component: NextComponentType;
 } {
   // For backwards compatibility
@@ -43,7 +42,7 @@ function enhanceComponents(
   }
 
   return {
-    App: options.enhanceApp ? options.enhanceApp(App) : App,
+    App: options.enhanceApp ? (options.enhanceApp(App) as NextApp) : App,
     Component: options.enhanceComponent
       ? options.enhanceComponent(Component)
       : Component,
@@ -106,7 +105,7 @@ export default async function renderDocument({
           mountedInstances: new Set(),
         }}
       >
-        {wrapWithRouter(render(EnhancedApp as NextApp, EnhancedComponent))}
+        {wrapWithRouter(render(EnhancedApp, EnhancedComponent))}
       </HeadManagerContext.Provider>
     );
     return { html, head };

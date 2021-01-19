@@ -5,12 +5,13 @@ import type {
   NextPage,
   Redirect,
 } from 'next';
-import { AppContext, AppInitialProps } from 'next/app';
 import type { NextRouter } from 'next/router';
 import type { createResponse, createRequest } from 'node-mocks-http';
 import type { ParsedUrlQuery } from 'querystring';
 import type { DocumentType } from 'next/dist/next-server/lib/utils';
 import { RuntimeEnvironment } from './constants';
+import DefaultError from './_error/DefaultError';
+import DefaultApp from './_app/DefaultApp';
 
 export type Req = ReturnType<typeof createRequest>;
 export type Res = ReturnType<typeof createResponse>;
@@ -70,6 +71,7 @@ export type PageProps = {
 export type PageData<P extends PageProps = PageProps> = {
   props?: P;
   redirect?: Redirect;
+  notFound?: true;
 };
 
 export type NextPageFile = {
@@ -80,22 +82,17 @@ export type NextPageFile = {
   getStaticPaths?: GetStaticPaths;
 };
 
-/*
- * App
- */
-
 // @NOTE we might use: import type App from 'next/app';
 // but I had troubles with setting up its generics
-export type NextApp = React.FunctionComponent<{
-  Component: NextPage;
-  pageProps?: PageProps;
-}> & {
-  getInitialProps?: (appContext: AppContext) => Promise<AppInitialProps>;
-};
+export type NextApp = typeof DefaultApp;
 
 export type NextAppFile = {
   [name: string]: unknown;
   default: NextApp;
+};
+
+export type NextErrorFile = {
+  default: typeof DefaultError;
 };
 
 export type NextDocumentFile = {

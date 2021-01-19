@@ -4,3 +4,4 @@ package.json
 coverage
 package-lock.json
 dist/
+.next

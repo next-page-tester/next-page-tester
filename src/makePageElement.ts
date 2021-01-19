@@ -1,5 +1,5 @@
 import getPageObject from './getPageObject';
-import { fetchRouteData } from './fetchData';
+import { fetchRouteData, fetchPageData } from './fetchData';
 import type {
   ExtendedOptions,
   PageComponents,
@@ -8,6 +8,7 @@ import type {
 } from './commonTypes';
 import { RuntimeEnvironment } from './constants';
 import { renderApp } from './_app';
+import { get404File, notFoundResponseEnhancer } from './404';
 
 /*
  * Return page info associated with a given path
@@ -27,6 +28,12 @@ export async function getPageInfo({
         route: pageData.redirect.destination,
       },
     });
+  }
+
+  if (pageData.notFound) {
+    pageObject.page = await get404File({ options });
+    options.res = notFoundResponseEnhancer({ options });
+    pageData.props = (await fetchPageData({ pageObject, options })).props;
   }
 
   return { pageObject, pageData };
