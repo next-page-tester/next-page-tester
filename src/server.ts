@@ -9,9 +9,12 @@ export const requireAsIfOnServer = <FileType>({
   path: string;
   nonIsolatedModules: string[];
 }): FileType => {
-  return executeWithFreshModules(() => {
-    return executeAsIfOnServerSync<FileType>(() => require(path));
-  }, nonIsolatedModules);
+  return executeWithFreshModules(
+    () => {
+      return executeAsIfOnServerSync<FileType>(() => require(path));
+    },
+    { nonIsolatedModules }
+  );
 };
 
 export const executeAsIfOnServer = async <T>(f: () => T) => {

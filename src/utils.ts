@@ -99,10 +99,10 @@ const predefinedNonIsolatedModules = [
 
 export function executeWithFreshModules<T>(
   f: () => T,
-  userNonIsolatedModules: string[]
+  { nonIsolatedModules }: { nonIsolatedModules: string[] }
 ): T {
-  const nonIsolatedModules = [
-    ...userNonIsolatedModules,
+  const allNonIsolatedModules = [
+    ...nonIsolatedModules,
     ...predefinedNonIsolatedModules,
   ];
 
@@ -110,7 +110,7 @@ export function executeWithFreshModules<T>(
   if (typeof jest !== 'undefined') {
     let result: T;
 
-    for (const moduleName of nonIsolatedModules) {
+    for (const moduleName of allNonIsolatedModules) {
       // @NOTE for some reason Jest needs us to pre-import the modules
       // we want to require with jest.requireActual
       require(moduleName);
