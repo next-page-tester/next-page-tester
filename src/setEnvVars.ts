@@ -12,13 +12,22 @@ const { SERVER, CLIENT } = RuntimeEnvironment;
 // https://github.com/vercel/next.js/issues/21296
 let dotFile: Record<string, string> | undefined = undefined;
 export function loadDotFile({ nextRoot }: { nextRoot: string }) {
-  const dotFilePath = path.resolve(nextRoot, '.env.local');
-  if (existsSync(dotFilePath)) {
-    dotFile = dotenvExpand({
-      parsed: dotenv.parse(readFileSync(dotFilePath)),
-      // @ts-expect-error dotenv-expand type definition is out of date
-      ignoreProcessEnv: true,
-    }).parsed;
+  // https://github.com/vercel/next.js/blob/v10.0.5/packages/next-env/index.ts#L82
+  const dotFilePaths = [
+    path.resolve(nextRoot, '.env.test.local'),
+    path.resolve(nextRoot, '.env.test'),
+    path.resolve(nextRoot, '.env'),
+  ];
+
+  for (const path of dotFilePaths) {
+    if (existsSync(path)) {
+      dotFile = dotenvExpand({
+        parsed: dotenv.parse(readFileSync(path)),
+        // @ts-expect-error dotenv-expand type definition is out of date
+        ignoreProcessEnv: true,
+      }).parsed;
+      return;
+    }
   }
 }
 
