@@ -2,6 +2,7 @@ import React from 'react';
 import { getPage } from '../../index';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import Page from './__fixtures__/env-vars/pages/page';
+import EnvVarsCleanupPage from './__fixtures__/env-vars-cleanup/pages/page';
 
 process.env.FROM_RUNTIME = 'FROM_RUNTIME';
 process.env.NAME_CLASH_RUNTIME_VS_CONFIG = 'FROM_RUNTIME';
@@ -59,5 +60,24 @@ describe('Environment variables', () => {
       );
       expectDOMElementsToMatch(actual, expected);
     });
+  });
+
+  it('Env vars do not leak into subsequent tests', async () => {
+    const { render } = await getPage({
+      nextRoot: __dirname + '/__fixtures__' + '/env-vars-cleanup',
+      route: '/page',
+    });
+    const { nextRoot: actual } = render();
+    const { container: expected } = renderWithinNextRoot(
+      <EnvVarsCleanupPage
+        envVarsMock={{
+          FROM_RUNTIME: 'FROM_RUNTIME',
+          NAME_CLASH_RUNTIME_VS_CONFIG: 'FROM_RUNTIME',
+          NAME_CLASH_RUNTIME_VS_DOTFILE: 'FROM_RUNTIME',
+          NAME_CLASH_RUNTIME_VS_CONFIG_VS_DOTFILE: 'FROM_RUNTIME',
+        }}
+      />
+    );
+    expectDOMElementsToMatch(actual, expected);
   });
 });

@@ -57,3 +57,11 @@ export function setEnvVars({
   // here we replace process.env object instead of mutating it
   process.env = envVars[runtimeEnv];
 }
+
+export function cleanupEnvVars() {
+  if (process.env !== originalEnvVars) {
+    process.env = originalEnvVars;
+  }
+  dotFile = undefined;
+  envVars = undefined;
+}
