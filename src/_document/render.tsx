@@ -1,25 +1,75 @@
 import React from 'react';
 import getDocumentFile from './getDocumentFile';
 import fetchDocumentData from './fetchDocumentData';
-import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
-import type { RenderPage } from 'next/dist/next-server/lib/utils';
-import { APP_PATH } from '../constants';
+import {
+  ExtendedOptions,
+  NextApp,
+  PageObject,
+  PageProps,
+} from '../commonTypes';
+import type {
+  AppType,
+  ComponentsEnhancer,
+  NextComponentType,
+  RenderPage,
+} from 'next/dist/next-server/lib/utils';
+import {
+  APP_PATH,
+  NEXT_ROOT_ELEMENT_ID,
+  RuntimeEnvironment,
+} from '../constants';
 import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import type { DocumentProps } from 'next/document';
+import { getPageComponents } from '../makePageElement';
+import { NextPage } from 'next';
+
+// Copied from next.js
+// https://github.com/vercel/next.js/blob/b944b06f30322076ceb9020c10cb9bf3448d2659/packages/next/next-server/server/render.tsx#L127
+function enhanceComponents(
+  options: ComponentsEnhancer,
+  App: AppType,
+  Component: NextComponentType
+): {
+  App: AppType;
+  Component: NextComponentType;
+} {
+  // For backwards compatibility
+  if (typeof options === 'function') {
+    return {
+      App,
+      Component: options(Component),
+    };
+  }
+
+  return {
+    App: options.enhanceApp ? options.enhanceApp(App) : App,
+    Component: options.enhanceComponent
+      ? options.enhanceComponent(Component)
+      : Component,
+  };
+}
 
 export default async function renderDocument({
-  pageElement,
   options,
+  pageProps,
   pageObject,
-  pageData,
+  wrapWithRouter,
 }: {
-  pageElement: JSX.Element;
   options: ExtendedOptions;
+  pageProps: PageProps | undefined;
   pageObject: PageObject;
-  pageData: PageData;
+  wrapWithRouter: (children: JSX.Element) => JSX.Element;
 }): Promise<JSX.Element> {
   const { useDocument } = options;
+  const { AppComponent, PageComponent } = getPageComponents({
+    pageObject,
+    env: RuntimeEnvironment.SERVER,
+  });
+
+  const render = (App: NextApp, Page: NextPage) => {
+    return <App Component={Page} pageProps={pageProps} />;
+  };
 
   // Return an empty dummy document if useDocument is not enabled
   if (!useDocument) {
@@ -27,7 +77,9 @@ export default async function renderDocument({
       <html>
         <head></head>
         <body>
-          <div id="__next">{pageElement}</div>
+          <div id={NEXT_ROOT_ELEMENT_ID}>
+            {wrapWithRouter(render(AppComponent, PageComponent))}
+          </div>
         </body>
       </html>
     );
@@ -36,7 +88,12 @@ export default async function renderDocument({
   const customDocumentFile = getDocumentFile({ options });
   const Document = customDocumentFile.server.default;
 
-  const renderPage: RenderPage = () => {
+  const renderPage: RenderPage = (options = {}) => {
+    const {
+      App: EnhancedApp,
+      Component: EnhancedComponent,
+    } = enhanceComponents(options, AppComponent, PageComponent);
+
     let head: JSX.Element[] = [];
     const html = renderToString(
       // @NOTE: implemented from:
@@ -49,7 +106,7 @@ export default async function renderDocument({
           mountedInstances: new Set(),
         }}
       >
-        {pageElement}
+        {wrapWithRouter(render(EnhancedApp as NextApp, EnhancedComponent))}
       </HeadManagerContext.Provider>
     );
     return { html, head };
@@ -78,9 +135,7 @@ export default async function renderDocument({
       page: pageObject.pagePath,
       query: pageObject.query,
       buildId: 'next-page-tester',
-      props: {
-        pageProps: pageData.props,
-      },
+      props: { pageProps },
     },
     scriptLoader: {},
     docComponentsRendered: {},

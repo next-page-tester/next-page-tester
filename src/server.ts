@@ -1,10 +1,20 @@
+import { RuntimeEnvironment } from './constants';
 import setNextRuntimeConfig from './setNextRuntimeConfig';
 import { executeWithFreshModules } from './utils';
 
-export const requireAsIfOnServer = <FileType>(path: string): FileType => {
-  return executeWithFreshModules(() => {
-    return executeAsIfOnServerSync<FileType>(() => require(path));
-  });
+export const requireAsIfOnServer = <FileType>({
+  path,
+  nonIsolatedModules,
+}: {
+  path: string;
+  nonIsolatedModules: string[];
+}): FileType => {
+  return executeWithFreshModules(
+    () => {
+      return executeAsIfOnServerSync<FileType>(() => require(path));
+    },
+    { nonIsolatedModules }
+  );
 };
 
 export const executeAsIfOnServer = async <T>(f: () => T) => {
@@ -15,14 +25,14 @@ export const executeAsIfOnServer = async <T>(f: () => T) => {
   delete global.window;
   // @ts-expect-error its okay
   delete global.document;
-  setNextRuntimeConfig({ runtimeEnv: 'server' });
+  setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.SERVER });
 
   try {
     return await f();
   } finally {
     global.window = tmpWindow;
     global.document = tmpDocument;
-    setNextRuntimeConfig({ runtimeEnv: 'client' });
+    setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.CLIENT });
   }
 };
 
@@ -34,13 +44,13 @@ export const executeAsIfOnServerSync = <T>(f: () => T): T => {
   delete global.window;
   // @ts-expect-error its okay
   delete global.document;
-  setNextRuntimeConfig({ runtimeEnv: 'server' });
+  setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.SERVER });
 
   try {
     return f();
   } finally {
     global.window = tmpWindow;
     global.document = tmpDocument;
-    setNextRuntimeConfig({ runtimeEnv: 'client' });
+    setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.CLIENT });
   }
 };

@@ -1,6 +1,8 @@
 import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
+import { NEXT_ROOT_ELEMENT_ID } from './constants';
 import { executeAsIfOnServerSync } from './server';
+import { InternalError } from './_error/error';
 
 export function makeRenderMethods({
   serverPageElement,
@@ -38,10 +40,10 @@ export function makeRenderMethods({
     originalBody.append(...bodyContent);
     document.documentElement.replaceChild(originalBody, document.body);
 
-    const nextRoot = document.getElementById('__next');
+    const nextRoot = document.getElementById(NEXT_ROOT_ELEMENT_ID);
     /* istanbul ignore next */
     if (!nextRoot) {
-      throw new Error('[next-page-tester] Missing __next div');
+      throw new InternalError(`Missing ${NEXT_ROOT_ELEMENT_ID} div`);
     }
 
     return { nextRoot };

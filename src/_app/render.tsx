@@ -1,23 +1,21 @@
 import React from 'react';
-import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
+import type { ExtendedOptions, PageObject, PageProps } from '../commonTypes';
+import { getPageComponents } from '../makePageElement';
 
 export default function renderApp({
   options,
   pageObject,
-  pageData,
+  pageProps,
 }: {
   options: ExtendedOptions;
   pageObject: PageObject;
-  pageData: PageData;
+  pageProps: PageProps | undefined;
 }): JSX.Element {
   const { env } = options;
-  const { appFile } = pageObject;
-  const AppComponent = appFile[env].default;
+  const { AppComponent, PageComponent } = getPageComponents({
+    pageObject,
+    env,
+  });
 
-  return (
-    <AppComponent
-      Component={pageObject.page[env].default}
-      pageProps={pageData.props}
-    />
-  );
+  return <AppComponent Component={PageComponent} pageProps={pageProps} />;
 }

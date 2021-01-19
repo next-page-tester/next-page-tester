@@ -1,28 +1,27 @@
 import getPageObject from './getPageObject';
 import { fetchRouteData } from './fetchData';
+import type {
+  ExtendedOptions,
+  PageComponents,
+  PageInfo,
+  PageObject,
+} from './commonTypes';
+import { RuntimeEnvironment } from './constants';
 import { renderApp } from './_app';
-import type { ExtendedOptions, Page } from './commonTypes';
 
 /*
- * Return an instance of the page element corresponding
- * to the given path
+ * Return page info associated with a given path
  */
-export default async function makePageElement({
+export async function getPageInfo({
   options,
 }: {
   options: ExtendedOptions;
-}): Promise<Page> {
-  const pageObject = await getPageObject({
-    options,
-  });
-
-  const pageData = await fetchRouteData({
-    pageObject,
-    options,
-  });
+}): Promise<PageInfo> {
+  const pageObject = await getPageObject({ options });
+  const pageData = await fetchRouteData({ pageObject, options });
 
   if (pageData.redirect) {
-    return makePageElement({
+    return getPageInfo({
       options: {
         ...options,
         route: pageData.redirect.destination,
@@ -30,12 +29,33 @@ export default async function makePageElement({
     });
   }
 
-  // Render page element and optional wrapping custom App
+  return { pageObject, pageData };
+}
+
+export function getPageComponents({
+  pageObject,
+  env,
+}: {
+  pageObject: PageObject;
+  env: RuntimeEnvironment;
+}): PageComponents {
+  const AppComponent = pageObject.appFile[env].default;
+  const PageComponent = pageObject.page[env].default;
+
+  return { AppComponent, PageComponent };
+}
+
+export default async function makePageElement({
+  options,
+}: {
+  options: ExtendedOptions;
+}) {
+  const { pageData, pageObject } = await getPageInfo({ options });
   const pageElement = renderApp({
     options,
     pageObject,
-    pageData,
+    pageProps: pageData.props,
   });
 
-  return { pageElement, pageObject, pageData };
+  return { pageElement, pageObject };
 }

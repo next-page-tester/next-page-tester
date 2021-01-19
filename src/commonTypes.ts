@@ -10,6 +10,7 @@ import type { NextRouter } from 'next/router';
 import type { createResponse, createRequest } from 'node-mocks-http';
 import type { ParsedUrlQuery } from 'querystring';
 import type { DocumentType } from 'next/dist/next-server/lib/utils';
+import { RuntimeEnvironment } from './constants';
 
 export type Req = ReturnType<typeof createRequest>;
 export type Res = ReturnType<typeof createResponse>;
@@ -25,6 +26,7 @@ export type Options = {
   router?: (router: NextRouter) => NextRouter;
   useApp?: boolean;
   useDocument?: boolean;
+  nonIsolatedModules?: string[];
 };
 
 export type OptionsWithDefaults = Required<Options>;
@@ -34,7 +36,7 @@ export type ExtendedOptions = OptionsWithDefaults & {
   pagesDirectory: string;
   pageExtensions: string[];
   previousRoute?: string;
-  env: 'server' | 'client';
+  env: RuntimeEnvironment;
 };
 
 /*
@@ -47,15 +49,18 @@ export type PageFile<FileType> = {
 
 export type PageParams = ParsedUrlQuery;
 
-export type PageObject = {
-  page: PageFile<NextPageFile>;
-  appFile: PageFile<NextAppFile>;
+export type RouteInfo = {
+  params: PageParams;
+  query: PageParams;
   route: string;
   pagePath: string;
-  params: PageParams;
   paramsNumber: number;
-  query: PageParams;
   resolvedUrl: string;
+};
+
+export type PageObject = RouteInfo & {
+  page: PageFile<NextPageFile>;
+  appFile: PageFile<NextAppFile>;
 };
 
 export type PageProps = {
@@ -101,8 +106,17 @@ export class CustomError extends Error {
   payload?: unknown;
 }
 
-export type Page = {
+export type MakePageResult = {
   pageElement: JSX.Element;
   pageObject: PageObject;
+};
+
+export type PageInfo = {
+  pageObject: PageObject;
   pageData: PageData;
+};
+
+export type PageComponents = {
+  AppComponent: NextApp;
+  PageComponent: NextPage;
 };

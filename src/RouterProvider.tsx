@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import { formatUrl } from 'next/dist/next-server/lib/router/utils/format-url';
 import makeRouterMock, { PushHandler } from './makeRouterMock';
 import { useMountedState } from './utils';
-import type { ExtendedOptions, Page, PageObject } from './commonTypes';
-import { formatUrl } from 'next/dist/next-server/lib/router/utils/format-url';
+import { ExtendedOptions, MakePageResult, PageObject } from './commonTypes';
+import { RuntimeEnvironment } from './constants';
 
 export default function RouterProvider({
   pageObject,
@@ -14,7 +15,9 @@ export default function RouterProvider({
   pageObject: PageObject;
   options: ExtendedOptions;
   children: JSX.Element;
-  makePage: (optionsOverride?: Partial<ExtendedOptions>) => Promise<Page>;
+  makePage: (
+    optionsOverride?: Partial<ExtendedOptions>
+  ) => Promise<MakePageResult>;
 }) {
   const isMounted = useMountedState();
   const previousRouteRef = useRef(pageObject.route);
@@ -22,12 +25,11 @@ export default function RouterProvider({
   const pushHandler = useCallback(async (url: Parameters<PushHandler>[0]) => {
     const nextRoute = typeof url === 'string' ? url : formatUrl(url);
     const nextOptions = { ...options, route: nextRoute };
-
     const previousRoute = previousRouteRef.current;
     const { pageElement, pageObject } = await makePage({
       route: nextRoute,
       previousRoute,
-      env: 'client',
+      env: RuntimeEnvironment.CLIENT,
     });
     previousRouteRef.current = nextRoute;
 

@@ -1,5 +1,6 @@
 import loadConfig, { NextConfig } from 'next/dist/next-server/server/config';
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
+import { InternalError } from './_error/error';
 
 let nextConfig: NextConfig;
 export function loadNextConfig({ nextRoot }: { nextRoot: string }) {
@@ -16,9 +17,7 @@ export function loadNextConfig({ nextRoot }: { nextRoot: string }) {
 export function getNextConfig(): NextConfig {
   /* istanbul ignore if */
   if (!nextConfig) {
-    throw new Error(
-      '[next-page-tester] getNextConfig called before loadNextConfig'
-    );
+    throw new InternalError('getNextConfig called before loadNextConfig');
   }
   return nextConfig;
 }
