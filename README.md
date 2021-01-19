@@ -47,7 +47,7 @@ The mounted application is **interactive** and can be tested with any DOM testin
 - wrapping page with custom `_app` and `_document` components
 - emulating **client side navigation** via `Link`, `router.push`, `router.replace`
 - handling pages' `redirect` returns
-- supporting [`next/router`][next-docs-router], [`next/head`][next-docs-head], [`next/link`][next-docs-link], [`next/config`][next-docs-runtime-config]
+- supporting [`next/router`][next-docs-router], [`next/head`][next-docs-head], [`next/link`][next-docs-link], [`next/config`][next-docs-runtime-config] and [environment variables][next-docs-env-vars]
 
 ## API
 
@@ -182,6 +182,10 @@ This warning means that your page renders differently between server and browser
 
 The same error could also be triggered when you import modules that, in order to work, need to preserve module identity throughout the entire SSR cycle (from the moment they are imported to SSR rendering): e.g. `React.Context` or `css-in-js` libraries. In this case you can list these modules in `nonIsolatedModules` option to preserve their identity: [see styletron-react example](src/__tests__/third-party/styletron-react/styletron-react.test.ts#L13)
 
+### Environment variables
+
+Environment variables are automatically loaded from `next.config.js` file and from the first available dotfile among: `.env.test.local`, `.env.test` and `.env`.
+
 ## Todo's
 
 - Consider reusing Next.js code parts (not only types)
@@ -238,6 +242,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [next-docs-head]: https://nextjs.org/docs/api-reference/next/head
 [next-docs-custom-app]: https://nextjs.org/docs/advanced-features/custom-app
 [next-docs-custom-document]: https://nextjs.org/docs/advanced-features/custom-document
+[next-docs-env-vars]: https://nextjs.org/docs/basic-features/environment-variables#test-environment-variables
 [next-gh-strict-bug]: https://github.com/vercel/next.js/issues/16219
 [error-log-mock]: src/**tests**/use-document/use-document.test.tsx#L8
 [examples-folder]: examples
