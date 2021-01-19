@@ -3,11 +3,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 export default function ClientSideNavigationAGIP(props) {
-  const href = '/ssr/b';
+  const href = '/ssr/b?foo=bar';
 
-  const router = useRouter();
-  const goToPageB = () => {
-    router.replace(href);
+  const { replace } = useRouter();
+
+  const goToPageBstring = () => {
+    replace(href);
+  };
+
+  const goToPageBObject = () => {
+    replace({ pathname: '/ssr/b', query: { foo: 'bar' } });
   };
 
   return (
@@ -16,7 +21,8 @@ export default function ClientSideNavigationAGIP(props) {
       <Link href={href}>
         <a>Go to B with Link</a>
       </Link>
-      <a onClick={goToPageB}>Go to B programmatically</a>
+      <a onClick={goToPageBstring}>Go to B programmatically (with string)</a>
+      <a onClick={goToPageBObject}>Go to B programmatically (with object)</a>
 
       <span>{JSON.stringify(props)}</span>
     </div>

@@ -10,9 +10,10 @@ const nextRoot = __dirname + '/__fixtures__';
 
 describe('Client side navigation', () => {
   describe.each`
-    title                     | linkText
-    ${'using Link component'} | ${'Go to B with Link'}
-    ${'programmatically'}     | ${'Go to B programmatically'}
+    title                               | linkText
+    ${'using Link component'}           | ${'Go to B with Link'}
+    ${'programmatically (with string)'} | ${'Go to B programmatically (with string)'}
+    ${'programmatically (with object)'} | ${'Go to B programmatically (with object)'}
   `('$title', ({ linkText }) => {
     it('navigates between pages', async () => {
       const { render } = await getPage({
@@ -31,13 +32,13 @@ describe('Client side navigation', () => {
       const { container: expected } = renderWithinNextRoot(
         <PageB
           routerMock={
-            {
-              asPath: '/b',
+            ({
+              asPath: '/b?foo=bar',
               pathname: '/b',
-              query: {},
+              query: { foo: 'bar' },
               route: '/b',
               basePath: '',
-            } as NextRouter
+            } as unknown) as NextRouter
           }
         />
       );
@@ -117,7 +118,7 @@ describe('Client side navigation', () => {
 
     await waitFor(() => {
       expect(warn).toHaveBeenCalledWith(
-        '[next-page-tester] Un-awaited client side navigation from "/a" to "/b". This might lead into unexpected bugs and errors.'
+        '[next-page-tester] Un-awaited client side navigation from "/a" to "/b?foo=bar". This might lead into unexpected bugs and errors.'
       );
     });
 
