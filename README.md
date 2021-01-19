@@ -210,6 +210,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/kfazinic"><img src="https://avatars0.githubusercontent.com/u/8618138?v=4?s=100" width="100px;" alt=""/><br /><sub><b>kfazinic</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Akfazinic" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/tomaszrondio"><img src="https://avatars0.githubusercontent.com/u/4939724?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tomasz Rondio</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Atomaszrondio" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/alexandermendes"><img src="https://avatars1.githubusercontent.com/u/5636273?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Alexander Mendes</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/commits?author=alexandermendes" title="Code">💻</a></td>
+  </tr>
+  <tr>
     <td align="center"><a href="https://github.com/jansepke"><img src="https://avatars0.githubusercontent.com/u/625043?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jan Sepke</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Ajansepke" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/DavidOrchard"><img src="https://avatars2.githubusercontent.com/u/55760?v=4?s=100" width="100px;" alt=""/><br /><sub><b>DavidOrchard</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3ADavidOrchard" title="Bug reports">🐛</a></td>
   </tr>
