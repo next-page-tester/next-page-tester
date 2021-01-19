@@ -16,21 +16,27 @@ export default function ClientSideNavigationA() {
   }
 
   const href = '/b?foo=bar';
+  const hrefObject = { pathname: '/b', query: { foo: 'bar' } };
 
   const goToPageBstring = () => {
     replace(href);
   };
 
   const goToPageBObject = () => {
-    replace({ pathname: '/b', query: { foo: 'bar' } });
+    replace(hrefObject);
   };
 
   return (
     <div>
       <h2>This is page A</h2>
+
       <Link href={href}>
-        <a>Go to B with Link</a>
+        <a>Go to B with Link (with string)</a>
       </Link>
+      <Link href={hrefObject}>
+        <a>Go to B with Link (with object)</a>
+      </Link>
+
       <a onClick={goToPageBstring}>Go to B programmatically (with string)</a>
       <a onClick={goToPageBObject}>Go to B programmatically (with object)</a>
     </div>

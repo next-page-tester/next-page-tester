@@ -10,10 +10,11 @@ const nextRoot = __dirname + '/__fixtures__';
 
 describe('Client side navigation', () => {
   describe.each`
-    title                               | linkText
-    ${'using Link component'}           | ${'Go to B with Link'}
-    ${'programmatically (with string)'} | ${'Go to B programmatically (with string)'}
-    ${'programmatically (with object)'} | ${'Go to B programmatically (with object)'}
+    title                                   | linkText
+    ${'using Link component (with string)'} | ${'Go to B with Link (with string)'}
+    ${'using Link component (with object)'} | ${'Go to B with Link (with object)'}
+    ${'programmatically (with string)'}     | ${'Go to B programmatically (with string)'}
+    ${'programmatically (with object)'}     | ${'Go to B programmatically (with object)'}
   `('$title', ({ linkText }) => {
     it('navigates between pages', async () => {
       const { render } = await getPage({
@@ -112,7 +113,7 @@ describe('Client side navigation', () => {
     });
 
     const { unmount } = TLRender(page);
-    userEvent.click(screen.getByText('Go to B with Link'));
+    userEvent.click(screen.getByText('Go to B with Link (with string)'));
 
     unmount();
 
