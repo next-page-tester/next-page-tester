@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.18.0
+
+### New Features
+
+- Support custom \_document `renderPage`
+- Support environment variables loading from `next.config.js` file and from the first available dotfile among: `.env.test.local`, `.env.test` and `.env`.
+
+### Bugfixes
+
+- Support client side navigation when url is provided as object
+
 ## 0.17.0
 
 ### Breaking Changes
