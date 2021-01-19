@@ -66,6 +66,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "alexandermendes",
+      "name": "Alexander Mendes",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/5636273?v=4",
+      "profile": "https://github.com/alexandermendes",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
