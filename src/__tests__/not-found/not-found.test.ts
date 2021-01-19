@@ -21,9 +21,12 @@ describe('not-found', () => {
     ).toBeInTheDocument();
   });
 
-  test('With custom _error page', async () => {
+  test.each([
+    ['origGetInitialProps', '/custom-error-page'],
+    ['custom getInitialProps', '/custom-error-page-gip'],
+  ])('Page with %s', async (_dataFetchingType, route) => {
     const { render } = await getPage({
-      nextRoot: path.join(__dirname, '__fixtures__', 'custom-error-page'),
+      nextRoot: path.join(__dirname, '__fixtures__', route),
       route: '/a',
       useDocument: true,
     });
