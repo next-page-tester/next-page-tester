@@ -1,16 +1,25 @@
+import path from 'path';
+import { existsSync, readFileSync } from 'fs';
+import dotenv from 'dotenv';
+import dotenvExpand from 'dotenv-expand';
 import { getNextConfig } from './nextConfig';
 import { RuntimeEnvironment } from './constants';
-import { loadEnvConfig } from '@next/env';
 const { SERVER, CLIENT } = RuntimeEnvironment;
 
+// @NOTE Next.js env var handling implementation is available here:
+// https://github.com/vercel/next.js/tree/v10.0.5/test/integration/env-config
+// We currently don't use it because there is no way of returning an env vars object
+// instead of directly mutating global process.env object
 let dotFile: Record<string, string> | undefined = undefined;
 export function loadDotFile({ nextRoot }: { nextRoot: string }) {
-  // Temporarily hide global process.env to prevent "@next/env" from mutating it
-  const currentProcessEnv = process.env;
-  process.env = {};
-  const { combinedEnv } = loadEnvConfig(nextRoot);
-  process.env = currentProcessEnv;
-  dotFile = combinedEnv;
+  const dotFilePath = path.resolve(nextRoot, '.env.local');
+  if (existsSync(dotFilePath)) {
+    dotFile = dotenvExpand({
+      parsed: dotenv.parse(readFileSync(dotFilePath)),
+      // @ts-expect-error dotenv-expand type definition is out of date
+      ignoreProcessEnv: true,
+    }).parsed;
+  }
 }
 
 let originalEnvVars = process.env;

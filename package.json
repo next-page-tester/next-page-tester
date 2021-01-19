@@ -85,6 +85,8 @@
   "dependencies": {
     "@types/express": "^4.17.8",
     "cookie": "^0.4.1",
+    "dotenv": "^8.2.0",
+    "dotenv-expand": "^5.1.0",
     "fast-glob": "^3.2.4",
     "find-root": "^1.1.0",
     "node-mocks-http": "^1.9.0",
