@@ -19,7 +19,7 @@ export async function getPageInfo({
   options: ExtendedOptions;
 }): Promise<PageInfo> {
   const pageObject = await getPageObject({ options });
-  const pageData = await fetchRouteData({ pageObject, options });
+  let pageData = await fetchRouteData({ pageObject, options });
 
   if (pageData.redirect) {
     return getPageInfo({
@@ -33,7 +33,7 @@ export async function getPageInfo({
   if (pageData.notFound) {
     pageObject.page = await get404File({ options });
     options.res = notFoundResponseEnhancer({ options });
-    pageData.props = (await fetchPageData({ pageObject, options })).props;
+    pageData = await fetchPageData({ pageObject, options });
   }
 
   return { pageObject, pageData };
