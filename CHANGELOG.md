@@ -5,7 +5,7 @@
 ### New Features
 
 - Support custom \_document `renderPage`
-- Support environment variables loading from `next.config.js` file and from the first available dotfile among: `.env.test.local`, `.env.test` and `.env`.
+- Introduce `dotenvFile` option to support environment variables loading
 
 ### Bugfixes
 
