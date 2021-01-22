@@ -4,30 +4,34 @@ import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
 import { getNextConfig } from './nextConfig';
 import { RuntimeEnvironment } from './constants';
+import { InternalError } from './_error/error';
 const { SERVER, CLIENT } = RuntimeEnvironment;
 
 // @NOTE Next.js env var handling implementation is available here:
 // https://github.com/vercel/next.js/tree/v10.0.5/test/integration/env-config
 // We can't use it as long as this doesn't get fixed:
 // https://github.com/vercel/next.js/issues/21296
-let dotFile: Record<string, string> | undefined = undefined;
-export function loadDotFile({ nextRoot }: { nextRoot: string }) {
-  // https://github.com/vercel/next.js/blob/v10.0.5/packages/next-env/index.ts#L82
-  const dotFilePaths = [
-    path.resolve(nextRoot, '.env.test.local'),
-    path.resolve(nextRoot, '.env.test'),
-    path.resolve(nextRoot, '.env'),
-  ];
+let dotenvFile: Record<string, string> | undefined = undefined;
+export function loadDotFile({
+  nextRoot,
+  dotenvFile: dotenvFileRelativePath,
+}: {
+  nextRoot: string;
+  dotenvFile?: string;
+}) {
+  if (!dotenvFileRelativePath) {
+    return;
+  }
 
-  for (const path of dotFilePaths) {
-    if (existsSync(path)) {
-      dotFile = dotenvExpand({
-        parsed: dotenv.parse(readFileSync(path)),
-        // @ts-expect-error dotenv-expand type definition is out of date
-        ignoreProcessEnv: true,
-      }).parsed;
-      return;
-    }
+  const dotenvFilePath = path.resolve(nextRoot, dotenvFileRelativePath);
+  if (existsSync(dotenvFilePath)) {
+    dotenvFile = dotenvExpand({
+      parsed: dotenv.parse(readFileSync(dotenvFilePath)),
+      // @ts-expect-error dotenv-expand type definition is out of date
+      ignoreProcessEnv: true,
+    }).parsed;
+  } else {
+    throw new InternalError(`Cannot find env file at path: ${dotenvFilePath}`);
   }
 }
 
@@ -48,8 +52,8 @@ export function setEnvVars({
     // Keep a reference to original process.env to restore between tests
     originalEnvVars = process.env;
     const { env: envVarsFromConfig } = getNextConfig();
-    const serverEnvVarsFromDotFile = { ...dotFile };
-    const clientEnvVarsFromDotFile = { ...dotFile };
+    const serverEnvVarsFromDotFile = { ...dotenvFile };
+    const clientEnvVarsFromDotFile = { ...dotenvFile };
     for (const varName in clientEnvVarsFromDotFile) {
       if (!varName.startsWith('NEXT_PUBLIC_')) {
         delete clientEnvVarsFromDotFile[varName];
@@ -78,6 +82,6 @@ export function cleanupEnvVars() {
   if (process.env !== originalEnvVars) {
     process.env = originalEnvVars;
   }
-  dotFile = undefined;
+  dotenvFile = undefined;
   envVars = undefined;
 }

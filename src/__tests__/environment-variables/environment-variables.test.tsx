@@ -15,7 +15,7 @@ describe('Environment variables', () => {
       const { serverRender } = await getPage({
         nextRoot: __dirname + '/__fixtures__' + '/env-vars',
         route: '/page',
-        dotFile: '.env.test',
+        dotenvFile: '.env.test',
       });
       const { nextRoot: actual } = serverRender();
       const { container: expected } = renderWithinNextRoot(
@@ -42,7 +42,7 @@ describe('Environment variables', () => {
       const { render } = await getPage({
         nextRoot: __dirname + '/__fixtures__' + '/env-vars',
         route: '/page',
-        dotFile: '.env.test',
+        dotenvFile: '.env.test',
       });
       const { nextRoot: actual } = render();
       const { container: expected } = renderWithinNextRoot(
@@ -83,12 +83,12 @@ describe('Environment variables', () => {
     expectDOMElementsToMatch(actual, expected);
   });
 
-  it('Throws error when provided "dotFile" doesn\'t exist', async () => {
+  it('Throws error when provided "dotenvFile" doesn\'t exist', async () => {
     await expect(
       getPage({
         nextRoot: __dirname + '/__fixtures__' + '/env-vars',
         route: '/page',
-        dotFile: '.env.does-not-exist',
+        dotenvFile: '.env.does-not-exist',
       })
     ).rejects.toThrow('[next-page-tester] Cannot find env file at path:');
   });

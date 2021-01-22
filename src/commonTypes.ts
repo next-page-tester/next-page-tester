@@ -27,9 +27,11 @@ export type Options = {
   useApp?: boolean;
   useDocument?: boolean;
   nonIsolatedModules?: string[];
+  dotenvFile?: string;
 };
 
-export type OptionsWithDefaults = Required<Options>;
+export type OptionsWithDefaults = Omit<Required<Options>, 'dotenvFile'> &
+  Pick<Options, 'dotenvFile'>;
 
 // Options object is extended with some extra derived props
 export type ExtendedOptions = OptionsWithDefaults & {

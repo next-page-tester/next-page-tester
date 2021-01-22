@@ -46,6 +46,7 @@ export default async function getPage({
   useApp = true,
   useDocument = false,
   nonIsolatedModules = [],
+  dotenvFile,
 }: Options): Promise<
   { page: React.ReactElement } & ReturnType<typeof makeRenderMethods>
 > {
@@ -58,11 +59,12 @@ export default async function getPage({
     useApp,
     useDocument,
     nonIsolatedModules,
+    dotenvFile,
   };
 
   validateOptions(optionsWithDefaults);
   loadNextConfig({ nextRoot });
-  loadDotFile({ nextRoot });
+  loadDotFile({ nextRoot, dotenvFile });
   setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.CLIENT });
   setEnvVars({ runtimeEnv: RuntimeEnvironment.CLIENT });
 
