@@ -66,6 +66,33 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "alexandermendes",
+      "name": "Alexander Mendes",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/5636273?v=4",
+      "profile": "https://github.com/alexandermendes",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "jansepke",
+      "name": "Jan Sepke",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/625043?v=4",
+      "profile": "https://github.com/jansepke",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "DavidOrchard",
+      "name": "DavidOrchard",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/55760?v=4",
+      "profile": "https://github.com/DavidOrchard",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,

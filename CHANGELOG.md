@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.18.0
+
+### New Features
+
+- Support custom \_document `renderPage`
+- Introduce `dotenvFile` option to support environment variables loading
+- Add support for `getServerSideProps`'s `notFound` return
+
+### Bugfixes
+
+- Support client side navigation when url is provided as object
+
 ## 0.17.0
 
 ### Breaking Changes
