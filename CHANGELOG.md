@@ -6,6 +6,7 @@
 
 - Support custom \_document `renderPage`
 - Introduce `dotenvFile` option to support environment variables loading
+- Add support for `getServerSideProps`'s `notFound` return
 
 ### Bugfixes
 
