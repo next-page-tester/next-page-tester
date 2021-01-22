@@ -8,6 +8,7 @@ import type {
 } from './commonTypes';
 import { RuntimeEnvironment } from './constants';
 import { renderApp } from './_app';
+import { render404Page } from './404';
 
 /*
  * Return page info associated with a given path
@@ -18,7 +19,7 @@ export async function getPageInfo({
   options: ExtendedOptions;
 }): Promise<PageInfo> {
   const pageObject = await getPageObject({ options });
-  const pageData = await fetchRouteData({ pageObject, options });
+  let pageData = await fetchRouteData({ pageObject, options });
 
   if (pageData.redirect) {
     return getPageInfo({
@@ -27,6 +28,10 @@ export async function getPageInfo({
         route: pageData.redirect.destination,
       },
     });
+  }
+
+  if (pageData.notFound) {
+    pageData = await render404Page({ options, pageObject });
   }
 
   return { pageObject, pageData };

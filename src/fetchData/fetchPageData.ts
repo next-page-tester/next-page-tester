@@ -46,7 +46,7 @@ function ensurePageDataHasProps({
 }: {
   pageData: { [key: string]: unknown };
 }) {
-  const allowedKeys = ['props', 'redirect'];
+  const allowedKeys = ['props', 'redirect', 'notFound'];
   for (const key of allowedKeys) {
     if (key in pageData) {
       return;

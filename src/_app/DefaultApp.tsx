@@ -1,7 +1,17 @@
 import React from 'react';
-import { NextApp } from '../commonTypes';
+import type { NextPage } from 'next';
+import type { PageProps } from '../commonTypes';
+import type { AppContext, AppInitialProps } from 'next/app';
 
-const DefaultApp: NextApp = function DefaultApp({ Component, pageProps }) {
+type Props = {
+  Component: NextPage;
+  pageProps: PageProps | undefined;
+};
+
+/* TODO: we should be using DefaultApp from next/app as it has some custom logic */
+const DefaultApp: React.FC<Props> & {
+  getInitialProps?: (appContext: AppContext) => Promise<AppInitialProps>;
+} = function DefaultApp({ Component, pageProps }) {
   return <Component {...pageProps} />;
 };
 
