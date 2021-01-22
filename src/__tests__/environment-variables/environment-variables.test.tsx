@@ -2,7 +2,7 @@ import React from 'react';
 import { getPage } from '../../index';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import Page from './__fixtures__/env-vars/pages/page';
-import EnvVarsCleanupPage from './__fixtures__/env-vars-cleanup/pages/page';
+import EnvVarsCleanupPage from './__fixtures__/no-dotfile/pages/page';
 
 process.env.FROM_RUNTIME = 'FROM_RUNTIME';
 process.env.NAME_CLASH_RUNTIME_VS_CONFIG = 'FROM_RUNTIME';
@@ -15,6 +15,7 @@ describe('Environment variables', () => {
       const { serverRender } = await getPage({
         nextRoot: __dirname + '/__fixtures__' + '/env-vars',
         route: '/page',
+        dotFile: '.env.test',
       });
       const { nextRoot: actual } = serverRender();
       const { container: expected } = renderWithinNextRoot(
@@ -41,6 +42,7 @@ describe('Environment variables', () => {
       const { render } = await getPage({
         nextRoot: __dirname + '/__fixtures__' + '/env-vars',
         route: '/page',
+        dotFile: '.env.test',
       });
       const { nextRoot: actual } = render();
       const { container: expected } = renderWithinNextRoot(
@@ -64,7 +66,7 @@ describe('Environment variables', () => {
 
   it('Env vars do not leak into subsequent tests', async () => {
     const { render } = await getPage({
-      nextRoot: __dirname + '/__fixtures__' + '/env-vars-cleanup',
+      nextRoot: __dirname + '/__fixtures__' + '/no-dotfile',
       route: '/page',
     });
     const { nextRoot: actual } = render();
@@ -79,5 +81,15 @@ describe('Environment variables', () => {
       />
     );
     expectDOMElementsToMatch(actual, expected);
+  });
+
+  it('Throws error when provided "dotFile" doesn\'t exist', async () => {
+    await expect(
+      getPage({
+        nextRoot: __dirname + '/__fixtures__' + '/env-vars',
+        route: '/page',
+        dotFile: '.env.does-not-exist',
+      })
+    ).rejects.toThrow('[next-page-tester] Cannot find env file at path:');
   });
 });
