@@ -83,13 +83,19 @@ describe('Environment variables', () => {
     expectDOMElementsToMatch(actual, expected);
   });
 
-  it('Throws error when provided "dotenvFile" doesn\'t exist', async () => {
-    await expect(
-      getPage({
-        nextRoot: __dirname + '/__fixtures__' + '/env-vars',
-        route: '/page',
-        dotenvFile: '.env.does-not-exist',
-      })
-    ).rejects.toThrow('[next-page-tester] Cannot find env file at path:');
+  it('Triggers console.warn if provided "dotenvFile" doesn\'t exist', async () => {
+    jest.spyOn(global.console, 'warn').mockImplementation(() => {});
+    await getPage({
+      nextRoot: __dirname + '/__fixtures__' + '/env-vars',
+      route: '/page',
+      dotenvFile: '.env.does-not-exist',
+    });
+
+    expect(console.warn).toBeCalledWith(
+      expect.stringContaining(
+        '[next-page-tester] Cannot find env file at path:'
+      )
+    );
+    jest.restoreAllMocks();
   });
 });

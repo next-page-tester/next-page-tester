@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
 import { getNextConfig } from './nextConfig';
 import { RuntimeEnvironment } from './constants';
-import { InternalError } from './_error/error';
 const { SERVER, CLIENT } = RuntimeEnvironment;
 
 // @NOTE Next.js env var handling implementation is available here:
@@ -31,7 +30,9 @@ export function loadDotFile({
       ignoreProcessEnv: true,
     }).parsed;
   } else {
-    throw new InternalError(`Cannot find env file at path: ${dotenvFilePath}`);
+    console.warn(
+      `[next-page-tester] Cannot find env file at path: ${dotenvFilePath}`
+    );
   }
 }
 
