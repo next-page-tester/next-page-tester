@@ -105,6 +105,7 @@ React element of the application.
 | **useDocument** (experimental) | Render [Document component][next-docs-custom-document]                                         | `boolean`          | `false`         |
 | **nextRoot**                   | Absolute path to Next.js root folder                                                           | `string`           | _auto detected_ |
 | **nonIsolatedModules**         | Array of modules that should use the same module instance in `server` and `client` environment | `string[]`         | -               |
+| **dotenvFile**                 | Relative path to a `.env` file holding [environment variables][next-docs-env-vars]             | `string`           | -               |
 
 ## Set up your test environment
 
