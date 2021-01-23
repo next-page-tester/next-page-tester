@@ -249,6 +249,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [next-docs-head]: https://nextjs.org/docs/api-reference/next/head
 [next-docs-custom-app]: https://nextjs.org/docs/advanced-features/custom-app
 [next-docs-custom-document]: https://nextjs.org/docs/advanced-features/custom-document
+[next-docs-env-vars]: https://nextjs.org/docs/basic-features/environment-variables
 [next-gh-strict-bug]: https://github.com/vercel/next.js/issues/16219
 [error-log-mock]: src/**tests**/use-document/use-document.test.tsx#L8
 [examples-folder]: examples
