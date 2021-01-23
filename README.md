@@ -47,7 +47,7 @@ The mounted application is **interactive** and can be tested with any DOM testin
 - wrapping page with custom `_app` and `_document` components
 - emulating **client side navigation** via `Link`, `router.push`, `router.replace`
 - handling pages' `redirect` returns
-- supporting [`next/router`][next-docs-router], [`next/head`][next-docs-head], [`next/link`][next-docs-link], [`next/config`][next-docs-runtime-config] and [environment variables][next-docs-env-vars]
+- supporting [`next/router`][next-docs-router], [`next/head`][next-docs-head], [`next/link`][next-docs-link], [`next/config`][next-docs-runtime-config] and environment variables
 
 ## API
 
@@ -249,7 +249,6 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [next-docs-head]: https://nextjs.org/docs/api-reference/next/head
 [next-docs-custom-app]: https://nextjs.org/docs/advanced-features/custom-app
 [next-docs-custom-document]: https://nextjs.org/docs/advanced-features/custom-document
-[next-docs-env-vars]: https://nextjs.org/docs/basic-features/environment-variables#test-environment-variables
 [next-gh-strict-bug]: https://github.com/vercel/next.js/issues/16219
 [error-log-mock]: src/**tests**/use-document/use-document.test.tsx#L8
 [examples-folder]: examples
