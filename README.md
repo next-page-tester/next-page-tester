@@ -181,11 +181,7 @@ Next.js `Link` component invokes `window.scrollTo` on click which is not impleme
 
 This warning means that your page renders differently between server and browser. This can be an expected behavior or signal a bug in your code.
 
-The same error could also be triggered when you import modules that, in order to work, need to preserve module identity throughout the entire SSR cycle (from the moment they are imported to SSR rendering): e.g. `React.Context` or `css-in-js` libraries. In this case you can list these modules in `nonIsolatedModules` option to preserve their identity: [see styletron-react example](src/__tests__/third-party/styletron-react/styletron-react.test.ts#L13)
-
-### Environment variables
-
-Environment variables are automatically loaded from `next.config.js` file and from the first available dotfile among: `.env.test.local`, `.env.test` and `.env`.
+The same error could also be triggered when you import modules that, in order to work, need to preserve module identity throughout the entire SSR cycle (from the moment they are imported to SSR rendering): e.g. `React.Context` or `css-in-js` libraries. In this case you can list these modules in `nonIsolatedModules` option to preserve their identity: [see styletron-react example](src/__tests__/third-party/styletron-react/styletron-react.test.ts#L13).
 
 ## Todo's
 
