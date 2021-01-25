@@ -15,6 +15,7 @@ import CustomAppWithNextAppGIP_GIP from './__fixtures__/custom-app-with-next-app
 import SpecialExtensionCustomApp from './__fixtures__/special-extension/pages/_app';
 import SpecialExtensionPage from './__fixtures__/special-extension/pages/page';
 import MissingCustomAppPage from './__fixtures__/missing-custom-app/pages/page';
+import { screen } from '@testing-library/react';
 
 describe('_app support', () => {
   describe('_app with getInitialProps', () => {
@@ -150,14 +151,17 @@ describe('_app support', () => {
 
   describe('route matching "_app" page', () => {
     it('throws "page not found" error', async () => {
-      await expect(
-        getPage({
-          nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
-          route: '/_app',
-        })
-      ).rejects.toThrow(
-        '[next-page-tester] No matching page found for given route'
-      );
+      const { render } = await getPage({
+        nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
+        route: '/_app',
+      });
+
+      render();
+      expect(screen.getByText('404')).toBeInTheDocument();
+
+      expect(
+        screen.getByText('This page could not be found.')
+      ).toBeInTheDocument();
     });
   });
 

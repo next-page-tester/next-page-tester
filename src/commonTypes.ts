@@ -64,6 +64,11 @@ export type PageObject = RouteInfo & {
   appFile: PageFile<NextAppFile>;
 };
 
+export type NotFoundPageObject = RouteInfo & {
+  page?: undefined;
+  appFile: PageFile<NextAppFile>;
+};
+
 export type PageProps = {
   [key: string]: unknown;
 };

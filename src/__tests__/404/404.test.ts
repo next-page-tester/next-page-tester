@@ -6,7 +6,7 @@ import { stripReactExtraMarkup } from '../__utils__/expectDOMElementsToMatch';
 describe('404', () => {
   describe.each([
     ['ssr "notFound" return', '/a'],
-    // ['matching page not found', '/random'],
+    ['matching page not found', '/random?a=b'],
   ])('%s', (_title, route) => {
     describe('no custom 404 or custom _error page provided', () => {
       it('renders nextjs default error page', async () => {

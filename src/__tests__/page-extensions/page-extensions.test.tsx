@@ -17,14 +17,16 @@ describe('page file extensions', () => {
 
     describe('unknown extension', () => {
       it('throws "page not found" error', async () => {
-        await expect(
-          getPage({
-            nextRoot,
-            route: '/invalid',
-          })
-        ).rejects.toThrow(
-          '[next-page-tester] No matching page found for given route'
-        );
+        const { render } = await getPage({
+          nextRoot,
+          route: '/invalid',
+        });
+        render();
+        expect(screen.getByText('404')).toBeInTheDocument();
+
+        expect(
+          screen.getByText('This page could not be found.')
+        ).toBeInTheDocument();
       });
     });
   });
@@ -41,16 +43,20 @@ describe('page file extensions', () => {
         screen.getByText('ts page');
       });
     });
+
     describe('not allowed extensions', () => {
       it('throws "page not found" error', async () => {
-        await expect(
-          getPage({
-            nextRoot,
-            route: '/js',
-          })
-        ).rejects.toThrow(
-          '[next-page-tester] No matching page found for given route'
-        );
+        const { render } = await getPage({
+          nextRoot,
+          route: '/js',
+        });
+
+        render();
+        expect(screen.getByText('404')).toBeInTheDocument();
+
+        expect(
+          screen.getByText('This page could not be found.')
+        ).toBeInTheDocument();
       });
     });
   });
