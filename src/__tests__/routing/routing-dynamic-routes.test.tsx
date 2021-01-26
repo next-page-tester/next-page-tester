@@ -5,7 +5,7 @@ import BlogPage from './__fixtures__/pages/blog/[id]';
 import BlogPage99 from './__fixtures__/pages/blog/99';
 import CatchAllPage from './__fixtures__/pages/catch-all/[id]/[...slug]';
 import OptionalCatchAllPage from './__fixtures__/pages/optional-catch-all/[id]/[[...slug]]';
-import { screen } from '@testing-library/react';
+import { expectDOMElementToMatch404Page } from '../__utils__/expectDOMElementsToMatch';
 
 const nextRoot = __dirname + '/__fixtures__';
 
@@ -104,17 +104,12 @@ describe('Dynamic routes', () => {
     });
 
     it('throws "page not found" error when no optional params are provided', async () => {
-      const { render } = await getPage({
+      const { serverRender } = await getPage({
         nextRoot,
         route: '/catch-all/5',
       });
-
-      render();
-      expect(screen.getByText('404')).toBeInTheDocument();
-
-      expect(
-        screen.getByText('This page could not be found.')
-      ).toBeInTheDocument();
+      const { nextRoot: actual } = serverRender();
+      expectDOMElementToMatch404Page(actual);
     });
   });
 

@@ -16,6 +16,7 @@ import SpecialExtensionCustomApp from './__fixtures__/special-extension/pages/_a
 import SpecialExtensionPage from './__fixtures__/special-extension/pages/page';
 import MissingCustomAppPage from './__fixtures__/missing-custom-app/pages/page';
 import { screen } from '@testing-library/react';
+import { APP_PATH } from '../../constants';
 
 describe('_app support', () => {
   describe('_app with getInitialProps', () => {
@@ -153,7 +154,7 @@ describe('_app support', () => {
     it('throws "page not found" error', async () => {
       const { render } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
-        route: '/_app',
+        route: APP_PATH,
       });
 
       render();

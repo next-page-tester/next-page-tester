@@ -15,7 +15,6 @@ describe('404', () => {
           route,
           useDocument: true,
         });
-
         render();
         expect(stripReactExtraMarkup(document.title)).toEqual(
           '404: This page could not be found'

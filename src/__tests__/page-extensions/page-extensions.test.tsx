@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react';
 import { getPage } from '../../../src';
+import { expectDOMElementToMatch404Page } from '../__utils__/expectDOMElementsToMatch';
 
 describe('page file extensions', () => {
   describe('default next.config file', () => {
@@ -17,16 +18,12 @@ describe('page file extensions', () => {
 
     describe('unknown extension', () => {
       it('throws "page not found" error', async () => {
-        const { render } = await getPage({
+        const { serverRender } = await getPage({
           nextRoot,
           route: '/invalid',
         });
-        render();
-        expect(screen.getByText('404')).toBeInTheDocument();
-
-        expect(
-          screen.getByText('This page could not be found.')
-        ).toBeInTheDocument();
+        const { nextRoot: actual } = serverRender();
+        expectDOMElementToMatch404Page(actual);
       });
     });
   });
@@ -46,17 +43,12 @@ describe('page file extensions', () => {
 
     describe('not allowed extensions', () => {
       it('throws "page not found" error', async () => {
-        const { render } = await getPage({
+        const { serverRender } = await getPage({
           nextRoot,
           route: '/js',
         });
-
-        render();
-        expect(screen.getByText('404')).toBeInTheDocument();
-
-        expect(
-          screen.getByText('This page could not be found.')
-        ).toBeInTheDocument();
+        const { nextRoot: actual } = serverRender();
+        expectDOMElementToMatch404Page(actual);
       });
     });
   });

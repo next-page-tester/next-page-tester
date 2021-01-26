@@ -1,3 +1,10 @@
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import ErrorPage from 'next/error';
+import { NEXT_ROOT_ELEMENT_ID } from '../../constants';
+import { parseHTML } from '../../utils';
+import { InternalError } from '../../_error/error';
+
 const REACT_NEW_LINE_COMMENTS_REGEX = /<!-- -->/g;
 const REACT_DATA_REACT_ROOT = / data-reactroot=""/g;
 
@@ -22,4 +29,20 @@ export function expectDOMElementsToMatch(
   const expectedString = stripReactExtraMarkup(expected.outerHTML);
 
   return expect(actualString).toEqual(expectedString);
+}
+
+export function expectDOMElementToMatch404Page(actual: Element) {
+  const expectedHtml = renderToString(
+    <div id={NEXT_ROOT_ELEMENT_ID}>
+      <ErrorPage statusCode={404} />
+    </div>
+  );
+
+  const expectedDocument = parseHTML(expectedHtml);
+  const expected = expectedDocument.getElementById(NEXT_ROOT_ELEMENT_ID);
+  if (!expected) {
+    throw new InternalError(`Missing ${NEXT_ROOT_ELEMENT_ID} div`);
+  }
+
+  expectDOMElementsToMatch(actual, expected);
 }

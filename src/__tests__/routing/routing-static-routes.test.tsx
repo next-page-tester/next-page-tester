@@ -3,7 +3,8 @@ import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import IndexPage from './__fixtures__/pages/index';
 import BlogIndexPage from './__fixtures__/pages/blog/index';
-import { screen } from '@testing-library/react';
+import { expectDOMElementToMatch404Page } from '../__utils__/expectDOMElementsToMatch';
+import { DOCUMENT_PATH } from '../../constants';
 
 const nextRoot = __dirname + '/__fixtures__';
 
@@ -19,16 +20,12 @@ describe('Static routes', () => {
 
   describe('route not matching any page', () => {
     it('throws "page not found" error', async () => {
-      const { render } = await getPage({
+      const { serverRender } = await getPage({
         nextRoot,
         route: '/blog/5/doesntexists',
       });
-      render();
-      expect(screen.getByText('404')).toBeInTheDocument();
-
-      expect(
-        screen.getByText('This page could not be found.')
-      ).toBeInTheDocument();
+      const { nextRoot: actual } = serverRender();
+      expectDOMElementToMatch404Page(actual);
     });
   });
 
@@ -43,14 +40,12 @@ describe('Static routes', () => {
 
   describe('route === "_document"', () => {
     it('throws "page not found" error', async () => {
-      const { render } = await getPage({ nextRoot, route: '/_document' });
-
-      render();
-      expect(screen.getByText('404')).toBeInTheDocument();
-
-      expect(
-        screen.getByText('This page could not be found.')
-      ).toBeInTheDocument();
+      const { serverRender } = await getPage({
+        nextRoot,
+        route: DOCUMENT_PATH,
+      });
+      const { nextRoot: actual } = serverRender();
+      expectDOMElementToMatch404Page(actual);
     });
   });
 
@@ -72,17 +67,12 @@ describe('Static routes', () => {
 
   describe('route matching /api pages', () => {
     it('throws "page not found" error', async () => {
-      const { render } = await getPage({
+      const { serverRender } = await getPage({
         nextRoot,
         route: '/api',
       });
-
-      render();
-      expect(screen.getByText('404')).toBeInTheDocument();
-
-      expect(
-        screen.getByText('This page could not be found.')
-      ).toBeInTheDocument();
+      const { nextRoot: actual } = serverRender();
+      expectDOMElementToMatch404Page(actual);
     });
   });
 });
