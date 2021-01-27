@@ -1,8 +1,11 @@
-import ReactDOM from 'react-dom';
+import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import { NEXT_ROOT_ELEMENT_ID } from './constants';
 import { executeAsIfOnServerSync } from './server';
 import { InternalError } from './_error/error';
+import { act } from 'react-dom/test-utils';
+
+const mountedContainers = new Set<Element>();
 
 export function makeRenderMethods({
   serverPageElement,
@@ -28,6 +31,7 @@ export function makeRenderMethods({
     const originalBody = document.body;
     const domParser = new DOMParser();
     const newDocument = domParser.parseFromString(html, 'text/html');
+
     document.replaceChild(
       newDocument.documentElement,
       document.documentElement
@@ -54,6 +58,9 @@ export function makeRenderMethods({
 
     // Hydrate page element in existing DOM
     ReactDOM.hydrate(clientPageElement, nextRoot);
+
+    mountedContainers.add(nextRoot);
+
     return { nextRoot };
   }
 
@@ -65,6 +72,8 @@ export function makeRenderMethods({
 }
 
 export function cleanupDOM() {
+  mountedContainers.forEach(cleanupAtContainer);
+
   document.body.innerHTML = '';
   document.head.innerHTML = '';
 
@@ -74,3 +83,9 @@ export function cleanupDOM() {
     html.removeAttribute(html.attributes[0].name);
   }
 }
+
+const cleanupAtContainer = (container: Element) => {
+  act(() => {
+    unmountComponentAtNode(container);
+  });
+};

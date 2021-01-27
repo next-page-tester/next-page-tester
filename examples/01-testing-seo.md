@@ -13,6 +13,8 @@ describe('SEO tests', () => {
     });
     serverRender();
 
+    expect(document.title).toEqual('My SEO title');
+
     const html = document.documentElement;
     expect(html).toHaveAttribute('lang', 'en');
 
