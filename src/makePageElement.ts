@@ -19,7 +19,7 @@ export async function getPageInfo({
   options: ExtendedOptions;
 }): Promise<PageInfo> {
   const pageObject = await getPageObject({ options });
-  if (!pageObject.page) {
+  if (pageObject.type === 'notFound') {
     return render404Page({ options, pageObject });
   }
 

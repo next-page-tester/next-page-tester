@@ -34,7 +34,7 @@ export default async function getPageObject({
     if (!page.client.default) {
       throw new InternalError('No default export found for given route');
     }
-    return { page, appFile, ...routeInfo };
+    return { page, appFile, type: 'found', ...routeInfo };
   }
 
   // 404
@@ -43,6 +43,7 @@ export default async function getPageObject({
   const query = parseQueryString({ queryString: search });
 
   return {
+    type: 'notFound',
     appFile,
     pagePath: pathname,
     params: {},

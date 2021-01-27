@@ -60,12 +60,13 @@ export type RouteInfo = {
 };
 
 export type PageObject = RouteInfo & {
+  type: 'found';
   page: PageFile<NextPageFile>;
   appFile: PageFile<NextAppFile>;
 };
 
 export type NotFoundPageObject = RouteInfo & {
-  page?: undefined;
+  type: 'notFound';
   appFile: PageFile<NextAppFile>;
 };
 
