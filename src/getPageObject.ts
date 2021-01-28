@@ -13,6 +13,7 @@ import type {
   PageParams,
   NextPageFile,
   RouteInfo,
+  NotFoundPageObject,
 } from './commonTypes';
 import { InternalError } from './_error/error';
 
@@ -20,8 +21,10 @@ export default async function getPageObject({
   options,
 }: {
   options: ExtendedOptions;
-}): Promise<PageObject> {
+}): Promise<PageObject | NotFoundPageObject> {
   const routeInfo = await getRouteInfo({ options });
+  const appFile = getAppFile({ options });
+
   if (routeInfo) {
     const page = loadPage<NextPageFile>({
       pagePath: routeInfo.pagePath,
@@ -31,10 +34,26 @@ export default async function getPageObject({
     if (!page.client.default) {
       throw new InternalError('No default export found for given route');
     }
-    const appFile = getAppFile({ options });
-    return { page, appFile, ...routeInfo };
+    return { page, appFile, type: 'found', ...routeInfo };
   }
-  throw new InternalError('No matching page found for given route');
+
+  // 404
+  const { route } = options;
+  const { pathname, search } = parseRoute({ route });
+  const query = parseQueryString({ queryString: search });
+
+  return {
+    type: 'notFound',
+    appFile,
+    pagePath: pathname,
+    params: {},
+    paramsNumber: Object.keys(query).length,
+    query,
+    resolvedUrl:
+      pathname +
+      stringifyQueryString({ object: query, leadingQuestionMark: true }),
+    route,
+  };
 }
 
 function makeParamsObject({
@@ -76,13 +95,13 @@ async function getRouteInfo({
   const pagePaths = await getPagePaths({ options });
 
   const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
-  const { pathname: routePathName, search } = parseRoute({ route });
+  const { pathname, search } = parseRoute({ route });
   const query = parseQueryString({ queryString: search });
 
   // Match provided route through route regexes generated from /page components
   const mathingRouteInfo: RouteInfo[] = pagePaths
     .map((originalPath, index) => {
-      const result = routePathName.match(pagePathRegexes[index]);
+      const result = pathname.match(pagePathRegexes[index]);
       if (result) {
         const params = makeParamsObject({
           pagePath: originalPath,
@@ -96,12 +115,9 @@ async function getRouteInfo({
           paramsNumber: Object.keys(params).length,
           query,
           resolvedUrl:
-            routePathName +
+            pathname +
             stringifyQueryString({
-              object: {
-                ...params,
-                ...query,
-              },
+              object: { ...params, ...query },
               leadingQuestionMark: true,
             }),
         };

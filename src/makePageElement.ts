@@ -19,8 +19,11 @@ export async function getPageInfo({
   options: ExtendedOptions;
 }): Promise<PageInfo> {
   const pageObject = await getPageObject({ options });
-  let pageData = await fetchRouteData({ pageObject, options });
+  if (pageObject.type === 'notFound') {
+    return render404Page({ options, pageObject });
+  }
 
+  const pageData = await fetchRouteData({ options, pageObject });
   if (pageData.redirect) {
     return getPageInfo({
       options: {
@@ -31,7 +34,7 @@ export async function getPageInfo({
   }
 
   if (pageData.notFound) {
-    pageData = await render404Page({ options, pageObject });
+    return render404Page({ options, pageObject });
   }
 
   return { pageObject, pageData };

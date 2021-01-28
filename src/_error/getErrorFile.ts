@@ -15,14 +15,6 @@ export function getErrorFile({
   });
 
   if (customErrorFile) {
-    // Assign "origGetInitialProps" to custom _error page if needed
-    if (!customErrorFile.client.default.getInitialProps) {
-      const defaultErrorFile = getDefaultErrorFile({ nonIsolatedModules });
-      customErrorFile.client.default.getInitialProps =
-        defaultErrorFile.client.default.origGetInitialProps;
-      customErrorFile.server.default.getInitialProps =
-        defaultErrorFile.server.default.origGetInitialProps;
-    }
     return customErrorFile;
   }
 

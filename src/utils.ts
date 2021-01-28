@@ -139,3 +139,8 @@ export function executeWithFreshModules<T>(
     );
   }
 }
+
+export const parseHTML = (html: string) => {
+  const domParser = new DOMParser();
+  return domParser.parseFromString(html, 'text/html');
+};
