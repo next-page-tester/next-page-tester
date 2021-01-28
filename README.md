@@ -191,7 +191,6 @@ Environment variables are automatically loaded from `next.config.js` file and fr
 - Consider reusing Next.js code parts (not only types)
 - Consider supporting Next.js `trailingSlash` option
 - Render custom `_error` page
-- Render custom `404` page
 - Provide a `debug` option to log execution info
 
 ## Contributors ✨
