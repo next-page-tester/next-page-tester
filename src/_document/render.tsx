@@ -22,6 +22,7 @@ import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import type { DocumentProps } from 'next/document';
 import { getPageComponents } from '../makePageElement';
+import { renderEnhancedApp } from '../_app';
 
 // Copied from next.js
 // https://github.com/vercel/next.js/blob/b944b06f30322076ceb9020c10cb9bf3448d2659/packages/next/next-server/server/render.tsx#L127
@@ -67,7 +68,7 @@ export default async function renderDocument({
   });
 
   const render = (App: NextApp, Page: NextPage) => {
-    return <App Component={Page} pageProps={pageProps} />;
+    return renderEnhancedApp({ App, Page, options, pageProps });
   };
 
   // Return an empty dummy document if useDocument is not enabled
