@@ -65,16 +65,16 @@ describe('404', () => {
   it('Receives expected router object (derived from NotFoundPageObject)', async () => {
     const { render } = await getPage({
       nextRoot: path.join(__dirname, '__fixtures__', '404-page-router'),
-      route: '/non-existing-page',
+      route: '/non-existing-page?foo=bar',
     });
 
     const { nextRoot: actual } = render();
     const { container: expected } = renderWithinNextRoot(
       <Page404WithRouter
         routerMock={{
-          asPath: '/non-existing-page',
+          asPath: '/non-existing-page?foo=bar',
           pathname: '/non-existing-page',
-          query: {},
+          query: { foo: 'bar' },
           route: '/non-existing-page',
           basePath: '',
         }}
