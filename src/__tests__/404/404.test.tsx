@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPage } from '../..';
+import { getPage } from '../../../src';
 import path from 'path';
 import { screen } from '@testing-library/react';
 import { renderWithinNextRoot, expectDOMElementsToMatch } from '../__utils__';

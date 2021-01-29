@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 
 describe('Runtime Configuration with next/config', () => {

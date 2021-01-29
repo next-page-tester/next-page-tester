@@ -1,4 +1,5 @@
 import React from 'react';
+// @NOTE this tests breaks when tested as "dist"
 import { getPage } from '../../index';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import Page from './__fixtures__/env-vars/pages/page';
