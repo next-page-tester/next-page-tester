@@ -1,41 +1,8 @@
 import getPagePaths from './getPagePaths';
-import {
-  pagePathToRouteRegex,
-  extractPagePathParamsType,
-  ROUTE_PARAMS_TYPES,
-} from './pagePathParser';
-import { parseRoute, parseQueryString, stringifyQueryString } from '../utils';
-import type { ExtendedOptions, PageParams, RouteInfo } from '../commonTypes';
-
-function makeParamsObject({
-  pagePath,
-  regexCaptureGroups,
-}: {
-  pagePath: string;
-  regexCaptureGroups?: Record<string, string>;
-}) {
-  const params = {} as PageParams;
-  const pagePathParams = extractPagePathParamsType({
-    pagePath,
-  });
-
-  if (regexCaptureGroups) {
-    for (const [key, value] of Object.entries(regexCaptureGroups)) {
-      if (value !== undefined) {
-        const paramType = pagePathParams[key];
-        if (
-          paramType === ROUTE_PARAMS_TYPES.CATCH_ALL ||
-          paramType === ROUTE_PARAMS_TYPES.OPTIONAL_CATCH_ALL
-        ) {
-          params[key] = value.split('/');
-        } else {
-          params[key] = value;
-        }
-      }
-    }
-  }
-  return params;
-}
+import makeRouteInfo from './makeRouteInfo';
+import { pagePathToRouteRegex } from './pagePathParser';
+import { parseRoute } from '../utils';
+import type { ExtendedOptions, RouteInfo } from '../commonTypes';
 
 export default async function getRouteInfo({
   options,
@@ -44,34 +11,19 @@ export default async function getRouteInfo({
 }): Promise<RouteInfo> {
   const { route } = options;
   const pagePaths = await getPagePaths({ options });
-
   const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
-  const { pathname, search } = parseRoute({ route });
-  const query = parseQueryString({ queryString: search });
+  const { pathname } = parseRoute({ route });
 
   // Match provided route through route regexes generated from /page components
   const matchingRouteInfo: RouteInfo[] = pagePaths
-    .map((originalPath, index) => {
+    .map((pagePath, index) => {
       const result = pathname.match(pagePathRegexes[index]);
       if (result) {
-        const params = makeParamsObject({
-          pagePath: originalPath,
-          regexCaptureGroups: result.groups,
-        });
-
-        return {
+        return makeRouteInfo({
           route,
-          pagePath: originalPath,
-          params,
-          paramsNumber: Object.keys(params).length,
-          query,
-          resolvedUrl:
-            pathname +
-            stringifyQueryString({
-              object: { ...params, ...query },
-              leadingQuestionMark: true,
-            }),
-        };
+          pagePath,
+          routeRegexCaptureGroups: result.groups,
+        });
       }
     })
     .filter((result): result is RouteInfo => Boolean(result))

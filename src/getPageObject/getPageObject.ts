@@ -1,7 +1,8 @@
 import getRouteInfo from './getRouteInfo';
+import makeRouteInfo from './makeRouteInfo';
 import { loadPage } from '../loadPage';
 import { getAppFile } from '../_app';
-import { parseRoute, parseQueryString, stringifyQueryString } from '../utils';
+import { parseRoute } from '../utils';
 import type {
   ExtendedOptions,
   PageObject,
@@ -31,21 +32,18 @@ export default async function getPageObject({
   }
 
   // Make a NotFoundPageObject for 404 page
-  // @TODO merge duplicated logic
+  // @NOTE we currently set pagePath as current path name, but it should
+  // be the path of the currently rendered page file
   const { route } = options;
-  const { pathname, search } = parseRoute({ route });
-  const query = parseQueryString({ queryString: search });
+  const { pathname } = parseRoute({ route });
+  const notFoundPageRouteInfo = makeRouteInfo({
+    route,
+    pagePath: pathname,
+  });
 
   return {
+    ...notFoundPageRouteInfo,
     type: 'notFound',
     appFile,
-    pagePath: pathname,
-    params: {},
-    paramsNumber: 0,
-    query,
-    resolvedUrl:
-      pathname +
-      stringifyQueryString({ object: query, leadingQuestionMark: true }),
-    route,
   };
 }
