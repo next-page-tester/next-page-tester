@@ -1,16 +1,30 @@
-import type { ExtendedOptions, PageObject } from '../commonTypes';
+import type {
+  ExtendedOptions,
+  NotFoundPageObject,
+  PageInfo,
+  PageObject,
+} from '../commonTypes';
 import { get404File } from './get404File';
-import { notFoundResponseEnhancer } from './response';
 import { fetchPageData } from '../fetchData';
 
 export async function render404Page({
-  pageObject,
+  pageObject: notFoundPageObject,
   options,
 }: {
-  pageObject: PageObject;
+  pageObject: NotFoundPageObject | PageObject;
   options: ExtendedOptions;
-}) {
-  options.res = notFoundResponseEnhancer({ options });
-  pageObject.page = get404File({ options });
-  return fetchPageData({ pageObject, options });
+}): Promise<PageInfo> {
+  const pageObject: PageObject = {
+    ...notFoundPageObject,
+    type: 'found',
+    page: get404File({ options }),
+  };
+
+  const pageData = await fetchPageData({ pageObject, options });
+  pageData.props = {
+    ...pageData.props,
+    statusCode: 404,
+  };
+
+  return { pageData, pageObject };
 }

@@ -189,7 +189,6 @@ The same error could also be triggered when you import modules that, in order to
 - Consider reusing Next.js code parts (not only types)
 - Consider supporting Next.js `trailingSlash` option
 - Render custom `_error` page
-- Render custom `404` page
 - Provide a `debug` option to log execution info
 
 ## Contributors ✨
