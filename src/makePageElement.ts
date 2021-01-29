@@ -6,9 +6,14 @@ import type {
   PageInfo,
   PageObject,
 } from './commonTypes';
-import { RuntimeEnvironment } from './constants';
+import { RuntimeEnvironment, ABSOLUTE_URL_REGEXP } from './constants';
 import { renderApp } from './_app';
 import { render404Page } from './404';
+import { InternalError } from './_error/error';
+
+function isExternalRoute(route: string) {
+  return Boolean(route.match(ABSOLUTE_URL_REGEXP));
+}
 
 /*
  * Return page info associated with a given path
@@ -20,6 +25,9 @@ export async function getPageInfo({
 }): Promise<PageInfo> {
   const pageObject = await getPageObject({ options });
   if (pageObject.type === 'notFound') {
+    if (isExternalRoute(pageObject.route)) {
+      throw new InternalError(`External route: ${pageObject.route}`);
+    }
     return render404Page({ options, pageObject });
   }
 
