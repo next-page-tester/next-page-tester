@@ -37,7 +37,8 @@ export default async function getPageObject({
     return { page, appFile, type: 'found', ...routeInfo };
   }
 
-  // 404
+  // Make a NotFoundPageObject for 404 page
+  // @TODO merge duplicated logic
   const { route } = options;
   const { pathname, search } = parseRoute({ route });
   const query = parseQueryString({ queryString: search });
@@ -47,7 +48,7 @@ export default async function getPageObject({
     appFile,
     pagePath: pathname,
     params: {},
-    paramsNumber: Object.keys(query).length,
+    paramsNumber: 0,
     query,
     resolvedUrl:
       pathname +
@@ -99,7 +100,7 @@ async function getRouteInfo({
   const query = parseQueryString({ queryString: search });
 
   // Match provided route through route regexes generated from /page components
-  const mathingRouteInfo: RouteInfo[] = pagePaths
+  const matchingRouteInfo: RouteInfo[] = pagePaths
     .map((originalPath, index) => {
       const result = pathname.match(pagePathRegexes[index]);
       if (result) {
@@ -127,5 +128,5 @@ async function getRouteInfo({
     .sort((a, b) => a.paramsNumber - b.paramsNumber);
 
   // Return the result with less page params
-  return mathingRouteInfo[0];
+  return matchingRouteInfo[0];
 }
