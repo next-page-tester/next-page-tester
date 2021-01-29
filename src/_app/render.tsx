@@ -1,5 +1,11 @@
+import { NextPage } from 'next';
 import React from 'react';
-import type { ExtendedOptions, PageObject, PageProps } from '../commonTypes';
+import type {
+  ExtendedOptions,
+  NextApp,
+  PageObject,
+  PageProps,
+} from '../commonTypes';
 import { getPageComponents } from '../makePageElement';
 
 export default function renderApp({
@@ -17,5 +23,28 @@ export default function renderApp({
     env,
   });
 
-  return <AppComponent Component={PageComponent} pageProps={pageProps} />;
+  return renderEnhancedApp({
+    App: AppComponent,
+    Page: PageComponent,
+    pageProps,
+    options,
+  });
+}
+
+export function renderEnhancedApp({
+  App,
+  Page,
+  pageProps,
+  options: { wrapper = {} },
+}: {
+  App: NextApp;
+  Page: NextPage;
+  pageProps: PageProps | undefined;
+  options: ExtendedOptions;
+}) {
+  let UserEnhancedPage = Page;
+  if (wrapper.Page) {
+    UserEnhancedPage = wrapper.Page(Page);
+  }
+  return <App Component={UserEnhancedPage} pageProps={pageProps} />;
 }

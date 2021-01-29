@@ -8,7 +8,7 @@ import type {
 import type { NextRouter } from 'next/router';
 import type { createResponse, createRequest } from 'node-mocks-http';
 import type { ParsedUrlQuery } from 'querystring';
-import type { DocumentType } from 'next/dist/next-server/lib/utils';
+import type { DocumentType, Enhancer } from 'next/dist/next-server/lib/utils';
 import { RuntimeEnvironment } from './constants';
 import DefaultError from './_error/DefaultError';
 import DefaultApp from './_app/DefaultApp';
@@ -29,10 +29,18 @@ export type Options = {
   useDocument?: boolean;
   nonIsolatedModules?: string[];
   dotenvFile?: string;
+  wrapper?: {
+    Page?: Enhancer<NextPage>;
+  };
 };
 
-export type OptionsWithDefaults = Omit<Required<Options>, 'dotenvFile'> &
-  Pick<Options, 'dotenvFile'>;
+type OptionsWithoutDefaultValue = 'dotenvFile' | 'wrapper';
+
+export type OptionsWithDefaults = Omit<
+  Required<Options>,
+  OptionsWithoutDefaultValue
+> &
+  Pick<Options, OptionsWithoutDefaultValue>;
 
 // Options object is extended with some extra derived props
 export type ExtendedOptions = OptionsWithDefaults & {
