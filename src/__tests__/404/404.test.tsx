@@ -1,7 +1,10 @@
-import { getPage } from '../../../src';
+import React from 'react';
+import { getPage } from '../..';
 import path from 'path';
 import { screen } from '@testing-library/react';
+import { renderWithinNextRoot, expectDOMElementsToMatch } from '../__utils__';
 import { stripReactExtraMarkup } from '../__utils__/expectDOMElementsToMatch';
+import Page404WithRouter from './__fixtures__/404-page-router/pages/404';
 
 describe('404', () => {
   describe.each([
@@ -57,5 +60,27 @@ describe('404', () => {
         expect(screen.getByText('Go back home')).toBeInTheDocument();
       });
     });
+  });
+
+  it('Receives expected router object (derived from NotFoundPageObject)', async () => {
+    const { render } = await getPage({
+      nextRoot: path.join(__dirname, '__fixtures__', '404-page-router'),
+      route: '/non-existing-page',
+    });
+
+    const { nextRoot: actual } = render();
+    const { container: expected } = renderWithinNextRoot(
+      <Page404WithRouter
+        routerMock={{
+          asPath: '/non-existing-page',
+          pathname: '/non-existing-page',
+          query: {},
+          route: '/non-existing-page',
+          basePath: '',
+        }}
+      />
+    );
+
+    expectDOMElementsToMatch(actual, expected);
   });
 });
