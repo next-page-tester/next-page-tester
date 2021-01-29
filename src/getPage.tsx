@@ -3,7 +3,7 @@ import React from 'react';
 import { existsSync } from 'fs';
 import makePageElement, { getPageInfo } from './makePageElement';
 import { makeRenderMethods } from './makeRenderMethods';
-import RouterProvider from './RouterProvider';
+import { RouterProvider } from './router';
 import { renderDocument } from './_document';
 import { renderApp } from './_app';
 import initHeadManager from 'next/dist/client/head-manager';

@@ -1,6 +1,6 @@
 import type { NextRouter } from 'next/router';
-import { removeFileExtension, parseRoute } from './utils';
-import type { ExtendedOptions, PageObject } from './commonTypes';
+import { removeFileExtension, parseRoute } from '../utils';
+import type { ExtendedOptions, PageObject } from '../commonTypes';
 
 type NextPushArgs = Parameters<NextRouter['push']>;
 export type PushHandler = (

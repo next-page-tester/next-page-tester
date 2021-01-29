@@ -1,4 +1,5 @@
-import { cleanup } from './cleanup';
+import { cleanupDOM } from './makeRenderMethods';
+import { cleanupEnvVars } from './setEnvVars';
 
 function isJSDOMEnvironment() {
   return navigator && navigator.userAgent.includes('jsdom');
@@ -25,4 +26,9 @@ export function initTestHelpers() {
   if (typeof document !== 'undefined' && typeof afterEach === 'function') {
     afterEach(cleanup);
   }
+}
+
+export function cleanup() {
+  cleanupDOM();
+  cleanupEnvVars();
 }

@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import type { AppContext, AppInitialProps } from 'next/app';
-import makeRouterMock from '../makeRouterMock';
+import { makeRouterMock } from '../router';
 import { makeGetInitialPropsContext } from '../fetchData/makeContextObject';
 import { executeAsIfOnServer } from '../server';
 import { PageObject, ExtendedOptions } from '../commonTypes';

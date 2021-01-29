@@ -1,7 +1,7 @@
 import path from 'path';
 import fastGlob from 'fast-glob';
 import normalizePath from 'normalize-path';
-import type { ExtendedOptions } from './commonTypes';
+import type { ExtendedOptions } from '../commonTypes';
 
 // Returns available page paths without file extension
 async function getPagePaths({

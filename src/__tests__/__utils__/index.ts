@@ -3,5 +3,9 @@ export { RouterPrinter } from './RouterPrinter';
 export { RouterQueryPrinter } from './RouterQueryPrinter';
 export { sleep } from './sleep';
 export { stringify } from './stringify';
-export { expectDOMElementsToMatch } from './expectDOMElementsToMatch';
+export {
+  expectDOMElementsToMatch,
+  stripReactExtraMarkup,
+} from './expectDOMElementsToMatch';
+export { expectToBeDefault404Page } from './expectToBeDefault404Page';
 export { renderWithinNextRoot } from './renderWithinNextRoot';
