@@ -34,10 +34,13 @@ export type Options = {
   };
 };
 
-type NonRequiredOptions = 'dotenvFile' | 'wrapper';
+type OptionsWithoutDefaultValue = 'dotenvFile' | 'wrapper';
 
-export type OptionsWithDefaults = Omit<Required<Options>, NonRequiredOptions> &
-  Pick<Options, NonRequiredOptions>;
+export type OptionsWithDefaults = Omit<
+  Required<Options>,
+  OptionsWithoutDefaultValue
+> &
+  Pick<Options, OptionsWithoutDefaultValue>;
 
 // Options object is extended with some extra derived props
 export type ExtendedOptions = OptionsWithDefaults & {
