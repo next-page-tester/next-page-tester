@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.19.0
+
+### New Features
+
+- Render 404 page when matching route not found
+- Add `wrapper` option
+
 ## 0.18.0
 
 ### New Features

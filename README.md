@@ -95,18 +95,18 @@ React element of the application.
 
 ## Options
 
-| Property                       | Description                                                                                                                                                | type                           | Default         |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ | --------------- |
-| **route** (mandatory)          | Next route (must start with `/`)                                                                                                                           | `string`                       | -               |
-| **req**                        | Enhance default mocked [request object][req-docs]                                                                                                          | `req => req`                   | -               |
-| **res**                        | Enhance default mocked [response object][res-docs]                                                                                                         | `res => res`                   | -               |
-| **router**                     | Enhance default mocked [Next router object][next-docs-router]                                                                                              | `router => router`             | -               |
-| **useApp**                     | Render [custom App component][next-docs-custom-app]                                                                                                        | `boolean`                      | `true`          |
-| **useDocument** (experimental) | Render [Document component][next-docs-custom-document]                                                                                                     | `boolean`                      | `false`         |
-| **nextRoot**                   | Absolute path to Next.js root folder                                                                                                                       | `string`                       | _auto detected_ |
-| **nonIsolatedModules**         | Array of modules that should use the same module instance in `server` and `client` environment                                                             | `string[]`                     | -               |
-| **dotenvFile**                 | Relative path to a `.env` file holding [environment variables][next-docs-env-vars]                                                                         | `string`                       | -               |
-| **wrapper**                    | Object with callback functions that runs the actual rendering logic. It's useful to decorate these functions to wrap component tree with mocked providers. | `{Page?: Enhancer<NextPage> }` | -               |
+| Property                       | Description                                                                                    | type                              | Default         |
+| ------------------------------ | ---------------------------------------------------------------------------------------------- | --------------------------------- | --------------- |
+| **route** (mandatory)          | Next route (must start with `/`)                                                               | `string`                          | -               |
+| **req**                        | Enhance default mocked [request object][req-docs]                                              | `req => req`                      | -               |
+| **res**                        | Enhance default mocked [response object][res-docs]                                             | `res => res`                      | -               |
+| **router**                     | Enhance default mocked [Next router object][next-docs-router]                                  | `router => router`                | -               |
+| **useApp**                     | Render [custom App component][next-docs-custom-app]                                            | `boolean`                         | `true`          |
+| **useDocument** (experimental) | Render [Document component][next-docs-custom-document]                                         | `boolean`                         | `false`         |
+| **nextRoot**                   | Absolute path to Next.js root folder                                                           | `string`                          | _auto detected_ |
+| **nonIsolatedModules**         | Array of modules that should use the same module instance in `server` and `client` environment | `string[]`                        | -               |
+| **dotenvFile**                 | Relative path to a `.env` file holding [environment variables][next-docs-env-vars]             | `string`                          | -               |
+| **wrapper**                    | Map of render functions. Useful to decorate component tree with mocked providers.              | `{ Page?: NextPage => NextPage }` | -               |
 
 ## Set up your test environment
 
@@ -221,7 +221,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- prettier-ignore-start -->
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
- 
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- prettier-ignore-end -->
 
