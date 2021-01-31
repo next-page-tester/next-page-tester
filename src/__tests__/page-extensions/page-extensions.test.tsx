@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { getPage } from '../../../src';
-import { expectDOMElementToMatch404Page } from '../__utils__/expectDOMElementsToMatch';
+import { expectToBeDefault404Page } from '../__utils__';
 
 describe('page file extensions', () => {
   describe('default next.config file', () => {
@@ -23,7 +23,7 @@ describe('page file extensions', () => {
           route: '/invalid',
         });
         const { nextRoot: actual } = serverRender();
-        expectDOMElementToMatch404Page(actual);
+        expectToBeDefault404Page(actual);
       });
     });
   });
@@ -48,7 +48,7 @@ describe('page file extensions', () => {
           route: '/js',
         });
         const { nextRoot: actual } = serverRender();
-        expectDOMElementToMatch404Page(actual);
+        expectToBeDefault404Page(actual);
       });
     });
   });

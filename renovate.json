@@ -69,6 +69,16 @@
       "groupName": "Update cookie"
     },
     {
+      "packageNames": [
+        "@apollo/client",
+        "@types/graphql",
+        "lodash",
+        "@types/lodash",
+        "cross-fetch"
+      ],
+      "groupName": "Update Apollo demo dependencies"
+    },
+    {
       "depTypeList": ["peerDependencies"],
       "enabled": false
     }

@@ -3,7 +3,7 @@ import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import IndexPage from './__fixtures__/pages/index';
 import BlogIndexPage from './__fixtures__/pages/blog/index';
-import { expectDOMElementToMatch404Page } from '../__utils__/expectDOMElementsToMatch';
+import { expectToBeDefault404Page } from '../__utils__';
 import { DOCUMENT_PATH } from '../../constants';
 
 const nextRoot = __dirname + '/__fixtures__';
@@ -25,7 +25,7 @@ describe('Static routes', () => {
         route: '/blog/5/doesntexists',
       });
       const { nextRoot: actual } = serverRender();
-      expectDOMElementToMatch404Page(actual);
+      expectToBeDefault404Page(actual);
     });
   });
 
@@ -45,7 +45,7 @@ describe('Static routes', () => {
         route: DOCUMENT_PATH,
       });
       const { nextRoot: actual } = serverRender();
-      expectDOMElementToMatch404Page(actual);
+      expectToBeDefault404Page(actual);
     });
   });
 
@@ -72,7 +72,7 @@ describe('Static routes', () => {
         route: '/api',
       });
       const { nextRoot: actual } = serverRender();
-      expectDOMElementToMatch404Page(actual);
+      expectToBeDefault404Page(actual);
     });
   });
 });

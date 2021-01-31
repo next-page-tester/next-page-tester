@@ -5,7 +5,7 @@ import BlogPage from './__fixtures__/pages/blog/[id]';
 import BlogPage99 from './__fixtures__/pages/blog/99';
 import CatchAllPage from './__fixtures__/pages/catch-all/[id]/[...slug]';
 import OptionalCatchAllPage from './__fixtures__/pages/optional-catch-all/[id]/[[...slug]]';
-import { expectDOMElementToMatch404Page } from '../__utils__/expectDOMElementsToMatch';
+import { expectToBeDefault404Page } from '../__utils__';
 
 const nextRoot = __dirname + '/__fixtures__';
 
@@ -109,7 +109,7 @@ describe('Dynamic routes', () => {
         route: '/catch-all/5',
       });
       const { nextRoot: actual } = serverRender();
-      expectDOMElementToMatch404Page(actual);
+      expectToBeDefault404Page(actual);
     });
   });
 

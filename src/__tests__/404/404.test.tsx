@@ -3,7 +3,7 @@ import { getPage } from '../../../src';
 import path from 'path';
 import { screen } from '@testing-library/react';
 import { renderWithinNextRoot, expectDOMElementsToMatch } from '../__utils__';
-import { stripReactExtraMarkup } from '../__utils__/expectDOMElementsToMatch';
+import { stripReactExtraMarkup } from '../__utils__';
 import Page404WithRouter from './__fixtures__/404-page-router/pages/404';
 
 describe('404', () => {
