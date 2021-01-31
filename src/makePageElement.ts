@@ -9,6 +9,8 @@ import type {
 import { RuntimeEnvironment } from './constants';
 import { renderApp } from './_app';
 import { render404Page } from './404';
+import { InternalError } from './_error/error';
+import { isExternalRoute } from './utils';
 
 /*
  * Return page info associated with a given path
@@ -20,6 +22,9 @@ export async function getPageInfo({
 }): Promise<PageInfo> {
   const pageObject = await getPageObject({ options });
   if (pageObject.type === 'notFound') {
+    if (isExternalRoute(pageObject.route)) {
+      throw new InternalError(`External route: ${pageObject.route}`);
+    }
     return render404Page({ options, pageObject });
   }
 
