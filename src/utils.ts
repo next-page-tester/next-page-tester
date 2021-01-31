@@ -144,3 +144,9 @@ export const parseHTML = (html: string) => {
   const domParser = new DOMParser();
   return domParser.parseFromString(html, 'text/html');
 };
+
+const ABSOLUTE_URL_REGEXP = new RegExp('^(?:[a-z]+:)?//', 'i');
+
+export function isExternalRoute(route: string) {
+  return Boolean(route.match(ABSOLUTE_URL_REGEXP));
+}

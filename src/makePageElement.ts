@@ -6,14 +6,11 @@ import type {
   PageInfo,
   PageObject,
 } from './commonTypes';
-import { RuntimeEnvironment, ABSOLUTE_URL_REGEXP } from './constants';
+import { RuntimeEnvironment } from './constants';
 import { renderApp } from './_app';
 import { render404Page } from './404';
 import { InternalError } from './_error/error';
-
-function isExternalRoute(route: string) {
-  return Boolean(route.match(ABSOLUTE_URL_REGEXP));
-}
+import { isExternalRoute } from './utils';
 
 /*
  * Return page info associated with a given path

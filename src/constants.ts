@@ -9,5 +9,3 @@ export enum RuntimeEnvironment {
   SERVER = 'server',
   CLIENT = 'client',
 }
-
-export const ABSOLUTE_URL_REGEXP = new RegExp('^(?:[a-z]+:)?//', 'i');
