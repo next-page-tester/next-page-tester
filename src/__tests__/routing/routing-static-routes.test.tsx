@@ -19,7 +19,7 @@ describe('Static routes', () => {
   });
 
   describe('route not matching any page', () => {
-    it('throws "page not found" error', async () => {
+    it('renders 404 page', async () => {
       const { serverRender } = await getPage({
         nextRoot,
         route: '/blog/5/doesntexists',
@@ -39,7 +39,7 @@ describe('Static routes', () => {
   });
 
   describe('route === "_document"', () => {
-    it('throws "page not found" error', async () => {
+    it('renders 404 page', async () => {
       const { serverRender } = await getPage({
         nextRoot,
         route: DOCUMENT_PATH,
@@ -66,7 +66,7 @@ describe('Static routes', () => {
   });
 
   describe('route matching /api pages', () => {
-    it('throws "page not found" error', async () => {
+    it('renders 404 page', async () => {
       const { serverRender } = await getPage({
         nextRoot,
         route: '/api',

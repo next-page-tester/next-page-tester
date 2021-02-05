@@ -151,7 +151,7 @@ describe('_app support', () => {
   });
 
   describe('route matching "_app" page', () => {
-    it('throws "page not found" error', async () => {
+    it('renders 404 page', async () => {
       const { render } = await getPage({
         nextRoot: __dirname + '/__fixtures__/custom-app-with-gip',
         route: APP_PATH,

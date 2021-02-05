@@ -103,7 +103,7 @@ describe('Dynamic routes', () => {
       });
     });
 
-    it('throws "page not found" error when no optional params are provided', async () => {
+    it('renders 404 page when no optional params are provided', async () => {
       const { serverRender } = await getPage({
         nextRoot,
         route: '/catch-all/5',

@@ -17,7 +17,7 @@ describe('page file extensions', () => {
     });
 
     describe('unknown extension', () => {
-      it('throws "page not found" error', async () => {
+      it('renders 404 page', async () => {
         const { serverRender } = await getPage({
           nextRoot,
           route: '/invalid',
@@ -42,7 +42,7 @@ describe('page file extensions', () => {
     });
 
     describe('not allowed extensions', () => {
-      it('throws "page not found" error', async () => {
+      it('renders 404 page', async () => {
         const { serverRender } = await getPage({
           nextRoot,
           route: '/js',
