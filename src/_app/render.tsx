@@ -6,7 +6,7 @@ import type {
   PageObject,
   PageProps,
 } from '../commonTypes';
-import { getPageComponents } from '../makePageElement';
+import { getPageComponents } from '../page';
 
 export default function renderApp({
   options,

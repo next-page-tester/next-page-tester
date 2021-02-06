@@ -3,7 +3,7 @@ import { loadPageIfExists } from '../loadPage';
 import { FOUR_O_FOUR_PATH } from '../constants';
 import { getErrorFile } from '../_error/getErrorFile';
 
-export function get404File({
+export function get404PageFile({
   options,
 }: {
   options: ExtendedOptions;

@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import React from 'react';
 import { existsSync } from 'fs';
-import makePageElement, { getPageInfo } from './makePageElement';
+import { makePageElement, getPageInfo } from './page';
 import { makeRenderMethods } from './makeRenderMethods';
 import { RouterProvider } from './router';
 import { renderDocument } from './_document';

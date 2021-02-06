@@ -1,2 +1,2 @@
-export * from './get404File';
-export * from './render';
+export { get404PageFile } from './get404PageFile';
+export { get404PageInfo } from './get404PageInfo';

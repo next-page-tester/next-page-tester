@@ -21,7 +21,7 @@ import {
 import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import type { DocumentProps } from 'next/document';
-import { getPageComponents } from '../makePageElement';
+import { getPageComponents } from '../page';
 import { renderEnhancedApp } from '../_app';
 
 // Copied from next.js

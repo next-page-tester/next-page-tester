@@ -4,10 +4,10 @@ import type {
   PageInfo,
   PageObject,
 } from '../commonTypes';
-import { get404File } from './get404File';
+import { get404PageFile } from './get404PageFile';
 import { fetchPageData } from '../fetchData';
 
-export async function render404Page({
+export async function get404PageInfo({
   pageObject: notFoundPageObject,
   options,
 }: {
@@ -17,7 +17,7 @@ export async function render404Page({
   const pageObject: PageObject = {
     ...notFoundPageObject,
     type: 'found',
-    page: get404File({ options }),
+    page: get404PageFile({ options }),
   };
 
   const pageData = await fetchPageData({ pageObject, options });
