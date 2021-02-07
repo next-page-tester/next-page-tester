@@ -1,5 +1,5 @@
 import type { ExtendedOptions, PageFile, NextErrorFile } from '../commonTypes';
-import { loadPageIfExists } from '../loadPage';
+import { getPageFileIfExists } from '../page';
 import { FOUR_O_FOUR_PATH } from '../constants';
 import { getErrorFile } from '../_error/getErrorFile';
 
@@ -8,7 +8,7 @@ export function get404PageFile({
 }: {
   options: ExtendedOptions;
 }): PageFile<NextErrorFile> {
-  const custom404file = loadPageIfExists<NextErrorFile>({
+  const custom404file = getPageFileIfExists<NextErrorFile>({
     pagePath: FOUR_O_FOUR_PATH,
     options,
   });

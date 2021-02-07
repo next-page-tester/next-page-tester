@@ -1,21 +1,18 @@
 import path from 'path';
 import { existsSync } from 'fs';
-import { requireAsIfOnServer } from './server';
-import type { ExtendedOptions, PageFile } from './commonTypes';
-import { InternalError } from './_error/error';
+import type { ExtendedOptions, PageFile } from '../commonTypes';
+import { InternalError } from '../_error/error';
+import { loadFile, loadSingleFile } from '../loadFile';
 
-export function loadSingleFile<FileType>({
-  absolutePath,
-}: {
-  absolutePath: string;
-}): FileType {
-  return require(absolutePath);
-}
+type GetPageOptions = {
+  pagePath: string;
+  options: ExtendedOptions;
+};
 
-export function loadSinglePage<FileType>({
+export function getSinglePageFile<FileType>({
   pagePath,
   options: { pageExtensions, pagesDirectory },
-}: LoadPageOptions): FileType {
+}: GetPageOptions): FileType {
   // @NOTE Here we have to remove pagePath's leading "/"
   const absolutePath = path.resolve(pagesDirectory, pagePath.substring(1));
 
@@ -33,42 +30,20 @@ export function loadSinglePage<FileType>({
   );
 }
 
-export function loadSinglePageIfExists<FileType>(
-  options: LoadPageOptions
+export function getSinglePageFileIfExists<FileType>(
+  options: GetPageOptions
 ): FileType | undefined {
   try {
-    return loadSinglePage(options);
+    return getSinglePageFile(options);
   } catch (e) {
     return undefined;
   }
 }
 
-export function loadFile<FileType>({
-  absolutePath,
-  nonIsolatedModules,
-}: {
-  absolutePath: string;
-  nonIsolatedModules: string[];
-}): PageFile<FileType> {
-  return {
-    client: require(absolutePath),
-    server: requireAsIfOnServer<FileType>({
-      path: absolutePath,
-      nonIsolatedModules,
-    }),
-    path: absolutePath,
-  };
-}
-
-type LoadPageOptions = {
-  pagePath: string;
-  options: ExtendedOptions;
-};
-
-export function loadPage<FileType>({
+export function getPageFile<FileType>({
   pagePath,
   options: { pageExtensions, pagesDirectory, nonIsolatedModules },
-}: LoadPageOptions): PageFile<FileType> {
+}: GetPageOptions): PageFile<FileType> {
   // @NOTE Here we have to remove pagePath's leading "/"
   const absolutePath = path.resolve(pagesDirectory, pagePath.substring(1));
 
@@ -84,11 +59,11 @@ export function loadPage<FileType>({
   );
 }
 
-export function loadPageIfExists<FileType>(
-  options: LoadPageOptions
+export function getPageFileIfExists<FileType>(
+  options: GetPageOptions
 ): PageFile<FileType> | undefined {
   try {
-    return loadPage(options);
+    return getPageFile(options);
   } catch (e) {
     return undefined;
   }

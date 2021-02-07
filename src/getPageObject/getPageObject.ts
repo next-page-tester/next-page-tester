@@ -1,6 +1,6 @@
 import getRouteInfo from './getRouteInfo';
 import makeRouteInfo from './makeRouteInfo';
-import { loadPage } from '../loadPage';
+import { getPageFile } from '../page';
 import { getAppFile } from '../_app';
 import { parseRoute } from '../utils';
 import type {
@@ -20,7 +20,7 @@ export default async function getPageObject({
   const appFile = getAppFile({ options });
 
   if (routeInfo) {
-    const page = loadPage<NextPageFile>({
+    const page = getPageFile<NextPageFile>({
       pagePath: routeInfo.pagePath,
       options,
     });

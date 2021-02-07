@@ -21,7 +21,7 @@ import type { DocumentProps } from 'next/document';
 import { renderEnhancedApp, getSingleAppFile } from '../_app';
 import { executeWithFreshModules } from '../utils';
 import { executeAsIfOnServer } from '../server';
-import { loadSingleFile } from '../loadPage';
+import { loadSingleFile } from '../loadFile';
 
 // Copied from next.js
 // https://github.com/vercel/next.js/blob/b944b06f30322076ceb9020c10cb9bf3448d2659/packages/next/next-server/server/render.tsx#L127

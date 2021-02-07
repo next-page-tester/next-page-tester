@@ -1,6 +1,7 @@
 import path from 'path';
 import type { ExtendedOptions, PageFile, NextErrorFile } from '../commonTypes';
-import { loadFile, loadPageIfExists } from '../loadPage';
+import { loadFile } from '../loadFile';
+import { getPageFileIfExists } from '../page';
 import { ERROR_PATH } from '../constants';
 
 export function getErrorFile({
@@ -9,7 +10,7 @@ export function getErrorFile({
   options: ExtendedOptions;
 }): PageFile<NextErrorFile> {
   const { nonIsolatedModules } = options;
-  const customErrorFile = loadPageIfExists<NextErrorFile>({
+  const customErrorFile = getPageFileIfExists<NextErrorFile>({
     pagePath: ERROR_PATH,
     options,
   });

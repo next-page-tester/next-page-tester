@@ -1,11 +1,7 @@
 import path from 'path';
 import type { ExtendedOptions, NextAppFile, PageFile } from '../commonTypes';
-import {
-  loadPageIfExists,
-  loadSinglePageIfExists,
-  loadFile,
-  loadSingleFile,
-} from '../loadPage';
+import { loadFile, loadSingleFile } from '../loadFile';
+import { getPageFileIfExists, getSinglePageFileIfExists } from '../page';
 import { APP_PATH } from '../constants';
 
 export function getSingleAppFile({
@@ -15,7 +11,7 @@ export function getSingleAppFile({
 }): NextAppFile {
   const { useApp } = options;
   if (useApp) {
-    const customAppFile = loadSinglePageIfExists<NextAppFile>({
+    const customAppFile = getSinglePageFileIfExists<NextAppFile>({
       pagePath: APP_PATH,
       options,
     });
@@ -40,7 +36,7 @@ export function getAppFile({
 }): PageFile<NextAppFile> {
   const { useApp, nonIsolatedModules } = options;
   if (useApp) {
-    const customAppFile = loadPageIfExists<NextAppFile>({
+    const customAppFile = getPageFileIfExists<NextAppFile>({
       pagePath: APP_PATH,
       options,
     });
