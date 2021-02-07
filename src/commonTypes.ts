@@ -56,6 +56,7 @@ export type ExtendedOptions = OptionsWithDefaults & {
 export type PageFile<FileType> = {
   client: FileType;
   server: FileType;
+  path: string;
 };
 
 export type PageParams = ParsedUrlQuery;
