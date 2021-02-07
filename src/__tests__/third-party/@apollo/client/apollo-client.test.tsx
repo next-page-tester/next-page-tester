@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPage } from '../../../../index';
+import { getPage } from '../../../../../src';
 import userEvent from '@testing-library/user-event';
 import { screen } from '@testing-library/react';
 import path from 'path';
