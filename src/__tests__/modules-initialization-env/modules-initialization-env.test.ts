@@ -1,20 +1,16 @@
 import path from 'path';
 import { screen } from '@testing-library/react';
 import { getPage } from '../../../src';
+import { silenceConsoleError } from '../__utils__';
 
-// eslint-disable-next-line jest/no-disabled-tests
-describe.skip('Modules initialization environment', () => {
+silenceConsoleError('Text content did not match.');
+
+describe('Modules initialization environment', () => {
   describe.each(['server', 'client'])('%s render', (renderEnvironment) => {
     it('Modules should be initialized in expected environment', async () => {
       const { serverRender, render } = await getPage({
         nextRoot: path.join(__dirname, '__fixtures__'),
         route: '/page',
-        nonIsolatedModules: [
-          path.resolve(
-            path.resolve(__dirname, '__fixtures__', 'statefulModule')
-          ),
-          path.resolve(path.resolve(__dirname, '__fixtures__', 'appContext')),
-        ],
       });
 
       if (renderEnvironment === 'server') {

@@ -3,6 +3,9 @@ import { getPage } from '../../../src';
 import path from 'path';
 import { screen } from '@testing-library/react';
 import { MockedProvider } from './__fixtures__/MockedProvider';
+import { silenceConsoleError } from '../__utils__';
+
+silenceConsoleError('Text content did not match.');
 
 describe('wrapper', () => {
   test('Should wrap with Page', async () => {
@@ -10,12 +13,6 @@ describe('wrapper', () => {
     const { render } = await getPage({
       nextRoot: path.join(__dirname, '__fixtures__', 'Page'),
       route: '/a',
-      nonIsolatedModules: [
-        path.join(
-          process.cwd(),
-          'src/__tests__/wrapper/__fixtures__/MockedProvider'
-        ),
-      ],
       wrapper: {
         Page: (Page) => (pageProps) => {
           return (

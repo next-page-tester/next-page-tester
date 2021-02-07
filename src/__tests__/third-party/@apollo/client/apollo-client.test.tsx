@@ -36,7 +36,6 @@ describe('@apollo/client', () => {
     const { render } = await getPage({
       nextRoot: path.join(__dirname, '__fixtures__'),
       route: '/',
-      nonIsolatedModules: ['@apollo/client'],
       wrapper: {
         Page: (Page) => (pageProps) => {
           return (

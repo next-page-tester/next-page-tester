@@ -4,13 +4,12 @@ import { screen } from '@testing-library/react';
 
 describe('styletron-react', () => {
   it('As a user I can test applications using "styletron-react"', async () => {
-    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => null);
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
     const { render } = await getPage({
       nextRoot: __dirname,
       route: '/a',
       useDocument: true,
-      nonIsolatedModules: ['styletron-react'],
     });
 
     render();
