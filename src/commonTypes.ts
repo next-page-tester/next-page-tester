@@ -77,8 +77,11 @@ export type PageObject = RouteInfo & {
 
 export type NotFoundPageObject = RouteInfo & {
   type: 'notFound';
+  page: PageFile<NextErrorFile>;
   appFile: PageFile<NextAppFile>;
 };
+
+export type GenericPageObject = PageObject | NotFoundPageObject;
 
 export type PageProps = {
   [key: string]: unknown;
@@ -88,6 +91,11 @@ export type PageData<P extends PageProps = PageProps> = {
   props?: P;
   redirect?: Redirect;
   notFound?: true;
+};
+
+export type PageInfo = {
+  pageObject: GenericPageObject;
+  pageData: PageData;
 };
 
 export type NextPageFile = {
@@ -121,12 +129,7 @@ export class CustomError extends Error {
 
 export type MakePageResult = {
   pageElement: JSX.Element;
-  pageObject: PageObject;
-};
-
-export type PageInfo = {
-  pageObject: PageObject;
-  pageData: PageData;
+  pageObject: GenericPageObject;
 };
 
 export type PageComponents = {

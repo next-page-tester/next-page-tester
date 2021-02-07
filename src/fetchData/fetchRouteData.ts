@@ -1,12 +1,12 @@
 import fetchPageData from './fetchPageData';
 import { fetchAppData } from '../_app';
-import type { ExtendedOptions, PageObject } from '../commonTypes';
+import type { ExtendedOptions, GenericPageObject } from '../commonTypes';
 
 export default async function fetchRouteData({
   pageObject,
   options,
 }: {
-  pageObject: PageObject;
+  pageObject: GenericPageObject;
   options: ExtendedOptions;
 }) {
   const appInitialProps = await fetchAppData({

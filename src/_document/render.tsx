@@ -4,7 +4,7 @@ import getDocumentFile from './getDocumentFile';
 import fetchDocumentData from './fetchDocumentData';
 import {
   ExtendedOptions,
-  PageObject,
+  GenericPageObject,
   PageProps,
   NextApp,
 } from '../commonTypes';
@@ -58,7 +58,7 @@ export default async function renderDocument({
 }: {
   options: ExtendedOptions;
   pageProps: PageProps | undefined;
-  pageObject: PageObject;
+  pageObject: GenericPageObject;
   wrapWithRouter: (children: JSX.Element) => JSX.Element;
 }): Promise<JSX.Element> {
   const { useDocument } = options;

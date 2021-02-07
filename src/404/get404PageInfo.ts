@@ -14,9 +14,9 @@ export async function get404PageInfo({
   pageObject: NotFoundPageObject | PageObject;
   options: ExtendedOptions;
 }): Promise<PageInfo> {
-  const pageObject: PageObject = {
+  const pageObject: NotFoundPageObject = {
     ...notFoundPageObject,
-    type: 'found',
+    type: 'notFound',
     page: get404PageFile({ options }),
   };
 

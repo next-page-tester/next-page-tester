@@ -11,7 +11,7 @@ import {
 } from './makeContextObject';
 import {
   ExtendedOptions,
-  PageObject,
+  GenericPageObject,
   PageData,
   NextPageFile,
   CustomError,
@@ -102,12 +102,12 @@ export default async function fetchPageData({
   appInitialProps,
   options,
 }: {
-  pageObject: PageObject;
+  pageObject: GenericPageObject;
   appInitialProps?: AppInitialProps;
   options: ExtendedOptions;
 }): Promise<PageData> {
   const { env } = options;
-  const { page, params } = pageObject;
+  const { page } = pageObject;
   ensureNoMultipleDataFetchingMethods({ page: page.server });
 
   const pageComponent = page[env].default;
@@ -133,29 +133,33 @@ export default async function fetchPageData({
     }
   }
 
-  if (page.server.getServerSideProps) {
-    const { getServerSideProps } = page.server;
-    const ctx: GetServerSidePropsContext<
-      typeof params
-    > = makeGetServerSidePropsContext({ options, pageObject });
-    const pageData = await executeAsIfOnServer(() => getServerSideProps(ctx));
-    ensurePageDataHasProps({ pageData });
-    return mergePageDataWithAppData({ pageData, appInitialProps });
-  }
+  // Data fetching methods available to actual pages only
+  if (pageObject.type === 'found') {
+    const { page, params } = pageObject;
+    if (page.server.getServerSideProps) {
+      const { getServerSideProps } = page.server;
+      const ctx: GetServerSidePropsContext<
+        typeof params
+      > = makeGetServerSidePropsContext({ options, pageObject });
+      const pageData = await executeAsIfOnServer(() => getServerSideProps(ctx));
+      ensurePageDataHasProps({ pageData });
+      return mergePageDataWithAppData({ pageData, appInitialProps });
+    }
 
-  if (page.server.getStaticProps) {
-    const ctx: GetStaticPropsContext<typeof params> = makeStaticPropsContext({
-      pageObject,
-    });
-    // @TODO introduce `getStaticPaths` logic
-    // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
-    const pageData = await page.server.getStaticProps(ctx);
-    ensurePageDataHasProps({ pageData });
-    return mergePageDataWithAppData({ pageData, appInitialProps });
-  }
+    if (page.server.getStaticProps) {
+      const ctx: GetStaticPropsContext<typeof params> = makeStaticPropsContext({
+        pageObject,
+      });
+      // @TODO introduce `getStaticPaths` logic
+      // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
+      const pageData = await page.server.getStaticProps(ctx);
+      ensurePageDataHasProps({ pageData });
+      return mergePageDataWithAppData({ pageData, appInitialProps });
+    }
 
-  if (appInitialProps) {
-    return { props: appInitialProps.pageProps };
+    if (appInitialProps) {
+      return { props: appInitialProps.pageProps };
+    }
   }
 
   return {};

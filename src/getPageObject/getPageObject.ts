@@ -5,17 +5,17 @@ import { getAppFile } from '../_app';
 import { parseRoute } from '../utils';
 import type {
   ExtendedOptions,
-  PageObject,
   NextPageFile,
-  NotFoundPageObject,
+  GenericPageObject,
 } from '../commonTypes';
 import { InternalError } from '../_error/error';
+import { get404PageFile } from '../404';
 
 export default async function getPageObject({
   options,
 }: {
   options: ExtendedOptions;
-}): Promise<PageObject | NotFoundPageObject> {
+}): Promise<GenericPageObject> {
   const routeInfo = await getRouteInfo({ options });
   const appFile = getAppFile({ options });
 
@@ -45,5 +45,6 @@ export default async function getPageObject({
     ...notFoundPageRouteInfo,
     type: 'notFound',
     appFile,
+    page: get404PageFile({ options }),
   };
 }

@@ -6,13 +6,17 @@ import type {
 } from 'next';
 import { parse } from 'cookie';
 import makeHttpObjects from './makeHttpObjects';
-import type { ExtendedOptions, PageObject } from '../commonTypes';
+import type {
+  ExtendedOptions,
+  PageObject,
+  GenericPageObject,
+} from '../commonTypes';
 
 export function makeGetInitialPropsContext({
   pageObject,
   options: { req: reqMocker, res: resMocker, previousRoute, env },
 }: {
-  pageObject: PageObject;
+  pageObject: GenericPageObject;
   options: ExtendedOptions;
 }): NextPageContext {
   const { pagePath, params, route, query } = pageObject;

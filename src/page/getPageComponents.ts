@@ -1,11 +1,11 @@
-import type { PageComponents, PageObject } from '../commonTypes';
+import type { PageComponents, GenericPageObject } from '../commonTypes';
 import { RuntimeEnvironment } from '../constants';
 
 export function getPageComponents({
   pageObject,
   env,
 }: {
-  pageObject: PageObject;
+  pageObject: GenericPageObject;
   env: RuntimeEnvironment;
 }): PageComponents {
   const AppComponent = pageObject.appFile[env].default;
