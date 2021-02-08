@@ -1,1 +1,1 @@
-export { default as renderDocument } from './render';
+export { default as serverRenderDocument } from './render';

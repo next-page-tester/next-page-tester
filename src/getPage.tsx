@@ -4,7 +4,7 @@ import { existsSync } from 'fs';
 import { makePageElement, getPageInfo } from './page';
 import { makeRenderMethods } from './makeRenderMethods';
 import { RouterProvider } from './router';
-import { renderDocument } from './_document';
+import { serverRenderDocument } from './_document';
 import { renderApp } from './_app';
 import initHeadManager from 'next/dist/client/head-manager';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
@@ -114,7 +114,7 @@ export default async function getPage({
     );
   };
 
-  const serverPageElement = await renderDocument({
+  const serverPageElement = await serverRenderDocument({
     options,
     pageObject,
     wrapWithRouter,
