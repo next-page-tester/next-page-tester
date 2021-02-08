@@ -28,7 +28,12 @@ export default async function getPageObject({
     if (!page.client.default) {
       throw new InternalError('No default export found for given route');
     }
-    return { page, appFile, type: 'found', ...routeInfo };
+    return {
+      page,
+      appFile,
+      type: 'found',
+      ...routeInfo,
+    };
   }
 
   // Make a NotFoundPageObject for 404 page

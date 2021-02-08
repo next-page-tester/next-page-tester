@@ -1,13 +1,12 @@
 import React from 'react';
 import type { NextPage } from 'next';
-import { getSingleDocumentFile } from './getDocumentFile';
 import fetchDocumentData from './fetchDocumentData';
-import {
+import { getNextFiles } from '../getNextFiles';
+import type {
   ExtendedOptions,
   GenericPageObject,
   PageProps,
   NextApp,
-  NextPageFile,
 } from '../commonTypes';
 import type {
   ComponentsEnhancer,
@@ -18,10 +17,9 @@ import { APP_PATH, NEXT_ROOT_ELEMENT_ID } from '../constants';
 import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import type { DocumentProps } from 'next/document';
-import { renderEnhancedApp, getSingleAppFile } from '../_app';
+import { renderEnhancedApp } from '../_app';
 import { executeWithFreshModules } from '../utils';
 import { executeAsIfOnServer } from '../server';
-import { loadSingleFile } from '../loadFile';
 
 // Copied from next.js
 // https://github.com/vercel/next.js/blob/b944b06f30322076ceb9020c10cb9bf3448d2659/packages/next/next-server/server/render.tsx#L127
@@ -49,7 +47,7 @@ function enhanceComponents(
   };
 }
 
-export default async function renderDocument({
+export default async function serverRenderDocument({
   options,
   pageProps,
   pageObject,
@@ -63,21 +61,13 @@ export default async function renderDocument({
   return executeAsIfOnServer(async () => {
     const { useDocument } = options;
     const {
-      DocumentComponent,
-      AppComponent,
-      PageComponent,
-    } = executeWithFreshModules(() => {
-      const documentFile = getSingleDocumentFile({ options });
-      const appFile = getSingleAppFile({ options });
-      const pageFile: NextPageFile = loadSingleFile<NextPageFile>({
-        absolutePath: pageObject.page.path,
-      });
-      return {
-        DocumentComponent: documentFile.default,
-        AppComponent: appFile.default,
-        PageComponent: pageFile.default,
-      };
-    }, options);
+      documentFile: { default: DocumentComponent },
+      appFile: { default: AppComponent },
+      pageFile: { default: PageComponent },
+    } = executeWithFreshModules(
+      () => getNextFiles({ pagePath: pageObject.page.path, options }),
+      options
+    );
 
     const render = (App: NextApp, Page: NextPage) => {
       return renderEnhancedApp({ App, Page, options, pageProps });
