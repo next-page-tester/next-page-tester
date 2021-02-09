@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
-import { initTestHelpers } from '../index';
+// @NOTE Import path must finish with "./src" to correctly configure /dist tests
+import { initTestHelpers } from '../../src';
 initTestHelpers();
 
 afterEach(() => {
