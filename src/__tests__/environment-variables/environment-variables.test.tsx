@@ -1,9 +1,9 @@
 import React from 'react';
 // @NOTE this tests breaks when tested as "dist"
-import { getPage } from '../../index';
+import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import Page from './__fixtures__/env-vars/pages/page';
-import EnvVarsCleanupPage from './__fixtures__/no-dotfile/pages/page';
+import EnvVarsCleanupPage from './__fixtures__/no-dotenv-file/pages/page';
 
 process.env.FROM_RUNTIME = 'FROM_RUNTIME';
 process.env.NAME_CLASH_RUNTIME_VS_CONFIG = 'FROM_RUNTIME';
@@ -67,7 +67,7 @@ describe('Environment variables', () => {
 
   it('Env vars do not leak into subsequent tests', async () => {
     const { render } = await getPage({
-      nextRoot: __dirname + '/__fixtures__' + '/no-dotfile',
+      nextRoot: __dirname + '/__fixtures__' + '/no-dotenv-file',
       route: '/page',
     });
     const { nextRoot: actual } = render();
