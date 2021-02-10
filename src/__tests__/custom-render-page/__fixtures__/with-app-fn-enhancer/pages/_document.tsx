@@ -1,9 +1,15 @@
 import React from 'react';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext,
+} from 'next/document';
 import { CounterContext } from '../../counter';
 
 export default class MyDocument extends Document {
-  static async getInitialProps(ctx) {
+  static async getInitialProps(ctx: DocumentContext) {
     return ctx.renderPage((App) => (props) => (
       <CounterContext.Provider value={{ count: 150 }}>
         <App {...props} />
