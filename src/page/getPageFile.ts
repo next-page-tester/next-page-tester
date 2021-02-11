@@ -9,25 +9,43 @@ type GetPageOptions = {
   options: ExtendedOptions;
 };
 
-export function getSinglePageFile<FileType>({
+// Path only versions
+export function getPagePath({
   pagePath,
   options: { pageExtensions, pagesDirectory },
-}: GetPageOptions): FileType {
+}: GetPageOptions): string {
   // @NOTE Here we have to remove pagePath's leading "/"
   const absolutePath = path.resolve(pagesDirectory, pagePath.substring(1));
 
   for (const pageExtension of pageExtensions) {
     const pathWithExtension = absolutePath + `.${pageExtension}`;
     if (existsSync(pathWithExtension)) {
-      return loadSingleFile({
-        absolutePath: pathWithExtension,
-      });
+      return pathWithExtension;
     }
   }
 
   throw new InternalError(
     "Couldn't find required page file with matching extension"
   );
+}
+
+export function getPagePathIfExists(
+  options: GetPageOptions
+): string | undefined {
+  try {
+    return getPagePath(options);
+  } catch (e) {
+    return undefined;
+  }
+}
+
+export function getSinglePageFile<FileType>({
+  pagePath,
+  options,
+}: GetPageOptions): FileType {
+  return loadSingleFile({
+    absolutePath: getPagePath({ pagePath, options }),
+  });
 }
 
 export function getSinglePageFileIfExists<FileType>(
@@ -42,21 +60,11 @@ export function getSinglePageFileIfExists<FileType>(
 
 export function getPageFile<FileType>({
   pagePath,
-  options: { pageExtensions, pagesDirectory, nonIsolatedModules },
+  options,
 }: GetPageOptions): PageFile<FileType> {
-  // @NOTE Here we have to remove pagePath's leading "/"
-  const absolutePath = path.resolve(pagesDirectory, pagePath.substring(1));
-
-  for (const pageExtension of pageExtensions) {
-    const pathWithExtension = absolutePath + `.${pageExtension}`;
-    if (existsSync(pathWithExtension)) {
-      return loadFile({ absolutePath: pathWithExtension, nonIsolatedModules });
-    }
-  }
-
-  throw new InternalError(
-    "Couldn't find required page file with matching extension"
-  );
+  const absolutePath = getPagePath({ pagePath, options });
+  const { nonIsolatedModules } = options;
+  return loadFile({ absolutePath, nonIsolatedModules });
 }
 
 export function getPageFileIfExists<FileType>(

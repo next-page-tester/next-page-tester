@@ -6,4 +6,6 @@ export {
   getSinglePageFileIfExists,
   getPageFile,
   getPageFileIfExists,
+  getPagePath,
+  getPagePathIfExists,
 } from './getPageFile';

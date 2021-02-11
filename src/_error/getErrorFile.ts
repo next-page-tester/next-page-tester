@@ -1,16 +1,17 @@
 import path from 'path';
-import type { ExtendedOptions, PageFile, NextErrorFile } from '../commonTypes';
-import { loadFile } from '../loadFile';
-import { getPageFileIfExists } from '../page';
+import type { ExtendedOptions } from '../commonTypes';
+import { getPagePathIfExists } from '../page';
 import { ERROR_PATH } from '../constants';
 
-export function getErrorFile({
+const defaultErrorPagePath = path.resolve(__dirname, 'DefaultError');
+
+// Path only versions
+export function getErrorPagePath({
   options,
 }: {
   options: ExtendedOptions;
-}): PageFile<NextErrorFile> {
-  const { nonIsolatedModules } = options;
-  const customErrorFile = getPageFileIfExists<NextErrorFile>({
+}): string {
+  const customErrorFile = getPagePathIfExists({
     pagePath: ERROR_PATH,
     options,
   });
@@ -19,16 +20,5 @@ export function getErrorFile({
     return customErrorFile;
   }
 
-  return getDefaultErrorFile({ nonIsolatedModules });
-}
-
-function getDefaultErrorFile({
-  nonIsolatedModules,
-}: {
-  nonIsolatedModules: string[];
-}): PageFile<NextErrorFile> {
-  return loadFile<NextErrorFile>({
-    absolutePath: path.resolve(__dirname, 'DefaultError'),
-    nonIsolatedModules,
-  });
+  return defaultErrorPagePath;
 }

@@ -74,12 +74,14 @@ export type PageObject = RouteInfo & {
   type: 'found';
   page: PageFile<NextPageFile>;
   appFile: PageFile<NextAppFile>;
+  __temp__actualPagePath: string;
 };
 
 export type NotFoundPageObject = RouteInfo & {
   type: 'notFound';
   page: PageFile<NextErrorFile>;
   appFile: PageFile<NextAppFile>;
+  __temp__actualPagePath: string;
 };
 
 export type GenericPageObject = PageObject | NotFoundPageObject;

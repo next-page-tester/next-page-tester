@@ -9,7 +9,7 @@ import type {
   GenericPageObject,
 } from '../commonTypes';
 import { InternalError } from '../_error/error';
-import { get404PageFile } from '../404';
+import { get404PageFile, get404PagePath } from '../404';
 
 export default async function getPageObject({
   options,
@@ -33,6 +33,7 @@ export default async function getPageObject({
       appFile,
       type: 'found',
       ...routeInfo,
+      __temp__actualPagePath: routeInfo.pagePath,
     };
   }
 
@@ -51,5 +52,6 @@ export default async function getPageObject({
     type: 'notFound',
     appFile,
     page: get404PageFile({ options }),
+    __temp__actualPagePath: get404PagePath({ options }),
   };
 }
