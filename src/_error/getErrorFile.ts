@@ -1,11 +1,9 @@
-import path from 'path';
 import type { ExtendedOptions } from '../commonTypes';
 import { getPagePathIfExists } from '../page';
 import { ERROR_PATH } from '../constants';
 
-const defaultErrorPagePath = path.resolve(__dirname, 'DefaultError');
+const defaultErrorPagePath = 'next/error';
 
-// Path only versions
 export function getErrorPagePath({
   options,
 }: {

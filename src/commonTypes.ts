@@ -10,7 +10,7 @@ import type { createResponse, createRequest } from 'node-mocks-http';
 import type { ParsedUrlQuery } from 'querystring';
 import type { DocumentType, Enhancer } from 'next/dist/next-server/lib/utils';
 import { RuntimeEnvironment } from './constants';
-import DefaultError from './_error/DefaultError';
+import DefaultError from 'next/error';
 import DefaultApp from './_app/DefaultApp';
 
 export type Req = ReturnType<typeof createRequest>;
@@ -65,6 +65,7 @@ export type RouteInfo = {
   params: PageParams;
   query: PageParams;
   route: string;
+  // Page file path without extension
   pagePath: string;
   paramsNumber: number;
   resolvedUrl: string;
