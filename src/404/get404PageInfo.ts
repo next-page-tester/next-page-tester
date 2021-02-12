@@ -1,25 +1,13 @@
-import type {
-  ExtendedOptions,
-  NotFoundPageObject,
-  PageInfo,
-  PageObject,
-} from '../commonTypes';
-import { get404PageFile } from './get404PageFile';
 import { fetchPageData } from '../fetchData';
+import { makeNotFoundPageObject } from './makeNotFoundPageObject';
+import type { ExtendedOptions, PageInfo } from '../commonTypes';
 
 export async function get404PageInfo({
-  pageObject: notFoundPageObject,
   options,
 }: {
-  pageObject: NotFoundPageObject | PageObject;
   options: ExtendedOptions;
 }): Promise<PageInfo> {
-  const pageObject: NotFoundPageObject = {
-    ...notFoundPageObject,
-    type: 'notFound',
-    page: get404PageFile({ options }),
-  };
-
+  const pageObject = makeNotFoundPageObject({ options });
   const pageData = await fetchPageData({ pageObject, options });
   pageData.props = {
     ...pageData.props,

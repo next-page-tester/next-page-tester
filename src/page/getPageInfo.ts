@@ -1,4 +1,4 @@
-import getPageObject from '../getPageObject';
+import { getPageObject } from '../getPageObject';
 import { fetchRouteData } from '../fetchData';
 import type { ExtendedOptions, PageInfo } from '../commonTypes';
 import { get404PageInfo } from '../404';
@@ -18,7 +18,7 @@ export async function getPageInfo({
     if (isExternalRoute(pageObject.route)) {
       throw new InternalError(`External route: ${pageObject.route}`);
     }
-    return get404PageInfo({ options, pageObject });
+    return get404PageInfo({ options });
   }
 
   const pageData = await fetchRouteData({ options, pageObject });
@@ -32,7 +32,7 @@ export async function getPageInfo({
   }
 
   if (pageData.notFound) {
-    return get404PageInfo({ options, pageObject });
+    return get404PageInfo({ options });
   }
 
   return { pageObject, pageData };
