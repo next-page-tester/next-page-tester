@@ -131,13 +131,20 @@ export class CustomError extends Error {
   payload?: unknown;
 }
 
-export type GenericPageFileType = NextPageFile | NextErrorFile;
-// This is the file set necessary to render a Next app page
-export type NextFiles<PageFileType = GenericPageFileType> = {
+// This are the files necessary to render a Next page
+export type NextPageFiles = {
   documentFile: NextDocumentFile;
   appFile: NextAppFile;
-  pageFile: PageFileType;
+  pageFile: NextPageFile;
 };
+
+export type NextErrorPageFiles = {
+  documentFile: NextDocumentFile;
+  appFile: NextAppFile;
+  pageFile: NextErrorFile;
+};
+
+export type NextGenericPageFiles = NextPageFiles | NextErrorPageFiles;
 
 export type MakePageResult = {
   pageElement: JSX.Element;

@@ -1,7 +1,7 @@
 import React from 'react';
 import type { NextPage } from 'next';
 import fetchDocumentData from './fetchDocumentData';
-import { getNextFiles } from '../getNextFiles';
+import { getNextPageFiles, getNextErrorPageFiles } from '../getNextFiles';
 import type {
   ExtendedOptions,
   GenericPageObject,
@@ -65,7 +65,10 @@ export default async function serverRenderDocument({
       appFile: { default: AppComponent },
       pageFile: { default: PageComponent },
     } = executeWithFreshModules(
-      () => getNextFiles({ pagePath: pageObject.page.path, options }),
+      () =>
+        pageObject.type === 'found'
+          ? getNextPageFiles({ pagePath: pageObject.page.path, options })
+          : getNextErrorPageFiles({ pagePath: pageObject.page.path, options }),
       options
     );
 

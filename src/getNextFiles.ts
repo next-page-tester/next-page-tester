@@ -3,22 +3,39 @@ import { getSingleAppFile } from './_app';
 import { loadSingleFile } from './loadFile';
 import type {
   ExtendedOptions,
-  NextFiles,
-  GenericPageFileType,
+  NextPageFiles,
+  NextErrorPageFiles,
 } from './commonTypes';
 
 // Get Document, App and Page files
-export function getNextFiles<PageFileType = GenericPageFileType>({
+// @TODO Find a way to avoid this duplication and let TS follow pageFile typing
+export function getNextPageFiles({
   pagePath,
   options,
 }: {
   pagePath: string;
   options: ExtendedOptions;
-}): NextFiles<PageFileType> {
+}): NextPageFiles {
   return {
     documentFile: getSingleDocumentFile({ options }),
     appFile: getSingleAppFile({ options }),
-    pageFile: loadSingleFile<PageFileType>({
+    pageFile: loadSingleFile({
+      absolutePath: pagePath,
+    }),
+  };
+}
+
+export function getNextErrorPageFiles({
+  pagePath,
+  options,
+}: {
+  pagePath: string;
+  options: ExtendedOptions;
+}): NextErrorPageFiles {
+  return {
+    documentFile: getSingleDocumentFile({ options }),
+    appFile: getSingleAppFile({ options }),
+    pageFile: loadSingleFile({
       absolutePath: pagePath,
     }),
   };
