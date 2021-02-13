@@ -76,6 +76,7 @@ export type PageObject = RouteInfo & {
   page: PageFile<NextPageFile>;
   appFile: PageFile<NextAppFile>;
   __temp__actualPagePath: string;
+  files: MultiEnv<NextPageFiles>;
 };
 
 export type NotFoundPageObject = RouteInfo & {
@@ -83,6 +84,7 @@ export type NotFoundPageObject = RouteInfo & {
   page: PageFile<NextErrorFile>;
   appFile: PageFile<NextAppFile>;
   __temp__actualPagePath: string;
+  files: MultiEnv<NextErrorPageFiles>;
 };
 
 export type GenericPageObject = PageObject | NotFoundPageObject;
@@ -145,6 +147,11 @@ export type NextErrorPageFiles = {
 };
 
 export type NextGenericPageFiles = NextPageFiles | NextErrorPageFiles;
+
+export type MultiEnv<FileType> = {
+  client: FileType;
+  server: FileType;
+};
 
 export type MakePageResult = {
   pageElement: JSX.Element;

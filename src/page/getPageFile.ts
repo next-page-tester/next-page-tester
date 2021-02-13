@@ -10,6 +10,7 @@ type GetPageOptions = {
 };
 
 // Path only versions
+// @TODO Consider renaming getPageAbsolutePath
 export function getPagePath({
   pagePath,
   options: { pageExtensions, pagesDirectory },
