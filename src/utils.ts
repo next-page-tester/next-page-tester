@@ -89,25 +89,16 @@ export function useMountedState(): () => boolean {
   return get;
 }
 
-const predefinedNonIsolatedModules = [
+// @NOTE: This modules still need to preserve their identity between client and server
+// because we import them within our code which serves both environments :(
+const nonIsolatedModules = [
   'react',
-  'next/router',
   'next/dist/next-server/lib/head-manager-context',
   'next/dist/next-server/lib/router-context',
   'next/dist/next-server/lib/runtime-config',
 ];
 
-export function executeWithFreshModules<T>(
-  f: () => T,
-  options: { nonIsolatedModules: string[] }
-): T {
-  const { nonIsolatedModules: userNonIsolatedModules } = options;
-
-  const nonIsolatedModules = [
-    ...userNonIsolatedModules,
-    ...predefinedNonIsolatedModules,
-  ];
-
+export function executeWithFreshModules<T>(f: () => T): T {
   /* istanbul ignore else */
   if (typeof jest !== 'undefined') {
     let result: T;

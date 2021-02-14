@@ -27,7 +27,6 @@ export type Options = {
   router?: (router: NextRouter) => NextRouter;
   useApp?: boolean;
   useDocument?: boolean;
-  nonIsolatedModules?: string[];
   dotenvFile?: string;
   wrapper?: {
     Page?: Enhancer<NextPage>;

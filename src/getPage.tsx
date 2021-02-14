@@ -45,7 +45,6 @@ export default async function getPage({
   router = (router) => router,
   useApp = true,
   useDocument = false,
-  nonIsolatedModules = [],
   dotenvFile,
   wrapper,
 }: Options): Promise<
@@ -59,7 +58,6 @@ export default async function getPage({
     router,
     useApp,
     useDocument,
-    nonIsolatedModules,
     dotenvFile,
     wrapper,
   };

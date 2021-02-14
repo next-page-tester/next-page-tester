@@ -51,13 +51,10 @@ export function getMultiEnvNextPageFiles({
   pagePath: string;
   options: ExtendedOptions;
 }): MultiEnv<NextPageFiles> {
-  const { nonIsolatedModules } = options;
   return {
     client: getNextPageFiles({ pagePath, options }),
     server: executeAsIfOnServerSync(() =>
-      executeWithFreshModules(() => getNextPageFiles({ pagePath, options }), {
-        nonIsolatedModules,
-      })
+      executeWithFreshModules(() => getNextPageFiles({ pagePath, options }))
     ),
   };
 }
@@ -69,15 +66,11 @@ export function getMultiEnvNextErrorPageFiles({
   pagePath: string;
   options: ExtendedOptions;
 }): MultiEnv<NextErrorPageFiles> {
-  const { nonIsolatedModules } = options;
   return {
     client: getNextErrorPageFiles({ pagePath, options }),
     server: executeAsIfOnServerSync(() =>
-      executeWithFreshModules(
-        () => getNextErrorPageFiles({ pagePath, options }),
-        {
-          nonIsolatedModules,
-        }
+      executeWithFreshModules(() =>
+        getNextErrorPageFiles({ pagePath, options })
       )
     ),
   };

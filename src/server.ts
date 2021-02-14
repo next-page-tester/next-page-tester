@@ -42,15 +42,10 @@ export const executeAsIfOnServerSync = <T>(f: () => T): T => {
 
 export const requireAsIfOnServer = <FileType>({
   path,
-  nonIsolatedModules,
 }: {
   path: string;
-  nonIsolatedModules: string[];
 }): FileType => {
-  return executeWithFreshModules(
-    () => {
-      return executeAsIfOnServerSync<FileType>(() => require(path));
-    },
-    { nonIsolatedModules }
-  );
+  return executeWithFreshModules(() => {
+    return executeAsIfOnServerSync<FileType>(() => require(path));
+  });
 };
