@@ -12,7 +12,7 @@ import type {
 
 // Get Document, App and Page files
 // @TODO Find a way to avoid this duplication and let TS follow pageFile typing
-function getNextPageFiles({
+function _loadExistingPageFiles({
   absolutePagePath,
   options,
 }: {
@@ -28,7 +28,7 @@ function getNextPageFiles({
   };
 }
 
-function getNextErrorPageFiles({
+function _loadErrorPageFiles({
   absolutePagePath,
   options,
 }: {
@@ -44,7 +44,7 @@ function getNextErrorPageFiles({
   };
 }
 
-export function getMultiEnvNextPageFiles({
+export function loadExistingPageFiles({
   absolutePagePath,
   options,
 }: {
@@ -52,16 +52,16 @@ export function getMultiEnvNextPageFiles({
   options: ExtendedOptions;
 }): MultiEnv<NextExistingPageFiles> {
   return {
-    client: getNextPageFiles({ absolutePagePath, options }),
+    client: _loadExistingPageFiles({ absolutePagePath, options }),
     server: executeAsIfOnServerSync(() =>
       executeWithFreshModules(() =>
-        getNextPageFiles({ absolutePagePath, options })
+        _loadExistingPageFiles({ absolutePagePath, options })
       )
     ),
   };
 }
 
-export function getMultiEnvNextErrorPageFiles({
+export function loadErrorPageFiles({
   absolutePagePath,
   options,
 }: {
@@ -69,10 +69,10 @@ export function getMultiEnvNextErrorPageFiles({
   options: ExtendedOptions;
 }): MultiEnv<NextErrorPageFiles> {
   return {
-    client: getNextErrorPageFiles({ absolutePagePath, options }),
+    client: _loadErrorPageFiles({ absolutePagePath, options }),
     server: executeAsIfOnServerSync(() =>
       executeWithFreshModules(() =>
-        getNextErrorPageFiles({ absolutePagePath, options })
+        _loadErrorPageFiles({ absolutePagePath, options })
       )
     ),
   };

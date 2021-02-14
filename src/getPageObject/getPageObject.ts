@@ -2,7 +2,7 @@ import getRouteInfo from './getRouteInfo';
 import { getPagePath } from '../page';
 import { InternalError } from '../_error';
 import { makeNotFoundPageObject } from '../404';
-import { getMultiEnvNextPageFiles } from '../getNextFiles';
+import { loadExistingPageFiles } from '../getNextFiles';
 import type { ExtendedOptions, PageObject } from '../commonTypes';
 
 export async function getPageObject({
@@ -15,7 +15,7 @@ export async function getPageObject({
   if (routeInfo) {
     const { pagePath } = routeInfo;
     const absolutePagePath = getPagePath({ pagePath, options });
-    const files = getMultiEnvNextPageFiles({
+    const files = loadExistingPageFiles({
       absolutePagePath,
       options,
     });

@@ -1,7 +1,7 @@
 import { get404PagePath } from './index';
 import { parseRoute } from '../utils';
 import { makeRouteInfo } from '../getPageObject';
-import { getMultiEnvNextErrorPageFiles } from '../getNextFiles';
+import { loadErrorPageFiles } from '../getNextFiles';
 import type { ExtendedOptions, NotFoundPageObject } from '../commonTypes';
 
 // @NOTE we currently set pagePath as current path name, but it should
@@ -23,6 +23,6 @@ export function makeNotFoundPageObject({
     ...notFoundPageRouteInfo,
     type: 'notFound',
     absolutePagePath,
-    files: getMultiEnvNextErrorPageFiles({ absolutePagePath, options }),
+    files: loadErrorPageFiles({ absolutePagePath, options }),
   };
 }
