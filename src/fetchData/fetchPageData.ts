@@ -11,7 +11,7 @@ import {
 } from './makeContextObject';
 import {
   ExtendedOptions,
-  GenericPageObject,
+  PageObject,
   PageData,
   NextPageFile,
   CustomError,
@@ -102,7 +102,7 @@ export default async function fetchPageData({
   appInitialProps,
   options,
 }: {
-  pageObject: GenericPageObject;
+  pageObject: PageObject;
   appInitialProps?: AppInitialProps;
   options: ExtendedOptions;
 }): Promise<PageData> {

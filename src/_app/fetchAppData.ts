@@ -3,14 +3,14 @@ import type { AppContext, AppInitialProps } from 'next/app';
 import { makeRouterMock } from '../router';
 import { makeGetInitialPropsContext } from '../fetchData/makeContextObject';
 import { executeAsIfOnServer } from '../server';
-import { GenericPageObject, ExtendedOptions } from '../commonTypes';
+import { PageObject, ExtendedOptions } from '../commonTypes';
 import { RuntimeEnvironment } from '../constants';
 
 export default async function fetchAppData({
   pageObject,
   options,
 }: {
-  pageObject: GenericPageObject;
+  pageObject: PageObject;
   options: ExtendedOptions;
 }): Promise<AppInitialProps | undefined> {
   const { env } = options;

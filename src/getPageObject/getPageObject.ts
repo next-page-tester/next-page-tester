@@ -3,13 +3,13 @@ import { getPagePath } from '../page';
 import { InternalError } from '../_error';
 import { makeNotFoundPageObject } from '../404';
 import { getMultiEnvNextPageFiles } from '../getNextFiles';
-import type { ExtendedOptions, GenericPageObject } from '../commonTypes';
+import type { ExtendedOptions, PageObject } from '../commonTypes';
 
 export async function getPageObject({
   options,
 }: {
   options: ExtendedOptions;
-}): Promise<GenericPageObject> {
+}): Promise<PageObject> {
   const routeInfo = await getRouteInfo({ options });
 
   if (routeInfo) {

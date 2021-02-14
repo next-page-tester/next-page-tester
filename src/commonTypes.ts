@@ -64,7 +64,7 @@ export type RouteInfo = {
   resolvedUrl: string;
 };
 
-export type PageObject = RouteInfo & {
+export type FoundPageObject = RouteInfo & {
   type: 'found';
   absolutePagePath: string;
   files: MultiEnv<NextPageFiles>;
@@ -76,7 +76,7 @@ export type NotFoundPageObject = RouteInfo & {
   files: MultiEnv<NextErrorPageFiles>;
 };
 
-export type GenericPageObject = PageObject | NotFoundPageObject;
+export type PageObject = FoundPageObject | NotFoundPageObject;
 
 export type PageProps = {
   [key: string]: unknown;
@@ -89,7 +89,7 @@ export type PageData<P extends PageProps = PageProps> = {
 };
 
 export type PageInfo = {
-  pageObject: GenericPageObject;
+  pageObject: PageObject;
   pageData: PageData;
 };
 
@@ -145,5 +145,5 @@ export type MultiEnv<FileType> = {
 // Extras
 export type MakePageResult = {
   pageElement: JSX.Element;
-  pageObject: GenericPageObject;
+  pageObject: PageObject;
 };

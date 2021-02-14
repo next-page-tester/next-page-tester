@@ -3,11 +3,7 @@ import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import { formatUrl } from 'next/dist/next-server/lib/router/utils/format-url';
 import makeRouterMock, { PushHandler } from './makeRouterMock';
 import { useMountedState } from '../utils';
-import {
-  ExtendedOptions,
-  MakePageResult,
-  GenericPageObject,
-} from '../commonTypes';
+import { ExtendedOptions, MakePageResult, PageObject } from '../commonTypes';
 import { RuntimeEnvironment } from '../constants';
 
 export default function RouterProvider({
@@ -16,7 +12,7 @@ export default function RouterProvider({
   children: initialChildren,
   makePage,
 }: {
-  pageObject: GenericPageObject;
+  pageObject: PageObject;
   options: ExtendedOptions;
   children: JSX.Element;
   makePage: (

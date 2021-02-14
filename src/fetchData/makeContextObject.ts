@@ -8,15 +8,15 @@ import { parse } from 'cookie';
 import makeHttpObjects from './makeHttpObjects';
 import type {
   ExtendedOptions,
+  FoundPageObject,
   PageObject,
-  GenericPageObject,
 } from '../commonTypes';
 
 export function makeGetInitialPropsContext({
   pageObject,
   options: { req: reqMocker, res: resMocker, previousRoute, env },
 }: {
-  pageObject: GenericPageObject;
+  pageObject: PageObject;
   options: ExtendedOptions;
 }): NextPageContext {
   const { pagePath, params, route, query } = pageObject;
@@ -48,7 +48,7 @@ export function makeGetServerSidePropsContext({
   pageObject,
   options: { req: reqMocker, res: resMocker, previousRoute },
 }: {
-  pageObject: PageObject;
+  pageObject: FoundPageObject;
   options: ExtendedOptions;
 }): GetServerSidePropsContext<typeof pageObject.params> {
   const { params, query, resolvedUrl } = pageObject;
@@ -79,7 +79,7 @@ export function makeGetServerSidePropsContext({
 export function makeStaticPropsContext({
   pageObject,
 }: {
-  pageObject: PageObject;
+  pageObject: FoundPageObject;
 }): GetStaticPropsContext<typeof pageObject.params> {
   const { params } = pageObject;
 

@@ -3,7 +3,7 @@ import React from 'react';
 import type {
   ExtendedOptions,
   NextApp,
-  GenericPageObject,
+  PageObject,
   PageProps,
 } from '../commonTypes';
 
@@ -13,7 +13,7 @@ export default function renderApp({
   pageProps,
 }: {
   options: ExtendedOptions;
-  pageObject: GenericPageObject;
+  pageObject: PageObject;
   pageProps: PageProps | undefined;
 }): JSX.Element {
   const { env } = options;

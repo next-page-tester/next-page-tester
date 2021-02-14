@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import fetchDocumentData from './fetchDocumentData';
 import type {
   ExtendedOptions,
-  GenericPageObject,
+  PageObject,
   PageProps,
   NextApp,
 } from '../commonTypes';
@@ -53,7 +53,7 @@ export default async function serverRenderDocument({
 }: {
   options: ExtendedOptions;
   pageProps: PageProps | undefined;
-  pageObject: GenericPageObject;
+  pageObject: PageObject;
   wrapWithRouter: (children: JSX.Element) => JSX.Element;
 }): Promise<JSX.Element> {
   return executeAsIfOnServer(async () => {
