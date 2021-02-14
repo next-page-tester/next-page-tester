@@ -5,7 +5,7 @@ import { executeWithFreshModules } from './utils';
 import { executeAsIfOnServerSync } from './server';
 import type {
   ExtendedOptions,
-  NextPageFiles,
+  NextExistingPageFiles,
   NextErrorPageFiles,
   MultiEnv,
 } from './commonTypes';
@@ -18,7 +18,7 @@ function getNextPageFiles({
 }: {
   absolutePagePath: string;
   options: ExtendedOptions;
-}): NextPageFiles {
+}): NextExistingPageFiles {
   return {
     documentFile: getDocumentFile({ options }),
     appFile: getAppFile({ options }),
@@ -50,7 +50,7 @@ export function getMultiEnvNextPageFiles({
 }: {
   absolutePagePath: string;
   options: ExtendedOptions;
-}): MultiEnv<NextPageFiles> {
+}): MultiEnv<NextExistingPageFiles> {
   return {
     client: getNextPageFiles({ absolutePagePath, options }),
     server: executeAsIfOnServerSync(() =>

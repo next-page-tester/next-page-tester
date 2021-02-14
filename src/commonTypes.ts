@@ -67,7 +67,7 @@ export type RouteInfo = {
 export type FoundPageObject = RouteInfo & {
   type: 'found';
   absolutePagePath: string;
-  files: MultiEnv<NextPageFiles>;
+  files: MultiEnv<NextExistingPageFiles>;
 };
 
 export type NotFoundPageObject = RouteInfo & {
@@ -123,7 +123,7 @@ export class CustomError extends Error {
 }
 
 // Next files: this are the files necessary to render a Next page
-export type NextPageFiles = {
+export type NextExistingPageFiles = {
   documentFile: NextDocumentFile;
   appFile: NextAppFile;
   pageFile: NextPageFile;
@@ -134,8 +134,6 @@ export type NextErrorPageFiles = {
   appFile: NextAppFile;
   pageFile: NextErrorFile;
 };
-
-export type NextGenericPageFiles = NextPageFiles | NextErrorPageFiles;
 
 export type MultiEnv<FileType> = {
   client: FileType;
