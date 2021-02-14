@@ -1,7 +1,6 @@
 import { RuntimeEnvironment } from './constants';
 import setNextRuntimeConfig from './setNextRuntimeConfig';
 import { setEnvVars } from './setEnvVars';
-import { executeWithFreshModules } from './utils';
 
 function hideBrowserEnv(): () => void {
   const tmpWindow = global.window;
@@ -38,14 +37,4 @@ export const executeAsIfOnServerSync = <T>(f: () => T): T => {
   } finally {
     restoreBrowserEnv();
   }
-};
-
-export const requireAsIfOnServer = <FileType>({
-  path,
-}: {
-  path: string;
-}): FileType => {
-  return executeWithFreshModules(() => {
-    return executeAsIfOnServerSync<FileType>(() => require(path));
-  });
 };
