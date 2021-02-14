@@ -22,7 +22,7 @@ import {
   ExtendedOptions,
   MakePageResult,
 } from './commonTypes';
-import { InternalError } from './_error/error';
+import { InternalError } from './_error';
 import { RuntimeEnvironment } from './constants';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {

@@ -1,14 +1,14 @@
 import type { ExtendedOptions, NextDocumentFile } from '../commonTypes';
-import { loadSingleFile } from '../loadFile';
-import { getSinglePageFileIfExists } from '../page';
+import { loadFile } from '../loadFile';
+import { getPageFileIfExists } from '../page';
 import { DOCUMENT_PATH } from '../constants';
 
-export function getSingleDocumentFile({
+export function getDocumentFile({
   options,
 }: {
   options: ExtendedOptions;
 }): NextDocumentFile {
-  const customDocumentFile = getSinglePageFileIfExists<NextDocumentFile>({
+  const customDocumentFile = getPageFileIfExists<NextDocumentFile>({
     options,
     pagePath: DOCUMENT_PATH,
   });
@@ -17,11 +17,11 @@ export function getSingleDocumentFile({
     return customDocumentFile;
   }
 
-  return getDefaultSingleDocumentFile();
+  return getDefaultDocumentFile();
 }
 
-function getDefaultSingleDocumentFile(): NextDocumentFile {
-  return loadSingleFile<NextDocumentFile>({
+function getDefaultDocumentFile(): NextDocumentFile {
+  return loadFile<NextDocumentFile>({
     absolutePath: 'next/document',
   });
 }

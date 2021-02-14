@@ -17,7 +17,7 @@ import {
   CustomError,
 } from '../commonTypes';
 import { executeAsIfOnServer } from '../server';
-import { InternalError } from '../_error/error';
+import { InternalError } from '../_error';
 import { RuntimeEnvironment } from '../constants';
 
 function ensureNoMultipleDataFetchingMethods({

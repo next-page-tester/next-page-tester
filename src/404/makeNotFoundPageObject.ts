@@ -1,4 +1,4 @@
-import { get404PagePath } from './get404PageFile';
+import { get404PagePath } from './index';
 import { parseRoute } from '../utils';
 import { makeRouteInfo } from '../getPageObject';
 import { getMultiEnvNextErrorPageFiles } from '../getNextFiles';

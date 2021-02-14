@@ -6,7 +6,7 @@ import { existsSync } from 'fs';
 import path from 'path';
 import stealthyRequire from 'stealthy-require';
 import { getNextConfig } from './nextConfig';
-import { InternalError } from './_error/error';
+import { InternalError } from './_error';
 
 export function parseRoute({ route }: { route: string }) {
   const urlObject = new URL(`http://test.com${route}`);

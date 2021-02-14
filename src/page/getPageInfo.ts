@@ -2,7 +2,7 @@ import { getPageObject } from '../getPageObject';
 import { fetchRouteData } from '../fetchData';
 import type { ExtendedOptions, PageInfo } from '../commonTypes';
 import { get404PageInfo } from '../404';
-import { InternalError } from '../_error/error';
+import { InternalError } from '../_error';
 import { isExternalRoute } from '../utils';
 
 /*

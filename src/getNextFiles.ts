@@ -1,6 +1,6 @@
-import { getSingleDocumentFile } from './_document';
-import { getSingleAppFile } from './_app';
-import { loadSingleFile } from './loadFile';
+import { getDocumentFile } from './_document';
+import { getAppFile } from './_app';
+import { loadFile } from './loadFile';
 import { executeWithFreshModules } from './utils';
 import { executeAsIfOnServerSync } from './server';
 import type {
@@ -20,9 +20,9 @@ function getNextPageFiles({
   options: ExtendedOptions;
 }): NextPageFiles {
   return {
-    documentFile: getSingleDocumentFile({ options }),
-    appFile: getSingleAppFile({ options }),
-    pageFile: loadSingleFile({
+    documentFile: getDocumentFile({ options }),
+    appFile: getAppFile({ options }),
+    pageFile: loadFile({
       absolutePath: pagePath,
     }),
   };
@@ -36,9 +36,9 @@ function getNextErrorPageFiles({
   options: ExtendedOptions;
 }): NextErrorPageFiles {
   return {
-    documentFile: getSingleDocumentFile({ options }),
-    appFile: getSingleAppFile({ options }),
-    pageFile: loadSingleFile({
+    documentFile: getDocumentFile({ options }),
+    appFile: getAppFile({ options }),
+    pageFile: loadFile({
       absolutePath: pagePath,
     }),
   };

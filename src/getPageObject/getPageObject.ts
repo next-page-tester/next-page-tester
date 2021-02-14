@@ -1,6 +1,6 @@
 import getRouteInfo from './getRouteInfo';
 import { getPagePath } from '../page';
-import { InternalError } from '../_error/error';
+import { InternalError } from '../_error';
 import { makeNotFoundPageObject } from '../404';
 import { getMultiEnvNextPageFiles } from '../getNextFiles';
 import type { ExtendedOptions, GenericPageObject } from '../commonTypes';

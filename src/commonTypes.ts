@@ -51,14 +51,8 @@ export type ExtendedOptions = OptionsWithDefaults & {
 };
 
 /*
- * Page
+ * Pages
  */
-export type PageFile<FileType> = {
-  client: FileType;
-  server: FileType;
-  path: string;
-};
-
 export type PageParams = ParsedUrlQuery;
 
 export type RouteInfo = {
@@ -129,7 +123,7 @@ export class CustomError extends Error {
   payload?: unknown;
 }
 
-// This are the files necessary to render a Next page
+// Next files: this are the files necessary to render a Next page
 export type NextPageFiles = {
   documentFile: NextDocumentFile;
   appFile: NextAppFile;
@@ -149,12 +143,8 @@ export type MultiEnv<FileType> = {
   server: FileType;
 };
 
+// Extras
 export type MakePageResult = {
   pageElement: JSX.Element;
   pageObject: GenericPageObject;
-};
-
-export type PageComponents = {
-  AppComponent: NextApp;
-  PageComponent: NextPage;
 };

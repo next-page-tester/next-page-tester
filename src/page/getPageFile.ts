@@ -1,8 +1,8 @@
 import path from 'path';
 import { existsSync } from 'fs';
-import type { ExtendedOptions, PageFile } from '../commonTypes';
-import { InternalError } from '../_error/error';
-import { loadFile, loadSingleFile } from '../loadFile';
+import type { ExtendedOptions } from '../commonTypes';
+import { InternalError } from '../_error';
+import { loadFile } from '../loadFile';
 
 type GetPageOptions = {
   pagePath: string;
@@ -40,37 +40,18 @@ export function getPagePathIfExists(
   }
 }
 
-export function getSinglePageFile<FileType>({
+export function getPageFile<FileType>({
   pagePath,
   options,
 }: GetPageOptions): FileType {
-  return loadSingleFile({
+  return loadFile({
     absolutePath: getPagePath({ pagePath, options }),
   });
 }
 
-export function getSinglePageFileIfExists<FileType>(
-  options: GetPageOptions
-): FileType | undefined {
-  try {
-    return getSinglePageFile(options);
-  } catch (e) {
-    return undefined;
-  }
-}
-
-export function getPageFile<FileType>({
-  pagePath,
-  options,
-}: GetPageOptions): PageFile<FileType> {
-  const absolutePath = getPagePath({ pagePath, options });
-  const { nonIsolatedModules } = options;
-  return loadFile({ absolutePath, nonIsolatedModules });
-}
-
 export function getPageFileIfExists<FileType>(
   options: GetPageOptions
-): PageFile<FileType> | undefined {
+): FileType | undefined {
   try {
     return getPageFile(options);
   } catch (e) {
