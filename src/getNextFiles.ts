@@ -13,64 +13,66 @@ import type {
 // Get Document, App and Page files
 // @TODO Find a way to avoid this duplication and let TS follow pageFile typing
 function getNextPageFiles({
-  pagePath,
+  absolutePagePath,
   options,
 }: {
-  pagePath: string;
+  absolutePagePath: string;
   options: ExtendedOptions;
 }): NextPageFiles {
   return {
     documentFile: getDocumentFile({ options }),
     appFile: getAppFile({ options }),
     pageFile: loadFile({
-      absolutePath: pagePath,
+      absolutePath: absolutePagePath,
     }),
   };
 }
 
 function getNextErrorPageFiles({
-  pagePath,
+  absolutePagePath,
   options,
 }: {
-  pagePath: string;
+  absolutePagePath: string;
   options: ExtendedOptions;
 }): NextErrorPageFiles {
   return {
     documentFile: getDocumentFile({ options }),
     appFile: getAppFile({ options }),
     pageFile: loadFile({
-      absolutePath: pagePath,
+      absolutePath: absolutePagePath,
     }),
   };
 }
 
 export function getMultiEnvNextPageFiles({
-  pagePath,
+  absolutePagePath,
   options,
 }: {
-  pagePath: string;
+  absolutePagePath: string;
   options: ExtendedOptions;
 }): MultiEnv<NextPageFiles> {
   return {
-    client: getNextPageFiles({ pagePath, options }),
+    client: getNextPageFiles({ absolutePagePath, options }),
     server: executeAsIfOnServerSync(() =>
-      executeWithFreshModules(() => getNextPageFiles({ pagePath, options }))
+      executeWithFreshModules(() =>
+        getNextPageFiles({ absolutePagePath, options })
+      )
     ),
   };
 }
 
 export function getMultiEnvNextErrorPageFiles({
-  pagePath,
+  absolutePagePath,
   options,
 }: {
-  pagePath: string;
+  absolutePagePath: string;
   options: ExtendedOptions;
 }): MultiEnv<NextErrorPageFiles> {
   return {
-    client: getNextErrorPageFiles({ pagePath, options }),
+    client: getNextErrorPageFiles({ absolutePagePath, options }),
     server: executeAsIfOnServerSync(() =>
       executeWithFreshModules(() =>
-        getNextErrorPageFiles({ pagePath, options })
+        getNextErrorPageFiles({ absolutePagePath, options })
       )
     ),
   };

@@ -16,7 +16,7 @@ export async function getPageObject({
     const { pagePath } = routeInfo;
     const absolutePagePath = getPagePath({ pagePath, options });
     const files = getMultiEnvNextPageFiles({
-      pagePath: absolutePagePath,
+      absolutePagePath,
       options,
     });
 
@@ -27,7 +27,7 @@ export async function getPageObject({
     return {
       type: 'found',
       ...routeInfo,
-      __temp__actualPagePath: pagePath,
+      absolutePagePath,
       files,
     };
   }

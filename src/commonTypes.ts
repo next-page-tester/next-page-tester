@@ -66,13 +66,13 @@ export type RouteInfo = {
 
 export type PageObject = RouteInfo & {
   type: 'found';
-  __temp__actualPagePath: string;
+  absolutePagePath: string;
   files: MultiEnv<NextPageFiles>;
 };
 
 export type NotFoundPageObject = RouteInfo & {
   type: 'notFound';
-  __temp__actualPagePath: string;
+  absolutePagePath: string;
   files: MultiEnv<NextErrorPageFiles>;
 };
 

@@ -17,12 +17,12 @@ export function makeNotFoundPageObject({
     route,
     pagePath: pathname,
   });
-  const pagePath = get404PagePath({ options });
+  const absolutePagePath = get404PagePath({ options });
 
   return {
     ...notFoundPageRouteInfo,
     type: 'notFound',
-    __temp__actualPagePath: pagePath,
-    files: getMultiEnvNextErrorPageFiles({ pagePath, options }),
+    absolutePagePath,
+    files: getMultiEnvNextErrorPageFiles({ absolutePagePath, options }),
   };
 }
