@@ -73,16 +73,12 @@ export type RouteInfo = {
 
 export type PageObject = RouteInfo & {
   type: 'found';
-  page: PageFile<NextPageFile>;
-  appFile: PageFile<NextAppFile>;
   __temp__actualPagePath: string;
   files: MultiEnv<NextPageFiles>;
 };
 
 export type NotFoundPageObject = RouteInfo & {
   type: 'notFound';
-  page: PageFile<NextErrorFile>;
-  appFile: PageFile<NextAppFile>;
   __temp__actualPagePath: string;
   files: MultiEnv<NextErrorPageFiles>;
 };

@@ -14,8 +14,8 @@ export default async function fetchAppData({
   options: ExtendedOptions;
 }): Promise<AppInitialProps | undefined> {
   const { env } = options;
-  const { appFile } = pageObject;
-  const AppComponent = appFile[env].default;
+  const { files } = pageObject;
+  const AppComponent = files[env].appFile.default;
 
   const { getInitialProps } = AppComponent;
   if (getInitialProps) {
@@ -27,7 +27,7 @@ export default async function fetchAppData({
     const ctx: AppContext = {
       // @NOTE AppTree is currently just a stub
       AppTree: Fragment,
-      Component: pageObject.page.client.default,
+      Component: pageObject.files.client.pageFile.default,
       ctx: makeGetInitialPropsContext({ pageObject, options }),
       // @ts-expect-error incomplete router object
       router: { asPath, pathname, query, route, basePath },

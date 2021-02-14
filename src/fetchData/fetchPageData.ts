@@ -107,10 +107,11 @@ export default async function fetchPageData({
   options: ExtendedOptions;
 }): Promise<PageData> {
   const { env } = options;
-  const { page } = pageObject;
-  ensureNoMultipleDataFetchingMethods({ page: page.server });
+  const { files } = pageObject;
+  const pageFile = files[env].pageFile;
+  ensureNoMultipleDataFetchingMethods({ page: pageFile });
 
-  const pageComponent = page[env].default;
+  const pageComponent = pageFile.default;
   const { getInitialProps } = pageComponent;
   if (
     getInitialProps &&
@@ -135,9 +136,10 @@ export default async function fetchPageData({
 
   // Data fetching methods available to actual pages only
   if (pageObject.type === 'found') {
-    const { page, params } = pageObject;
-    if (page.server.getServerSideProps) {
-      const { getServerSideProps } = page.server;
+    const { files, params } = pageObject;
+    const serverPageFile = files.server.pageFile;
+    if (serverPageFile.getServerSideProps) {
+      const { getServerSideProps } = serverPageFile;
       const ctx: GetServerSidePropsContext<
         typeof params
       > = makeGetServerSidePropsContext({ options, pageObject });
@@ -146,13 +148,13 @@ export default async function fetchPageData({
       return mergePageDataWithAppData({ pageData, appInitialProps });
     }
 
-    if (page.server.getStaticProps) {
+    if (serverPageFile.getStaticProps) {
       const ctx: GetStaticPropsContext<typeof params> = makeStaticPropsContext({
         pageObject,
       });
       // @TODO introduce `getStaticPaths` logic
       // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
-      const pageData = await page.server.getStaticProps(ctx);
+      const pageData = await serverPageFile.getStaticProps(ctx);
       ensurePageDataHasProps({ pageData });
       return mergePageDataWithAppData({ pageData, appInitialProps });
     }

@@ -12,7 +12,7 @@ import type {
 
 // Get Document, App and Page files
 // @TODO Find a way to avoid this duplication and let TS follow pageFile typing
-export function getNextPageFiles({
+function getNextPageFiles({
   pagePath,
   options,
 }: {
@@ -28,7 +28,7 @@ export function getNextPageFiles({
   };
 }
 
-export function getNextErrorPageFiles({
+function getNextErrorPageFiles({
   pagePath,
   options,
 }: {

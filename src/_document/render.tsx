@@ -1,7 +1,6 @@
 import React from 'react';
 import type { NextPage } from 'next';
 import fetchDocumentData from './fetchDocumentData';
-import { getNextPageFiles, getNextErrorPageFiles } from '../getNextFiles';
 import type {
   ExtendedOptions,
   GenericPageObject,
@@ -18,7 +17,6 @@ import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import type { DocumentProps } from 'next/document';
 import { renderEnhancedApp } from '../_app';
-import { executeWithFreshModules } from '../utils';
 import { executeAsIfOnServer } from '../server';
 
 // Copied from next.js
@@ -64,13 +62,7 @@ export default async function serverRenderDocument({
       documentFile: { default: DocumentComponent },
       appFile: { default: AppComponent },
       pageFile: { default: PageComponent },
-    } = executeWithFreshModules(
-      () =>
-        pageObject.type === 'found'
-          ? getNextPageFiles({ pagePath: pageObject.page.path, options })
-          : getNextErrorPageFiles({ pagePath: pageObject.page.path, options }),
-      options
-    );
+    } = pageObject.files.server;
 
     const render = (App: NextApp, Page: NextPage) => {
       return renderEnhancedApp({ App, Page, options, pageProps });

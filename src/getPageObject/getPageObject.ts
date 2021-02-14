@@ -1,14 +1,9 @@
 import getRouteInfo from './getRouteInfo';
-import { getPageFile, getPagePath } from '../page';
-import { getAppFile } from '../_app';
+import { getPagePath } from '../page';
 import { InternalError } from '../_error/error';
 import { makeNotFoundPageObject } from '../404';
 import { getMultiEnvNextPageFiles } from '../getNextFiles';
-import type {
-  ExtendedOptions,
-  NextPageFile,
-  GenericPageObject,
-} from '../commonTypes';
+import type { ExtendedOptions, GenericPageObject } from '../commonTypes';
 
 export async function getPageObject({
   options,
@@ -19,23 +14,21 @@ export async function getPageObject({
 
   if (routeInfo) {
     const { pagePath } = routeInfo;
-    const appFile = getAppFile({ options });
-    const page = getPageFile<NextPageFile>({
-      pagePath,
+    const absolutePagePath = getPagePath({ pagePath, options });
+    const files = getMultiEnvNextPageFiles({
+      pagePath: absolutePagePath,
       options,
     });
-    const absolutePath = getPagePath({ pagePath, options });
 
-    if (!page.client.default) {
+    if (!files.client.pageFile.default) {
       throw new InternalError('No default export found for given route');
     }
+
     return {
-      page,
-      appFile,
       type: 'found',
       ...routeInfo,
       __temp__actualPagePath: pagePath,
-      files: getMultiEnvNextPageFiles({ pagePath: absolutePath, options }),
+      files,
     };
   }
 
