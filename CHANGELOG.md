@@ -2,6 +2,16 @@
 
 ## 0.19.0
 
+### Breaking Changes
+
+- Remove `nonIsolatedModules` option
+
+### Bugfix
+
+- Load files necessary to perform rendering in one single go to preserve module identity
+
+## 0.19.0
+
 ### New Features
 
 - Render 404 page when matching route not found
