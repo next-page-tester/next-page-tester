@@ -17,7 +17,7 @@ import {
   CustomError,
 } from '../commonTypes';
 import { executeAsIfOnServer } from '../server';
-import { InternalError } from '../_error/error';
+import { InternalError } from '../_error';
 import { RuntimeEnvironment } from '../constants';
 
 function ensureNoMultipleDataFetchingMethods({
@@ -107,10 +107,11 @@ export default async function fetchPageData({
   options: ExtendedOptions;
 }): Promise<PageData> {
   const { env } = options;
-  const { page, params } = pageObject;
-  ensureNoMultipleDataFetchingMethods({ page: page.server });
+  const { files } = pageObject;
+  const pageFile = files[env].pageFile;
+  ensureNoMultipleDataFetchingMethods({ page: pageFile });
 
-  const pageComponent = page[env].default;
+  const pageComponent = pageFile.default;
   const { getInitialProps } = pageComponent;
   if (
     getInitialProps &&
@@ -133,29 +134,34 @@ export default async function fetchPageData({
     }
   }
 
-  if (page.server.getServerSideProps) {
-    const { getServerSideProps } = page.server;
-    const ctx: GetServerSidePropsContext<
-      typeof params
-    > = makeGetServerSidePropsContext({ options, pageObject });
-    const pageData = await executeAsIfOnServer(() => getServerSideProps(ctx));
-    ensurePageDataHasProps({ pageData });
-    return mergePageDataWithAppData({ pageData, appInitialProps });
-  }
+  // Data fetching methods available to actual pages only
+  if (pageObject.type === 'found') {
+    const { files, params } = pageObject;
+    const serverPageFile = files.server.pageFile;
+    if (serverPageFile.getServerSideProps) {
+      const { getServerSideProps } = serverPageFile;
+      const ctx: GetServerSidePropsContext<
+        typeof params
+      > = makeGetServerSidePropsContext({ options, pageObject });
+      const pageData = await executeAsIfOnServer(() => getServerSideProps(ctx));
+      ensurePageDataHasProps({ pageData });
+      return mergePageDataWithAppData({ pageData, appInitialProps });
+    }
 
-  if (page.server.getStaticProps) {
-    const ctx: GetStaticPropsContext<typeof params> = makeStaticPropsContext({
-      pageObject,
-    });
-    // @TODO introduce `getStaticPaths` logic
-    // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
-    const pageData = await page.server.getStaticProps(ctx);
-    ensurePageDataHasProps({ pageData });
-    return mergePageDataWithAppData({ pageData, appInitialProps });
-  }
+    if (serverPageFile.getStaticProps) {
+      const ctx: GetStaticPropsContext<typeof params> = makeStaticPropsContext({
+        pageObject,
+      });
+      // @TODO introduce `getStaticPaths` logic
+      // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
+      const pageData = await serverPageFile.getStaticProps(ctx);
+      ensurePageDataHasProps({ pageData });
+      return mergePageDataWithAppData({ pageData, appInitialProps });
+    }
 
-  if (appInitialProps) {
-    return { props: appInitialProps.pageProps };
+    if (appInitialProps) {
+      return { props: appInitialProps.pageProps };
+    }
   }
 
   return {};

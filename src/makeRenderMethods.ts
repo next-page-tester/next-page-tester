@@ -3,7 +3,7 @@ import ReactDOMServer from 'react-dom/server';
 import { NEXT_ROOT_ELEMENT_ID } from './constants';
 import { executeAsIfOnServerSync } from './server';
 import { parseHTML } from './utils';
-import { InternalError } from './_error/error';
+import { InternalError } from './_error';
 
 export function makeRenderMethods({
   serverPageElement,

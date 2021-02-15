@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server';
 import ErrorPage from 'next/error';
 import { NEXT_ROOT_ELEMENT_ID } from '../../constants';
 import { parseHTML } from '../../utils';
-import { InternalError } from '../../_error/error';
+import { InternalError } from '../../_error';
 import { expectDOMElementsToMatch } from './index';
 
 export function expectToBeDefault404Page(actual: Element): void {

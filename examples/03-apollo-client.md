@@ -12,7 +12,6 @@ describe('use @apollo/client', () => {
     const { render } = await getPage({
       nextRoot: __dirname,
       route: '/',
-      nonIsolatedModules: ['@apollo/client'],
       wrapper: {
         Page: (Page) => (pageProps) => {
           return (

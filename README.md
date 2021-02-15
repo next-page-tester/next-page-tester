@@ -95,18 +95,17 @@ React element of the application.
 
 ## Options
 
-| Property                       | Description                                                                                    | type                              | Default         |
-| ------------------------------ | ---------------------------------------------------------------------------------------------- | --------------------------------- | --------------- |
-| **route** (mandatory)          | Next route (must start with `/`)                                                               | `string`                          | -               |
-| **req**                        | Enhance default mocked [request object][req-docs]                                              | `req => req`                      | -               |
-| **res**                        | Enhance default mocked [response object][res-docs]                                             | `res => res`                      | -               |
-| **router**                     | Enhance default mocked [Next router object][next-docs-router]                                  | `router => router`                | -               |
-| **useApp**                     | Render [custom App component][next-docs-custom-app]                                            | `boolean`                         | `true`          |
-| **useDocument** (experimental) | Render [Document component][next-docs-custom-document]                                         | `boolean`                         | `false`         |
-| **nextRoot**                   | Absolute path to Next.js root folder                                                           | `string`                          | _auto detected_ |
-| **nonIsolatedModules**         | Array of modules that should use the same module instance in `server` and `client` environment | `string[]`                        | -               |
-| **dotenvFile**                 | Relative path to a `.env` file holding [environment variables][next-docs-env-vars]             | `string`                          | -               |
-| **wrapper**                    | Map of render functions. Useful to decorate component tree with mocked providers.              | `{ Page?: NextPage => NextPage }` | -               |
+| Property                       | Description                                                                        | type                              | Default         |
+| ------------------------------ | ---------------------------------------------------------------------------------- | --------------------------------- | --------------- |
+| **route** (mandatory)          | Next route (must start with `/`)                                                   | `string`                          | -               |
+| **req**                        | Enhance default mocked [request object][req-docs]                                  | `req => req`                      | -               |
+| **res**                        | Enhance default mocked [response object][res-docs]                                 | `res => res`                      | -               |
+| **router**                     | Enhance default mocked [Next router object][next-docs-router]                      | `router => router`                | -               |
+| **useApp**                     | Render [custom App component][next-docs-custom-app]                                | `boolean`                         | `true`          |
+| **useDocument** (experimental) | Render [Document component][next-docs-custom-document]                             | `boolean`                         | `false`         |
+| **nextRoot**                   | Absolute path to Next.js root folder                                               | `string`                          | _auto detected_ |
+| **dotenvFile**                 | Relative path to a `.env` file holding [environment variables][next-docs-env-vars] | `string`                          | -               |
+| **wrapper**                    | Map of render functions. Useful to decorate component tree with mocked providers.  | `{ Page?: NextPage => NextPage }` | -               |
 
 ## Set up your test environment
 
@@ -181,8 +180,6 @@ Next.js `Link` component invokes `window.scrollTo` on click which is not impleme
 ### Warning: Text content did not match. Server: "x" Client: "y" error
 
 This warning means that your page renders differently between server and browser. This can be an expected behavior or signal a bug in your code.
-
-The same error could also be triggered when you import modules that, in order to work, need to preserve module identity throughout the entire SSR cycle (from the moment they are imported to SSR rendering): e.g. `React.Context` or `css-in-js` libraries. In this case you can list these modules in `nonIsolatedModules` option to preserve their identity: [see styletron-react example](src/__tests__/third-party/styletron-react/styletron-react.test.ts#L13).
 
 ## Todo's
 

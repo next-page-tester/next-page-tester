@@ -1,10 +1,10 @@
 /* eslint-disable prefer-const */
 import React from 'react';
 import { existsSync } from 'fs';
-import makePageElement, { getPageInfo } from './makePageElement';
+import { makePageElement, getPageInfo } from './page';
 import { makeRenderMethods } from './makeRenderMethods';
 import { RouterProvider } from './router';
-import { renderDocument } from './_document';
+import { serverRenderDocument } from './_document';
 import { renderApp } from './_app';
 import initHeadManager from 'next/dist/client/head-manager';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
@@ -22,7 +22,7 @@ import {
   ExtendedOptions,
   MakePageResult,
 } from './commonTypes';
-import { InternalError } from './_error/error';
+import { InternalError } from './_error';
 import { RuntimeEnvironment } from './constants';
 
 function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
@@ -45,7 +45,6 @@ export default async function getPage({
   router = (router) => router,
   useApp = true,
   useDocument = false,
-  nonIsolatedModules = [],
   dotenvFile,
   wrapper,
 }: Options): Promise<
@@ -59,7 +58,6 @@ export default async function getPage({
     router,
     useApp,
     useDocument,
-    nonIsolatedModules,
     dotenvFile,
     wrapper,
   };
@@ -114,7 +112,7 @@ export default async function getPage({
     );
   };
 
-  const serverPageElement = await renderDocument({
+  const serverPageElement = await serverRenderDocument({
     options,
     pageObject,
     wrapWithRouter,

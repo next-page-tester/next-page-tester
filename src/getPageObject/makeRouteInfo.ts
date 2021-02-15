@@ -5,7 +5,7 @@ import {
 import { parseRoute, parseQueryString, stringifyQueryString } from '../utils';
 import type { PageParams, RouteInfo } from '../commonTypes';
 
-export default function makeRouteInfo({
+export function makeRouteInfo({
   route,
   pagePath,
   routeRegexCaptureGroups,

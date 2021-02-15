@@ -6,7 +6,6 @@ import type {
   PageObject,
   PageProps,
 } from '../commonTypes';
-import { getPageComponents } from '../makePageElement';
 
 export default function renderApp({
   options,
@@ -18,10 +17,10 @@ export default function renderApp({
   pageProps: PageProps | undefined;
 }): JSX.Element {
   const { env } = options;
-  const { AppComponent, PageComponent } = getPageComponents({
-    pageObject,
-    env,
-  });
+  const {
+    appFile: { default: AppComponent },
+    pageFile: { default: PageComponent },
+  } = pageObject.files[env];
 
   return renderEnhancedApp({
     App: AppComponent,

@@ -6,7 +6,11 @@ import type {
 } from 'next';
 import { parse } from 'cookie';
 import makeHttpObjects from './makeHttpObjects';
-import type { ExtendedOptions, PageObject } from '../commonTypes';
+import type {
+  ExtendedOptions,
+  FoundPageObject,
+  PageObject,
+} from '../commonTypes';
 
 export function makeGetInitialPropsContext({
   pageObject,
@@ -44,7 +48,7 @@ export function makeGetServerSidePropsContext({
   pageObject,
   options: { req: reqMocker, res: resMocker, previousRoute },
 }: {
-  pageObject: PageObject;
+  pageObject: FoundPageObject;
   options: ExtendedOptions;
 }): GetServerSidePropsContext<typeof pageObject.params> {
   const { params, query, resolvedUrl } = pageObject;
@@ -75,7 +79,7 @@ export function makeGetServerSidePropsContext({
 export function makeStaticPropsContext({
   pageObject,
 }: {
-  pageObject: PageObject;
+  pageObject: FoundPageObject;
 }): GetStaticPropsContext<typeof pageObject.params> {
   const { params } = pageObject;
 

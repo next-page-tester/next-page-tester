@@ -1,5 +1,5 @@
 import getPagePaths from './getPagePaths';
-import makeRouteInfo from './makeRouteInfo';
+import { makeRouteInfo } from './makeRouteInfo';
 import { pagePathToRouteRegex } from './pagePathParser';
 import { parseRoute } from '../utils';
 import type { ExtendedOptions, RouteInfo } from '../commonTypes';

@@ -10,7 +10,7 @@ import type { createResponse, createRequest } from 'node-mocks-http';
 import type { ParsedUrlQuery } from 'querystring';
 import type { DocumentType, Enhancer } from 'next/dist/next-server/lib/utils';
 import { RuntimeEnvironment } from './constants';
-import DefaultError from './_error/DefaultError';
+import DefaultError from 'next/error';
 import DefaultApp from './_app/DefaultApp';
 
 export type Req = ReturnType<typeof createRequest>;
@@ -27,7 +27,6 @@ export type Options = {
   router?: (router: NextRouter) => NextRouter;
   useApp?: boolean;
   useDocument?: boolean;
-  nonIsolatedModules?: string[];
   dotenvFile?: string;
   wrapper?: {
     Page?: Enhancer<NextPage>;
@@ -51,34 +50,33 @@ export type ExtendedOptions = OptionsWithDefaults & {
 };
 
 /*
- * Page
+ * Pages
  */
-export type PageFile<FileType> = {
-  client: FileType;
-  server: FileType;
-};
-
 export type PageParams = ParsedUrlQuery;
 
 export type RouteInfo = {
   params: PageParams;
   query: PageParams;
   route: string;
+  // Page file path without extension
   pagePath: string;
   paramsNumber: number;
   resolvedUrl: string;
 };
 
-export type PageObject = RouteInfo & {
+export type FoundPageObject = RouteInfo & {
   type: 'found';
-  page: PageFile<NextPageFile>;
-  appFile: PageFile<NextAppFile>;
+  absolutePagePath: string;
+  files: MultiEnv<NextExistingPageFiles>;
 };
 
 export type NotFoundPageObject = RouteInfo & {
   type: 'notFound';
-  appFile: PageFile<NextAppFile>;
+  absolutePagePath: string;
+  files: MultiEnv<NextErrorPageFiles>;
 };
+
+export type PageObject = FoundPageObject | NotFoundPageObject;
 
 export type PageProps = {
   [key: string]: unknown;
@@ -88,6 +86,11 @@ export type PageData<P extends PageProps = PageProps> = {
   props?: P;
   redirect?: Redirect;
   notFound?: true;
+};
+
+export type PageInfo = {
+  pageObject: PageObject;
+  pageData: PageData;
 };
 
 export type NextPageFile = {
@@ -119,17 +122,26 @@ export class CustomError extends Error {
   payload?: unknown;
 }
 
+export type NextFile = NextErrorFile | NextPageFile;
+
+// Next files: this are the files necessary to render a Next page
+export type NextPageFiles<PageFile extends NextFile> = {
+  documentFile: NextDocumentFile;
+  appFile: NextAppFile;
+  pageFile: PageFile;
+};
+
+export type NextExistingPageFiles = NextPageFiles<NextPageFile>;
+
+export type NextErrorPageFiles = NextPageFiles<NextErrorFile>;
+
+export type MultiEnv<FileType> = {
+  client: FileType;
+  server: FileType;
+};
+
+// Extras
 export type MakePageResult = {
   pageElement: JSX.Element;
   pageObject: PageObject;
-};
-
-export type PageInfo = {
-  pageObject: PageObject;
-  pageData: PageData;
-};
-
-export type PageComponents = {
-  AppComponent: NextApp;
-  PageComponent: NextPage;
 };

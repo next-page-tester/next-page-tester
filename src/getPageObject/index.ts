@@ -1,1 +1,2 @@
-export { default } from './getPageObject';
+export { makeRouteInfo } from './makeRouteInfo';
+export { getPageObject } from './getPageObject';

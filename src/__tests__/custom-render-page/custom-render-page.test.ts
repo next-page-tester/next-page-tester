@@ -18,13 +18,6 @@ describe('custom-render-page', () => {
         nextRoot: path.join(__dirname, '__fixtures__', enhancerType),
         route: '/a',
         useDocument: true,
-        // If removed we would see "Warning: Text content did not match. Server: "10" Client: "150"" error
-        nonIsolatedModules: [
-          path.join(
-            process.cwd(),
-            'src/__tests__/custom-render-page/__fixtures__/counter'
-          ),
-        ],
       });
 
       render();

@@ -1,6 +1,6 @@
 import loadConfig, { NextConfig } from 'next/dist/next-server/server/config';
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
-import { InternalError } from './_error/error';
+import { InternalError } from './_error';
 
 let nextConfig: NextConfig;
 export function loadNextConfig({ nextRoot }: { nextRoot: string }) {

@@ -6,7 +6,7 @@ import { existsSync } from 'fs';
 import path from 'path';
 import stealthyRequire from 'stealthy-require';
 import { getNextConfig } from './nextConfig';
-import { InternalError } from './_error/error';
+import { InternalError } from './_error';
 
 export function parseRoute({ route }: { route: string }) {
   const urlObject = new URL(`http://test.com${route}`);
@@ -89,25 +89,16 @@ export function useMountedState(): () => boolean {
   return get;
 }
 
-const predefinedNonIsolatedModules = [
+// @NOTE: This modules still need to preserve their identity between client and server
+// because we import them within our code which serves both environments :(
+const nonIsolatedModules = [
   'react',
-  'next/router',
   'next/dist/next-server/lib/head-manager-context',
   'next/dist/next-server/lib/router-context',
   'next/dist/next-server/lib/runtime-config',
 ];
 
-export function executeWithFreshModules<T>(
-  f: () => T,
-  options: { nonIsolatedModules: string[] }
-): T {
-  const { nonIsolatedModules: userNonIsolatedModules } = options;
-
-  const nonIsolatedModules = [
-    ...userNonIsolatedModules,
-    ...predefinedNonIsolatedModules,
-  ];
-
+export function executeWithFreshModules<T>(f: () => T): T {
   /* istanbul ignore else */
   if (typeof jest !== 'undefined') {
     let result: T;

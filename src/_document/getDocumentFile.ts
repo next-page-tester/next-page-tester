@@ -1,18 +1,14 @@
-import type {
-  ExtendedOptions,
-  NextDocumentFile,
-  PageFile,
-} from '../commonTypes';
-import { loadPageIfExists, loadFile } from '../loadPage';
+import type { ExtendedOptions, NextDocumentFile } from '../commonTypes';
+import { loadFile } from '../loadFile';
+import { getPageFileIfExists } from '../page';
 import { DOCUMENT_PATH } from '../constants';
 
-export default function getDocumentFile({
+export function getDocumentFile({
   options,
 }: {
   options: ExtendedOptions;
-}): PageFile<NextDocumentFile> {
-  const { nonIsolatedModules } = options;
-  const customDocumentFile = loadPageIfExists<NextDocumentFile>({
+}): NextDocumentFile {
+  const customDocumentFile = getPageFileIfExists<NextDocumentFile>({
     options,
     pagePath: DOCUMENT_PATH,
   });
@@ -21,16 +17,11 @@ export default function getDocumentFile({
     return customDocumentFile;
   }
 
-  return getDefaultDocumentFile({ nonIsolatedModules });
+  return getDefaultDocumentFile();
 }
 
-function getDefaultDocumentFile({
-  nonIsolatedModules,
-}: {
-  nonIsolatedModules: string[];
-}): PageFile<NextDocumentFile> {
+function getDefaultDocumentFile(): NextDocumentFile {
   return loadFile<NextDocumentFile>({
     absolutePath: 'next/document',
-    nonIsolatedModules,
   });
 }
