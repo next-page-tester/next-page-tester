@@ -8,37 +8,22 @@ import type {
   NextExistingPageFiles,
   NextErrorPageFiles,
   MultiEnv,
+  NextFile,
+  NextPageFiles,
 } from './commonTypes';
 
 // Get Document, App and Page files
-// @TODO Find a way to avoid this duplication and let TS follow pageFile typing
-function _loadExistingPageFiles({
+function loadPageFiles<PageFile extends NextFile>({
   absolutePagePath,
   options,
 }: {
   absolutePagePath: string;
   options: ExtendedOptions;
-}): NextExistingPageFiles {
+}): NextPageFiles<PageFile> {
   return {
     documentFile: getDocumentFile({ options }),
     appFile: getAppFile({ options }),
-    pageFile: loadFile({
-      absolutePath: absolutePagePath,
-    }),
-  };
-}
-
-function _loadErrorPageFiles({
-  absolutePagePath,
-  options,
-}: {
-  absolutePagePath: string;
-  options: ExtendedOptions;
-}): NextErrorPageFiles {
-  return {
-    documentFile: getDocumentFile({ options }),
-    appFile: getAppFile({ options }),
-    pageFile: loadFile({
+    pageFile: loadFile<PageFile>({
       absolutePath: absolutePagePath,
     }),
   };
@@ -52,10 +37,10 @@ export function loadExistingPageFiles({
   options: ExtendedOptions;
 }): MultiEnv<NextExistingPageFiles> {
   return {
-    client: _loadExistingPageFiles({ absolutePagePath, options }),
+    client: loadPageFiles({ absolutePagePath, options }),
     server: executeAsIfOnServerSync(() =>
       executeWithFreshModules(() =>
-        _loadExistingPageFiles({ absolutePagePath, options })
+        loadPageFiles({ absolutePagePath, options })
       )
     ),
   };
@@ -69,10 +54,10 @@ export function loadErrorPageFiles({
   options: ExtendedOptions;
 }): MultiEnv<NextErrorPageFiles> {
   return {
-    client: _loadErrorPageFiles({ absolutePagePath, options }),
+    client: loadPageFiles({ absolutePagePath, options }),
     server: executeAsIfOnServerSync(() =>
       executeWithFreshModules(() =>
-        _loadErrorPageFiles({ absolutePagePath, options })
+        loadPageFiles({ absolutePagePath, options })
       )
     ),
   };
