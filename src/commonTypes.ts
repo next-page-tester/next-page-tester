@@ -122,18 +122,18 @@ export class CustomError extends Error {
   payload?: unknown;
 }
 
+export type NextFile = NextErrorFile | NextPageFile;
+
 // Next files: this are the files necessary to render a Next page
-export type NextExistingPageFiles = {
+export type NextPageFiles<PageFile extends NextFile> = {
   documentFile: NextDocumentFile;
   appFile: NextAppFile;
-  pageFile: NextPageFile;
+  pageFile: PageFile;
 };
 
-export type NextErrorPageFiles = {
-  documentFile: NextDocumentFile;
-  appFile: NextAppFile;
-  pageFile: NextErrorFile;
-};
+export type NextExistingPageFiles = NextPageFiles<NextPageFile>;
+
+export type NextErrorPageFiles = NextPageFiles<NextErrorFile>;
 
 export type MultiEnv<FileType> = {
   client: FileType;
