@@ -40,21 +40,23 @@ export function getPagePathIfExists(
   }
 }
 
-export function getPageFile<FileType>({
+export function getPageFileIfExists<FileType>({
   pagePath,
   options,
-}: GetPageOptions): FileType {
-  return loadFile({
-    absolutePath: getPagePath({ pagePath, options }),
-  });
-}
-
-export function getPageFileIfExists<FileType>(
-  options: GetPageOptions
-): FileType | undefined {
-  try {
-    return getPageFile(options);
-  } catch (e) {
+}: GetPageOptions): FileType | undefined {
+  const absolutePath = getPagePathIfExists({ pagePath, options });
+  if (!absolutePath) {
     return undefined;
+  }
+
+  try {
+    return loadFile({ absolutePath });
+  } catch (e) {
+    const relativePath = absolutePath.replace(options.nextRoot, '');
+    const internalEror = new InternalError(
+      `Failed to load "${relativePath}" file due to ${e.name}: ${e.message}`
+    );
+    internalEror.stack = e.stack;
+    throw internalEror;
   }
 }
