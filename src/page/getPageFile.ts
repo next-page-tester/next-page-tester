@@ -52,12 +52,8 @@ export function getPageFileIfExists<FileType>({
   try {
     return loadFile({ absolutePath });
   } catch (e) {
-    console.log('absolute: ', absolutePath);
-    console.log('pages dir: ', options.pagesDirectory);
-
-    const relativePath = absolutePath.replace(options.pagesDirectory, '');
     const internalEror = new InternalError(
-      `Failed to load "${relativePath}" file due to ${e.name}: ${e.message}`
+      `Failed to load "${pagePath}" file due to ${e.name}: ${e.message}`
     );
     internalEror.stack = e.stack;
     throw internalEror;
