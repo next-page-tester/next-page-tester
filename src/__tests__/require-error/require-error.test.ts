@@ -10,7 +10,7 @@ describe('require-error', () => {
         route: '/a',
       })
     ).rejects.toThrow(
-      '[next-page-tester] Failed to load "/pages/_app.tsx" file due to ReferenceError: ewqjewqj is not defined'
+      '[next-page-tester] Failed to load "/_app.tsx" file due to ReferenceError: ewqjewqj is not defined'
     );
   });
 });

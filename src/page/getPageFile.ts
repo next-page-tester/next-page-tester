@@ -3,7 +3,6 @@ import { existsSync } from 'fs';
 import type { ExtendedOptions } from '../commonTypes';
 import { InternalError } from '../_error';
 import { loadFile } from '../loadFile';
-import normalizePath from 'normalize-path';
 
 type GetPageOptions = {
   pagePath: string;
@@ -53,10 +52,10 @@ export function getPageFileIfExists<FileType>({
   try {
     return loadFile({ absolutePath });
   } catch (e) {
-    const relativePath = normalizePath(absolutePath).replace(
-      options.nextRoot,
-      ''
-    );
+    console.log('absolute: ', absolutePath);
+    console.log('pages dir: ', options.pagesDirectory);
+
+    const relativePath = absolutePath.replace(options.pagesDirectory, '');
     const internalEror = new InternalError(
       `Failed to load "${relativePath}" file due to ${e.name}: ${e.message}`
     );
