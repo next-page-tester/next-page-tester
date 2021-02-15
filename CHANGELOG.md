@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.20.0
+
+### Breaking Changes
+
+- Remove `nonIsolatedModules` option
+
+### Bugfix
+
+- Load files necessary to perform rendering in one single go to preserve module identity
+
+### New Features
+
+- Improve DX by throwing on import failure instead of swallowing error
+
 ## 0.19.0
 
 ### New Features
