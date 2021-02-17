@@ -40,25 +40,28 @@ describe('Environment variables', () => {
       expectDOMElementsToMatch(actual, expected);
     });
 
-    it('Without dotenv file', async () => {
-      const { serverRender } = await getPage({
-        nextRoot: path.join(__dirname, '__fixtures__', 'no-dotenv-file'),
-        route: '/page',
-      });
-      const { nextRoot: actual } = serverRender();
-      const { container: expected } = renderWithinNextRoot(
-        <EnvVarsCleanupPage
-          envVarsMock={{
-            FROM_RUNTIME: 'FROM_RUNTIME',
-            NEXT_PUBLIC_FROM_RUNTIME: 'NEXT_PUBLIC_FROM_RUNTIME',
-            NAME_CLASH_RUNTIME_VS_CONFIG: 'FROM_RUNTIME',
-            NAME_CLASH_RUNTIME_VS_DOTFILE: 'FROM_RUNTIME',
-            NAME_CLASH_RUNTIME_VS_CONFIG_VS_DOTFILE: 'FROM_RUNTIME',
-          }}
-        />
-      );
-      expectDOMElementsToMatch(actual, expected);
-    });
+    it.each([['no-dotenv-file'], ['empty-dotenv-file']])(
+      '%s',
+      async (directory) => {
+        const { serverRender } = await getPage({
+          nextRoot: path.join(__dirname, '__fixtures__', directory),
+          route: '/page',
+        });
+        const { nextRoot: actual } = serverRender();
+        const { container: expected } = renderWithinNextRoot(
+          <EnvVarsCleanupPage
+            envVarsMock={{
+              FROM_RUNTIME: 'FROM_RUNTIME',
+              NEXT_PUBLIC_FROM_RUNTIME: 'NEXT_PUBLIC_FROM_RUNTIME',
+              NAME_CLASH_RUNTIME_VS_CONFIG: 'FROM_RUNTIME',
+              NAME_CLASH_RUNTIME_VS_DOTFILE: 'FROM_RUNTIME',
+              NAME_CLASH_RUNTIME_VS_CONFIG_VS_DOTFILE: 'FROM_RUNTIME',
+            }}
+          />
+        );
+        expectDOMElementsToMatch(actual, expected);
+      }
+    );
   });
 
   describe('client runtime', () => {
@@ -80,21 +83,24 @@ describe('Environment variables', () => {
       expectDOMElementsToMatch(actual, expected);
     });
 
-    it('Without dotenv file', async () => {
-      const { render } = await getPage({
-        nextRoot: path.join(__dirname, '__fixtures__', 'no-dotenv-file'),
-        route: '/page',
-      });
-      const { nextRoot: actual } = render();
-      const { container: expected } = renderWithinNextRoot(
-        <EnvVarsCleanupPage
-          envVarsMock={{
-            NEXT_PUBLIC_FROM_RUNTIME: 'NEXT_PUBLIC_FROM_RUNTIME',
-          }}
-        />
-      );
-      expectDOMElementsToMatch(actual, expected);
-    });
+    it.each([['no-dotenv-file'], ['empty-dotenv-file']])(
+      '%s',
+      async (directory) => {
+        const { render } = await getPage({
+          nextRoot: path.join(__dirname, '__fixtures__', directory),
+          route: '/page',
+        });
+        const { nextRoot: actual } = render();
+        const { container: expected } = renderWithinNextRoot(
+          <EnvVarsCleanupPage
+            envVarsMock={{
+              NEXT_PUBLIC_FROM_RUNTIME: 'NEXT_PUBLIC_FROM_RUNTIME',
+            }}
+          />
+        );
+        expectDOMElementsToMatch(actual, expected);
+      }
+    );
   });
 
   it('Triggers console.warn if provided "dotenvFile" doesn\'t exist', async () => {
