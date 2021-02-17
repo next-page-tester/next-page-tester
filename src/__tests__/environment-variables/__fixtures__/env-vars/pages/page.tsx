@@ -8,6 +8,7 @@ export default function EnvironmentVariablesPage({
 }) {
   const {
     FROM_RUNTIME,
+    NEXT_PUBLIC_FROM_RUNTIME,
     FROM_CONFIG,
     FROM_DOTFILE,
     FROM_DOTFILE_EXPANDED,
@@ -19,6 +20,7 @@ export default function EnvironmentVariablesPage({
 
   const envVars = {
     FROM_RUNTIME,
+    NEXT_PUBLIC_FROM_RUNTIME,
     FROM_CONFIG,
     FROM_DOTFILE,
     FROM_DOTFILE_EXPANDED,
