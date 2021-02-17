@@ -4,14 +4,12 @@ import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
 import { getNextConfig } from './nextConfig';
 import { RuntimeEnvironment } from './constants';
+
 const { SERVER, CLIENT } = RuntimeEnvironment;
 
 type EnvVars = Record<string, string | undefined>;
 
-type ScopedEnvVars = {
-  [RuntimeEnvironment.SERVER]: EnvVars;
-  [RuntimeEnvironment.CLIENT]: EnvVars;
-};
+type ScopedEnvVars = Record<RuntimeEnvironment, EnvVars>;
 
 function scopeEnvVarsByEnvironment(vars: EnvVars): ScopedEnvVars {
   const serverVars = { ...vars };
@@ -48,7 +46,12 @@ function loadDotFile({
       ignoreProcessEnv: true,
     });
 
-    return dotenvResult.parsed || {};
+    /* istanbul ignore if */
+    if (!dotenvResult.parsed) {
+      return {};
+    }
+
+    return dotenvResult.parsed;
   } else {
     console.warn(
       `[next-page-tester] Cannot find env file at path: ${dotenvFilePath}`
