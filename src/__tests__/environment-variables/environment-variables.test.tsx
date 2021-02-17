@@ -26,7 +26,10 @@ describe('Environment variables', () => {
           envVarsMock={{
             FROM_RUNTIME: 'FROM_RUNTIME',
             NEXT_PUBLIC_FROM_RUNTIME: 'NEXT_PUBLIC_FROM_RUNTIME',
+
             FROM_CONFIG: 'FROM_CONFIG',
+            NEXT_PUBLIC_FROM_CONFIG: 'NEXT_PUBLIC_FROM_CONFIG',
+
             FROM_DOTFILE: 'FROM_DOTFILE',
             FROM_DOTFILE_EXPANDED: 'FROM_DOTFILE_EXPANDED',
             NEXT_PUBLIC_FROM_DOTFILE: 'NEXT_PUBLIC_FROM_DOTFILE',
@@ -76,6 +79,7 @@ describe('Environment variables', () => {
         <Page
           envVarsMock={{
             NEXT_PUBLIC_FROM_RUNTIME: 'NEXT_PUBLIC_FROM_RUNTIME',
+            NEXT_PUBLIC_FROM_CONFIG: 'NEXT_PUBLIC_FROM_CONFIG',
             NEXT_PUBLIC_FROM_DOTFILE: 'NEXT_PUBLIC_FROM_DOTFILE',
           }}
         />
