@@ -69,8 +69,12 @@ export function setEnvVars({
   runtimeEnv: RuntimeEnvironment;
 }): void {
   const { env: envVarsFromConfig } = getNextConfig();
-  const vars = { ...baseEnvVars, ...envVarsFromConfig };
-  process.env = scopeEnvVarsByEnvironment(vars)[runtimeEnv];
+  // Runtime and dotfile env vars are scoped by environment (via NEXT_PUBLIC_ prefix),
+  // while env vars coming from next.config.js are available in both environments
+  process.env = {
+    ...scopeEnvVarsByEnvironment(baseEnvVars)[runtimeEnv],
+    ...envVarsFromConfig,
+  };
 }
 
 export function loadBaseEnvironment({
@@ -81,8 +85,8 @@ export function loadBaseEnvironment({
   dotenvFile?: string;
 }) {
   const dotenv = loadDotFile({ nextRoot, dotenvFile });
-  process.env = { ...dotenv, ...process.env };
-  baseEnvVars = process.env;
+  baseEnvVars = { ...dotenv, ...process.env };
+  process.env = baseEnvVars;
 }
 
 export function cleanupEnvVars() {

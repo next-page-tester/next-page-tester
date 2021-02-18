@@ -79,8 +79,11 @@ describe('Environment variables', () => {
         <Page
           envVarsMock={{
             NEXT_PUBLIC_FROM_RUNTIME: 'NEXT_PUBLIC_FROM_RUNTIME',
+            FROM_CONFIG: 'FROM_CONFIG',
             NEXT_PUBLIC_FROM_CONFIG: 'NEXT_PUBLIC_FROM_CONFIG',
             NEXT_PUBLIC_FROM_DOTFILE: 'NEXT_PUBLIC_FROM_DOTFILE',
+            NAME_CLASH_RUNTIME_VS_CONFIG: 'FROM_CONFIG',
+            NAME_CLASH_RUNTIME_VS_CONFIG_VS_DOTFILE: 'FROM_CONFIG',
           }}
         />
       );
