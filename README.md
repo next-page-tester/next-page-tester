@@ -95,17 +95,17 @@ React element of the application.
 
 ## Options
 
-| Property                       | Description                                                                        | type                              | Default         |
-| ------------------------------ | ---------------------------------------------------------------------------------- | --------------------------------- | --------------- |
-| **route** (mandatory)          | Next route (must start with `/`)                                                   | `string`                          | -               |
-| **req**                        | Enhance default mocked [request object][req-docs]                                  | `req => req`                      | -               |
-| **res**                        | Enhance default mocked [response object][res-docs]                                 | `res => res`                      | -               |
-| **router**                     | Enhance default mocked [Next router object][next-docs-router]                      | `router => router`                | -               |
-| **useApp**                     | Render [custom App component][next-docs-custom-app]                                | `boolean`                         | `true`          |
-| **useDocument** (experimental) | Render [Document component][next-docs-custom-document]                             | `boolean`                         | `false`         |
-| **nextRoot**                   | Absolute path to Next.js root folder                                               | `string`                          | _auto detected_ |
-| **dotenvFile**                 | Relative path to a `.env` file holding [environment variables][next-docs-env-vars] | `string`                          | -               |
-| **wrapper**                    | Map of render functions. Useful to decorate component tree with mocked providers.  | `{ Page?: NextPage => NextPage }` | -               |
+| Property              | Description                                                                        | type                              | Default         |
+| --------------------- | ---------------------------------------------------------------------------------- | --------------------------------- | --------------- |
+| **route** (mandatory) | Next route (must start with `/`)                                                   | `string`                          | -               |
+| **req**               | Enhance default mocked [request object][req-docs]                                  | `req => req`                      | -               |
+| **res**               | Enhance default mocked [response object][res-docs]                                 | `res => res`                      | -               |
+| **router**            | Enhance default mocked [Next router object][next-docs-router]                      | `router => router`                | -               |
+| **useApp**            | Render [custom App component][next-docs-custom-app]                                | `boolean`                         | `true`          |
+| **useDocument**       | Render [custom Document component][next-docs-custom-document]                      | `boolean`                         | `false`         |
+| **nextRoot**          | Absolute path to Next.js root folder                                               | `string`                          | _auto detected_ |
+| **dotenvFile**        | Relative path to a `.env` file holding [environment variables][next-docs-env-vars] | `string`                          | -               |
+| **wrapper**           | Map of render functions. Useful to decorate component tree with mocked providers.  | `{ Page?: NextPage => NextPage }` | -               |
 
 ## Set up your test environment
 
@@ -139,10 +139,6 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 - Data fetching methods' context `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http]
 - Next page tester is designed to be used with any testing framework/library but It's currently only tested with Jest and Testing Library. Feel free to open an issue if you had troubles with different setups
 - It might be necessary to install `@types/react-dom` and `@types/webpack` when using Typescript in `strict` mode due to [this bug][next-gh-strict-bug]
-
-### Experimental `useDocument` option
-
-`useDocument` option is partially implemented and might be unstable.
 
 ### Next.js versions support
 

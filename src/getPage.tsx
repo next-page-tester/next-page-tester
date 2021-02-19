@@ -75,18 +75,13 @@ export default async function getPage({
     env: RuntimeEnvironment.SERVER,
   };
   // @TODO: Consider printing extended options value behind a debug flag
-
-  const headManager = useDocument && initHeadManager();
+  const headManager = initHeadManager();
 
   const makePage = async (
     options: ExtendedOptions
   ): Promise<MakePageResult> => {
     let { pageElement, pageObject } = await makePageElement({ options });
-    if (
-      useDocument &&
-      options.env === RuntimeEnvironment.CLIENT &&
-      headManager
-    ) {
+    if (options.env === RuntimeEnvironment.CLIENT) {
       pageElement = (
         <HeadManagerContext.Provider value={headManager}>
           {pageElement}
