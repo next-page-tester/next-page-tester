@@ -8,15 +8,17 @@ export function getDocumentFile({
 }: {
   options: ExtendedOptions;
 }): NextDocumentFile {
-  const customDocumentFile = getPageFileIfExists<NextDocumentFile>({
-    options,
-    pagePath: DOCUMENT_PATH,
-  });
+  const { useDocument } = options;
+  if (useDocument) {
+    const customDocumentFile = getPageFileIfExists<NextDocumentFile>({
+      options,
+      pagePath: DOCUMENT_PATH,
+    });
 
-  if (customDocumentFile) {
-    return customDocumentFile;
+    if (customDocumentFile) {
+      return customDocumentFile;
+    }
   }
-
   return getDefaultDocumentFile();
 }
 

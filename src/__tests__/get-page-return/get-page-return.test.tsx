@@ -6,6 +6,7 @@ import path from 'path';
 import App from './__fixtures__/pages/_app';
 import Page from './__fixtures__/pages/page';
 import { expectDOMElementsToMatch } from '../__utils__';
+import { NEXT_ROOT_ELEMENT_ID } from '../../constants';
 
 // @NOTE These tests are not extensive.
 // They provide a rough idea of the values returned by getPage
@@ -20,15 +21,28 @@ describe('getPage() return', () => {
 
       const expectedPage = (
         <html>
-          <head />
+          <head>
+            <meta name="next-head-count" content="0" />
+            <noscript data-n-css=""></noscript>
+          </head>
           <body>
-            <div id="__next">
+            <div id={NEXT_ROOT_ELEMENT_ID}>
               <App Component={Page} />
             </div>
+            <script
+              id="__NEXT_DATA__"
+              type="application/json"
+              dangerouslySetInnerHTML={{
+                __html:
+                  '{"page":"/page","query":{},"buildId":"next-page-tester","props":{}}',
+              }}
+            ></script>
           </body>
         </html>
       );
-      const expectedHtml = ReactDOMServer.renderToString(expectedPage);
+
+      const expectedHtml = ReactDOMServer.renderToStaticMarkup(expectedPage);
+
       expect(html).toEqual(expectedHtml);
     });
   });
@@ -40,22 +54,31 @@ describe('getPage() return', () => {
         route: '/page',
       });
       const { nextRoot } = serverRender();
-      const actualNextRoot = document.getElementById('__next');
+      const actualNextRoot = document.getElementById(NEXT_ROOT_ELEMENT_ID);
       expect(nextRoot).toBe(actualNextRoot);
 
       const actualHtml = document.documentElement;
       const { container: expectedHtml } = TLRender(
         <>
-          <head />
+          <head>
+            <meta name="next-head-count" content="0" />
+            <noscript data-n-css=""></noscript>
+          </head>
           <body>
-            <div id="__next">
+            <div id={NEXT_ROOT_ELEMENT_ID}>
               <App Component={Page} />
             </div>
+            <script
+              id="__NEXT_DATA__"
+              type="application/json"
+              dangerouslySetInnerHTML={{
+                __html:
+                  '{"page":"/page","query":{},"buildId":"next-page-tester","props":{}}',
+              }}
+            ></script>
           </body>
         </>,
-        {
-          container: document.createElement('html'),
-        }
+        { container: document.createElement('html') }
       );
 
       expectDOMElementsToMatch(actualHtml, expectedHtml);
@@ -79,22 +102,31 @@ describe('getPage() return', () => {
         route: '/page',
       });
       const { nextRoot } = render();
-      const actualNextRoot = document.getElementById('__next');
+      const actualNextRoot = document.getElementById(NEXT_ROOT_ELEMENT_ID);
       expect(nextRoot).toBe(actualNextRoot);
 
       const actualHtml = document.documentElement;
       const { container: expectedHtml } = TLRender(
         <>
-          <head />
+          <head>
+            <meta name="next-head-count" content="0" />
+            <noscript data-n-css=""></noscript>
+          </head>
           <body>
-            <div id="__next">
+            <div id={NEXT_ROOT_ELEMENT_ID}>
               <App Component={Page} />
             </div>
+            <script
+              id="__NEXT_DATA__"
+              type="application/json"
+              dangerouslySetInnerHTML={{
+                __html:
+                  '{"page":"/page","query":{},"buildId":"next-page-tester","props":{}}',
+              }}
+            ></script>
           </body>
         </>,
-        {
-          container: document.createElement('html'),
-        }
+        { container: document.createElement('html') }
       );
 
       expectDOMElementsToMatch(actualHtml, expectedHtml);
