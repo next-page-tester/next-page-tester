@@ -81,13 +81,11 @@ export default async function getPage({
     options: ExtendedOptions
   ): Promise<MakePageResult> => {
     let { pageElement, pageObject } = await makePageElement({ options });
-    if (options.env === RuntimeEnvironment.CLIENT) {
-      pageElement = (
-        <HeadManagerContext.Provider value={headManager}>
-          {pageElement}
-        </HeadManagerContext.Provider>
-      );
-    }
+    pageElement = (
+      <HeadManagerContext.Provider value={headManager}>
+        {pageElement}
+      </HeadManagerContext.Provider>
+    );
     return { pageObject, pageElement };
   };
 
