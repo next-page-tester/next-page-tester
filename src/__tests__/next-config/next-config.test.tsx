@@ -3,6 +3,16 @@ import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 
 describe('Runtime Configuration with next/config', () => {
+  const initialDomain = process.env.DOMAIN;
+
+  beforeAll(() => {
+    process.env.DOMAIN = 'www.example.com';
+  });
+
+  afterAll(() => {
+    process.env.DOMAIN = initialDomain;
+  });
+
   describe('server runtime', () => {
     it('serverRuntimeConfig and publicRuntimeConfig available', async () => {
       const { serverRender } = await getPage({
@@ -21,9 +31,11 @@ describe('Runtime Configuration with next/config', () => {
           configMock={{
             serverRuntimeConfig: {
               value: 'true',
+              domain: 'www.example.com',
             },
             publicRuntimeConfig: {
               value: 'true',
+              domain: 'www.example.com',
             },
           }}
         />
@@ -46,6 +58,7 @@ describe('Runtime Configuration with next/config', () => {
             serverRuntimeConfig: {},
             publicRuntimeConfig: {
               value: 'true',
+              domain: 'www.example.com',
             },
           }}
         />
