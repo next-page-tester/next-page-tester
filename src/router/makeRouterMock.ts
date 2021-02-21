@@ -1,8 +1,9 @@
-import type { NextRouter } from 'next/router';
+import { createRouter, NextRouter } from 'next/router';
 import { removeFileExtension, parseRoute } from '../utils';
 import type { ExtendedOptions, PageObject } from '../commonTypes';
 
 type NextPushArgs = Parameters<NextRouter['push']>;
+
 export type PushHandler = (
   url: NextPushArgs[0],
   as: NextPushArgs[1],
@@ -44,6 +45,8 @@ function makeDefaultRouterMock({
   return routerMock;
 }
 
+let SingletonRouter: NextRouter;
+
 export default function makeRouterMock({
   options: { router: routerEnhancer },
   pageObject: { pagePath, params, route, query },
@@ -63,5 +66,28 @@ export default function makeRouterMock({
     basePath: '',
   };
 
-  return routerEnhancer(router);
+  SingletonRouter = routerEnhancer(router);
+  // @ts-expect-error we are calling this just to execute the initialization of singletonRouter which we
+  // intercept and assign to our mocked router
+  createRouter();
+  return SingletonRouter;
 }
+
+jest.mock('next/dist/next-server/lib/router/router', () => ({
+  __esModule: true,
+  ...jest.requireActual<Record<string, unknown>>(
+    'next/dist/next-server/lib/router/router'
+  ),
+  default: Object.assign(
+    function () {
+      return SingletonRouter;
+    },
+    {
+      events: {
+        on: () => {},
+        off: () => {},
+        emit: () => {},
+      },
+    }
+  ),
+}));
