@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { UrlObject } from 'url';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 type Props = {
   href: string;
@@ -10,14 +10,6 @@ type Props = {
 
 export const PageA = ({ href, hrefObject }: Props) => {
   const { replace } = useRouter();
-
-  const goToPageBstring = () => {
-    replace(href);
-  };
-
-  const goToPageBObject = () => {
-    replace(hrefObject);
-  };
 
   return (
     <div>
@@ -30,8 +22,19 @@ export const PageA = ({ href, hrefObject }: Props) => {
         <a>Go to B with Link (with object)</a>
       </Link>
 
-      <a onClick={goToPageBstring}>Go to B programmatically (with string)</a>
-      <a onClick={goToPageBObject}>Go to B programmatically (with object)</a>
+      <a onClick={() => Router.replace(href)}>
+        Go to B programmatically (next/router - with string)
+      </a>
+      <a onClick={() => Router.replace(hrefObject)}>
+        Go to B programmatically (next/router - with object)
+      </a>
+
+      <a onClick={() => replace(href)}>
+        Go to B programmatically (useRouter - with string)
+      </a>
+      <a onClick={() => replace(hrefObject)}>
+        Go to B programmatically (useRouter - with object)
+      </a>
     </div>
   );
 };
