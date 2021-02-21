@@ -1,5 +1,6 @@
 import { cleanupDOM } from './makeRenderMethods';
 import { cleanupEnvVars } from './setEnvVars';
+import { nonIsolatedModules } from './utils';
 
 function isJSDOMEnvironment() {
   return navigator && navigator.userAgent.includes('jsdom');
@@ -25,6 +26,17 @@ export function initTestHelpers() {
 
   if (typeof document !== 'undefined' && typeof afterEach === 'function') {
     afterEach(cleanup);
+  }
+
+  if (typeof jest !== 'undefined') {
+    beforeAll(() => {
+      for (const moduleName of nonIsolatedModules) {
+        // @NOTE for some reason Jest needs us to pre-import the modules
+        // we want to require with jest.requireActual
+        require(moduleName);
+        jest.mock(moduleName, () => jest.requireActual(moduleName));
+      }
+    });
   }
 }
 

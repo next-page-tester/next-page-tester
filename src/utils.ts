@@ -91,7 +91,7 @@ export function useMountedState(): () => boolean {
 
 // @NOTE: This modules still need to preserve their identity between client and server
 // because we import them within our code which serves both environments :(
-const nonIsolatedModules = [
+export const nonIsolatedModules = [
   'react',
   'next/dist/next-server/lib/head-manager-context',
   'next/dist/next-server/lib/router-context',
@@ -102,14 +102,6 @@ export function executeWithFreshModules<T>(f: () => T): T {
   /* istanbul ignore else */
   if (typeof jest !== 'undefined') {
     let result: T;
-
-    for (const moduleName of nonIsolatedModules) {
-      // @NOTE for some reason Jest needs us to pre-import the modules
-      // we want to require with jest.requireActual
-      require(moduleName);
-      jest.mock(moduleName, () => jest.requireActual(moduleName));
-    }
-
     jest.isolateModules(() => {
       result = f();
     });
