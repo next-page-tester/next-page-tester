@@ -107,19 +107,18 @@ React element of the application.
 | **dotenvFile**                 | Relative path to a `.env` file holding [environment variables][next-docs-env-vars] | `string`                          | -               |
 | **wrapper**                    | Map of render functions. Useful to decorate component tree with mocked providers.  | `{ Page?: NextPage => NextPage }` | -               |
 
-## Set up your test environment
+## Skipping Auto Cleanup & Helpers Initialisation
 
-Since Next.js is not designed to run in a JSDOM environment we need to **setup the default JSDOM** to allow a smoother testing experience:
+Since Next.js is not designed to run in a JSDOM environment we need to **setup the default JSDOM** to allow a smoother testing experience. By default, `next-page-tester` will:
 
-- Provide a `window.scrollTo` mock
-- Provide a `IntersectionObserver` mock
+- Provide `window.scrollTo` and `IntersectionObserver` mocks
 - Cleanup DOM after each test
+- Setup jest to preserve the identity of some specific modules between "server" and "client" execution
 
-Run [`initTestHelpers`](/src/testHelpers.ts) in your global tests setup (in case of Jest It is `setupFilesAfterEnv` file):
+However, you may choose to skip the auto cleanup & helpers initialisation by setting the NPT_SKIP_AUTO_SETUP env variable to 'true'. You can do this with cross-env like so:
 
 ```js
-import { initTestHelpers } from 'next-page-tester';
-initTestHelpers();
+cross-env NPT_SKIP_AUTO_SETUP=true jest
 ```
 
 ### Handling special imports
