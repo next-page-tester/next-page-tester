@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.21.0
+
+### Bugfix
+
+- Respect non-isolated modules when `executeWithFreshModules` is executed
+
+### New Features
+
+- Filter runtime environment variables
+- Make environment variables declared in dotenv files available in `next.config.js`
+
 ## 0.20.0
 
 ### Breaking Changes
