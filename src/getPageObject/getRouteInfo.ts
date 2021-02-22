@@ -8,27 +8,23 @@ export default async function getRouteInfo({
   options,
 }: {
   options: ExtendedOptions;
-}): Promise<RouteInfo> {
+}): Promise<RouteInfo | undefined> {
   const { route } = options;
-  const pagePaths = await getPagePaths({ options });
-  const pagePathRegexes = pagePaths.map(pagePathToRouteRegex);
   const { pathname } = parseRoute({ route });
 
-  // Match provided route through route regexes generated from /page components
-  const matchingRouteInfo: RouteInfo[] = pagePaths
-    .map((pagePath, index) => {
-      const result = pathname.match(pagePathRegexes[index]);
-      if (result) {
-        return makeRouteInfo({
-          route,
-          pagePath,
-          routeRegexCaptureGroups: result.groups,
-        });
-      }
-    })
-    .filter((result): result is RouteInfo => Boolean(result))
-    .sort((a, b) => a.paramsNumber - b.paramsNumber);
+  const pagePaths = await getPagePaths({ options });
 
-  // Return the result with less page params
-  return matchingRouteInfo[0];
+  for (const pagePath of pagePaths) {
+    const result = pathname.match(pagePathToRouteRegex(pagePath));
+
+    if (!result) continue;
+
+    return makeRouteInfo({
+      route,
+      pagePath,
+      routeRegexCaptureGroups: result.groups,
+    });
+  }
+
+  return;
 }
