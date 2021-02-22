@@ -28,7 +28,7 @@ export function initTestHelpers() {
     afterEach(cleanup);
   }
 
-  if (typeof jest !== 'undefined') {
+  if (typeof beforeAll === 'function') {
     beforeAll(() => {
       for (const moduleName of nonIsolatedModules) {
         // @NOTE for some reason Jest needs us to pre-import the modules
