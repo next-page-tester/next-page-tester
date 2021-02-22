@@ -28,7 +28,9 @@ export function initTestHelpers() {
     afterEach(cleanup);
   }
 
-  if (typeof beforeAll === 'function') {
+  // We are intentionally only targeting jest here for it to work with jest.isolatedModules
+  // If user has a different test runner we handle it in src/utils where we fallback to stealthy-require
+  if (typeof jest !== 'undefined') {
     beforeAll(() => {
       for (const moduleName of nonIsolatedModules) {
         // @NOTE for some reason Jest needs us to pre-import the modules
