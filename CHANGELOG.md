@@ -2,6 +2,10 @@
 
 ## 0.21.0
 
+### Breaking Changes
+
+- `initTestHelpers()` setup has to be removed with Jest/Jasmine-like test runners
+
 ### Bugfix
 
 - Respect non-isolated modules when `executeWithFreshModules` is executed
@@ -10,6 +14,7 @@
 
 - Filter runtime environment variables
 - Make environment variables declared in dotenv files available in `next.config.js`
+- Automatically initialise test environment with Jest/Jasmine-like test runners
 
 ## 0.20.0
 
