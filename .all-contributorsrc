@@ -93,6 +93,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "jesstelford",
+      "name": "Jess Telford",
+      "avatar_url": "https://avatars.githubusercontent.com/u/612020?v=4",
+      "profile": "http://jes.st/about",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
