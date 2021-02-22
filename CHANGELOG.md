@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- `initTestHelpers()` setup has to be removed with Jest/Jasmine-like test runners
+- Initial `initTestHelpers()` test environment setup should be removed when running in Jest/Jasmine-like environments
 
 ### Bugfix
 
