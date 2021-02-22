@@ -79,6 +79,10 @@
       "groupName": "Update Apollo demo dependencies"
     },
     {
+      "packagePatterns": ["^@emotion/"],
+      "groupName": "Update Emotion demo dependencies"
+    },
+    {
       "depTypeList": ["peerDependencies"],
       "enabled": false
     }
