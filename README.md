@@ -109,7 +109,7 @@ React element of the application.
 
 ## Skipping Auto Cleanup & Helpers Initialisation
 
-Since Next.js is not designed to run in a JSDOM environment we need to **setup the default JSDOM** to allow a smoother testing experience:
+Since Next.js is not designed to run in a JSDOM environment we need to **setup the default JSDOM** to allow a smoother testing experience. By default, `next-page-tester` will:
 
 - Provide a `window.scrollTo` mock
 - Provide a `IntersectionObserver` mock
