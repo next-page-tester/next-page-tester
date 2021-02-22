@@ -111,15 +111,14 @@ React element of the application.
 
 Since Next.js is not designed to run in a JSDOM environment we need to **setup the default JSDOM** to allow a smoother testing experience. By default, `next-page-tester` will:
 
-- Provide a `window.scrollTo` mock
-- Provide a `IntersectionObserver` mock
+- Provide `window.scrollTo` and `IntersectionObserver` mocks
 - Cleanup DOM after each test
-- Isolate some React modules to preserve their identity between "server" and "client" execution
+- Setup jest to preserve the identity of some specific modules between "server" and "client" execution
 
-However, you may choose to skip the auto cleanup & helpers initialisation by setting the NEXT_PAGE_TESTER_SKIP_AUTO_INIT_TEST_HELPERS env variable to 'true'. You can do this with cross-env like so:
+However, you may choose to skip the auto cleanup & helpers initialisation by setting the NPT_SKIP_AUTO_SETUP env variable to 'true'. You can do this with cross-env like so:
 
 ```js
-cross-env NEXT_PAGE_TESTER_SKIP_AUTO_INIT_TEST_HELPERS=true jest
+cross-env NPT_SKIP_AUTO_SETUP=true jest
 ```
 
 ### Handling special imports

@@ -7,7 +7,7 @@ describe('test-helpers', () => {
     let getPage: any;
 
     beforeAll(() => {
-      process.env.NEXT_PAGE_TESTER_SKIP_AUTO_INIT_TEST_HELPERS = 'true';
+      process.env.NPT_SKIP_AUTO_SETUP = 'true';
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const npt = require('../../../src');
       getPage = npt.getPage;

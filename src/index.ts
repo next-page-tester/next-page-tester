@@ -6,7 +6,7 @@ import { initTestHelpers } from './pure';
 // then we'll automatically init test helpers and run cleanup afterEach test
 // this ensures that tests run in isolation from each other
 // if you don't like this then either import the `pure` module
-// or set the NEXT_PAGE_TESTER_SKIP_AUTO_INIT_TEST_HELPERS env variable to 'true'.
-if (!process.env.NEXT_PAGE_TESTER_SKIP_AUTO_INIT_TEST_HELPERS) {
+// or set the NPT_SKIP_AUTO_SETUP env variable to 'true'.
+if (!process.env.NPT_SKIP_AUTO_SETUP) {
   initTestHelpers();
 }
