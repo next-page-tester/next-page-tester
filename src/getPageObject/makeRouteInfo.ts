@@ -26,7 +26,6 @@ export function makeRouteInfo({
     params,
     query,
     pagePath,
-    paramsNumber: Object.keys(params).length,
     resolvedUrl:
       pathname +
       stringifyQueryString({

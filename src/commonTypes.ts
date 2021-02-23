@@ -60,7 +60,6 @@ export type RouteInfo = {
   route: string;
   // Page file path without extension
   pagePath: string;
-  paramsNumber: number;
   resolvedUrl: string;
 };
 
