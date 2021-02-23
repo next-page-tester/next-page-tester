@@ -73,21 +73,24 @@ export default function makeRouterMock({
   return SingletonRouter;
 }
 
+function getSingletonRouter() {
+  return SingletonRouter;
+}
+
+function createSingletonRouter() {
+  return Object.assign(getSingletonRouter, {
+    events: {
+      on: () => {},
+      off: () => {},
+      emit: () => {},
+    },
+  });
+}
+
 jest.mock('next/dist/next-server/lib/router/router', () => ({
   __esModule: true,
   ...jest.requireActual<Record<string, unknown>>(
     'next/dist/next-server/lib/router/router'
   ),
-  default: Object.assign(
-    function () {
-      return SingletonRouter;
-    },
-    {
-      events: {
-        on: () => {},
-        off: () => {},
-        emit: () => {},
-      },
-    }
-  ),
+  default: createSingletonRouter(),
 }));
