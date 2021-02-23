@@ -107,19 +107,18 @@ React element of the application.
 | **dotenvFile**                 | Relative path to a `.env` file holding [environment variables][next-docs-env-vars] | `string`                          | -               |
 | **wrapper**                    | Map of render functions. Useful to decorate component tree with mocked providers.  | `{ Page?: NextPage => NextPage }` | -               |
 
-## Set up your test environment
+## Skipping Auto Cleanup & Helpers Initialisation
 
-Since Next.js is not designed to run in a JSDOM environment we need to **setup the default JSDOM** to allow a smoother testing experience:
+Since Next.js is not designed to run in a JSDOM environment we need to **setup the default JSDOM** to allow a smoother testing experience. By default, `next-page-tester` will:
 
-- Provide a `window.scrollTo` mock
-- Provide a `IntersectionObserver` mock
+- Provide `window.scrollTo` and `IntersectionObserver` mocks
 - Cleanup DOM after each test
+- Setup jest to preserve the identity of some specific modules between "server" and "client" execution
 
-Run [`initTestHelpers`](/src/testHelpers.ts) in your global tests setup (in case of Jest It is `setupFilesAfterEnv` file):
+However, you may choose to skip the auto cleanup & helpers initialisation by setting the NPT_SKIP_AUTO_SETUP env variable to 'true'. You can do this with cross-env like so:
 
 ```js
-import { initTestHelpers } from 'next-page-tester';
-initTestHelpers();
+cross-env NPT_SKIP_AUTO_SETUP=true jest
 ```
 
 ### Handling special imports
@@ -212,6 +211,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/jansepke"><img src="https://avatars0.githubusercontent.com/u/625043?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jan Sepke</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Ajansepke" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/DavidOrchard"><img src="https://avatars2.githubusercontent.com/u/55760?v=4?s=100" width="100px;" alt=""/><br /><sub><b>DavidOrchard</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3ADavidOrchard" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/Doaa-Ismael"><img src="https://avatars.githubusercontent.com/u/24235866?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Doaa Ismael</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3ADoaa-Ismael" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/fracture91"><img src="https://avatars.githubusercontent.com/u/231859?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andrew Hurle</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Afracture91" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/massimeddu-sonic"><img src="https://avatars.githubusercontent.com/u/77116638?v=4?s=100" width="100px;" alt=""/><br /><sub><b>massimeddu-sonic</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Amassimeddu-sonic" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://jes.st/about"><img src="https://avatars.githubusercontent.com/u/612020?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jess Telford</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Ajesstelford" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
@@ -222,7 +225,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- prettier-ignore-start -->
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
-
+ 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- prettier-ignore-end -->
 

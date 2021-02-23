@@ -1,7 +1,4 @@
 import '@testing-library/jest-dom';
-// @NOTE Import path must finish with "./src" to correctly configure /dist tests
-import { initTestHelpers } from '../../src';
-initTestHelpers();
 
 afterEach(() => {
   // Clear all cookies
