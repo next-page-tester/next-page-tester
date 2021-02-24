@@ -4,7 +4,7 @@
 
 ### Bugfix
 
-- Fix catch all route resolving priority
+- Fix catch all route resolution priority
 
 ## 0.21.0
 
