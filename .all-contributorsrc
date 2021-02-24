@@ -129,6 +129,16 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "icyJoseph",
+      "name": "Joseph",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21013447?v=4",
+      "profile": "https://icyjoseph.dev/",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
