@@ -171,7 +171,7 @@ test('as a user I want to mock a module in client & server environment', async (
   const { render } = await getPage({
     route: '/page',
     nextRoot,
-    nonIsolatedModules: [path.join(nextRoot, 'api')],
+    nonIsolatedModules: [`${process.cwd()}/src/path/to/my/module`],
   });
 
   expect(stub).toHaveBeenCalledTimes(1); // this was executed in your data fetching method
