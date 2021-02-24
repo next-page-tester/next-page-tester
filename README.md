@@ -161,7 +161,7 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 
 ### How do I mock API calls in my data fetching methods?
 
-Because `next-page-tester` isolates modules between "client" and "server" context, mocks that are set in test (client context) wont apply in data fetching methods (server context).
+Because `next-page-tester` isolates modules between "client" and "server" context mocks that are created in test (client context) wont execute in data fetching methods (server context).
 To overcome that, we need to "taint" such modules to preserve identity between "client" and "server" context by passing them through the `nonIsolatedModules` option.
 
 ```ts
