@@ -215,6 +215,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/fracture91"><img src="https://avatars.githubusercontent.com/u/231859?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andrew Hurle</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Afracture91" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/massimeddu-sonic"><img src="https://avatars.githubusercontent.com/u/77116638?v=4?s=100" width="100px;" alt=""/><br /><sub><b>massimeddu-sonic</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Amassimeddu-sonic" title="Bug reports">🐛</a></td>
     <td align="center"><a href="http://jes.st/about"><img src="https://avatars.githubusercontent.com/u/612020?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jess Telford</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Ajesstelford" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://icyjoseph.dev/"><img src="https://avatars.githubusercontent.com/u/21013447?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Joseph</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3AicyJoseph" title="Bug reports">🐛</a> <a href="https://github.com/toomuchdesign/next-page-tester/commits?author=icyJoseph" title="Code">💻</a></td>
   </tr>
 </table>
 
