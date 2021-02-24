@@ -39,8 +39,9 @@ export function loadExistingPageFiles({
   return {
     client: loadPageFiles({ absolutePagePath, options }),
     server: executeAsIfOnServerSync(() =>
-      executeWithFreshModules(() =>
-        loadPageFiles({ absolutePagePath, options })
+      executeWithFreshModules(
+        () => loadPageFiles({ absolutePagePath, options }),
+        options
       )
     ),
   };
@@ -56,8 +57,9 @@ export function loadErrorPageFiles({
   return {
     client: loadPageFiles({ absolutePagePath, options }),
     server: executeAsIfOnServerSync(() =>
-      executeWithFreshModules(() =>
-        loadPageFiles({ absolutePagePath, options })
+      executeWithFreshModules(
+        () => loadPageFiles({ absolutePagePath, options }),
+        options
       )
     ),
   };

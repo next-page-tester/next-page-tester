@@ -47,6 +47,7 @@ export default async function getPage({
   useDocument = false,
   dotenvFile,
   wrapper,
+  nonIsolatedModules = [],
 }: Options): Promise<
   { page: React.ReactElement } & ReturnType<typeof makeRenderMethods>
 > {
@@ -60,6 +61,7 @@ export default async function getPage({
     useDocument,
     dotenvFile,
     wrapper,
+    nonIsolatedModules,
   };
 
   validateOptions(optionsWithDefaults);

@@ -1,6 +1,6 @@
 import { cleanupDOM } from './makeRenderMethods';
 import { cleanupEnvVars } from './setEnvVars';
-import { nonIsolatedModules } from './utils';
+import { unIsolatePredefinedJestModules } from './utils';
 
 function isJSDOMEnvironment() {
   return navigator && navigator.userAgent.includes('jsdom');
@@ -31,14 +31,7 @@ export function initTestHelpers() {
   // We are intentionally only targeting jest here for it to work with jest.isolatedModules
   // If user has a different test runner we handle it in src/utils where we fallback to stealthy-require
   if (typeof jest !== 'undefined') {
-    beforeAll(() => {
-      for (const moduleName of nonIsolatedModules) {
-        // @NOTE for some reason Jest needs us to pre-import the modules
-        // we want to require with jest.requireActual
-        require(moduleName);
-        jest.mock(moduleName, () => jest.requireActual(moduleName));
-      }
-    });
+    unIsolatePredefinedJestModules();
   }
 }
 
