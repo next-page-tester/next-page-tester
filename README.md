@@ -106,6 +106,7 @@ React element of the application.
 | **nextRoot**                   | Absolute path to Next.js root folder                                               | `string`                          | _auto detected_ |
 | **dotenvFile**                 | Relative path to a `.env` file holding [environment variables][next-docs-env-vars] | `string`                          | -               |
 | **wrapper**                    | Map of render functions. Useful to decorate component tree with mocked providers.  | `{ Page?: NextPage => NextPage }` | -               |
+| **nonIsolatedModules**         | List of modules that should preserve identity between client and server context.   | `string[]`                        | []              |
 
 ## Skipping Auto Cleanup & Helpers Initialisation
 
@@ -157,6 +158,25 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 | v0.8.0 +         | v10.X.X |
 
 ## FAQ
+
+### How do I mock API calls in my data fetching methods?
+
+Because `next-page-tester` isolates modules between "client" and "server" context, mocks that are set in test (client context) wont apply in data fetching methods (server context).
+To overcome that, we need to "taint" such modules to preserve identity between "client" and "server" context by passing them through the `nonIsolatedModules` option.
+
+```ts
+test('as a user I want to mock a module in client & server environment', async () => {
+  const stub = jest.spyOn(api, 'getData').mockReturnValue(Promise.resolve('data'))
+
+  const { render } = await getPage({
+    route: '/page',
+    nextRoot,
+    nonIsolatedModules: [path.join(nextRoot, 'api')],
+  });
+
+  expect(stub).toHaveBeenCalledTimes(1); // this was executed in your data fetching method
+}
+```
 
 ### How do I make cookies available in Next.js data fetching methods?
 
