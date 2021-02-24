@@ -12,7 +12,7 @@ import type {
   NextComponentType,
   RenderPage,
 } from 'next/dist/next-server/lib/utils';
-import { APP_PATH, NEXT_ROOT_ELEMENT_ID } from '../constants';
+import { APP_PATH } from '../constants';
 import { renderToString } from 'react-dom/server';
 import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
 import type { DocumentProps } from 'next/document';
@@ -57,7 +57,6 @@ export default async function serverRenderDocument({
   wrapWithRouter: (children: JSX.Element) => JSX.Element;
 }): Promise<JSX.Element> {
   return executeAsIfOnServer(async () => {
-    const { useDocument } = options;
     const {
       documentFile: { default: DocumentComponent },
       appFile: { default: AppComponent },
@@ -67,20 +66,6 @@ export default async function serverRenderDocument({
     const render = (App: NextApp, Page: NextPage) => {
       return renderEnhancedApp({ App, Page, options, pageProps });
     };
-
-    // Return an empty dummy document if useDocument is not enabled
-    if (!useDocument) {
-      return (
-        <html>
-          <head></head>
-          <body>
-            <div id={NEXT_ROOT_ELEMENT_ID}>
-              {wrapWithRouter(render(AppComponent, PageComponent))}
-            </div>
-          </body>
-        </html>
-      );
-    }
 
     const renderPage: RenderPage = (options = {}) => {
       const {

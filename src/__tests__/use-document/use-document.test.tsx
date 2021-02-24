@@ -5,6 +5,8 @@ import path from 'path';
 import { getPage } from '../../../src';
 import { expectDOMElementsToMatch } from '../__utils__';
 import CustomDocumentWithGIP_Page from './__fixtures__/custom-document-with-gip/pages/page';
+import DefaultDocumentWithPageHeadTitle from './__fixtures__/default-document-with-page-head-title/pages/page';
+
 import CustomApp from './__fixtures__/custom-document-with-gip/pages/_app';
 import { getMetaTagsContentByName } from '../__utils__/_document';
 
@@ -48,19 +50,62 @@ describe('_document support', () => {
     });
   });
 
-  describe('useCustomDocument === false', () => {
-    it('renders default empty document', async () => {
+  describe('useDocument === false', () => {
+    it('render default document with page head title', async () => {
       const { serverRender } = await getPage({
-        nextRoot: __dirname + '/__fixtures__/custom-document-with-gip',
+        nextRoot: path.join(
+          __dirname,
+          '__fixtures__',
+          'default-document-with-page-head-title'
+        ),
         route: '/page',
-        useDocument: false,
       });
       serverRender();
 
       const actual = document.documentElement;
       const { container: expected } = render(
         <>
-          <head></head>
+          <head>
+            <meta name="viewport" content="width=device-width" />
+            <meta charSet="utf-8" />
+            <title>Server Side Title</title>
+            <meta name="next-head-count" content="3" />
+            <noscript data-n-css=""></noscript>
+          </head>
+          <body>
+            <div id="__next">
+              <DefaultDocumentWithPageHeadTitle />
+            </div>
+            <script
+              id="__NEXT_DATA__"
+              type="application/json"
+            >{`{"page":"/page","query":{},"buildId":"next-page-tester","props":{}}`}</script>
+          </body>
+        </>,
+        { container: document.createElement('html') }
+      );
+
+      expectDOMElementsToMatch(actual, expected);
+      expect(document.title).toEqual('Server Side Title');
+    });
+
+    it('renders default document', async () => {
+      const { serverRender } = await getPage({
+        nextRoot: __dirname + '/__fixtures__/custom-document-with-gip',
+        route: '/page',
+      });
+      serverRender();
+
+      const actual = document.documentElement;
+      const { container: expected } = render(
+        <>
+          <head>
+            <meta name="viewport" content="width=device-width" />
+            <meta charSet="utf-8" />
+            <meta name="description" content="Page description" />
+            <meta name="next-head-count" content="3" />
+            <noscript data-n-css=""></noscript>
+          </head>
           <body>
             <div id="__next">
               <CustomApp
@@ -68,6 +113,10 @@ describe('_document support', () => {
                 pageProps={{}}
               />
             </div>
+            <script
+              id="__NEXT_DATA__"
+              type="application/json"
+            >{`{"page":"/page","query":{},"buildId":"next-page-tester","props":{}}`}</script>
           </body>
         </>,
         { container: document.createElement('html') }
