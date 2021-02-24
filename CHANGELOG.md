@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.21.1
+
+### Bugfix
+
+- Fix catch all route resolving priority
+
 ## 0.21.0
 
 ### Breaking Changes
