@@ -47,6 +47,7 @@ export default async function getPage({
   useDocument = false,
   dotenvFile,
   wrapper,
+  sharedModules = [],
 }: Options): Promise<
   { page: React.ReactElement } & ReturnType<typeof makeRenderMethods>
 > {
@@ -60,6 +61,7 @@ export default async function getPage({
     useDocument,
     dotenvFile,
     wrapper,
+    sharedModules,
   };
 
   validateOptions(optionsWithDefaults);
