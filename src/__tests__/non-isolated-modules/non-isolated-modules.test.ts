@@ -16,7 +16,7 @@ describe('non-isolated-modules', () => {
     const { render } = await getPage({
       route: '/page',
       nextRoot,
-      nonIsolatedModules: [path.join(nextRoot, 'api')],
+      sharedModules: [path.join(nextRoot, 'api')],
     });
 
     expect(stub).toHaveBeenCalledTimes(1);

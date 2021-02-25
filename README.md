@@ -106,7 +106,7 @@ React element of the application.
 | **nextRoot**                   | Absolute path to Next.js root folder                                               | `string`                          | _auto detected_ |
 | **dotenvFile**                 | Relative path to a `.env` file holding [environment variables][next-docs-env-vars] | `string`                          | -               |
 | **wrapper**                    | Map of render functions. Useful to decorate component tree with mocked providers.  | `{ Page?: NextPage => NextPage }` | -               |
-| **nonIsolatedModules**         | List of modules that should preserve identity between client and server context.   | `string[]`                        | []              |
+| **sharedModules**              | List of modules that should preserve identity between client and server context.   | `string[]`                        | []              |
 
 ## Skipping Auto Cleanup & Helpers Initialisation
 
@@ -161,8 +161,8 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 
 ### How do I mock API calls in my data fetching methods?
 
-Because `next-page-tester` isolates modules between "client" and "server" context mocks that are created in test (client context) wont execute in data fetching methods (server context).
-To overcome that, we need to "taint" such modules to preserve identity between "client" and "server" context by passing them through the `nonIsolatedModules` option.
+Since `next-page-tester` isolates modules between "client" and "server" context mocks that are created in test (client context) won't execute in data fetching methods (server context).
+To overcome that, we need to "taint" such modules to (preserve/share) their identity between "client" and "server" context by passing them through the `sharedModules` option.
 
 ```ts
 test('as a user I want to mock a module in client & server environment', async () => {
@@ -171,7 +171,7 @@ test('as a user I want to mock a module in client & server environment', async (
   const { render } = await getPage({
     route: '/page',
     nextRoot,
-    nonIsolatedModules: [`${process.cwd()}/src/path/to/my/module`],
+    sharedModules: [`${process.cwd()}/src/path/to/my/module`],
   });
 
   expect(stub).toHaveBeenCalledTimes(1); // this was executed in your data fetching method

@@ -21,7 +21,7 @@ export type ResEnhancer = (res: Res) => Res;
 
 export type Options = {
   route: string;
-  nonIsolatedModules?: string[];
+  sharedModules?: string[];
   nextRoot?: string;
   req?: ReqEnhancer;
   res?: ResEnhancer;

@@ -1,6 +1,6 @@
 import { cleanupDOM } from './makeRenderMethods';
 import { cleanupEnvVars } from './setEnvVars';
-import { unIsolatePredefinedJestModules } from './utils';
+import { preservePredefinedSharedModulesIdentity } from './utils';
 
 function isJSDOMEnvironment() {
   return navigator && navigator.userAgent.includes('jsdom');
@@ -31,7 +31,7 @@ export function initTestHelpers() {
   // We are intentionally only targeting jest here for it to work with jest.isolatedModules
   // If user has a different test runner we handle it in src/utils where we fallback to stealthy-require
   if (typeof jest !== 'undefined') {
-    unIsolatePredefinedJestModules();
+    preservePredefinedSharedModulesIdentity();
   }
 }
 

@@ -90,16 +90,16 @@ export function useMountedState(): () => boolean {
 }
 
 // @NOTE: It is crucial that these modules preserve their identity between client and server
-// for document rendering to work correctly. For things to kick in early enough we un isolate
-// them in testHelpers.
-const predefinedNonIsolatedModules = [
+// for document rendering to work correctly. For things to kick in early enough in the process we
+// mark them as such in testHelpers.
+const predefinedSharedModules = [
   'react',
   'next/dist/next-server/lib/head-manager-context',
   'next/dist/next-server/lib/router-context',
   'next/dist/next-server/lib/runtime-config',
 ];
 
-function unIsolateJestModules(modules: string[]) {
+function preserveJestSharedModulesIdentity(modules: string[]) {
   for (const moduleName of modules) {
     // @NOTE for some reason Jest needs us to pre-import the modules
     // we want to require with jest.requireActual
@@ -108,19 +108,19 @@ function unIsolateJestModules(modules: string[]) {
   }
 }
 
-export function unIsolatePredefinedJestModules() {
-  unIsolateJestModules(predefinedNonIsolatedModules);
+export function preservePredefinedSharedModulesIdentity() {
+  preserveJestSharedModulesIdentity(predefinedSharedModules);
 }
 
 export function executeWithFreshModules<T>(
   f: () => T,
-  { nonIsolatedModules }: { nonIsolatedModules: string[] }
+  { sharedModules }: { sharedModules: string[] }
 ): T {
   /* istanbul ignore else */
   if (typeof jest !== 'undefined') {
     let result: T;
 
-    unIsolateJestModules(nonIsolatedModules);
+    preserveJestSharedModulesIdentity(sharedModules);
 
     jest.isolateModules(() => {
       result = f();
@@ -135,8 +135,8 @@ export function executeWithFreshModules<T>(
       f,
       () => {
         for (const moduleName of [
-          ...predefinedNonIsolatedModules,
-          ...nonIsolatedModules,
+          ...predefinedSharedModules,
+          ...sharedModules,
         ]) {
           require(moduleName);
         }
