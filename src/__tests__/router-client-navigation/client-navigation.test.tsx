@@ -10,13 +10,13 @@ const nextRoot = __dirname + '/__fixtures__';
 
 describe('Client side navigation', () => {
   describe.each`
-    title                                             | linkText
-    ${'using Link component (with string)'}           | ${'Go to B with Link (with string)'}
-    ${'using Link component (with object)'}           | ${'Go to B with Link (with object)'}
-    ${'programmatically (next/router - with string)'} | ${'Go to B programmatically (next/router - with string)'}
-    ${'programmatically (next/router - with object)'} | ${'Go to B programmatically (next/router - with object)'}
-    ${'programmatically (useRouter - with string)'}   | ${'Go to B programmatically (useRouter - with string)'}
-    ${'programmatically (useRouter - with object)'}   | ${'Go to B programmatically (useRouter - with object)'}
+    title                                                 | linkText
+    ${'using Link component (with string)'}               | ${'Go to B with Link (with string)'}
+    ${'using Link component (with object)'}               | ${'Go to B with Link (with object)'}
+    ${'programmatically (SingletonRouter - with string)'} | ${'Go to B programmatically (SingletonRouter - with string)'}
+    ${'programmatically (SingletonRouter - with object)'} | ${'Go to B programmatically (SingletonRouter - with object)'}
+    ${'programmatically (useRouter - with string)'}       | ${'Go to B programmatically (useRouter - with string)'}
+    ${'programmatically (useRouter - with object)'}       | ${'Go to B programmatically (useRouter - with object)'}
   `('$title', ({ linkText }) => {
     it('navigates between pages', async () => {
       const { render } = await getPage({

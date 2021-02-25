@@ -23,10 +23,10 @@ export const PageA = ({ href, hrefObject }: Props) => {
       </Link>
 
       <a onClick={() => Router.replace(href)}>
-        Go to B programmatically (next/router - with string)
+        Go to B programmatically (SingletonRouter - with string)
       </a>
       <a onClick={() => Router.replace(hrefObject)}>
-        Go to B programmatically (next/router - with object)
+        Go to B programmatically (SingletonRouter - with object)
       </a>
 
       <a onClick={() => replace(href)}>
