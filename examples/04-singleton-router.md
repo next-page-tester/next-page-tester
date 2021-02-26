@@ -1,6 +1,6 @@
 ## Next page tester & SingletonRouter (next/router)
 
-Next.JS exports `SingletonRouter` from `next/router` which can be user from anywhere in your application. Since default exports are hard to mock universally, some work is needed from your side for everything to work correctly. Here is an example using `jest` but simillar approach could be taken in any test runner.
+Next.JS exports `SingletonRouter` from `next/router` which can be used from anywhere in your application. Since default exports are hard to mock universally, some work is needed from your side for everything to work correctly. Here is an example using `jest` but simillar approach could be taken in any test runner.
 
 ```js
 import { getPage } from 'next-page-tester';
