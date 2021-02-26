@@ -1,8 +1,9 @@
-import type { NextRouter } from 'next/router';
+import { NextRouter } from 'next/router';
 import { removeFileExtension, parseRoute } from '../utils';
 import type { ExtendedOptions, PageObject } from '../commonTypes';
 
 type NextPushArgs = Parameters<NextRouter['push']>;
+
 export type PushHandler = (
   url: NextPushArgs[0],
   as: NextPushArgs[1],
