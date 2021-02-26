@@ -1,5 +1,5 @@
 import React from 'react';
-import { PropsPrinter, sleep } from '../../../../__utils__';
+import { fetcher, PropsPrinter, sleep } from '../../../../__utils__';
 
 export default function ssr_$id$(props) {
   return (
@@ -12,6 +12,7 @@ export default function ssr_$id$(props) {
 
 export async function getServerSideProps(ctx) {
   await sleep(1);
+  await fetcher('resource');
   return {
     props: ctx,
   };

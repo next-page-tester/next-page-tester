@@ -10,3 +10,4 @@ export {
 export { expectToBeDefault404Page } from './expectToBeDefault404Page';
 export { renderWithinNextRoot } from './renderWithinNextRoot';
 export { silenceConsoleError } from './silenceConsoleError';
+export { fetcher } from './fetcher';
