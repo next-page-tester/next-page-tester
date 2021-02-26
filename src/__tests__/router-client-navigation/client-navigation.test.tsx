@@ -31,11 +31,7 @@ describe('Client side navigation', () => {
       const { render } = await getPage({
         nextRoot,
         route: '/a',
-        router: (router) => {
-          SingletonRouter.push = router.push;
-          SingletonRouter.replace = router.replace;
-          return router;
-        },
+        router: (router) => Object.assign(SingletonRouter, router),
       });
       const { nextRoot: actual } = render();
       screen.getByText('This is page A');
@@ -66,11 +62,7 @@ describe('Client side navigation', () => {
       const { render } = await getPage({
         nextRoot,
         route: `/gip/a`,
-        router: (router) => {
-          SingletonRouter.push = router.push;
-          SingletonRouter.replace = router.replace;
-          return router;
-        },
+        router: (router) => Object.assign(SingletonRouter, router),
       });
       render();
 
@@ -100,11 +92,7 @@ describe('Client side navigation', () => {
       const { render } = await getPage({
         nextRoot,
         route: `/ssr/a`,
-        router: (router) => {
-          SingletonRouter.push = router.push;
-          SingletonRouter.replace = router.replace;
-          return router;
-        },
+        router: (router) => Object.assign(SingletonRouter, router),
       });
       render();
 
