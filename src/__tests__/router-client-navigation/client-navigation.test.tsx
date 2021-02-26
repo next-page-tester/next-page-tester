@@ -5,6 +5,15 @@ import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import PageB from './__fixtures__/pages/b';
 import userEvent from '@testing-library/user-event';
 import type { NextRouter } from 'next/router';
+import SingletonRouter from 'next/router';
+
+jest.mock('next/router', () => {
+  return {
+    __esModule: true,
+    ...jest.requireActual<Record<string, unknown>>('next/router'),
+    default: {},
+  };
+});
 
 const nextRoot = __dirname + '/__fixtures__';
 
@@ -22,6 +31,11 @@ describe('Client side navigation', () => {
       const { render } = await getPage({
         nextRoot,
         route: '/a',
+        router: (router) => {
+          SingletonRouter.push = router.push;
+          SingletonRouter.replace = router.replace;
+          return router;
+        },
       });
       const { nextRoot: actual } = render();
       screen.getByText('This is page A');
@@ -52,6 +66,11 @@ describe('Client side navigation', () => {
       const { render } = await getPage({
         nextRoot,
         route: `/gip/a`,
+        router: (router) => {
+          SingletonRouter.push = router.push;
+          SingletonRouter.replace = router.replace;
+          return router;
+        },
       });
       render();
 
@@ -81,6 +100,11 @@ describe('Client side navigation', () => {
       const { render } = await getPage({
         nextRoot,
         route: `/ssr/a`,
+        router: (router) => {
+          SingletonRouter.push = router.push;
+          SingletonRouter.replace = router.replace;
+          return router;
+        },
       });
       render();
 
