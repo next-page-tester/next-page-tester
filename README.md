@@ -27,6 +27,15 @@ describe('Blog page', () => {
 });
 ```
 
+## Table of contents
+
+- [What](#what)
+- [API](#api)
+- [Options](#options)
+- [Setting up your dev environment](#setting-up-your-dev-environment)
+- [Examples](#examples)
+- [Faq](#faq)
+
 ## What
 
 The idea behind this library is to reproduce as closely as possible the way Next.js works without spinning up servers, and render the output in a local JSDOM environment.
