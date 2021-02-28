@@ -27,6 +27,15 @@ describe('Blog page', () => {
 });
 ```
 
+## Table of contents
+
+- [What](#what)
+- [API](#api)
+- [Options](#options)
+- [Setting up your dev environment](#setting-up-your-dev-environment)
+- [Examples](#examples)
+- [FAQ](#faq)
+
 ## What
 
 The idea behind this library is to reproduce as closely as possible the way Next.js works without spinning up servers, and render the output in a local JSDOM environment.
@@ -108,7 +117,21 @@ React element of the application.
 | **wrapper**                    | Map of render functions. Useful to decorate component tree with mocked providers.  | `{ Page?: NextPage => NextPage }` | -               |
 | **sharedModules**              | List of modules that should preserve identity between client and server context.   | `string[]`                        | []              |
 
-## Skipping Auto Cleanup & Helpers Initialisation
+## Setting up your dev environment
+
+### Handling special imports
+
+If your pages/components import **file types not natively handled by Node.js** (like style sheets, images, `.svg`, ...), you should configure your testing environment to properly process them. Eg, in case of Jest you might want configuring some [`moduleNameMapper`](https://jestjs.io/docs/en/configuration#modulenamemapper-objectstring-string--arraystring).
+
+### Optional: patch Jest
+
+Until **Jest v27** is published, you might need to patch `jest` in order to load modules with [proper server/client environments](#73). _Don't do this until you actually encounter issues_.
+
+1. Install [`patch-package`](https://www.npmjs.com/package/patch-package) and follow its setup instructions
+2. If using the last version of Jest (`26.6.3`), copy [this `patches` folder ](patches) to your project root. Else update manually `node_modules/jest-runtime/build/index.js` file and replicate [this commit](https://github.com/facebook/jest/commit/e5a84d92fc906a5bb140f9753b644319cea095da#diff-c0d5b59e96fdc7ffc98405e8afb46d525505bc7b1c24916b5c8482de5a186c00)
+3. Run `npx patch-package jest-runtime` or `yarn patch-package jest-runtime`
+
+### Skipping Auto Cleanup & Helpers Initialisation
 
 Since Next.js is not designed to run in a JSDOM environment we need to **setup the default JSDOM** to allow a smoother testing experience. By default, `next-page-tester` will:
 
@@ -121,18 +144,6 @@ However, you may choose to skip the auto cleanup & helpers initialisation by set
 ```js
 cross-env NPT_SKIP_AUTO_SETUP=true jest
 ```
-
-### Handling special imports
-
-If your pages/components import **file types not natively handled by Node.js** (like style sheets, images, `.svg`, ...), you should configure your testing environment to properly process them. Eg, in case of Jest you might want configuring some [`moduleNameMapper`](https://jestjs.io/docs/en/configuration#modulenamemapper-objectstring-string--arraystring).
-
-### Optional: patch Jest
-
-Until **Jest v27** is published, you might need to patch `jest` in order to load modules with [proper server/client environments](#73). _Don't do this until you actually encounter issues_.
-
-1. Install [`patch-package`](https://www.npmjs.com/package/patch-package) and follow its setup instructions
-2. Manually update `node_modules/jest-runtime/build/index.js` file and replicate [this commit](https://github.com/facebook/jest/commit/e5a84d92fc906a5bb140f9753b644319cea095da#diff-c0d5b59e96fdc7ffc98405e8afb46d525505bc7b1c24916b5c8482de5a186c00)
-3. Run `npx patch-package jest-runtime` or `yarn patch-package jest-runtime`
 
 ## Examples
 
@@ -246,7 +257,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- prettier-ignore-start -->
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
- 
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- prettier-ignore-end -->
 
