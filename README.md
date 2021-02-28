@@ -34,7 +34,7 @@ describe('Blog page', () => {
 - [Options](#options)
 - [Setting up your dev environment](#setting-up-your-dev-environment)
 - [Examples](#examples)
-- [Faq](#faq)
+- [FAQ](#faq)
 
 ## What
 
