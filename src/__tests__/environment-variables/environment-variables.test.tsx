@@ -24,6 +24,8 @@ describe('Environment variables', () => {
       const { container: expected } = renderWithinNextRoot(
         <Page
           envVarsMock={{
+            NODE_ENV: 'test',
+
             FROM_RUNTIME: 'FROM_RUNTIME',
             NEXT_PUBLIC_FROM_RUNTIME: 'NEXT_PUBLIC_FROM_RUNTIME',
 
@@ -54,6 +56,7 @@ describe('Environment variables', () => {
         const { container: expected } = renderWithinNextRoot(
           <EnvVarsCleanupPage
             envVarsMock={{
+              NODE_ENV: 'test',
               FROM_RUNTIME: 'FROM_RUNTIME',
               NEXT_PUBLIC_FROM_RUNTIME: 'NEXT_PUBLIC_FROM_RUNTIME',
               NAME_CLASH_RUNTIME_VS_CONFIG: 'FROM_RUNTIME',
@@ -78,6 +81,7 @@ describe('Environment variables', () => {
       const { container: expected } = renderWithinNextRoot(
         <Page
           envVarsMock={{
+            NODE_ENV: 'test',
             NEXT_PUBLIC_FROM_RUNTIME: 'NEXT_PUBLIC_FROM_RUNTIME',
             FROM_CONFIG: 'FROM_CONFIG',
             NEXT_PUBLIC_FROM_CONFIG: 'NEXT_PUBLIC_FROM_CONFIG',
@@ -101,6 +105,7 @@ describe('Environment variables', () => {
         const { container: expected } = renderWithinNextRoot(
           <EnvVarsCleanupPage
             envVarsMock={{
+              NODE_ENV: 'test',
               NEXT_PUBLIC_FROM_RUNTIME: 'NEXT_PUBLIC_FROM_RUNTIME',
             }}
           />

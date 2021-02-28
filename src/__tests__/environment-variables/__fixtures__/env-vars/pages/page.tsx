@@ -7,6 +7,7 @@ export default function EnvironmentVariablesPage({
   envVarsMock: { [key: string]: unknown };
 }) {
   const {
+    NODE_ENV,
     FROM_RUNTIME,
     NEXT_PUBLIC_FROM_RUNTIME,
     FROM_CONFIG,
@@ -20,6 +21,7 @@ export default function EnvironmentVariablesPage({
   } = process.env;
 
   const envVars = {
+    NODE_ENV,
     FROM_RUNTIME,
     NEXT_PUBLIC_FROM_RUNTIME,
     FROM_CONFIG,

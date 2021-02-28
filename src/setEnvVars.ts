@@ -11,14 +11,21 @@ type EnvVars = Record<string, string | undefined>;
 
 type ScopedEnvVars = Record<RuntimeEnvironment, EnvVars>;
 
+const CLIENT_PASSTHROUGH_VARS = new Set(['NODE_ENV']);
+
 function scopeEnvVarsByEnvironment(vars: EnvVars): ScopedEnvVars {
   const serverVars = { ...vars };
   const clientVars = { ...vars };
   for (const varName in vars) {
+    if (CLIENT_PASSTHROUGH_VARS.has(varName)) {
+      continue;
+    }
+
     if (!varName.startsWith('NEXT_PUBLIC_')) {
       delete clientVars[varName];
     }
   }
+
   return { [SERVER]: serverVars, [CLIENT]: clientVars };
 }
 
