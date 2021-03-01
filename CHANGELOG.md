@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.22.0
+
+### New Features
+
+- Introduce `sharedModules` option to enable server side mocking
+
+### Bugfix
+
+- Pass-through `NODE_ENV` to client render context
+
 ## 0.21.1
 
 ### Bugfix
