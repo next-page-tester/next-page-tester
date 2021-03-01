@@ -55,7 +55,7 @@
     "@types/find-root": "^1.1.2",
     "@types/jest": "^26.0.19",
     "@types/lodash": "^4.14.168",
-    "@types/node": "^14.14.13",
+    "@types/node": "^14.14.31",
     "@types/normalize-path": "^3.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
@@ -99,7 +99,7 @@
     "dotenv-expand": "^5.1.0",
     "fast-glob": "^3.2.4",
     "find-root": "^1.1.0",
-    "node-mocks-http": "^1.9.0",
+    "node-mocks-http": "^1.10.1",
     "normalize-path": "^3.0.0",
     "stealthy-require": "^1.1.1"
   },
