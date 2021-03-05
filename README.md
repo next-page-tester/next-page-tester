@@ -128,8 +128,8 @@ If your pages/components import **file types not natively handled by Node.js** (
 Until **Jest v27** is published, you might need to patch `jest` in order to load modules with [proper server/client environments](#73). _Don't do this until you actually encounter issues_.
 
 1. Install [`patch-package`](https://www.npmjs.com/package/patch-package) and follow its setup instructions
-2. If using the last version of Jest (`26.6.3`), copy [this `patches` folder ](patches) to your project root. Else update manually `node_modules/jest-runtime/build/index.js` file and replicate [this commit](https://github.com/facebook/jest/commit/e5a84d92fc906a5bb140f9753b644319cea095da#diff-c0d5b59e96fdc7ffc98405e8afb46d525505bc7b1c24916b5c8482de5a186c00)
-3. Run `npx patch-package jest-runtime` or `yarn patch-package jest-runtime`
+2. If using the last version of `jest` (`26.6.3`), copy [this `patches` folder ](patches) to your project root and run `npx patch-package` or `yarn patch-package`.
+3. If using `jest < v26.6.3` update manually `node_modules/jest-runtime/build/index.js` file replicating [this commit](https://github.com/facebook/jest/commit/e5a84d92fc906a5bb140f9753b644319cea095da#diff-c0d5b59e96fdc7ffc98405e8afb46d525505bc7b1c24916b5c8482de5a186c00) and run `npx patch-package jest-runtime` or `yarn patch-package jest-runtime`
 
 ### Skipping Auto Cleanup & Helpers Initialisation
 
@@ -139,7 +139,7 @@ Since Next.js is not designed to run in a JSDOM environment we need to **setup t
 - Cleanup DOM after each test
 - Setup jest to preserve the identity of some specific modules between "server" and "client" execution
 
-However, you may choose to skip the auto cleanup & helpers initialisation by setting the NPT_SKIP_AUTO_SETUP env variable to 'true'. You can do this with cross-env like so:
+However, you may choose to skip the auto cleanup & helpers initialisation by setting the `NPT_SKIP_AUTO_SETUP` env variable to `true`. You can do this with [`cross-env`](https://www.npmjs.com/package/cross-env) like so:
 
 ```js
 cross-env NPT_SKIP_AUTO_SETUP=true jest
@@ -172,7 +172,12 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 
 ### How do I mock API calls in my data fetching methods?
 
-Since `next-page-tester` isolates modules between "client" and "server" context mocks that are created in test (client context) won't execute in data fetching methods (server context).
+The first suggested way to mock network requests, consists of **mocking at network layer** with libraries like [`Mock service worker`](https://github.com/mswjs/msw) and [`Mirage JS`](https://github.com/miragejs/miragejs).
+
+Another viable approach might consist of **mocking the global `fetch` object** with libraries like [`fetch-mock`](https://www.npmjs.com/package/fetch-mock).
+
+In case you wanted a more traditional approach involving mocking the user land modules responsible for fetching data, you need to consider an extra step: since `next-page-tester` isolates modules between "client" and "server" rendering, those mocks that are created in tests (client context) won't execute in server context (eg. data fetching methods).
+
 To overcome that, we need to "taint" such modules to (preserve/share) their identity between "client" and "server" context by passing them through the `sharedModules` option.
 
 ```ts
