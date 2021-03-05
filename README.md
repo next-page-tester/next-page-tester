@@ -215,6 +215,10 @@ Next.js `Link` component invokes `window.scrollTo` on click which is not impleme
 
 This warning means that your page renders differently between server and browser. This can be an expected behavior or signal a bug in your code.
 
+### Error: ReferenceError: fetch is not defined
+
+This warning means that your application during rendering process performs some network requests which have not been mocked. You should find them out and mock as needed.
+
 ## Todo's
 
 - Consider reusing Next.js code parts (not only types)
