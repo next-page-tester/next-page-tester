@@ -40,6 +40,9 @@ function makeDefaultRouterMock({
       emit: () => {},
     },
     isFallback: false,
+    isLocaleDomain: false,
+    isReady: true,
+    isPreview: false,
   };
 
   return routerMock;

@@ -163,10 +163,11 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 
 `next-page-tester` focuses on supporting only the last major version of Next.js:
 
-| next-page-tester | next.js |
-| ---------------- | ------- |
-| v0.1.0 - v0.7.0  | v9.X.X  |
-| v0.8.0 +         | v10.X.X |
+| next-page-tester  | next.js            |
+| ----------------- | ------------------ |
+| v0.1.0 -> v0.7.0  | v9.X.X             |
+| v0.8.0 -> v0.22.0 | v10.0.0 -> v10.0.7 |
+| v0.23.0 +         | v10.0.8 +          |
 
 ## FAQ
 
