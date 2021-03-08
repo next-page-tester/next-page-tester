@@ -67,7 +67,7 @@ export default async function getPage({
   validateOptions(optionsWithDefaults);
 
   loadBaseEnvironment({ nextRoot, dotenvFile });
-  loadNextConfig({ nextRoot });
+  await loadNextConfig({ nextRoot });
   setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.CLIENT });
   setEnvVars({ runtimeEnv: RuntimeEnvironment.CLIENT });
 
