@@ -3,8 +3,8 @@ import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
 import { InternalError } from './_error';
 
 let nextConfig: NextConfig;
-export function loadNextConfig({ nextRoot }: { nextRoot: string }) {
-  nextConfig = loadConfig(PHASE_DEVELOPMENT_SERVER, nextRoot);
+export async function loadNextConfig({ nextRoot }: { nextRoot: string }) {
+  nextConfig = await loadConfig(PHASE_DEVELOPMENT_SERVER, nextRoot);
 }
 
 /*
