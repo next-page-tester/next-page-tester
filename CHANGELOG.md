@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.23.0
+
+### Breaking Changes
+
+- Support Next v10.0.8+
+
+### Bugfix
+
+- Fix async `loadConfig`
+
 ## 0.22.0
 
 ### New Features
