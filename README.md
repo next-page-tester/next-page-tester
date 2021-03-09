@@ -161,7 +161,7 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 
 ### Next.js versions support
 
-`next-page-tester` focuses on supporting only the last major version of Next.js:
+`next-page-tester` focuses on supporting only the last version of Next.js:
 
 | next-page-tester  | next.js            |
 | ----------------- | ------------------ |
@@ -258,6 +258,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://jes.st/about"><img src="https://avatars.githubusercontent.com/u/612020?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jess Telford</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Ajesstelford" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://icyjoseph.dev/"><img src="https://avatars.githubusercontent.com/u/21013447?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Joseph</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3AicyJoseph" title="Bug reports">🐛</a> <a href="https://github.com/toomuchdesign/next-page-tester/commits?author=icyJoseph" title="Code">💻</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://www.geritol.tech/"><img src="https://avatars.githubusercontent.com/u/5496681?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Gergo Tolnai</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Ageritol" title="Bug reports">🐛</a> <a href="https://github.com/toomuchdesign/next-page-tester/commits?author=geritol" title="Code">💻</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-restore -->
@@ -267,7 +270,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- prettier-ignore-start -->
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
-
+ 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- prettier-ignore-end -->
 
