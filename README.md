@@ -161,7 +161,7 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 
 ### Next.js versions support
 
-`next-page-tester` focuses on supporting only the last major version of Next.js:
+`next-page-tester` focuses on supporting only the last version of Next.js:
 
 | next-page-tester  | next.js            |
 | ----------------- | ------------------ |
