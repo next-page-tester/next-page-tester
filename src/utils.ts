@@ -14,6 +14,7 @@ export function parseRoute({ route }: { route: string }) {
   return parseLocaleRoute({ route, locales: i18n?.locales }).urlObject;
 }
 
+// @TODO: Consider merging this with parseRoute
 export function parseLocaleRoute({
   route,
   locales,
