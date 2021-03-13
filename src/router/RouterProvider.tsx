@@ -22,32 +22,39 @@ export default function RouterProvider({
   const isMounted = useMountedState();
   const previousRouteRef = useRef(pageObject.route);
 
-  const pushHandler = useCallback(async (url: Parameters<PushHandler>[0]) => {
-    const nextRoute = typeof url === 'string' ? url : formatUrl(url);
-    const nextOptions = { ...options, route: nextRoute };
-    const previousRoute = previousRouteRef.current;
-    const { pageElement, pageObject } = await makePage({
-      route: nextRoute,
-      previousRoute,
-      env: RuntimeEnvironment.CLIENT,
-    });
-    previousRouteRef.current = nextRoute;
+  const pushHandler: PushHandler = useCallback(
+    async (url, _$, transitionOptions) => {
+      let nextRoute = typeof url === 'string' ? url : formatUrl(url);
+      if (transitionOptions?.locale && nextRoute.startsWith('/')) {
+        nextRoute = `/${transitionOptions.locale}${nextRoute}`;
+      }
 
-    const nextRouter = makeRouterMock({
-      options: nextOptions,
-      pageObject,
-      pushHandler,
-    });
+      const nextOptions = { ...options, route: nextRoute };
+      const previousRoute = previousRouteRef.current;
+      const { pageElement, pageObject } = await makePage({
+        route: nextRoute,
+        previousRoute,
+        env: RuntimeEnvironment.CLIENT,
+      });
+      previousRouteRef.current = nextRoute;
 
-    // Avoid errors if page gets unmounted
-    if (isMounted()) {
-      setState({ router: nextRouter, children: pageElement });
-    } else {
-      console.warn(
-        `[next-page-tester] Un-awaited client side navigation from "${previousRoute}" to "${nextRoute}". This might lead into unexpected bugs and errors.`
-      );
-    }
-  }, []);
+      const nextRouter = makeRouterMock({
+        options: nextOptions,
+        pageObject,
+        pushHandler,
+      });
+
+      // Avoid errors if page gets unmounted
+      if (isMounted()) {
+        setState({ router: nextRouter, children: pageElement });
+      } else {
+        console.warn(
+          `[next-page-tester] Un-awaited client side navigation from "${previousRoute}" to "${nextRoute}". This might lead into unexpected bugs and errors.`
+        );
+      }
+    },
+    []
+  );
 
   const [{ children, router }, setState] = useState(() => ({
     children: initialChildren,
