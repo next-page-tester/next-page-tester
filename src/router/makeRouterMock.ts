@@ -1,5 +1,5 @@
 import { NextRouter } from 'next/router';
-import { removeFileExtension, parseRouteWithLocales } from '../utils';
+import { removeFileExtension, parseLocaleRoute } from '../utils';
 import type { ExtendedOptions, PageObject } from '../commonTypes';
 import { getNextConfig } from '../nextConfig';
 
@@ -59,9 +59,9 @@ export default function makeRouterMock({
 }): NextRouter {
   const { i18n } = getNextConfig();
   const {
-    url: { pathname, search, hash },
+    urlObject: { pathname, search, hash },
     detectedLocale,
-  } = parseRouteWithLocales({ route, locales: i18n?.locales });
+  } = parseLocaleRoute({ route, locales: i18n?.locales });
 
   const router: NextRouter = {
     ...makeDefaultRouterMock({ pushHandler }),
