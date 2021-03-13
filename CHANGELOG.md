@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.23.0
+
+- Populate `i18n` (locale) router fields.
+
 ## 0.22.0
 
 ### New Features
