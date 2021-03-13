@@ -7,10 +7,25 @@ import path from 'path';
 import stealthyRequire from 'stealthy-require';
 import { getNextConfig } from './nextConfig';
 import { InternalError } from './_error';
+import { normalizeLocalePath } from 'next/dist/next-server/lib/i18n/normalize-locale-path';
 
 export function parseRoute({ route }: { route: string }) {
+  const { i18n } = getNextConfig();
+  return parseLocaleRoute({ route, locales: i18n?.locales }).urlObject;
+}
+
+// @TODO: Consider merging this with parseRoute
+export function parseLocaleRoute({
+  route,
+  locales,
+}: {
+  route: string;
+  locales: string[] | undefined;
+}) {
   const urlObject = new URL(`http://test.com${route}`);
-  const { pathname } = urlObject;
+  const { pathname: localePath } = urlObject;
+  const { pathname, detectedLocale } = normalizeLocalePath(localePath, locales);
+  urlObject.pathname = pathname;
 
   /*
    * Next.js redirects by default routes with trailing slash to the counterpart without trailing slash
@@ -21,7 +36,7 @@ export function parseRoute({ route }: { route: string }) {
     urlObject.pathname = pathname.slice(0, -1);
   }
 
-  return urlObject;
+  return { urlObject, detectedLocale };
 }
 
 export function parseQueryString({

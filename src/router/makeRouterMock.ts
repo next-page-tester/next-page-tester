@@ -1,13 +1,16 @@
 import { NextRouter } from 'next/router';
-import { removeFileExtension, parseRoute } from '../utils';
+import { removeFileExtension, parseLocaleRoute } from '../utils';
 import type { ExtendedOptions, PageObject } from '../commonTypes';
+import { getNextConfig } from '../nextConfig';
 
 type NextPushArgs = Parameters<NextRouter['push']>;
+
+export type TransitionOptions = NextPushArgs[2];
 
 export type PushHandler = (
   url: NextPushArgs[0],
   as: NextPushArgs[1],
-  options: NextPushArgs[2]
+  options: TransitionOptions
 ) => void;
 
 // https://github.com/vercel/next.js/issues/7479#issuecomment-659859682
@@ -57,14 +60,22 @@ export default function makeRouterMock({
   pageObject: PageObject;
   pushHandler?: PushHandler;
 }): NextRouter {
-  const { pathname, search, hash } = parseRoute({ route });
-  const router = {
+  const { i18n } = getNextConfig();
+  const {
+    urlObject: { pathname, search, hash },
+    detectedLocale,
+  } = parseLocaleRoute({ route, locales: i18n?.locales });
+
+  const router: NextRouter = {
     ...makeDefaultRouterMock({ pushHandler }),
     asPath: pathname + search + hash, // Includes querystring and anchor
     pathname: removeFileExtension({ path: pagePath }), // Page component path without extension
     query: { ...params, ...query }, // Route params + parsed querystring
     route: removeFileExtension({ path: pagePath }), // Page component path without extension
     basePath: '',
+    locales: i18n?.locales,
+    defaultLocale: i18n?.defaultLocale,
+    locale: detectedLocale || i18n?.defaultLocale,
   };
 
   return routerEnhancer(router);
