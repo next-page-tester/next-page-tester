@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.24.0
+
+- Populate `i18n` (locale) router fields
+
 ## 0.23.0
 
 ### Breaking Changes
