@@ -8,9 +8,9 @@ about: Create a report to help us improve
 
 A clear and concise description of what the bug is.
 
-## Link to repl or repo
+## Reproduction
 
-Please provide either a [repl.it demo](https://repl.it/languages/jest) or a minimal repository on GitHub.
+Please provide a link to a minimal GitHub repo reproducing the issue _(we won't be able to provide support otherwise)_.
 
 ## Expected behavior
 
