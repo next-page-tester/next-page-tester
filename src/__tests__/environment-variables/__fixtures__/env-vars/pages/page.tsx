@@ -5,6 +5,8 @@ export default function EnvironmentVariablesPage({
   envVarsMock,
 }: {
   envVarsMock: { [key: string]: unknown };
+  FROM_DOTFILE_DATA_FETCHING?: string;
+  NEXT_PUBLIC_FROM_DOTFILE_DATA_FETCHING?: string;
 }) {
   const {
     NODE_ENV,

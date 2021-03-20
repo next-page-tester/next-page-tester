@@ -3,6 +3,7 @@ import React from 'react';
 import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import Page from './__fixtures__/env-vars/pages/page';
+import EnvVarsDataFetchingPage from './__fixtures__/env-vars/EnvVarsDataFetchingPage';
 import EnvVarsCleanupPage from './__fixtures__/no-dotenv-file/pages/page';
 import path from 'path';
 
@@ -43,6 +44,29 @@ describe('Environment variables', () => {
         />
       );
       expectDOMElementsToMatch(actual, expected);
+    });
+
+    describe('data fetching methods', () => {
+      describe.each([['ssr'], ['ssg']])('%s', (dataFetchingMethod) => {
+        it('has access to expected env vars', async () => {
+          const { serverRender } = await getPage({
+            nextRoot: path.join(__dirname, '__fixtures__', 'env-vars'),
+            route: `/${dataFetchingMethod}`,
+            dotenvFile: '.env.test',
+          });
+          const { nextRoot: actual } = serverRender();
+          const { container: expected } = renderWithinNextRoot(
+            <EnvVarsDataFetchingPage
+              envVarsMock={{
+                FROM_DOTFILE_DATA_FETCHING: 'FROM_DOTFILE_DATA_FETCHING',
+                NEXT_PUBLIC_FROM_DOTFILE_DATA_FETCHING:
+                  'NEXT_PUBLIC_FROM_DOTFILE_DATA_FETCHING',
+              }}
+            />
+          );
+          expectDOMElementsToMatch(actual, expected);
+        });
+      });
     });
 
     it.each([['no-dotenv-file'], ['empty-dotenv-file']])(
