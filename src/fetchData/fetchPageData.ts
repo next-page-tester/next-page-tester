@@ -149,12 +149,13 @@ export default async function fetchPageData({
     }
 
     if (serverPageFile.getStaticProps) {
+      const { getStaticProps } = serverPageFile;
       const ctx: GetStaticPropsContext<typeof params> = makeStaticPropsContext({
         pageObject,
       });
       // @TODO introduce `getStaticPaths` logic
       // https://nextjs.org/docs/basic-features/data-fetching#getstaticpaths-static-generation
-      const pageData = await serverPageFile.getStaticProps(ctx);
+      const pageData = await executeAsIfOnServer(() => getStaticProps(ctx));
       ensurePageDataHasProps({ pageData });
       return mergePageDataWithAppData({ pageData, appInitialProps });
     }
