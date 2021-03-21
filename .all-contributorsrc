@@ -149,6 +149,15 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "brettinternet",
+      "name": "Brett",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20871604?v=4",
+      "profile": "https://brettinternet.com",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
