@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.24.1
+
+### Bugfix
+
+- Execute `getStaticProps` in server mode
+
 ## 0.24.0
 
 - Populate `i18n` (locale) router fields
