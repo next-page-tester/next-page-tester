@@ -52,10 +52,10 @@ export function getPageFileIfExists<FileType>({
   try {
     return loadFile({ absolutePath });
   } catch (e) {
-    const internalEror = new InternalError(
+    const internalError = new InternalError(
       `Failed to load "${pagePath}" file due to ${e.name}: ${e.message}`
     );
-    internalEror.stack = e.stack;
-    throw internalEror;
+    internalError.stack = e.stack;
+    throw internalError;
   }
 }

@@ -10,12 +10,14 @@ import { InternalError } from './_error';
  *
  * @NOTE: This is a very flaky temporary workaround
  */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const configUtils = require('next/dist/next-server/server/config-utils');
-/* istanbul ignore next */
-if (configUtils && configUtils.loadWebpackHook) {
-  configUtils.loadWebpackHook = () => {};
-}
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const configUtils = require('next/dist/next-server/server/config-utils');
+  /* istanbul ignore next */
+  if (configUtils && configUtils.loadWebpackHook) {
+    configUtils.loadWebpackHook = () => {};
+  }
+} catch (e) {} // eslint-disable-line no-empty
 
 let nextConfig: NextConfig;
 export async function loadNextConfig({ nextRoot }: { nextRoot: string }) {
