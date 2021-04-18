@@ -21,6 +21,10 @@ try {
 
 let nextConfig: NextConfig;
 export async function loadNextConfig({ nextRoot }: { nextRoot: string }) {
+  // This env var lets Next.js skip default env vars loading at configuration load
+  // We load env vars independently from Next.js
+  // https://github.com/vercel/next.js/blob/v10.1.3/packages/next-env/index.ts#L28
+  process.env.__NEXT_PROCESSED_ENV = 'true';
   nextConfig = await loadConfig(PHASE_DEVELOPMENT_SERVER, nextRoot);
 }
 
