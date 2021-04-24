@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.24.2
+
+### Bugfix
+
+- Prevent `@next/env` from loading env vars
+- Don't throw if Next.js' config-utils doesn't exist
+
 ## 0.24.1
 
 ### Bugfix
