@@ -158,6 +158,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "vlad-elagin",
+      "name": "Vlad Elagin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/28232030?v=4",
+      "profile": "https://github.com/vlad-elagin",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
