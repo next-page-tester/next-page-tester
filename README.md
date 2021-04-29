@@ -261,6 +261,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://www.geritol.tech/"><img src="https://avatars.githubusercontent.com/u/5496681?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Gergo Tolnai</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Ageritol" title="Bug reports">🐛</a> <a href="https://github.com/toomuchdesign/next-page-tester/commits?author=geritol" title="Code">💻</a></td>
     <td align="center"><a href="https://brettinternet.com"><img src="https://avatars.githubusercontent.com/u/20871604?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Brett</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Abrettinternet" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/vlad-elagin"><img src="https://avatars.githubusercontent.com/u/28232030?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Vlad Elagin</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/commits?author=vlad-elagin" title="Documentation">📖</a></td>
   </tr>
 </table>
 
