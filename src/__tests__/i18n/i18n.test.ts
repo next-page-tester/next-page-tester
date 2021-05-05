@@ -48,3 +48,30 @@ describe('i18n', () => {
     ).toBeInTheDocument();
   });
 });
+
+describe.each([
+  ['getStaticProps()', 'ssg'],
+  ['getServerSideProps()', 'ssr'],
+])('%s', (_fetcher, pageName) => {
+  it.each([
+    [`/${pageName}`, 'en-US'],
+    [`/fr/${pageName}`, 'fr'],
+    [`/nl-NL/${pageName}`, 'nl-NL'],
+  ])('receives locale context of %s', async (route, locale) => {
+    const { render } = await getPage({
+      route,
+      nextRoot: path.join(__dirname, '__fixtures__'),
+    });
+    render();
+
+    expect(
+      screen.queryByText(
+        JSON.stringify({
+          locale,
+          locales: ['en-US', 'fr', 'nl-NL'],
+          defaultLocale: 'en-US',
+        })
+      )
+    ).toBeInTheDocument();
+  });
+});
