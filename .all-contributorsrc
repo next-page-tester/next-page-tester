@@ -167,6 +167,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "evocateur",
+      "name": "Daniel Stockman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5605?v=4",
+      "profile": "http://evocateur.org/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
