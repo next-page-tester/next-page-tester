@@ -42,8 +42,15 @@ export function renderEnhancedApp({
   options: ExtendedOptions;
 }) {
   let UserEnhancedPage = Page;
+  let UserEnhancedApp = App;
+
+  if (wrapper.App) {
+    UserEnhancedApp = wrapper.App(App);
+  }
+
   if (wrapper.Page) {
     UserEnhancedPage = wrapper.Page(Page);
   }
-  return <App Component={UserEnhancedPage} pageProps={pageProps} />;
+
+  return <UserEnhancedApp Component={UserEnhancedPage} pageProps={pageProps} />;
 }

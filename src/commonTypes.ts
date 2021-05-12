@@ -30,6 +30,7 @@ export type Options = {
   useDocument?: boolean;
   dotenvFile?: string;
   wrapper?: {
+    App?: Enhancer<NextApp>;
     Page?: Enhancer<NextPage>;
   };
 };

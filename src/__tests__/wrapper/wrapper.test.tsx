@@ -28,4 +28,25 @@ describe('wrapper', () => {
 
     expect(screen.getByText(`Source: ${source}`)).toBeInTheDocument();
   });
+
+  test('accepts App enhancer', async () => {
+    const source = 'App wrapper';
+    const { render } = await getPage({
+      nextRoot: path.join(__dirname, '__fixtures__', 'App'),
+      route: '/a',
+      wrapper: {
+        App: (App) => (appProps) => {
+          return (
+            <MockedProvider.Provider value={{ source }}>
+              <App {...appProps} />
+            </MockedProvider.Provider>
+          );
+        },
+      },
+    });
+
+    render();
+
+    expect(screen.queryByText(`Source: ${source}`)).toBeInTheDocument();
+  });
 });
