@@ -151,6 +151,7 @@ export default async function fetchPageData({
     if (serverPageFile.getStaticProps) {
       const { getStaticProps } = serverPageFile;
       const ctx: GetStaticPropsContext<typeof params> = makeStaticPropsContext({
+        options,
         pageObject,
       });
       // @TODO introduce `getStaticPaths` logic

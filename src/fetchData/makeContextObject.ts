@@ -6,6 +6,7 @@ import type {
 } from 'next';
 import { parse } from 'cookie';
 import makeHttpObjects from './makeHttpObjects';
+import { makeRouterMock } from '../router';
 import type {
   ExtendedOptions,
   FoundPageObject,
@@ -46,17 +47,22 @@ export function makeGetInitialPropsContext({
 
 export function makeGetServerSidePropsContext({
   pageObject,
-  options: { req: reqMocker, res: resMocker, previousRoute },
+  options,
 }: {
   pageObject: FoundPageObject;
   options: ExtendedOptions;
 }): GetServerSidePropsContext<typeof pageObject.params> {
+  const { req: reqMocker, res: resMocker, previousRoute } = options;
   const { params, query, resolvedUrl } = pageObject;
   const { req, res } = makeHttpObjects({
     pageObject,
     reqMocker,
     resMocker,
     refererRoute: previousRoute,
+  });
+  const { locale, locales, defaultLocale } = makeRouterMock({
+    options,
+    pageObject,
   });
 
   // parsed "cookies" are only available in "getServerSideProps" data fetching method
@@ -73,19 +79,31 @@ export function makeGetServerSidePropsContext({
     resolvedUrl,
     req,
     res,
+    locale,
+    locales,
+    defaultLocale,
   };
 }
 
 export function makeStaticPropsContext({
   pageObject,
+  options,
 }: {
   pageObject: FoundPageObject;
+  options: ExtendedOptions;
 }): GetStaticPropsContext<typeof pageObject.params> {
   const { params } = pageObject;
+  const { locale, locales, defaultLocale } = makeRouterMock({
+    options,
+    pageObject,
+  });
 
   // @TODO complete ctx object
   // https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation
   return {
     params: { ...params },
+    locale,
+    locales,
+    defaultLocale,
   };
 }
