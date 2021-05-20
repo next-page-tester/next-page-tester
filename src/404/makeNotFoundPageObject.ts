@@ -12,7 +12,7 @@ export function makeNotFoundPageObject({
   options: ExtendedOptions;
 }): NotFoundPageObject {
   const { route } = options;
-  const { pathname } = parseRoute({ route });
+  const { pathname } = parseRoute({ route }).urlObject;
   const notFoundPageRouteInfo = makeRouteInfo({
     route,
     pagePath: pathname,

@@ -14,7 +14,7 @@ export function makeRouteInfo({
   pagePath: string;
   routeRegexCaptureGroups?: Record<string, string>;
 }): RouteInfo {
-  const { pathname, search } = parseRoute({ route });
+  const { pathname, search } = parseRoute({ route }).urlObject;
   const params = makeParamsObject({
     pagePath,
     routeRegexCaptureGroups,
