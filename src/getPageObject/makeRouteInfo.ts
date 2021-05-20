@@ -14,7 +14,8 @@ export function makeRouteInfo({
   pagePath: string;
   routeRegexCaptureGroups?: Record<string, string>;
 }): RouteInfo {
-  const { pathname, search } = parseRoute({ route }).urlObject;
+  const { urlObject, detectedLocale } = parseRoute({ route });
+  const { pathname, search } = urlObject;
   const params = makeParamsObject({
     pagePath,
     routeRegexCaptureGroups,
@@ -32,6 +33,8 @@ export function makeRouteInfo({
         object: { ...params, ...query },
         leadingQuestionMark: true,
       }),
+    detectedLocale,
+    urlObject,
   };
 }
 
