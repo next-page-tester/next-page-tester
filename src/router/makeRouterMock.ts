@@ -1,7 +1,6 @@
 import { NextRouter } from 'next/router';
-import { removeFileExtension, parseRoute } from '../utils';
+import { removeFileExtension, getLocales } from '../utils';
 import type { ExtendedOptions, PageObject } from '../commonTypes';
-import { getNextConfig } from '../nextConfig';
 
 type NextPushArgs = Parameters<NextRouter['push']>;
 
@@ -53,18 +52,16 @@ function makeDefaultRouterMock({
 
 export default function makeRouterMock({
   options: { router: routerEnhancer },
-  pageObject: { pagePath, params, route, query },
+  pageObject,
   pushHandler,
 }: {
   options: ExtendedOptions;
   pageObject: PageObject;
   pushHandler?: PushHandler;
 }): NextRouter {
-  const { i18n } = getNextConfig();
-  const {
-    urlObject: { pathname, search, hash },
-    detectedLocale,
-  } = parseRoute({ route });
+  const { pagePath, params, query, urlObject } = pageObject;
+  const { pathname, search, hash } = urlObject;
+  const { locales, defaultLocale, locale } = getLocales({ pageObject });
 
   const router: NextRouter = {
     ...makeDefaultRouterMock({ pushHandler }),
@@ -73,9 +70,9 @@ export default function makeRouterMock({
     query: { ...params, ...query }, // Route params + parsed querystring
     route: removeFileExtension({ path: pagePath }), // Page component path without extension
     basePath: '',
-    locales: i18n?.locales,
-    defaultLocale: i18n?.defaultLocale,
-    locale: detectedLocale || i18n?.defaultLocale,
+    locales,
+    defaultLocale,
+    locale,
   };
 
   return routerEnhancer(router);

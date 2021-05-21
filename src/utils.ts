@@ -8,6 +8,7 @@ import stealthyRequire from 'stealthy-require';
 import { getNextConfig } from './nextConfig';
 import { InternalError } from './_error';
 import { normalizeLocalePath } from 'next/dist/next-server/lib/i18n/normalize-locale-path';
+import type { PageObject } from './commonTypes';
 
 export function parseRoute({
   route,
@@ -167,4 +168,24 @@ const ABSOLUTE_URL_REGEXP = new RegExp('^(?:[a-z]+:)?//', 'i');
 
 export function isExternalRoute(route: string) {
   return Boolean(route.match(ABSOLUTE_URL_REGEXP));
+}
+
+/**
+ * Get locale information for a given route
+ */
+export function getLocales({
+  pageObject: { detectedLocale },
+}: {
+  pageObject: PageObject;
+}): {
+  locales: string[] | undefined;
+  defaultLocale: string | undefined;
+  locale: string | undefined;
+} {
+  const { i18n } = getNextConfig();
+  return {
+    locales: i18n?.locales,
+    defaultLocale: i18n?.defaultLocale,
+    locale: detectedLocale || i18n?.defaultLocale,
+  };
 }
