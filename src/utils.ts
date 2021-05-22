@@ -8,20 +8,18 @@ import stealthyRequire from 'stealthy-require';
 import { getNextConfig } from './nextConfig';
 import { InternalError } from './_error';
 import { normalizeLocalePath } from 'next/dist/next-server/lib/i18n/normalize-locale-path';
+import type { PageObject } from './commonTypes';
 
-export function parseRoute({ route }: { route: string }) {
-  const { i18n } = getNextConfig();
-  return parseLocaleRoute({ route, locales: i18n?.locales }).urlObject;
-}
-
-// @TODO: Consider merging this with parseRoute
-export function parseLocaleRoute({
+export function parseRoute({
   route,
-  locales,
 }: {
   route: string;
-  locales: string[] | undefined;
-}) {
+}): {
+  urlObject: URL;
+  detectedLocale: string | undefined;
+} {
+  const { i18n } = getNextConfig();
+  const locales = i18n?.locales;
   const urlObject = new URL(`http://test.com${route}`);
   const { pathname: localePath } = urlObject;
   const { pathname, detectedLocale } = normalizeLocalePath(localePath, locales);
@@ -65,13 +63,13 @@ export function stringifyQueryString({
   return queryString;
 }
 
-export function removeFileExtension({ path }: { path: string }) {
+export function removeFileExtension({ path }: { path: string }): string {
   return path.replace(/\.[^/.]+$/, '');
 }
 
 export const defaultNextRoot = findRoot(process.cwd());
 
-export function findPagesDirectory({ nextRoot }: { nextRoot: string }) {
+export function findPagesDirectory({ nextRoot }: { nextRoot: string }): string {
   const pagesPaths = [
     path.join(nextRoot, 'pages'),
     path.join(nextRoot, 'src', 'pages'),
@@ -114,7 +112,7 @@ const predefinedSharedModules = [
   'next/dist/next-server/lib/runtime-config',
 ];
 
-function preserveJestSharedModulesIdentity(modules: string[]) {
+function preserveJestSharedModulesIdentity(modules: string[]): void {
   for (const moduleName of modules) {
     // @NOTE for some reason Jest needs us to pre-import the modules
     // we want to require with jest.requireActual
@@ -123,7 +121,7 @@ function preserveJestSharedModulesIdentity(modules: string[]) {
   }
 }
 
-export function preservePredefinedSharedModulesIdentity() {
+export function preservePredefinedSharedModulesIdentity(): void {
   preserveJestSharedModulesIdentity(predefinedSharedModules);
 }
 
@@ -161,13 +159,33 @@ export function executeWithFreshModules<T>(
   }
 }
 
-export const parseHTML = (html: string) => {
+export function parseHTML(html: string): Document {
   const domParser = new DOMParser();
   return domParser.parseFromString(html, 'text/html');
-};
+}
 
 const ABSOLUTE_URL_REGEXP = new RegExp('^(?:[a-z]+:)?//', 'i');
 
 export function isExternalRoute(route: string) {
   return Boolean(route.match(ABSOLUTE_URL_REGEXP));
+}
+
+/**
+ * Get locale information for a given route
+ */
+export function getLocales({
+  pageObject: { detectedLocale },
+}: {
+  pageObject: PageObject;
+}): {
+  locales: string[] | undefined;
+  defaultLocale: string | undefined;
+  locale: string | undefined;
+} {
+  const { i18n } = getNextConfig();
+  return {
+    locales: i18n?.locales,
+    defaultLocale: i18n?.defaultLocale,
+    locale: detectedLocale || i18n?.defaultLocale,
+  };
 }

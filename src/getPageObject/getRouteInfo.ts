@@ -10,7 +10,7 @@ export default async function getRouteInfo({
   options: ExtendedOptions;
 }): Promise<RouteInfo | undefined> {
   const { route } = options;
-  const { pathname } = parseRoute({ route });
+  const { pathname } = parseRoute({ route }).urlObject;
   const pagePaths = await getPagePaths({ options });
 
   for (const pagePath of pagePaths) {

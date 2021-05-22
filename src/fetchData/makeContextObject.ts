@@ -6,7 +6,7 @@ import type {
 } from 'next';
 import { parse } from 'cookie';
 import makeHttpObjects from './makeHttpObjects';
-import { makeRouterMock } from '../router';
+import { getLocales } from '../utils';
 import type {
   ExtendedOptions,
   FoundPageObject,
@@ -60,10 +60,7 @@ export function makeGetServerSidePropsContext({
     resMocker,
     refererRoute: previousRoute,
   });
-  const { locale, locales, defaultLocale } = makeRouterMock({
-    options,
-    pageObject,
-  });
+  const { locale, locales, defaultLocale } = getLocales({ pageObject });
 
   // parsed "cookies" are only available in "getServerSideProps" data fetching method
   // https://github.com/vercel/next.js/pull/19724/files#diff-f1cccfe490138be7dae0d63562f6a2834af92d21130e0ff10d6de7ad30613f6bR132
@@ -87,16 +84,11 @@ export function makeGetServerSidePropsContext({
 
 export function makeStaticPropsContext({
   pageObject,
-  options,
 }: {
   pageObject: FoundPageObject;
-  options: ExtendedOptions;
 }): GetStaticPropsContext<typeof pageObject.params> {
   const { params } = pageObject;
-  const { locale, locales, defaultLocale } = makeRouterMock({
-    options,
-    pageObject,
-  });
+  const { locale, locales, defaultLocale } = getLocales({ pageObject });
 
   // @TODO complete ctx object
   // https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation

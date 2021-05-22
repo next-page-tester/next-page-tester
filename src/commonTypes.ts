@@ -63,6 +63,8 @@ export type RouteInfo = {
   // Page file path without extension
   pagePath: string;
   resolvedUrl: string;
+  detectedLocale: string | undefined;
+  urlObject: URL;
 };
 
 export type FoundPageObject = RouteInfo & {
