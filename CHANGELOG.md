@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.25.0
+
+### New Features
+
+- Add `wrapper.App` option
+- Add locale fields to data fetching contexts
+
 ## 0.24.2
 
 ### Bugfix
