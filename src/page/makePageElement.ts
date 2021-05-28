@@ -12,6 +12,7 @@ export async function makePageElement({
     options,
     pageObject,
     pageProps: pageData.props,
+    appProps: pageData.appProps,
   });
 
   return { pageElement, pageObject };

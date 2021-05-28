@@ -11,10 +11,12 @@ export default function renderApp({
   options,
   pageObject,
   pageProps,
+  appProps,
 }: {
   options: ExtendedOptions;
   pageObject: PageObject;
   pageProps: PageProps | undefined;
+  appProps: PageProps | undefined;
 }): JSX.Element {
   const { env } = options;
   const {
@@ -25,6 +27,7 @@ export default function renderApp({
   return renderEnhancedApp({
     App: AppComponent,
     Page: PageComponent,
+    appProps,
     pageProps,
     options,
   });
@@ -33,11 +36,13 @@ export default function renderApp({
 export function renderEnhancedApp({
   App,
   Page,
+  appProps,
   pageProps,
   options: { wrapper = {} },
 }: {
   App: NextApp;
   Page: NextPage;
+  appProps: PageProps | undefined;
   pageProps: PageProps | undefined;
   options: ExtendedOptions;
 }) {
@@ -52,5 +57,11 @@ export function renderEnhancedApp({
     UserEnhancedPage = wrapper.Page(Page);
   }
 
-  return <UserEnhancedApp Component={UserEnhancedPage} pageProps={pageProps} />;
+  return (
+    <UserEnhancedApp
+      Component={UserEnhancedPage}
+      pageProps={pageProps}
+      {...appProps}
+    />
+  );
 }

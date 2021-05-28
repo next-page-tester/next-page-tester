@@ -9,6 +9,11 @@ import CustomAppWithGIP_SSGPage from './__fixtures__/custom-app-with-gip/pages/s
 import CustomAppWithGIP_GIPPage from './__fixtures__/custom-app-with-gip/pages/gip';
 import CustomAppWithGIP_Page from './__fixtures__/custom-app-with-gip/pages/page';
 
+import CustomAppWithGIPCustomProps from './__fixtures__/custom-app-with-gip-custom-props/pages/_app';
+import CustomAppWithGIPCustomProps_GIPPage from './__fixtures__/custom-app-with-gip-custom-props/pages/gip';
+import CustomAppWithGIPCustomProps_SSRPage from './__fixtures__/custom-app-with-gip-custom-props/pages/ssr';
+import CustomAppWithGIPCustomProps_SSGPage from './__fixtures__/custom-app-with-gip-custom-props/pages/ssg';
+
 import CustomAppWithNextAppGIP from './__fixtures__/custom-app-with-next-app-gip/pages/_app';
 import CustomAppWithNextAppGIP_GIP from './__fixtures__/custom-app-with-next-app-gip/pages/gip';
 
@@ -99,6 +104,50 @@ describe('_app support', () => {
             }}
           />
         );
+        expectDOMElementsToMatch(actual, expected);
+      });
+    });
+
+    describe('Custom props', () => {
+      it('are passed to App', async () => {
+        const { render } = await getPage({
+          nextRoot:
+            __dirname + '/__fixtures__/custom-app-with-gip-custom-props',
+          route: '/gip',
+        });
+        const { nextRoot: actual } = render();
+        const { container: expected } = renderWithinNextRoot(
+          <CustomAppWithGIPCustomProps
+            Component={CustomAppWithGIPCustomProps_GIPPage}
+            pageProps={{
+              fromPage: true,
+            }}
+            appCustomProps={true}
+          />
+        );
+        expectDOMElementsToMatch(actual, expected);
+      });
+
+      it.each([
+        ['getServerSideProps', '/ssr', CustomAppWithGIPCustomProps_SSRPage],
+        ['getStaticProps', '/ssg', CustomAppWithGIPCustomProps_SSGPage],
+      ])('Page with %s', async (dataFetchingType, route, PageComponent) => {
+        const { render } = await getPage({
+          nextRoot:
+            __dirname + '/__fixtures__/custom-app-with-gip-custom-props',
+          route,
+        });
+        const { nextRoot: actual } = render();
+        const { container: expected } = renderWithinNextRoot(
+          <CustomAppWithGIPCustomProps
+            Component={PageComponent}
+            pageProps={{
+              fromPage: true,
+            }}
+            appCustomProps={true}
+          />
+        );
+
         expectDOMElementsToMatch(actual, expected);
       });
     });

@@ -47,11 +47,13 @@ function enhanceComponents(
 
 export default async function serverRenderDocument({
   options,
+  appProps,
   pageProps,
   pageObject,
   wrapWithRouter,
 }: {
   options: ExtendedOptions;
+  appProps: PageProps | undefined;
   pageProps: PageProps | undefined;
   pageObject: PageObject;
   wrapWithRouter: (children: JSX.Element) => JSX.Element;
@@ -65,7 +67,7 @@ export default async function serverRenderDocument({
     } = pageObject.files.server;
 
     const render = (App: NextApp, Page: NextPage) => {
-      return renderEnhancedApp({ App, Page, options, pageProps });
+      return renderEnhancedApp({ App, Page, options, appProps, pageProps });
     };
 
     // Return an empty dummy document if useDocument is not enabled

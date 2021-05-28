@@ -13,6 +13,7 @@ import {
   ExtendedOptions,
   PageObject,
   PageData,
+  PageProps,
   NextPageFile,
   CustomError,
 } from '../commonTypes';
@@ -70,12 +71,15 @@ function mergePageDataWithAppData({
   appInitialProps?: AppInitialProps;
 }) {
   const { props: pageProps, ...restOfPageData } = pageData;
+  const { pageProps: appPageProps, ...restOfAppInitialProps } =
+    appInitialProps || {};
   //appInitialProps.pageProps gets merged with pageData.props
   return {
     props: {
-      ...appInitialProps?.pageProps,
+      ...appPageProps,
       ...pageProps,
     },
+    appProps: <PageProps>restOfAppInitialProps,
     ...restOfPageData,
   };
 }
@@ -161,7 +165,8 @@ export default async function fetchPageData({
     }
 
     if (appInitialProps) {
-      return { props: appInitialProps.pageProps };
+      const { pageProps, ...restOfAppInitialProps } = appInitialProps;
+      return { props: pageProps, appProps: <PageProps>restOfAppInitialProps };
     }
   }
 
