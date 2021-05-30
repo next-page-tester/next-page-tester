@@ -108,6 +108,7 @@
   },
   "jest": {
     "preset": "ts-jest/presets/js-with-ts",
+    "testEnvironment": "jsdom",
     "testMatch": [
       "**/?(*.)+(test).[jt]s?(x)"
     ],

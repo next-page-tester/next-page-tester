@@ -123,6 +123,14 @@ React element of the application.
 
 If your pages/components import **file types not natively handled by Node.js** (like style sheets, images, `.svg`, ...), you should configure your testing environment to properly process them. Eg, in case of Jest you might want configuring some [`moduleNameMapper`](https://jestjs.io/docs/en/configuration#modulenamemapper-objectstring-string--arraystring).
 
+### Setup JSDOM environment
+
+`next-page-tester` expects to run into a JSDOM environment. If using Jest add this line to your `jest` configuration:
+
+```js
+"testEnvironment": "jsdom",
+```
+
 ### Optional: patching Jest
 
 Until **Jest v27** is published, you might need to patch `jest` in order to load modules with [proper server/client environments](#73). _Don't do this until you actually encounter issues_.
