@@ -1,6 +1,7 @@
 import path from 'path';
 import tinyGlob from 'tiny-glob';
 import normalizePath from 'normalize-path';
+import { existsSync } from 'fs';
 
 describe('tiny-glob', () => {
   it('finds expected filed', async () => {
@@ -16,5 +17,9 @@ describe('tiny-glob', () => {
       path.join(pagesDirectory, 'c.tsx'),
     ];
     expect(files).toEqual(expected);
+
+    expected.forEach((file) => {
+      expect(existsSync(file)).toBe(true);
+    });
   });
 });

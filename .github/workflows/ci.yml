@@ -26,9 +26,3 @@ jobs:
       - run: npm ci
         env:
           HUSKY_SKIP_INSTALL: 1
-
-      - name: Upload code coverage
-        uses: coverallsapp/github-action@master
-        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '14.x'
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}

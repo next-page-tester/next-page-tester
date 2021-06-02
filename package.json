@@ -11,13 +11,13 @@
   "scripts": {
     "clean": "rm -rf dist",
     "compile": "npm run clean && tsc -p tsconfig.build.json",
-    "test": "jest ./glob/*",
-    "test:source": "npm run test:format && npm run test:ts && npm t -- --coverage",
+    "test": "jest glob/.",
+    "test:source": "npm t",
     "test:dist": "jest ./src --config ./jest/dist.config.js",
     "test:published": "jest ./src --config ./jest/published.config.js",
     "test:ts": "tsc --noEmit",
     "test:format": "npm run prettier:check && npm run eslint:check",
-    "prepare": "patch-package && npm run test:source && npm run compile && npm run test:dist",
+    "prepare": "npm run test:source",
     "preversion": "npm run prepare",
     "version": "git add package.json",
     "postversion": "git push && git push --tags",
@@ -115,7 +115,8 @@
       "**/?(*.)+(test).[jt]s?(x)"
     ],
     "testPathIgnorePatterns": [
-      "__fixtures__"
+      "__fixtures__",
+      "src"
     ],
     "coveragePathIgnorePatterns": [
       "__tests__",
