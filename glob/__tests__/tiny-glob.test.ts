@@ -10,15 +10,15 @@ describe('tiny-glob', () => {
       normalizePath(path.join(pagesDirectory, '**', '*')),
       { absolute: true }
     );
-
+    const normFiles = files.map((file) => normalizePath(file));
     const expected = [
-      path.join(pagesDirectory, 'a.js'),
-      path.join(pagesDirectory, 'b.ts'),
-      path.join(pagesDirectory, 'c.tsx'),
+      normalizePath(path.join(pagesDirectory, 'a.js')),
+      normalizePath(path.join(pagesDirectory, 'b.ts')),
+      normalizePath(path.join(pagesDirectory, 'c.tsx')),
     ];
-    expect(files).toEqual(expected);
+    expect(normFiles).toEqual(expected);
 
-    expected.forEach((file) => {
+    normFiles.forEach((file) => {
       expect(existsSync(file)).toBe(true);
     });
   });
