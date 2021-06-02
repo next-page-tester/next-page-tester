@@ -14,6 +14,7 @@ async function getPagePaths({
     normalizePath(path.join(pagesDirectory, '**', '*')),
     { absolute: true }
   );
+  console.log(files);
   const extensionsRegex = new RegExp(`.(${pageExtensions.join('|')})$`);
 
   return getSortedRoutes(
