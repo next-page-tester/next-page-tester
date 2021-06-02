@@ -2,7 +2,7 @@ import { getPage } from '../../../../src';
 import userEvent from '@testing-library/user-event';
 import { screen } from '@testing-library/react';
 
-describe('styletron-react', () => {
+describe.skip('styletron-react', () => {
   it('As a user I can test applications using "styletron-react"', async () => {
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
