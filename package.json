@@ -11,7 +11,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "compile": "npm run clean && tsc -p tsconfig.build.json",
-    "test": "jest ./src",
+    "test": "jest ./glob/*",
     "test:source": "npm run test:format && npm run test:ts && npm t -- --coverage",
     "test:dist": "jest ./src --config ./jest/dist.config.js",
     "test:published": "jest ./src --config ./jest/published.config.js",
@@ -96,9 +96,11 @@
     "cookie": "^0.4.1",
     "dotenv": "^8.2.0",
     "dotenv-expand": "^5.1.0",
+    "fast-glob": "^3.2.5",
     "find-root": "^1.1.0",
     "node-mocks-http": "^1.10.1",
     "normalize-path": "^3.0.0",
+    "setimmediate": "^1.0.5",
     "stealthy-require": "^1.1.1",
     "tiny-glob": "^0.2.9"
   },
