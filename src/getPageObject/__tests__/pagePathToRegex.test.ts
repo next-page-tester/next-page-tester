@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import { pagePathToRouteRegex } from '../pagePathParser';
 
 describe('pagePathToRouteRegex', () => {

@@ -1,6 +1,7 @@
 import path from 'path';
-import tinyGlob from 'tiny-glob';
+import { glob } from '../utils';
 import normalizePath from 'normalize-path';
+
 import { getSortedRoutes } from 'next/dist/next-server/lib/router/utils/sorted-routes';
 import type { ExtendedOptions } from '../commonTypes';
 
@@ -10,10 +11,7 @@ async function getPagePaths({
 }: {
   options: ExtendedOptions;
 }): Promise<string[]> {
-  const files = await tinyGlob(
-    normalizePath(path.join(pagesDirectory, '**', '*')),
-    { absolute: true }
-  );
+  const files = await glob(path.join(pagesDirectory, '**', '*'));
   const extensionsRegex = new RegExp(`.(${pageExtensions.join('|')})$`);
 
   return getSortedRoutes(
