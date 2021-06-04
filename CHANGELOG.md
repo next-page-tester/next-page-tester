@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.26.0
+
+### Refactor
+
+- Fine tune things for Jest v27
+- Set jsdom as default test environment
+- Replace fast-glob with tiny-glob
+- Add a comment to empty pages to prevent test from failing
+- Skip testing-library auto cleanup
+- Disable aws-amplify test
+
 ## 0.25.0
 
 ### New Features
