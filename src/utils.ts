@@ -5,6 +5,8 @@ import findRoot from 'find-root';
 import { existsSync } from 'fs';
 import path from 'path';
 import stealthyRequire from 'stealthy-require';
+import tinyGlob from 'tiny-glob';
+import normalizePath from 'normalize-path';
 import { getNextConfig } from './nextConfig';
 import { InternalError } from './_error';
 import { normalizeLocalePath } from 'next/dist/next-server/lib/i18n/normalize-locale-path';
@@ -188,4 +190,13 @@ export function getLocales({
     defaultLocale: i18n?.defaultLocale,
     locale: detectedLocale || i18n?.defaultLocale,
   };
+}
+
+/**
+ * Returns the absolute file paths matching a given glob pattern
+ * It normalizes both incoming and outcoming paths
+ */
+export async function glob(pattern: string): Promise<string[]> {
+  const paths = await tinyGlob(normalizePath(pattern), { absolute: true });
+  return paths.map((path) => normalizePath(path));
 }

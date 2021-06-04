@@ -123,15 +123,13 @@ React element of the application.
 
 If your pages/components import **file types not natively handled by Node.js** (like style sheets, images, `.svg`, ...), you should configure your testing environment to properly process them. Eg, in case of Jest you might want configuring some [`moduleNameMapper`](https://jestjs.io/docs/en/configuration#modulenamemapper-objectstring-string--arraystring).
 
-### Optional: patching Jest
+### Setup JSDOM environment
 
-Until **Jest v27** is published, you might need to patch `jest` in order to load modules with [proper server/client environments](#73). _Don't do this until you actually encounter issues_.
+`next-page-tester` expects to run into a JSDOM environment. If using Jest add this line to your `jest` configuration:
 
-1. Install [`patch-package`](https://github.com/ds300/patch-package#set-up) and follow its setup instructions
-2. If using the last version of `jest` (`26.6.3`), copy [this `patches` folder ](patches) to your project root and run `npx patch-package` or `yarn patch-package`.
-3. If using `jest < v26.6.3` update manually `node_modules/jest-runtime/build/index.js` file replicating [this commit](https://github.com/facebook/jest/commit/e5a84d92fc906a5bb140f9753b644319cea095da#diff-c0d5b59e96fdc7ffc98405e8afb46d525505bc7b1c24916b5c8482de5a186c00) and run `npx patch-package jest-runtime` or `yarn patch-package jest-runtime`
-
-If using **Yarn v2** you might try the approach described [here](https://github.com/toomuchdesign/next-page-tester/issues/219).
+```js
+"testEnvironment": "jsdom",
+```
 
 ### Skipping Auto Cleanup & Helpers Initialisation
 
@@ -146,6 +144,10 @@ However, you may choose to skip the auto cleanup & helpers initialisation by set
 ```js
 cross-env NPT_SKIP_AUTO_SETUP=true jest
 ```
+
+### Optional: patching Jest v26
+
+I using **Jest v26** you might need to [patch it](./docs/patching-jest-v26.md) in order to load modules with [proper server/client environments](#73). Maintenance efforts will target latest Jest version.
 
 ## Examples
 
@@ -163,7 +165,7 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 
 ### Next.js versions support
 
-`next-page-tester` focuses on supporting only the last version of Next.js:
+`next-page-tester` focuses on supporting only the last version of Next.js and Jest:
 
 | next-page-tester  | next.js            |
 | ----------------- | ------------------ |

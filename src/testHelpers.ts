@@ -26,6 +26,10 @@ export function initTestHelpers() {
 
   if (typeof document !== 'undefined' && typeof afterEach === 'function') {
     afterEach(cleanup);
+
+    // Disable testing library auto cleanup
+    // https://testing-library.com/docs/react-testing-library/setup/#skipping-auto-cleanup
+    process.env.RTL_SKIP_AUTO_CLEANUP = 'true';
   }
 
   // We are intentionally only targeting jest here for it to work with jest.isolatedModules

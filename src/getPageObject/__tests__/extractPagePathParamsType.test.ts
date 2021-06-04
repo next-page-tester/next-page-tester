@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import {
   extractPagePathParamsType,
   ROUTE_PARAMS_TYPES,
