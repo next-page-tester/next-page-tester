@@ -20,7 +20,11 @@ try {
 } catch (e) {} // eslint-disable-line no-empty
 
 let nextConfig: NextConfig;
-export async function loadNextConfig({ nextRoot }: { nextRoot: string }) {
+export async function loadNextConfig({
+  nextRoot,
+}: {
+  nextRoot: string;
+}): Promise<void> {
   // This env var lets Next.js skip default env vars loading at configuration load
   // We load env vars independently from Next.js
   // https://github.com/vercel/next.js/blob/v10.1.3/packages/next-env/index.ts#L28

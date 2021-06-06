@@ -168,7 +168,7 @@ export function parseHTML(html: string): Document {
 
 const ABSOLUTE_URL_REGEXP = new RegExp('^(?:[a-z]+:)?//', 'i');
 
-export function isExternalRoute(route: string) {
+export function isExternalRoute(route: string): boolean {
   return Boolean(route.match(ABSOLUTE_URL_REGEXP));
 }
 

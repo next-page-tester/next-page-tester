@@ -1,5 +1,5 @@
 import httpMocks from 'node-mocks-http';
-import type { OptionsWithDefaults, PageObject } from '../commonTypes';
+import type { OptionsWithDefaults, PageObject, Req, Res } from '../commonTypes';
 
 export default function makeHttpObjects({
   pageObject: { params, route },
@@ -11,7 +11,10 @@ export default function makeHttpObjects({
   reqMocker: OptionsWithDefaults['req'];
   resMocker: OptionsWithDefaults['res'];
   refererRoute?: string;
-}) {
+}): {
+  req: Req;
+  res: Res;
+} {
   const req = httpMocks.createRequest({
     url: route,
     params: { ...params },

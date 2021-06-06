@@ -21,7 +21,7 @@ function hideBrowserEnv(): () => void {
   };
 }
 
-export const executeAsIfOnServer = async <T>(f: () => T) => {
+export const executeAsIfOnServer = async <T>(f: () => T): Promise<T> => {
   const restoreBrowserEnv = hideBrowserEnv();
   try {
     return await f();

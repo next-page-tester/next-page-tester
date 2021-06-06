@@ -1,6 +1,6 @@
 import fetchPageData from './fetchPageData';
 import { fetchAppData } from '../_app';
-import type { ExtendedOptions, PageObject } from '../commonTypes';
+import type { ExtendedOptions, PageData, PageObject } from '../commonTypes';
 
 export default async function fetchRouteData({
   pageObject,
@@ -8,7 +8,7 @@ export default async function fetchRouteData({
 }: {
   pageObject: PageObject;
   options: ExtendedOptions;
-}) {
+}): Promise<PageData> {
   const appInitialProps = await fetchAppData({
     pageObject,
     options,

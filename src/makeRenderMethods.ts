@@ -64,7 +64,7 @@ export function makeRenderMethods({
   };
 }
 
-export function cleanupDOM() {
+export function cleanupDOM(): void {
   document.body.innerHTML = '';
   document.head.innerHTML = '';
 

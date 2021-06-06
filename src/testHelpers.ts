@@ -12,7 +12,7 @@ class IntersectionObserver {
   disconnect() {}
 }
 
-export function initTestHelpers() {
+export function initTestHelpers(): void {
   if (isJSDOMEnvironment()) {
     // Mock IntersectionObserver (Link component relies on it)
     if (!global.IntersectionObserver) {
@@ -39,7 +39,7 @@ export function initTestHelpers() {
   }
 }
 
-export function cleanup() {
+export function cleanup(): void {
   cleanupDOM();
   cleanupEnvVars();
 }

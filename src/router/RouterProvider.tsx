@@ -18,7 +18,7 @@ export default function RouterProvider({
   makePage: (
     optionsOverride?: Partial<ExtendedOptions>
   ) => Promise<MakePageResult>;
-}) {
+}): JSX.Element {
   const isMounted = useMountedState();
   const previousRouteRef = useRef(pageObject.route);
 

@@ -90,13 +90,13 @@ export function loadBaseEnvironment({
 }: {
   nextRoot: string;
   dotenvFile?: string;
-}) {
+}): void {
   const dotenv = loadDotFile({ nextRoot, dotenvFile });
   baseEnvVars = { ...dotenv, ...process.env };
   process.env = baseEnvVars;
 }
 
-export function cleanupEnvVars() {
+export function cleanupEnvVars(): void {
   if (process.env !== originalEnvVars) {
     process.env = originalEnvVars;
   }
