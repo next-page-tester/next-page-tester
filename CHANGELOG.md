@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.26.1
+
+### Bugfix
+
+- Pass custom app props to `App`
+
 ## 0.26.0
 
 ### Refactor
