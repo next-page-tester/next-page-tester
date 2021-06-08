@@ -120,6 +120,7 @@ export default async function getPage({
     pageObject,
     wrapWithRouter,
     pageProps: pageData.props,
+    appProps: pageData.appProps,
   });
 
   const clientPageElement = wrapWithRouter(
@@ -127,6 +128,7 @@ export default async function getPage({
       options: { ...options, env: RuntimeEnvironment.CLIENT },
       pageObject,
       pageProps: pageData.props,
+      appProps: pageData.appProps,
     })
   );
 

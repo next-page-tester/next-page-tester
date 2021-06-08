@@ -87,6 +87,7 @@ export type PageProps = {
 
 export type PageData<P extends PageProps = PageProps> = {
   props?: P;
+  appProps?: P;
   redirect?: Redirect;
   notFound?: true;
 };
