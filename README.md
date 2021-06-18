@@ -167,11 +167,12 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 
 `next-page-tester` focuses on supporting only the last version of Next.js and Jest:
 
-| next-page-tester  | next.js            |
-| ----------------- | ------------------ |
-| v0.1.0 -> v0.7.0  | v9.X.X             |
-| v0.8.0 -> v0.22.0 | v10.0.0 -> v10.0.7 |
-| v0.23.0 +         | v10.0.8 +          |
+| next-page-tester   | next.js            | Jest    |
+| ------------------ | ------------------ | ------- |
+| v0.1.0 -> v0.7.0   | v9.X.X             | v26.X.X |
+| v0.8.0 -> v0.22.0  | v10.0.0 -> v10.0.7 | v26.X.X |
+| v0.23.0 -> v0.25.X | v10.0.8 +          | v26.X.X |
+| v0.26.0 +          | v10.0.8 +          | v27.X.X |
 
 ## FAQ
 
@@ -278,7 +279,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- prettier-ignore-start -->
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
- 
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- prettier-ignore-end -->
 
