@@ -147,7 +147,7 @@ cross-env NPT_SKIP_AUTO_SETUP=true jest
 
 ### Optional: patching Jest v26
 
-I using **Jest v26** you might need to [patch it](./docs/patching-jest-v26.md) in order to load modules with [proper server/client environments](#73). Maintenance efforts will target latest Jest version.
+If using **Jest v26** you might need to [patch it](./docs/patching-jest-v26.md) in order to load modules with [proper server/client environments](#73). Maintenance efforts will target latest Jest version.
 
 ## Examples
 
