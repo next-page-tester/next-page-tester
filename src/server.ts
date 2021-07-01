@@ -1,3 +1,5 @@
+import fetch from 'cross-fetch';
+
 import { RuntimeEnvironment } from './constants';
 import setNextRuntimeConfig from './setNextRuntimeConfig';
 import { setEnvVars } from './setEnvVars';
@@ -5,6 +7,8 @@ import { setEnvVars } from './setEnvVars';
 function hideBrowserEnv(): () => void {
   const tmpWindow = global.window;
   const tmpDocument = global.document;
+  const tmpFetch = global.fetch;
+  global.fetch = tmpFetch || fetch;
 
   // @ts-expect-error its okay
   delete global.window;
@@ -16,6 +20,8 @@ function hideBrowserEnv(): () => void {
   return () => {
     global.window = tmpWindow;
     global.document = tmpDocument;
+    global.fetch = tmpFetch;
+
     setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.CLIENT });
     setEnvVars({ runtimeEnv: RuntimeEnvironment.CLIENT });
   };
