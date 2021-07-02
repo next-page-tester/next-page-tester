@@ -5,17 +5,21 @@ import { setEnvVars } from './setEnvVars';
 function hideBrowserEnv(): () => void {
   const tmpWindow = global.window;
   const tmpDocument = global.document;
+  const tmpNavigator = global.navigator;
 
   // @ts-expect-error its okay
   delete global.window;
   // @ts-expect-error its okay
   delete global.document;
+  // @ts-expect-error its okay
+  delete global.navigator;
   setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.SERVER });
   setEnvVars({ runtimeEnv: RuntimeEnvironment.SERVER });
 
   return () => {
     global.window = tmpWindow;
     global.document = tmpDocument;
+    global.navigator = tmpNavigator;
     setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.CLIENT });
     setEnvVars({ runtimeEnv: RuntimeEnvironment.CLIENT });
   };
