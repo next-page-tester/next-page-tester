@@ -6,14 +6,12 @@ import { getNextConfig } from './nextConfig';
 import { RuntimeEnvironment } from './constants';
 
 const { SERVER, CLIENT } = RuntimeEnvironment;
-
 type EnvVars = Record<string, string | undefined>;
-
 type ScopedEnvVars = Record<RuntimeEnvironment, EnvVars>;
 
 const CLIENT_PASSTHROUGH_VARS = new Set(['NODE_ENV']);
 
-function scopeEnvVarsByEnvironment(vars: EnvVars): ScopedEnvVars {
+function getEnvVarsByEnvironment(vars: EnvVars): ScopedEnvVars {
   const serverVars = { ...vars };
   const clientVars = { ...vars };
   for (const varName in vars) {
@@ -21,11 +19,11 @@ function scopeEnvVarsByEnvironment(vars: EnvVars): ScopedEnvVars {
       continue;
     }
 
-    if (!varName.startsWith('NEXT_PUBLIC_')) {
+    // @NOTE __NEXT_* vars are used internally by Next.js
+    if (!varName.startsWith('NEXT_PUBLIC_') && !varName.startsWith('__NEXT')) {
       delete clientVars[varName];
     }
   }
-
   return { [SERVER]: serverVars, [CLIENT]: clientVars };
 }
 
@@ -79,7 +77,7 @@ export function setEnvVars({
   // Runtime and dotfile env vars are scoped by environment (via NEXT_PUBLIC_ prefix),
   // while env vars coming from next.config.js are available in both environments
   process.env = {
-    ...scopeEnvVarsByEnvironment(baseEnvVars)[runtimeEnv],
+    ...getEnvVarsByEnvironment(baseEnvVars)[runtimeEnv],
     ...envVarsFromConfig,
   };
 }

@@ -15,6 +15,7 @@ import {
   defaultNextRoot,
   findPagesDirectory,
   getPageExtensions,
+  setNextImageConfiguration,
 } from './utils';
 import {
   Options,
@@ -69,6 +70,7 @@ export default async function getPage({
   loadBaseEnvironment({ nextRoot, dotenvFile });
   await loadNextConfig({ nextRoot });
   setNextRuntimeConfig({ runtimeEnv: RuntimeEnvironment.CLIENT });
+  setNextImageConfiguration();
   setEnvVars({ runtimeEnv: RuntimeEnvironment.CLIENT });
 
   const options: ExtendedOptions = {

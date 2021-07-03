@@ -200,3 +200,20 @@ export async function glob(pattern: string): Promise<string[]> {
   const paths = await tinyGlob(normalizePath(pattern), { absolute: true });
   return paths.map((path) => normalizePath(path));
 }
+
+/**
+ * Set next/image configuration as implemented in:
+ * https://github.com/vercel/next.js/blob/v11.0.1/packages/next/client/image.tsx#L125
+ */
+export function setNextImageConfiguration(): void {
+  const config = getNextConfig();
+
+  // @ts-expect-error this is how Next.js seems to do
+  process.env.__NEXT_IMAGE_OPTS = {
+    deviceSizes: config.images.deviceSizes,
+    imageSizes: config.images.imageSizes,
+    path: config.images.path,
+    loader: config.images.loader,
+    domains: config.images.domains,
+  };
+}

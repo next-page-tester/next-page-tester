@@ -10,10 +10,11 @@ describe('next/image', () => {
     });
     render();
 
-    const localImage = screen.getByTitle('Local image');
-    const remoteImage = screen.getByTitle('Remote image');
+    // @NOTE next/image renders multiple img elements
+    const localImage = screen.getAllByTitle('Local image');
+    const remoteImage = screen.getAllByTitle('Remote image');
 
-    expect(localImage).toBeInTheDocument();
-    expect(remoteImage).toBeInTheDocument();
+    expect(localImage.length).toBeGreaterThan(0);
+    expect(remoteImage.length).toBeGreaterThan(0);
   });
 });
