@@ -35,10 +35,13 @@ describe('Global object', () => {
           ).toEqual({
             importTime_document: false,
             importTime_window: false,
-            gip_runTime_window: false,
+            importTime_navigator: false,
             gip_runTime_document: false,
-            component_runTime_window: false,
+            gip_runTime_window: false,
+            gip_runTime_navigator: false,
             component_runTime_document: false,
+            component_runTime_window: false,
+            component_runTime_navigator: false,
           });
         });
       }

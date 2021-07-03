@@ -10,35 +10,47 @@ const expectedGlobals = {
   server: {
     component_importTime_window: false,
     component_importTime_document: false,
+    component_importTime_navigator: false,
     component_runTime_window: false,
     component_runTime_document: false,
+    component_runTime_navigator: false,
 
     gip_importTime_window: false,
     gip_importTime_document: false,
+    gip_importTime_navigator: false,
     gip_runTime_window: false,
     gip_runTime_document: false,
+    gip_runTime_navigator: false,
   },
   initial: {
     component_importTime_window: true,
     component_importTime_document: true,
+    component_importTime_navigator: true,
     component_runTime_window: true,
     component_runTime_document: true,
+    component_runTime_navigator: true,
 
     gip_importTime_window: false,
     gip_importTime_document: false,
+    gip_importTime_navigator: false,
     gip_runTime_window: false,
     gip_runTime_document: false,
+    gip_runTime_navigator: false,
   },
   client: {
     component_importTime_window: true,
     component_importTime_document: true,
+    component_importTime_navigator: true,
     component_runTime_window: true,
     component_runTime_document: true,
+    component_runTime_navigator: true,
 
     gip_importTime_window: true,
     gip_importTime_document: true,
+    gip_importTime_navigator: true,
     gip_runTime_window: true,
     gip_runTime_document: true,
+    gip_runTime_navigator: true,
   },
 };
 
