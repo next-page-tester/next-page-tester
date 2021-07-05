@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.27.0
+
+### Feature
+
+- Support `next/image` external hostname
+- Hide global navigator in server environment
+
 ## 0.26.1
 
 ### Bugfix
