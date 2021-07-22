@@ -285,8 +285,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
-[ci]: https://travis-ci.com/toomuchdesign/next-page-tester
-[ci-badge]: https://travis-ci.com/toomuchdesign/next-page-tester.svg?branch=master
+[ci]: https://github.com/toomuchdesign/next-page-tester/actions/workflows/ci.yml
+[ci-badge]: https://github.com/toomuchdesign/next-page-tester/actions/workflows/ci.yml/badge.svg
 [npm]: https://www.npmjs.com/package/next-page-tester
 [npm-badge]: https://img.shields.io/npm/v/next-page-tester.svg
 [coveralls-badge]: https://coveralls.io/repos/github/toomuchdesign/next-page-tester/badge.svg?branch=master
