@@ -115,11 +115,11 @@ const predefinedSharedModules = [
 ];
 
 function preserveJestSharedModulesIdentity(modules: string[]): void {
-  for (const moduleName of modules) {
+  for (const mockModuleName of modules) {
     // @NOTE for some reason Jest needs us to pre-import the modules
     // we want to require with jest.requireActual
-    require(moduleName);
-    jest.mock(moduleName, () => jest.requireActual(moduleName));
+    require(mockModuleName);
+    jest.mock(mockModuleName, () => jest.requireActual(mockModuleName));
   }
 }
 
@@ -143,7 +143,7 @@ export function executeWithFreshModules<T>(
     // @ts-expect-error result is surely defined here
     return result;
   }
-  // @NOTE this branch will never be execute by Jest
+  // @NOTE this branch will never be executed by Jest
   else {
     return stealthyRequire(
       require.cache,
