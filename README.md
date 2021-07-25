@@ -269,6 +269,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/vlad-elagin"><img src="https://avatars.githubusercontent.com/u/28232030?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Vlad Elagin</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/commits?author=vlad-elagin" title="Documentation">📖</a></td>
     <td align="center"><a href="http://evocateur.org/"><img src="https://avatars.githubusercontent.com/u/5605?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Daniel Stockman</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/commits?author=evocateur" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/madeuz"><img src="https://avatars.githubusercontent.com/u/9444169?v=4?s=100" width="100px;" alt=""/><br /><sub><b>madeuz</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/commits?author=madeuz" title="Code">💻</a></td>
+    <td align="center"><a href="https://medium.com/@DoctorDerek"><img src="https://avatars.githubusercontent.com/u/761231?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dr. Derek Austin</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3ADoctorDerek" title="Bug reports">🐛</a> <a href="https://github.com/toomuchdesign/next-page-tester/commits?author=DoctorDerek" title="Code">💻</a></td>
   </tr>
 </table>
 
@@ -279,7 +280,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- prettier-ignore-start -->
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
-
+ 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- prettier-ignore-end -->
 
