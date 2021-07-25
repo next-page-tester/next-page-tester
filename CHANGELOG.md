@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.27.1
+
+### Bugfix
+
+- Silence `jest.mock` error by renaming `moduleName` -> `mockModuleName`
+
 ## 0.27.0
 
 ### Feature
