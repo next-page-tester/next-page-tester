@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.27.2
+
+### Bugfix
+
+- Extend peerDependencies to include Next.js v11
+
 ## 0.27.1
 
 ### Bugfix
