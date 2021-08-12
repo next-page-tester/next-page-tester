@@ -76,6 +76,8 @@ export function setEnvVars({
   const { env: envVarsFromConfig } = getNextConfig();
   // Runtime and dotfile env vars are scoped by environment (via NEXT_PUBLIC_ prefix),
   // while env vars coming from next.config.js are available in both environments
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore NODE_ENV expected, but we are passing it so its okay
   process.env = {
     ...getEnvVarsByEnvironment(baseEnvVars)[runtimeEnv],
     ...envVarsFromConfig,

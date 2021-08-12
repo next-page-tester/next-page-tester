@@ -8,7 +8,7 @@ import type {
 import type { NextRouter } from 'next/router';
 import type { createResponse, createRequest } from 'node-mocks-http';
 import type { ParsedUrlQuery } from 'querystring';
-import type { DocumentType, Enhancer } from 'next/dist/next-server/lib/utils';
+import type { DocumentType, Enhancer } from 'next/dist/shared/lib/utils';
 import { RuntimeEnvironment } from './constants';
 import DefaultError from 'next/error';
 import DefaultApp from './_app/DefaultApp';

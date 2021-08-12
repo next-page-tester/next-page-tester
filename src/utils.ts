@@ -9,7 +9,7 @@ import tinyGlob from 'tiny-glob';
 import normalizePath from 'normalize-path';
 import { getNextConfig } from './nextConfig';
 import { InternalError } from './_error';
-import { normalizeLocalePath } from 'next/dist/next-server/lib/i18n/normalize-locale-path';
+import { normalizeLocalePath } from 'next/dist/shared/lib/i18n/normalize-locale-path';
 import type { PageObject } from './commonTypes';
 
 export function parseRoute({
@@ -109,9 +109,9 @@ export function useMountedState(): () => boolean {
 // mark them as such in testHelpers.
 const predefinedSharedModules = [
   'react',
-  'next/dist/next-server/lib/head-manager-context',
-  'next/dist/next-server/lib/router-context',
-  'next/dist/next-server/lib/runtime-config',
+  'next/dist/shared/lib/head-manager-context',
+  'next/dist/shared/lib/router-context',
+  'next/dist/shared/lib/runtime-config',
 ];
 
 function preserveJestSharedModulesIdentity(modules: string[]): void {
@@ -210,10 +210,10 @@ export function setNextImageConfiguration(): void {
 
   // @ts-expect-error this is how Next.js seems to do
   process.env.__NEXT_IMAGE_OPTS = {
-    deviceSizes: config.images.deviceSizes,
-    imageSizes: config.images.imageSizes,
-    path: config.images.path,
-    loader: config.images.loader,
-    domains: config.images.domains,
+    deviceSizes: config.images?.deviceSizes,
+    imageSizes: config.images?.imageSizes,
+    path: config.images?.path,
+    loader: config.images?.loader,
+    domains: config.images?.domains,
   };
 }

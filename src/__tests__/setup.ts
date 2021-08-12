@@ -10,3 +10,5 @@ afterEach(() => {
     });
   }
 });
+
+jest.setTimeout(15000);

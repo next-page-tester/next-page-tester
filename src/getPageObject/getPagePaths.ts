@@ -2,7 +2,7 @@ import path from 'path';
 import { glob } from '../utils';
 import normalizePath from 'normalize-path';
 
-import { getSortedRoutes } from 'next/dist/next-server/lib/router/utils/sorted-routes';
+import { getSortedRoutes } from 'next/dist/shared/lib/router/utils/sorted-routes';
 import type { ExtendedOptions } from '../commonTypes';
 
 // Returns available page paths without file extension

@@ -1,5 +1,5 @@
-import loadConfig, { NextConfig } from 'next/dist/next-server/server/config';
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
+import loadConfig, { NextConfig } from 'next/dist/server/config';
 import { InternalError } from './_error';
 
 /*
