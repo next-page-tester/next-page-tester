@@ -203,7 +203,7 @@ export async function glob(pattern: string): Promise<string[]> {
 
 /**
  * Set next/image configuration as implemented in:
- * https://github.com/vercel/next.js/blob/v11.0.1/packages/next/client/image.tsx#L125
+ * https://github.com/vercel/next.js/blob/v11.1.0/packages/next/client/image.tsx#L107
  */
 export function setNextImageConfiguration(): void {
   const config = getNextConfig();

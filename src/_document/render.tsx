@@ -21,6 +21,7 @@ import {
 
 // Copied from next.js
 // https://github.com/vercel/next.js/blob/b944b06f30322076ceb9020c10cb9bf3448d2659/packages/next/next-server/server/render.tsx#L127
+// Now in: https://github.com/vercel/next.js/blob/v11.1.0/packages/next/server/render.tsx#L138
 function enhanceComponents(
   options: ComponentsEnhancer,
   App: NextApp,
@@ -94,6 +95,7 @@ export default async function serverRenderDocument({
       const html = renderToString(
         // @NOTE: implemented from:
         // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/next-server/server/render.tsx#L561
+        // Now in: https://github.com/vercel/next.js/blob/v11.1.0/packages/next/server/render.tsx#L639
         <HeadManagerContext.Provider
           value={{
             updateHead: (state) => {
