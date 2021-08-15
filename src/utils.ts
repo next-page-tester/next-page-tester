@@ -10,6 +10,7 @@ import normalizePath from 'normalize-path';
 import { getNextConfig } from './nextConfig';
 import { InternalError } from './_error';
 import { normalizeLocalePath } from 'next/dist/shared/lib/i18n/normalize-locale-path';
+import { ImageConfig, imageConfigDefault } from 'next/dist/server/image-config';
 import type { PageObject } from './commonTypes';
 
 export function parseRoute({
@@ -207,13 +208,17 @@ export async function glob(pattern: string): Promise<string[]> {
  */
 export function setNextImageConfiguration(): void {
   const config = getNextConfig();
+  // @NOTE config.images is optional according to types but a default is always provided
+  const imageConfig: ImageConfig = config.images
+    ? {
+        deviceSizes: config.images.deviceSizes,
+        imageSizes: config.images.imageSizes,
+        path: config.images.path,
+        loader: config.images.loader,
+        domains: config.images.domains,
+      }
+    : /* istanbul ignore next */ imageConfigDefault;
 
   // @ts-expect-error this is how Next.js seems to do
-  process.env.__NEXT_IMAGE_OPTS = {
-    deviceSizes: config.images?.deviceSizes,
-    imageSizes: config.images?.imageSizes,
-    path: config.images?.path,
-    loader: config.images?.loader,
-    domains: config.images?.domains,
-  };
+  process.env.__NEXT_IMAGE_OPTS = imageConfig;
 }

@@ -14,10 +14,11 @@ try {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const configUtils = require('next/dist/server/config-utils');
   /* istanbul ignore next */
-  if (configUtils?.loadWebpackHook) {
+  if (configUtils && configUtils.loadWebpackHook) {
     configUtils.loadWebpackHook = () => {};
   }
 } catch (e) {
+  /* istanbul ignore next */
   console.warn(
     `[next-page-tester] Can't find Next.js "loadWebpackHook". This might be due to a Next.js internal change. Tests might become sensibly slower.`
   );
