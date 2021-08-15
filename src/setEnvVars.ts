@@ -6,12 +6,11 @@ import { getNextConfig } from './nextConfig';
 import { RuntimeEnvironment } from './constants';
 
 const { SERVER, CLIENT } = RuntimeEnvironment;
-type EnvVars = Record<string, string | undefined>;
-type ScopedEnvVars = Record<RuntimeEnvironment, EnvVars>;
+type ScopedEnvVars = Record<RuntimeEnvironment, NodeJS.ProcessEnv>;
 
 const CLIENT_PASSTHROUGH_VARS = new Set(['NODE_ENV']);
 
-function getEnvVarsByEnvironment(vars: EnvVars): ScopedEnvVars {
+function getEnvVarsByEnvironment(vars: NodeJS.ProcessEnv): ScopedEnvVars {
   const serverVars = { ...vars };
   const clientVars = { ...vars };
   for (const varName in vars) {
@@ -38,7 +37,7 @@ function loadDotFile({
 }: {
   nextRoot: string;
   dotenvFile?: string;
-}): EnvVars {
+}): Record<string, string | undefined> {
   if (!dotenvFileRelativePath) {
     return {};
   }
@@ -76,8 +75,6 @@ export function setEnvVars({
   const { env: envVarsFromConfig } = getNextConfig();
   // Runtime and dotfile env vars are scoped by environment (via NEXT_PUBLIC_ prefix),
   // while env vars coming from next.config.js are available in both environments
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore NODE_ENV expected, but we are passing it so its okay
   process.env = {
     ...getEnvVarsByEnvironment(baseEnvVars)[runtimeEnv],
     ...envVarsFromConfig,
