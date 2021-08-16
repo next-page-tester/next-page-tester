@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { RouterContext } from 'next/dist/next-server/lib/router-context';
-import { formatUrl } from 'next/dist/next-server/lib/router/utils/format-url';
+import { RouterContext } from 'next/dist/shared/lib/router-context';
+import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
 import makeRouterMock, { PushHandler } from './makeRouterMock';
 import { useMountedState } from '../utils';
 import { ExtendedOptions, MakePageResult, PageObject } from '../commonTypes';

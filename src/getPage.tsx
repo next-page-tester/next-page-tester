@@ -7,7 +7,7 @@ import { RouterProvider } from './router';
 import { serverRenderDocument } from './_document';
 import { renderApp } from './_app';
 import initHeadManager from 'next/dist/client/head-manager';
-import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
+import { HeadManagerContext } from 'next/dist/shared/lib/head-manager-context';
 import { loadNextConfig } from './nextConfig';
 import setNextRuntimeConfig from './setNextRuntimeConfig';
 import { loadBaseEnvironment, setEnvVars } from './setEnvVars';

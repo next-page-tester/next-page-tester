@@ -34,6 +34,7 @@ describe('Blog page', () => {
 - [Options](#options)
 - [Setting up your dev environment](#setting-up-your-dev-environment)
 - [Examples](#examples)
+- [Next.js versions support](#nextjs-versions-support)
 - [FAQ](#faq)
 
 ## What
@@ -153,6 +154,27 @@ If using **Jest v26** you might need to [patch it](./docs/patching-jest-v26.md) 
 
 Under [examples folder][examples-folder] we're documenting the testing cases which `next-page-tester` enables.
 
+## Next.js versions support
+
+`next-page-tester` focuses on supporting only the last version of Next.js and Jest:
+
+| next-page-tester   | next.js            | Jest    |
+| ------------------ | ------------------ | ------- |
+| v0.1.0 -> v0.7.0   | v9.X.X             | v26.X.X |
+| v0.8.0 -> v0.22.0  | v10.0.0 -> v10.0.7 |         |
+| v0.23.0 -> v0.25.X | v10.0.8 -> v11.0.X |         |
+| v0.26.0 -> v0.27.X | v10.0.8 -> v11.0.X | v27.X.X |
+| v0.28.0 +          | v11.1.0 +          |         |
+
+Since:
+
+- this project is not supported by Next.js team
+- this project relies on a few Next.js internals which can change without notice in any version
+
+please note that we cannot guarantee support for future versions of Next.js out of the box. Even patch or minor versions could break. In this case you'll have to wait for a new `next-page-tester` version to be released.
+
+Contributions are very welcome and we do our best to support external contributors.
+
 ## Notes
 
 - Data fetching methods' context `req` and `res` objects are mocked with [node-mocks-http][node-mocks-http]
@@ -162,17 +184,6 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 ### Experimental `useDocument` option
 
 `useDocument` option is partially implemented and might be unstable.
-
-### Next.js versions support
-
-`next-page-tester` focuses on supporting only the last version of Next.js and Jest:
-
-| next-page-tester   | next.js            | Jest    |
-| ------------------ | ------------------ | ------- |
-| v0.1.0 -> v0.7.0   | v9.X.X             | v26.X.X |
-| v0.8.0 -> v0.22.0  | v10.0.0 -> v10.0.7 | v26.X.X |
-| v0.23.0 -> v0.25.X | v10.0.8 +          | v26.X.X |
-| v0.26.0 +          | v10.0.8 +          | v27.X.X |
 
 ## FAQ
 
@@ -280,7 +291,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- prettier-ignore-start -->
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
- 
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- prettier-ignore-end -->
 

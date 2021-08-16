@@ -1,4 +1,4 @@
-import { setConfig } from 'next/dist/next-server/lib/runtime-config';
+import { setConfig } from 'next/dist/shared/lib/runtime-config';
 import { RuntimeEnvironment } from './constants';
 import { getNextConfig } from './nextConfig';
 
