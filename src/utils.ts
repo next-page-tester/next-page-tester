@@ -9,7 +9,8 @@ import tinyGlob from 'tiny-glob';
 import normalizePath from 'normalize-path';
 import { getNextConfig } from './nextConfig';
 import { InternalError } from './_error';
-import { normalizeLocalePath } from 'next/dist/next-server/lib/i18n/normalize-locale-path';
+import { normalizeLocalePath } from 'next/dist/shared/lib/i18n/normalize-locale-path';
+import { ImageConfig, imageConfigDefault } from 'next/dist/server/image-config';
 import type { PageObject } from './commonTypes';
 
 export function parseRoute({
@@ -109,9 +110,9 @@ export function useMountedState(): () => boolean {
 // mark them as such in testHelpers.
 const predefinedSharedModules = [
   'react',
-  'next/dist/next-server/lib/head-manager-context',
-  'next/dist/next-server/lib/router-context',
-  'next/dist/next-server/lib/runtime-config',
+  'next/dist/shared/lib/head-manager-context',
+  'next/dist/shared/lib/router-context',
+  'next/dist/shared/lib/runtime-config',
 ];
 
 function preserveJestSharedModulesIdentity(modules: string[]): void {
@@ -203,17 +204,21 @@ export async function glob(pattern: string): Promise<string[]> {
 
 /**
  * Set next/image configuration as implemented in:
- * https://github.com/vercel/next.js/blob/v11.0.1/packages/next/client/image.tsx#L125
+ * https://github.com/vercel/next.js/blob/v11.1.0/packages/next/client/image.tsx#L107
  */
 export function setNextImageConfiguration(): void {
   const config = getNextConfig();
+  // @NOTE config.images is optional according to types but a default is always provided
+  const imageConfig: ImageConfig = config.images
+    ? {
+        deviceSizes: config.images.deviceSizes,
+        imageSizes: config.images.imageSizes,
+        path: config.images.path,
+        loader: config.images.loader,
+        domains: config.images.domains,
+      }
+    : /* istanbul ignore next */ imageConfigDefault;
 
   // @ts-expect-error this is how Next.js seems to do
-  process.env.__NEXT_IMAGE_OPTS = {
-    deviceSizes: config.images.deviceSizes,
-    imageSizes: config.images.imageSizes,
-    path: config.images.path,
-    loader: config.images.loader,
-    domains: config.images.domains,
-  };
+  process.env.__NEXT_IMAGE_OPTS = imageConfig;
 }

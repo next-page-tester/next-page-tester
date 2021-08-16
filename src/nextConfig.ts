@@ -1,10 +1,10 @@
-import loadConfig, { NextConfig } from 'next/dist/next-server/server/config';
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
+import loadConfig, { NextConfig } from 'next/dist/server/config';
 import { InternalError } from './_error';
 
 /*
  * @HACK: `loadConfig` bootstraps Webpack in:
- * https://github.com/vercel/next.js/blob/v10.0.8/packages/next/next-server/server/config.ts#L397
+ * https://github.com/vercel/next.js/blob/v11.1.0/packages/next/server/config.ts#L451
  * making execution times at least x4 slower.
  * Here we mock out "loadWebpackHook" called by `loadConfig`
  *
@@ -12,12 +12,17 @@ import { InternalError } from './_error';
  */
 try {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const configUtils = require('next/dist/next-server/server/config-utils');
+  const configUtils = require('next/dist/server/config-utils');
   /* istanbul ignore next */
   if (configUtils && configUtils.loadWebpackHook) {
     configUtils.loadWebpackHook = () => {};
   }
-} catch (e) {} // eslint-disable-line no-empty
+} catch (e) {
+  /* istanbul ignore next */
+  console.warn(
+    `[next-page-tester] Can't find Next.js "loadWebpackHook". This might be due to a Next.js internal change. Tests might become sensibly slower.`
+  );
+}
 
 let nextConfig: NextConfig;
 export async function loadNextConfig({

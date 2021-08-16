@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import localImage from '../150.png';
+import localImage from '../../150.png';
 
 export default function NextImagePage() {
   return (

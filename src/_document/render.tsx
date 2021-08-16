@@ -7,20 +7,21 @@ import type {
   PageProps,
   NextApp,
 } from '../commonTypes';
-import type {
-  ComponentsEnhancer,
-  NextComponentType,
-  RenderPage,
-} from 'next/dist/next-server/lib/utils';
 import { APP_PATH, NEXT_ROOT_ELEMENT_ID } from '../constants';
 import { renderToString } from 'react-dom/server';
-import { HeadManagerContext } from 'next/dist/next-server/lib/head-manager-context';
+import { HeadManagerContext } from 'next/dist/shared/lib/head-manager-context';
 import type { DocumentProps } from 'next/document';
 import { renderEnhancedApp } from '../_app';
 import { executeAsIfOnServer } from '../server';
+import {
+  RenderPage,
+  ComponentsEnhancer,
+  NextComponentType,
+} from 'next/dist/shared/lib/utils';
 
 // Copied from next.js
 // https://github.com/vercel/next.js/blob/b944b06f30322076ceb9020c10cb9bf3448d2659/packages/next/next-server/server/render.tsx#L127
+// Now in: https://github.com/vercel/next.js/blob/v11.1.0/packages/next/server/render.tsx#L138
 function enhanceComponents(
   options: ComponentsEnhancer,
   App: NextApp,
@@ -94,6 +95,7 @@ export default async function serverRenderDocument({
       const html = renderToString(
         // @NOTE: implemented from:
         // https://github.com/vercel/next.js/blob/v10.0.3/packages/next/next-server/server/render.tsx#L561
+        // Now in: https://github.com/vercel/next.js/blob/v11.1.0/packages/next/server/render.tsx#L639
         <HeadManagerContext.Provider
           value={{
             updateHead: (state) => {
