@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.28.0
+
+### Breaking Changes
+
+- Support Next v11.1.0+
+
 ## 0.27.2
 
 ### Bugfix
