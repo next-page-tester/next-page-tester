@@ -91,7 +91,7 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@types/express": "^4.17.12",
+    "@types/express": "^4.17.13",
     "cookie": "^0.4.1",
     "dotenv": "^8.2.0",
     "dotenv-expand": "^5.1.0",
