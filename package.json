@@ -86,7 +86,7 @@
     "react-dom": "^17.0.2",
     "react-hook-form": "^6.15.8",
     "styletron-engine-atomic": "^1.4.8",
-    "styletron-react": "^5.2.7",
+    "styletron-react": "^6.0.0",
     "ts-jest": "^27.0.3",
     "typescript": "^4.4.2"
   },
