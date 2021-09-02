@@ -51,11 +51,16 @@ export function getPageFileIfExists<FileType>({
 
   try {
     return loadFile({ absolutePath });
-  } catch (e) {
-    const internalError = new InternalError(
-      `Failed to load "${pagePath}" file due to ${e.name}: ${e.message}`
-    );
-    internalError.stack = e.stack;
-    throw internalError;
+  } catch (e: unknown) {
+    /* istanbul ignore else */
+    if (e instanceof Error) {
+      const internalError = new InternalError(
+        `Failed to load "${pagePath}" file due to ${e.name}: ${e.message}`
+      );
+      internalError.stack = e.stack;
+      throw internalError;
+    } else {
+      throw new InternalError(`Failed to load "${pagePath}"`);
+    }
   }
 }
