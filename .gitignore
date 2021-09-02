@@ -12,6 +12,7 @@ dist/
 !.editorconfig
 !.gitignore
 !.npmrc
+!.nvmrc
 !.prettierignore
 !.prettierrc
 !.github
