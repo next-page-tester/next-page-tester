@@ -1,7 +1,7 @@
 import { getPage } from '../../../../src';
 import { screen } from '@testing-library/react';
 
-describe.skip('aws-amplify', () => {
+describe('aws-amplify', () => {
   it('should work on server', async () => {
     const error = jest.spyOn(console, 'error').mockImplementationOnce(() => {});
     const { render } = await getPage({
