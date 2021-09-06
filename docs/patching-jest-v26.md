@@ -1,6 +1,6 @@
 # Patching Jest v26
 
-If you are using Jest v26, you might need to it in order to load modules with [proper server/client environments](#73). _Don't do this until you actually encounter issues_.
+If you are using Jest v26, you might need to patch it in order to load modules with [proper server/client environments](#73). _Don't do this until you actually encounter issues_.
 
 1. Install [`patch-package`](https://github.com/ds300/patch-package#set-up) and follow its setup instructions
 2. If using the last version of `jest` (`26.6.3`), copy [this `patches` folder ](../patches) to your project root and run `npx patch-package` or `yarn patch-package`.
