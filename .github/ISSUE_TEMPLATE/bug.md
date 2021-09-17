@@ -10,7 +10,9 @@ A clear and concise description of what the bug is.
 
 ## Reproduction
 
-Please provide a link to a minimal GitHub repo reproducing the issue _(we won't be able to provide support otherwise)_.
+Please provide a link to a minimal GitHub repo reproducing the issue or updating tests with relevant failing case.
+
+We won't be able to provide support otherwise [for this reasons](https://gist.github.com/Rich-Harris/88c5fc2ac6dc941b22e7996af05d70ff).
 
 ## Expected behavior
 
