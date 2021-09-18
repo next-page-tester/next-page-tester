@@ -27,8 +27,12 @@ jobs:
         env:
           HUSKY_SKIP_INSTALL: 1
 
-      - name: Upload code coverage
+  finish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload code coverage to Coveralls
         uses: coverallsapp/github-action@master
-        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '16.x'
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.github_token }}
+          parallel-finished: true
