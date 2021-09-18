@@ -12,7 +12,7 @@
     "clean": "rm -rf dist",
     "compile": "npm run clean && tsc -p tsconfig.build.json",
     "test": "jest ./src",
-    "test:source": "npm run test:format && npm run test:ts && npm t -- --coverage",
+    "test:source": "npm run test:format && npm run test:ts && npm t -- --coverage --runInBand",
     "test:dist": "jest ./src --config ./jest/dist.config.js",
     "test:published": "jest ./src --config ./jest/published.config.js",
     "test:ts": "tsc --noEmit",
