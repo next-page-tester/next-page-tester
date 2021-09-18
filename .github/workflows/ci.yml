@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -27,12 +27,21 @@ jobs:
         env:
           HUSKY_SKIP_INSTALL: 1
 
-  finish:
-    needs: build
+      - uses: actions/upload-artifact@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          name: coverage-output
+          path: coverage
+
+  upload-coverage:
+    needs: build-and-test
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: coverage-output
+
       - name: Upload code coverage to Coveralls
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.github_token }}
-          parallel-finished: true
