@@ -14,7 +14,6 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier',
-    'prettier/react',
     'plugin:jest/recommended',
     'plugin:testing-library/react',
   ],
@@ -33,6 +32,7 @@ module.exports = {
       'error',
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
     ],
+    'testing-library/render-result-naming-convention': 'off',
   },
   overrides: [
     {
