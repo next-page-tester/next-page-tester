@@ -2,14 +2,14 @@
  * @jest-environment node
  */
 import {
-  extractPagePathParamsType,
+  extractPagePathParamTypes,
   ROUTE_PARAMS_TYPES,
 } from '../parseMatchingRoute/utils';
 
-describe('extractPagePathParamsType', () => {
+describe('extractPagePathParamTypes', () => {
   describe('predefined routes', () => {
     it('gets expected regex', () => {
-      const actual = extractPagePathParamsType({ pagePath: '/index' });
+      const actual = extractPagePathParamTypes({ pagePath: '/index' });
       const expected = {};
       expect(actual).toEqual(expected);
     });
@@ -17,7 +17,7 @@ describe('extractPagePathParamsType', () => {
 
   describe('dynamic segments', () => {
     it('gets expected regex', () => {
-      const actual = extractPagePathParamsType({
+      const actual = extractPagePathParamTypes({
         pagePath: '/blog/[id]/[foo]/index',
       });
       const expected = {
@@ -30,7 +30,7 @@ describe('extractPagePathParamsType', () => {
 
   describe('catch all segments', () => {
     it('gets expected regex', () => {
-      const actual = extractPagePathParamsType({
+      const actual = extractPagePathParamTypes({
         pagePath: '/blog/[id]/[...foo]/index',
       });
       const expected = {
@@ -43,7 +43,7 @@ describe('extractPagePathParamsType', () => {
 
   describe('optional catch all segments', () => {
     it('gets expected regex', () => {
-      const actual = extractPagePathParamsType({
+      const actual = extractPagePathParamTypes({
         pagePath: '/blog/[id]/[[...foo]]/index',
       });
       const expected = {

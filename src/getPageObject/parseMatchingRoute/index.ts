@@ -4,7 +4,7 @@ import { pagePathToRouteRegex, makeParamsObject } from './utils';
 import type { ExtendedOptions, PageParams } from '../../commonTypes';
 
 /**
- * Parse tested route against existing page paths
+ * Parse tested route against existing page paths.
  */
 export default async function parseMatchingRoute({
   options,
@@ -13,7 +13,6 @@ export default async function parseMatchingRoute({
 }): Promise<
   | {
       pagePath: string;
-      regexResult: RegExpMatchArray;
       params: PageParams;
     }
   | undefined
@@ -29,7 +28,6 @@ export default async function parseMatchingRoute({
     if (result) {
       return {
         pagePath,
-        regexResult: result,
         params: makeParamsObject({
           pagePath,
           routeRegexCaptureGroups: result.groups,

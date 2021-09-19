@@ -89,7 +89,7 @@ export function makeParamsObject({
   routeRegexCaptureGroups?: Record<string, string>;
 }) {
   const params = {} as PageParams;
-  const pagePathParams = extractPagePathParamsType({
+  const pagePathParams = extractPagePathParamTypes({
     pagePath,
   });
 
@@ -114,7 +114,7 @@ export function makeParamsObject({
 /**
  * Create an object listing the param types of a given Next.js page path.
  */
-export function extractPagePathParamsType({
+export function extractPagePathParamTypes({
   pagePath,
 }: {
   pagePath: string;
