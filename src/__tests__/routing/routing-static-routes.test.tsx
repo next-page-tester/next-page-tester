@@ -2,7 +2,7 @@ import React from 'react';
 import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
 import IndexPage from './__fixtures__/pages/index';
-import ParamIndexPage from './__fixtures__/pages/param/index';
+import BlogIndexPage from './__fixtures__/pages/blog/index';
 import { expectToBeDefault404Page } from '../__utils__';
 import { DOCUMENT_PATH } from '../../constants';
 
@@ -22,7 +22,7 @@ describe('Static routes', () => {
     it('renders 404 page', async () => {
       const { serverRender } = await getPage({
         nextRoot,
-        route: '/param/5/doesntexists',
+        route: '/blog/5/doesntexists',
       });
       const { nextRoot: actual } = serverRender();
       expectToBeDefault404Page(actual);
@@ -31,9 +31,9 @@ describe('Static routes', () => {
 
   describe('route with trailing slash', () => {
     it('redirect to their counterpart without a trailing slash', async () => {
-      const { render } = await getPage({ nextRoot, route: '/param/' });
+      const { render } = await getPage({ nextRoot, route: '/blog/' });
       const { nextRoot: actual } = render();
-      const { container: expected } = renderWithinNextRoot(<ParamIndexPage />);
+      const { container: expected } = renderWithinNextRoot(<BlogIndexPage />);
       expectDOMElementsToMatch(actual, expected);
     });
   });
@@ -51,9 +51,9 @@ describe('Static routes', () => {
 
   describe('index routes', () => {
     it('routes files named index to the root of the directory', async () => {
-      const { render } = await getPage({ nextRoot, route: '/param' });
+      const { render } = await getPage({ nextRoot, route: '/blog' });
       const { nextRoot: actual } = render();
-      const { container: expected } = renderWithinNextRoot(<ParamIndexPage />);
+      const { container: expected } = renderWithinNextRoot(<BlogIndexPage />);
       expectDOMElementsToMatch(actual, expected);
     });
 

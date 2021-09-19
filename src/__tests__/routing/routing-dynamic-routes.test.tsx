@@ -1,9 +1,8 @@
 import React from 'react';
 import { getPage } from '../../../src';
 import { expectDOMElementsToMatch, renderWithinNextRoot } from '../__utils__';
-import ParamPage from './__fixtures__/pages/param/[id]';
-import ParamPage99 from './__fixtures__/pages/param/99';
-import ParamPageWithDash from './__fixtures__/pages/param/with-dash/[param-with-dash]';
+import BlogPage from './__fixtures__/pages/blog/[id]';
+import BlogPage99 from './__fixtures__/pages/blog/99';
 import CatchAllPage from './__fixtures__/pages/catch-all/[id]/[...slug]';
 import OptionalCatchAllPage from './__fixtures__/pages/optional-catch-all/[id]/[[...slug]]';
 import { expectToBeDefault404Page } from '../__utils__';
@@ -15,11 +14,11 @@ describe('Dynamic routes', () => {
     it('gets expected page object', async () => {
       const { render } = await getPage({
         nextRoot,
-        route: '/param/5',
+        route: '/blog/5',
       });
       const { nextRoot: actual } = render();
       const { container: expected } = renderWithinNextRoot(
-        <ParamPage
+        <BlogPage
           routerMock={{
             query: {
               id: '5',
@@ -33,11 +32,11 @@ describe('Dynamic routes', () => {
     it('gets expected page and router object', async () => {
       const { render } = await getPage({
         nextRoot,
-        route: '/param/5?foo=bar',
+        route: '/blog/5?foo=bar',
       });
       const { nextRoot: actual } = render();
       const { container: expected } = renderWithinNextRoot(
-        <ParamPage
+        <BlogPage
           routerMock={{
             query: {
               id: '5',
@@ -52,22 +51,10 @@ describe('Dynamic routes', () => {
     it('predefined routes take precedence over dynamic', async () => {
       const { render } = await getPage({
         nextRoot,
-        route: '/param/99',
+        route: '/blog/99',
       });
       const { nextRoot: actual } = render();
-      const { container: expected } = renderWithinNextRoot(<ParamPage99 />);
-      expectDOMElementsToMatch(actual, expected);
-    });
-
-    it('handles param names with "-" (dash)', async () => {
-      const { render } = await getPage({
-        nextRoot,
-        route: '/param/with-dash/bar',
-      });
-      const { nextRoot: actual } = render();
-      const { container: expected } = renderWithinNextRoot(
-        <ParamPageWithDash />
-      );
+      const { container: expected } = renderWithinNextRoot(<BlogPage99 />);
       expectDOMElementsToMatch(actual, expected);
     });
   });
