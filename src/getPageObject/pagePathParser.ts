@@ -27,7 +27,20 @@ function makeOptionalNamedCapturingGroup({ name, regex }: namedCapture) {
   return `${captureGroup}?`;
 }
 
-// Build a regex from a page path to catch its matching routes
+function encodeCaptureGroupName(string: string): string {
+  return '__encoded' + Buffer.from(string).toString('hex');
+}
+
+function decodeCaptureGroupName(string: string): string {
+  if (string.startsWith('__encoded')) {
+    return Buffer.from(string.replace(/^__encoded/, ''), 'hex').toString();
+  }
+  return string;
+}
+
+/**
+ * Build a regex from a page path to catch its matching routes
+ */
 export function pagePathToRouteRegex(pagePath: string): RegExp {
   // Special case for /index page which should match both "/" and "/index" pathnames
   if (pagePath === '/index') {
@@ -66,7 +79,9 @@ export enum ROUTE_PARAMS_TYPES {
   OPTIONAL_CATCH_ALL = 'optional_catch_all',
 }
 
-// Create an object listing the param types of a given Next.js page path.
+/**
+ * Create an object listing the param types of a given Next.js page path.
+ */
 export function extractPagePathParamsType({
   pagePath,
 }: {
