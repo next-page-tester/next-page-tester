@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { pagePathToRouteRegex } from '../pagePathParser';
+import { pagePathToRouteRegex } from '../parseMatchingRoute/utils';
 
 describe('pagePathToRouteRegex', () => {
   describe('predefined routes', () => {

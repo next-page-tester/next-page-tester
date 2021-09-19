@@ -1,3 +1,5 @@
+import type { PageParams } from '../../commonTypes';
+
 // [param]
 const DYNAMIC_ROUTE_SEGMENT_REGEX = /\[([^./[\]]*)\]/g;
 const DYNAMIC_PATH_SEGMENT_REGEX_STRING = '[^/?]*';
@@ -77,6 +79,36 @@ export enum ROUTE_PARAMS_TYPES {
   DYNAMIC = 'dynamic',
   CATCH_ALL = 'catch_all',
   OPTIONAL_CATCH_ALL = 'optional_catch_all',
+}
+
+export function makeParamsObject({
+  pagePath,
+  routeRegexCaptureGroups,
+}: {
+  pagePath: string;
+  routeRegexCaptureGroups?: Record<string, string>;
+}) {
+  const params = {} as PageParams;
+  const pagePathParams = extractPagePathParamsType({
+    pagePath,
+  });
+
+  if (routeRegexCaptureGroups) {
+    for (const [key, value] of Object.entries(routeRegexCaptureGroups)) {
+      if (value !== undefined) {
+        const paramType = pagePathParams[key];
+        if (
+          paramType === ROUTE_PARAMS_TYPES.CATCH_ALL ||
+          paramType === ROUTE_PARAMS_TYPES.OPTIONAL_CATCH_ALL
+        ) {
+          params[key] = value.split('/');
+        } else {
+          params[key] = value;
+        }
+      }
+    }
+  }
+  return params;
 }
 
 /**

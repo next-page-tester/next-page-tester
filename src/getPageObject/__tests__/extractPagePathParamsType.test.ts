@@ -4,7 +4,7 @@
 import {
   extractPagePathParamsType,
   ROUTE_PARAMS_TYPES,
-} from '../pagePathParser';
+} from '../parseMatchingRoute/utils';
 
 describe('extractPagePathParamsType', () => {
   describe('predefined routes', () => {
