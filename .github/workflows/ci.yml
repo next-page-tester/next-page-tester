@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -41,9 +41,6 @@ jobs:
         with:
           name: coverage-output
           path: coverage
-
-      - name: Display structure of downloaded files
-        run: ls -R
 
       - name: Upload code coverage to Coveralls
         uses: coverallsapp/github-action@master
