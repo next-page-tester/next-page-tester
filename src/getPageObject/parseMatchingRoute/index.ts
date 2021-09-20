@@ -5,6 +5,7 @@ import type { ExtendedOptions, PageParams } from '../../commonTypes';
 
 /**
  * Parse tested route against existing page paths.
+ * @returns path of matching page file and the object of matching params
  */
 export default async function parseMatchingRoute({
   options,

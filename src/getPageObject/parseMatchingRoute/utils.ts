@@ -27,12 +27,12 @@ type namedCapture = {
 };
 
 export function encodeCaptureGroupName(string: string): string {
-  return '__encodedGroupName' + Buffer.from(string).toString('hex');
+  return '__encodedCaptureGroupName' + Buffer.from(string).toString('hex');
 }
 
 function decodeCaptureGroupName(string: string): string {
   return Buffer.from(
-    string.replace(/^__encodedGroupName/, ''),
+    string.replace(/^__encodedCaptureGroupName/, ''),
     'hex'
   ).toString();
 }
@@ -110,22 +110,23 @@ export function makeParamsObject({
 }): PageParams {
   const params = {} as PageParams;
 
-  if (routeRegexCaptureGroups) {
-    for (const [name, value] of Object.entries(routeRegexCaptureGroups)) {
-      if (value !== undefined) {
-        // Capture group names are encoded
-        const paramName = decodeCaptureGroupName(name);
-        const paramType = paramTypes[paramName];
-        if (
-          paramType === ROUTE_PARAMS_TYPES.CATCH_ALL ||
-          paramType === ROUTE_PARAMS_TYPES.OPTIONAL_CATCH_ALL
-        ) {
-          params[paramName] = value.split('/');
-        } else {
-          params[paramName] = value;
-        }
+  for (const name in routeRegexCaptureGroups) {
+    const value = routeRegexCaptureGroups[name];
+    if (value !== undefined) {
+      // Capture group names are encoded
+      const paramName = decodeCaptureGroupName(name);
+      const paramType = paramTypes[paramName];
+
+      if (
+        paramType === ROUTE_PARAMS_TYPES.CATCH_ALL ||
+        paramType === ROUTE_PARAMS_TYPES.OPTIONAL_CATCH_ALL
+      ) {
+        params[paramName] = value.split('/');
+      } else {
+        params[paramName] = value;
       }
     }
   }
+
   return params;
 }
