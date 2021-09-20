@@ -1,10 +1,10 @@
 import React from 'react';
 import { PropsPrinter } from '../../../../__utils__';
 
-export default function blog_99(props) {
+export default function blog_index(props) {
   return (
     <>
-      /blog/99 -
+      /param/index -
       <PropsPrinter props={props} />
     </>
   );
