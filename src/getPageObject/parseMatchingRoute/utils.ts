@@ -1,5 +1,11 @@
 import type { PageParams } from '../../commonTypes';
 
+export enum ROUTE_PARAMS_TYPES {
+  DYNAMIC = 'dynamic',
+  CATCH_ALL = 'catch_all',
+  OPTIONAL_CATCH_ALL = 'optional_catch_all',
+}
+
 // [param]
 const DYNAMIC_ROUTE_SEGMENT_REGEX = /\[([^./[\]]*)\]/g;
 const DYNAMIC_PATH_SEGMENT_REGEX_STRING = '[^/?]*';
@@ -42,16 +48,29 @@ function decodeCaptureGroupName(string: string): string {
 
 /**
  * Build a regex from a page path to catch its matching routes
+ * @returns a regex and the map of the types of params found
  */
-export function pagePathToRouteRegex(pagePath: string): RegExp {
+export function pagePathToRouteRegex(
+  pagePath: string
+): {
+  regex: RegExp;
+  paramTypes: Record<string, ROUTE_PARAMS_TYPES>;
+} {
+  // Store found route param names by type
+  const paramTypes: Record<string, ROUTE_PARAMS_TYPES> = {};
+
   // Special case for /index page which should match both "/" and "/index" pathnames
   if (pagePath === '/index') {
-    return /^\/(?:index)?$/;
+    return {
+      regex: /^\/(?:index)?$/,
+      paramTypes,
+    };
   }
 
   const regex = pagePath
     .replace(TRAILING_INDEX_REGEX, OPTIONAL_TRAILING_INDEX_REGEX_STRING)
     .replace(OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_REGEX, (match, paramName) => {
+      paramTypes[paramName] = ROUTE_PARAMS_TYPES.OPTIONAL_CATCH_ALL;
       const captureGroup = makeOptionalNamedCapturingGroup({
         name: paramName,
         regex: OPTIONAL_CATCH_ALL_PATH_SEGMENT_REGEX_STRING,
@@ -59,12 +78,14 @@ export function pagePathToRouteRegex(pagePath: string): RegExp {
       return `(?:/)?${captureGroup}`;
     })
     .replace(CATCH_ALL_ROUTE_SEGMENT_REGEX, (match, paramName) => {
+      paramTypes[paramName] = ROUTE_PARAMS_TYPES.CATCH_ALL;
       return makeNamedCaptureGroup({
         name: paramName,
         regex: CATCH_ALL_PATH_SEGMENT_REGEX_STRING,
       });
     })
     .replace(DYNAMIC_ROUTE_SEGMENT_REGEX, (match, paramName) => {
+      paramTypes[paramName] = ROUTE_PARAMS_TYPES.DYNAMIC;
       return makeNamedCaptureGroup({
         name: paramName,
         regex: DYNAMIC_PATH_SEGMENT_REGEX_STRING,
@@ -72,31 +93,25 @@ export function pagePathToRouteRegex(pagePath: string): RegExp {
     });
 
   // Add route's trailing slash
-  return new RegExp(`^${regex}$`);
-}
-
-export enum ROUTE_PARAMS_TYPES {
-  DYNAMIC = 'dynamic',
-  CATCH_ALL = 'catch_all',
-  OPTIONAL_CATCH_ALL = 'optional_catch_all',
+  return {
+    regex: new RegExp(`^${regex}$`),
+    paramTypes,
+  };
 }
 
 export function makeParamsObject({
-  pagePath,
   routeRegexCaptureGroups,
+  paramTypes,
 }: {
-  pagePath: string;
   routeRegexCaptureGroups?: Record<string, string>;
+  paramTypes: Record<string, ROUTE_PARAMS_TYPES>;
 }) {
   const params = {} as PageParams;
-  const pagePathParams = extractPagePathParamTypes({
-    pagePath,
-  });
 
   if (routeRegexCaptureGroups) {
     for (const [key, value] of Object.entries(routeRegexCaptureGroups)) {
       if (value !== undefined) {
-        const paramType = pagePathParams[key];
+        const paramType = paramTypes[key];
         if (
           paramType === ROUTE_PARAMS_TYPES.CATCH_ALL ||
           paramType === ROUTE_PARAMS_TYPES.OPTIONAL_CATCH_ALL
@@ -109,49 +124,4 @@ export function makeParamsObject({
     }
   }
   return params;
-}
-
-/**
- * Create an object listing the param types of a given Next.js page path.
- */
-export function extractPagePathParamTypes({
-  pagePath,
-}: {
-  pagePath: string;
-}): Record<string, ROUTE_PARAMS_TYPES> {
-  const routeParams: Record<string, ROUTE_PARAMS_TYPES> = {};
-
-  const optionalCatchAllParams = [
-    pagePath.match(OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_REGEX),
-  ];
-  pagePath = pagePath.replace(OPTIONAL_CATCH_ALL_ROUTE_SEGMENT_REGEX, '');
-
-  const catchAllParams = [pagePath.match(CATCH_ALL_ROUTE_SEGMENT_REGEX)];
-  pagePath = pagePath.replace(CATCH_ALL_ROUTE_SEGMENT_REGEX, '');
-
-  const dynamicParams = [...pagePath.matchAll(DYNAMIC_ROUTE_SEGMENT_REGEX)];
-
-  [
-    {
-      matches: optionalCatchAllParams,
-      type: ROUTE_PARAMS_TYPES.OPTIONAL_CATCH_ALL,
-    },
-    {
-      matches: catchAllParams,
-      type: ROUTE_PARAMS_TYPES.CATCH_ALL,
-    },
-    {
-      matches: dynamicParams,
-      type: ROUTE_PARAMS_TYPES.DYNAMIC,
-    },
-  ].forEach(({ matches, type }) => {
-    for (const match of matches) {
-      if (match) {
-        const paramName = match[1];
-        routeParams[paramName] = type;
-      }
-    }
-  });
-
-  return routeParams;
 }

@@ -22,15 +22,15 @@ export default async function parseMatchingRoute({
   const pagePaths = await getPagePaths({ options });
 
   for (const pagePath of pagePaths) {
-    const pagePathRegex = pagePathToRouteRegex(pagePath);
+    const { regex: pagePathRegex, paramTypes } = pagePathToRouteRegex(pagePath);
     const result = routePath.match(pagePathRegex);
 
     if (result) {
       return {
         pagePath,
         params: makeParamsObject({
-          pagePath,
           routeRegexCaptureGroups: result.groups,
+          paramTypes,
         }),
       };
     }
