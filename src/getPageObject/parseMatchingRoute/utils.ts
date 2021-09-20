@@ -26,24 +26,29 @@ type namedCapture = {
   regex: string;
 };
 
+export function encodeCaptureGroupName(string: string): string {
+  return '__encodedGroupName' + Buffer.from(string).toString('hex');
+}
+
+function decodeCaptureGroupName(string: string): string {
+  if (string.startsWith('__encodedGroupName')) {
+    return Buffer.from(
+      string.replace(/^__encodedGroupName/, ''),
+      'hex'
+    ).toString();
+  }
+  return string;
+}
+
 function makeNamedCaptureGroup({ name, regex }: namedCapture) {
-  return `(?<${name}>${regex})`;
+  // We need to encode capture group names to support special characters like "-"
+  const encodedName = encodeCaptureGroupName(name);
+  return `(?<${encodedName}>${regex})`;
 }
 
 function makeOptionalNamedCapturingGroup({ name, regex }: namedCapture) {
   const captureGroup = makeNamedCaptureGroup({ name, regex });
   return `${captureGroup}?`;
-}
-
-function encodeCaptureGroupName(string: string): string {
-  return '__encoded' + Buffer.from(string).toString('hex');
-}
-
-function decodeCaptureGroupName(string: string): string {
-  if (string.startsWith('__encoded')) {
-    return Buffer.from(string.replace(/^__encoded/, ''), 'hex').toString();
-  }
-  return string;
 }
 
 /**
@@ -105,20 +110,22 @@ export function makeParamsObject({
 }: {
   routeRegexCaptureGroups?: Record<string, string>;
   paramTypes: Record<string, ROUTE_PARAMS_TYPES>;
-}) {
+}): PageParams {
   const params = {} as PageParams;
 
   if (routeRegexCaptureGroups) {
-    for (const [key, value] of Object.entries(routeRegexCaptureGroups)) {
+    for (const [name, value] of Object.entries(routeRegexCaptureGroups)) {
       if (value !== undefined) {
-        const paramType = paramTypes[key];
+        // Capture group names are encoded
+        const paramName = decodeCaptureGroupName(name);
+        const paramType = paramTypes[paramName];
         if (
           paramType === ROUTE_PARAMS_TYPES.CATCH_ALL ||
           paramType === ROUTE_PARAMS_TYPES.OPTIONAL_CATCH_ALL
         ) {
-          params[key] = value.split('/');
+          params[paramName] = value.split('/');
         } else {
-          params[key] = value;
+          params[paramName] = value;
         }
       }
     }

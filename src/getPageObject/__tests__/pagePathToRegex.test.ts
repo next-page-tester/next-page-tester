@@ -3,6 +3,7 @@
  */
 import {
   pagePathToRouteRegex,
+  encodeCaptureGroupName,
   ROUTE_PARAMS_TYPES,
 } from '../parseMatchingRoute/utils';
 
@@ -21,10 +22,13 @@ describe('pagePathToRouteRegex', () => {
   describe('dynamic segments', () => {
     it('gets expected regex', () => {
       const { regex, paramTypes } = pagePathToRouteRegex(
-        '/blog/[id]/[foo]/index'
+        `/blog/[id]/[foo]/index`
       );
+
+      const idGroupName = encodeCaptureGroupName('id');
+      const fooGroupName = encodeCaptureGroupName('foo');
       const expectedRegex = new RegExp(
-        `^/blog/(?<id>[^/?]*)/(?<foo>[^/?]*)(?:/index)?$`
+        `^/blog/(?<${idGroupName}>[^/?]*)/(?<${fooGroupName}>[^/?]*)(?:/index)?$`
       ).toString();
       const expectedParamTypes = {
         id: ROUTE_PARAMS_TYPES.DYNAMIC,
@@ -41,8 +45,11 @@ describe('pagePathToRouteRegex', () => {
       const { regex, paramTypes } = pagePathToRouteRegex(
         '/blog/[id]/[...foo]/index'
       );
+
+      const idGroupName = encodeCaptureGroupName('id');
+      const fooGroupName = encodeCaptureGroupName('foo');
       const expectedRegex = new RegExp(
-        `^/blog/(?<id>[^/?]*)/(?<foo>.*?)(?:/index)?$`
+        `^/blog/(?<${idGroupName}>[^/?]*)/(?<${fooGroupName}>.*?)(?:/index)?$`
       ).toString();
       const expectedParamTypes = {
         id: ROUTE_PARAMS_TYPES.DYNAMIC,
@@ -59,8 +66,11 @@ describe('pagePathToRouteRegex', () => {
       const { regex, paramTypes } = pagePathToRouteRegex(
         '/blog/[id]/[[...foo]]/index'
       );
+
+      const idGroupName = encodeCaptureGroupName('id');
+      const fooGroupName = encodeCaptureGroupName('foo');
       const expectedRegex = new RegExp(
-        `^/blog/(?<id>[^/?]*)(?:/)?(?<foo>.*?)?(?:/index)?$`
+        `^/blog/(?<${idGroupName}>[^/?]*)(?:/)?(?<${fooGroupName}>.*?)?(?:/index)?$`
       ).toString();
       const expectedParamTypes = {
         id: ROUTE_PARAMS_TYPES.DYNAMIC,
