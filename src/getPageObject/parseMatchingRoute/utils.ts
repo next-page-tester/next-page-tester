@@ -31,13 +31,10 @@ export function encodeCaptureGroupName(string: string): string {
 }
 
 function decodeCaptureGroupName(string: string): string {
-  if (string.startsWith('__encodedGroupName')) {
-    return Buffer.from(
-      string.replace(/^__encodedGroupName/, ''),
-      'hex'
-    ).toString();
-  }
-  return string;
+  return Buffer.from(
+    string.replace(/^__encodedGroupName/, ''),
+    'hex'
+  ).toString();
 }
 
 function makeNamedCaptureGroup({ name, regex }: namedCapture) {
