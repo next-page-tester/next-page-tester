@@ -120,7 +120,6 @@
       "src/testHelpers.ts"
     ],
     "coverageReporters": [
-      "text",
       "lcov"
     ],
     "moduleNameMapper": {
