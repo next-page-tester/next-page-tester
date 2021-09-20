@@ -40,6 +40,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: coverage-output
+          path: coverage
 
       - name: Display structure of downloaded files
         run: ls -R
