@@ -10,6 +10,7 @@
     "allowJs": true,
     "jsx": "react",
     "declaration": true,
+    "skipLibCheck": true,
     "paths": {
       "*": ["./@types/*"]
     }
