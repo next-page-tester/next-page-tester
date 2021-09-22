@@ -3,7 +3,6 @@ import { getPage } from '../../../src';
 import path from 'path';
 import { screen } from '@testing-library/react';
 import { renderWithinNextRoot, expectDOMElementsToMatch } from '../__utils__';
-import { stripReactExtraMarkup } from '../__utils__';
 import Page404WithRouter from './__fixtures__/404-page-router/pages/404';
 
 describe('404', () => {
@@ -11,24 +10,6 @@ describe('404', () => {
     ['ssr "notFound" return', '/a'],
     ['matching page not found', '/random?a=b'],
   ])('%s', (_title, route) => {
-    describe('no custom 404 or custom _error page provided', () => {
-      it('renders nextjs default error page', async () => {
-        const { render } = await getPage({
-          nextRoot: path.join(__dirname, '__fixtures__', 'default-error-page'),
-          route,
-          useDocument: true,
-        });
-        render();
-        expect(stripReactExtraMarkup(document.title)).toEqual(
-          '404: This page could not be found'
-        );
-        expect(screen.getByText('404')).toBeInTheDocument();
-        expect(
-          screen.getByText('This page could not be found.')
-        ).toBeInTheDocument();
-      });
-    });
-
     describe('no custom 404 page but with custom _error page provided', () => {
       it.each([
         ['origGetInitialProps', '/custom-error-page'],

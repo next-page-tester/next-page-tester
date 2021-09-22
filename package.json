@@ -12,6 +12,7 @@
     "clean": "rm -rf dist",
     "compile": "npm run clean && tsc -p tsconfig.build.json",
     "test": "jest ./src",
+    "test:skip-use-document": "jest ./src",
     "test:source": "npm run test:format && npm run test:ts && npm t -- --coverage",
     "test:dist": "jest ./src --config ./jest/dist.config.js",
     "test:published": "jest ./src --config ./jest/published.config.js",
@@ -113,7 +114,8 @@
       "**/?(*.)+(test).[jt]s?(x)"
     ],
     "testPathIgnorePatterns": [
-      "__fixtures__"
+      "__fixtures__",
+      "useDocument.test"
     ],
     "coveragePathIgnorePatterns": [
       "__tests__",
