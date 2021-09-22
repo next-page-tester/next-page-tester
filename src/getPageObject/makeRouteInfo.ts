@@ -1,25 +1,18 @@
-import {
-  extractPagePathParamsType,
-  ROUTE_PARAMS_TYPES,
-} from './pagePathParser';
 import { parseRoute, parseQueryString, stringifyQueryString } from '../utils';
 import type { PageParams, RouteInfo } from '../commonTypes';
 
 export function makeRouteInfo({
   route,
   pagePath,
-  routeRegexCaptureGroups,
+  params = {} as PageParams,
 }: {
   route: string;
   pagePath: string;
-  routeRegexCaptureGroups?: Record<string, string>;
+  params?: PageParams;
 }): RouteInfo {
   const { urlObject, detectedLocale } = parseRoute({ route });
   const { pathname, search } = urlObject;
-  const params = makeParamsObject({
-    pagePath,
-    routeRegexCaptureGroups,
-  });
+
   const query = parseQueryString({ queryString: search });
 
   return {
@@ -36,34 +29,4 @@ export function makeRouteInfo({
     detectedLocale,
     urlObject,
   };
-}
-
-function makeParamsObject({
-  pagePath,
-  routeRegexCaptureGroups,
-}: {
-  pagePath: string;
-  routeRegexCaptureGroups?: Record<string, string>;
-}) {
-  const params = {} as PageParams;
-  const pagePathParams = extractPagePathParamsType({
-    pagePath,
-  });
-
-  if (routeRegexCaptureGroups) {
-    for (const [key, value] of Object.entries(routeRegexCaptureGroups)) {
-      if (value !== undefined) {
-        const paramType = pagePathParams[key];
-        if (
-          paramType === ROUTE_PARAMS_TYPES.CATCH_ALL ||
-          paramType === ROUTE_PARAMS_TYPES.OPTIONAL_CATCH_ALL
-        ) {
-          params[key] = value.split('/');
-        } else {
-          params[key] = value;
-        }
-      }
-    }
-  }
-  return params;
 }

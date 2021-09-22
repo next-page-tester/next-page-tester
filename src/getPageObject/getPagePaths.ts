@@ -5,7 +5,9 @@ import normalizePath from 'normalize-path';
 import { getSortedRoutes } from 'next/dist/shared/lib/router/utils/sorted-routes';
 import type { ExtendedOptions } from '../commonTypes';
 
-// Returns available page paths without file extension
+/**
+ * Returns available page paths without file extension sorted by matching priority
+ */
 async function getPagePaths({
   options: { pagesDirectory, pageExtensions },
 }: {

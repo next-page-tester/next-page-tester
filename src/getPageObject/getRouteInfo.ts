@@ -1,7 +1,5 @@
-import getPagePaths from './getPagePaths';
 import { makeRouteInfo } from './makeRouteInfo';
-import { pagePathToRouteRegex } from './pagePathParser';
-import { parseRoute } from '../utils';
+import parseMatchingRoute from './parseMatchingRoute';
 import type { ExtendedOptions, RouteInfo } from '../commonTypes';
 
 export default async function getRouteInfo({
@@ -10,18 +8,14 @@ export default async function getRouteInfo({
   options: ExtendedOptions;
 }): Promise<RouteInfo | undefined> {
   const { route } = options;
-  const { pathname } = parseRoute({ route }).urlObject;
-  const pagePaths = await getPagePaths({ options });
+  const parsedMatchingRoute = await parseMatchingRoute({ options });
 
-  for (const pagePath of pagePaths) {
-    const pagePathRegex = pagePathToRouteRegex(pagePath);
-    const result = pathname.match(pagePathRegex);
-    if (result) {
-      return makeRouteInfo({
-        route,
-        pagePath,
-        routeRegexCaptureGroups: result.groups,
-      });
-    }
+  if (parsedMatchingRoute) {
+    const { pagePath, params } = parsedMatchingRoute;
+    return makeRouteInfo({
+      route,
+      pagePath,
+      params,
+    });
   }
 }

@@ -1,47 +1,84 @@
 /**
  * @jest-environment node
  */
-import { pagePathToRouteRegex } from '../pagePathParser';
+import {
+  pagePathToRouteRegex,
+  encodeCaptureGroupName,
+  ROUTE_PARAMS_TYPES,
+} from '../parseMatchingRoute/utils';
 
 describe('pagePathToRouteRegex', () => {
   describe('predefined routes', () => {
     it('gets expected regex', () => {
-      const actual = pagePathToRouteRegex('/index');
-      const expected = new RegExp('^/(?:index)?$').toString();
-      expect(actual.toString()).toBe(expected);
+      const { regex, paramTypes } = pagePathToRouteRegex('/index');
+      const expectedRegex = new RegExp('^/(?:index)?$').toString();
+      const expectedParamTypes = {};
+
+      expect(regex.toString()).toBe(expectedRegex);
+      expect(paramTypes).toEqual(expectedParamTypes);
     });
   });
 
   describe('dynamic segments', () => {
     it('gets expected regex', () => {
-      const actual = pagePathToRouteRegex('/blog/[id]/[foo]/index');
-      const expected = new RegExp(
-        `^/blog/(?<id>[^/?]*)/(?<foo>[^/?]*)(?:/index)?$`
-      ).toString();
+      const { regex, paramTypes } = pagePathToRouteRegex(
+        `/blog/[id]/[foo]/index`
+      );
 
-      expect(actual.toString()).toBe(expected);
+      const idGroupName = encodeCaptureGroupName('id');
+      const fooGroupName = encodeCaptureGroupName('foo');
+      const expectedRegex = new RegExp(
+        `^/blog/(?<${idGroupName}>[^/?]*)/(?<${fooGroupName}>[^/?]*)(?:/index)?$`
+      ).toString();
+      const expectedParamTypes = {
+        id: ROUTE_PARAMS_TYPES.DYNAMIC,
+        foo: ROUTE_PARAMS_TYPES.DYNAMIC,
+      };
+
+      expect(regex.toString()).toBe(expectedRegex);
+      expect(paramTypes).toEqual(expectedParamTypes);
     });
   });
 
   describe('catch all segments', () => {
     it('gets expected regex', () => {
-      const actual = pagePathToRouteRegex('/blog/[id]/[...foo]/index');
-      const expected = new RegExp(
-        `^/blog/(?<id>[^/?]*)/(?<foo>.*?)(?:/index)?$`
-      ).toString();
+      const { regex, paramTypes } = pagePathToRouteRegex(
+        '/blog/[id]/[...foo]/index'
+      );
 
-      expect(actual.toString()).toBe(expected);
+      const idGroupName = encodeCaptureGroupName('id');
+      const fooGroupName = encodeCaptureGroupName('foo');
+      const expectedRegex = new RegExp(
+        `^/blog/(?<${idGroupName}>[^/?]*)/(?<${fooGroupName}>.*?)(?:/index)?$`
+      ).toString();
+      const expectedParamTypes = {
+        id: ROUTE_PARAMS_TYPES.DYNAMIC,
+        foo: ROUTE_PARAMS_TYPES.CATCH_ALL,
+      };
+
+      expect(regex.toString()).toBe(expectedRegex);
+      expect(paramTypes).toEqual(expectedParamTypes);
     });
   });
 
   describe('optional catch all segments', () => {
     it('gets expected regex', () => {
-      const actual = pagePathToRouteRegex('/blog/[id]/[[...foo]]/index');
-      const expected = new RegExp(
-        `^/blog/(?<id>[^/?]*)(?:/)?(?<foo>.*?)?(?:/index)?$`
-      ).toString();
+      const { regex, paramTypes } = pagePathToRouteRegex(
+        '/blog/[id]/[[...foo]]/index'
+      );
 
-      expect(actual.toString()).toBe(expected);
+      const idGroupName = encodeCaptureGroupName('id');
+      const fooGroupName = encodeCaptureGroupName('foo');
+      const expectedRegex = new RegExp(
+        `^/blog/(?<${idGroupName}>[^/?]*)(?:/)?(?<${fooGroupName}>.*?)?(?:/index)?$`
+      ).toString();
+      const expectedParamTypes = {
+        id: ROUTE_PARAMS_TYPES.DYNAMIC,
+        foo: ROUTE_PARAMS_TYPES.OPTIONAL_CATCH_ALL,
+      };
+
+      expect(regex.toString()).toBe(expectedRegex);
+      expect(paramTypes).toEqual(expectedParamTypes);
     });
   });
 });
