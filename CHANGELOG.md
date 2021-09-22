@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.28.1
+
+### Bugfix
+
+- Support route params with special characters like `-`
+
 ## 0.28.0
 
 ### Breaking Changes
