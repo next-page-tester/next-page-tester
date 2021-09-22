@@ -43,6 +43,9 @@ jobs:
           name: coverage-output
           path: coverage
 
+      - name: Display structure of downloaded files
+          run: ls -R
+
       - name: Upload code coverage to Coveralls
         uses: coverallsapp/github-action@master
         with:
