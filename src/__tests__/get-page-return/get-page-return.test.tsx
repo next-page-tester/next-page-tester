@@ -40,6 +40,7 @@ describe('getPage() return', () => {
         route: '/page',
       });
       const { nextRoot } = serverRender();
+      // eslint-disable-next-line testing-library/no-node-access
       const actualNextRoot = document.getElementById('__next');
       expect(nextRoot).toBe(actualNextRoot);
 
@@ -79,6 +80,7 @@ describe('getPage() return', () => {
         route: '/page',
       });
       const { nextRoot } = render();
+      // eslint-disable-next-line testing-library/no-node-access
       const actualNextRoot = document.getElementById('__next');
       expect(nextRoot).toBe(actualNextRoot);
 
