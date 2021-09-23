@@ -18,7 +18,6 @@ import {
   ComponentsEnhancer,
   NextComponentType,
 } from 'next/dist/shared/lib/utils';
-import { InternalError } from '../_error';
 
 // Copied from next.js
 // https://github.com/vercel/next.js/blob/b944b06f30322076ceb9020c10cb9bf3448d2659/packages/next/next-server/server/render.tsx#L127
@@ -149,9 +148,7 @@ export default async function serverRenderDocument({
       devOnlyCacheBusterQueryString: '',
     };
 
-    throw new InternalError('useDocument option is currently broken');
-
-    // @ts-expect-error this method doesn't exist since Next.js v 11.1.2
+    // @ts-expect-error this method doesn't exist since Next.js v11.1.2 and useDocument option is currently disabled
     return DocumentComponent.renderDocument(DocumentComponent, documentProps);
   });
 }

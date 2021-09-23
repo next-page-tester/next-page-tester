@@ -33,6 +33,9 @@ export default function renderApp({
   });
 }
 
+/*
+ * Render App and Page component inside optional wrapper provided as options.wrapper
+ */
 export function renderEnhancedApp({
   App,
   Page,

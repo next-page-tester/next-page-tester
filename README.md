@@ -105,18 +105,18 @@ React element of the application.
 
 ## Options
 
-| Property                       | Description                                                                        | type                                                        | Default         |
-| ------------------------------ | ---------------------------------------------------------------------------------- | ----------------------------------------------------------- | --------------- |
-| **route** (mandatory)          | Next route (must start with `/`)                                                   | `string`                                                    | -               |
-| **req**                        | Enhance default mocked [request object][req-docs]                                  | `req => req`                                                | -               |
-| **res**                        | Enhance default mocked [response object][res-docs]                                 | `res => res`                                                | -               |
-| **router**                     | Enhance default mocked [Next router object][next-docs-router]                      | `router => router`                                          | -               |
-| **useApp**                     | Render [custom App component][next-docs-custom-app]                                | `boolean`                                                   | `true`          |
-| **useDocument** (experimental) | Render [Document component][next-docs-custom-document]                             | `boolean`                                                   | `false`         |
-| **nextRoot**                   | Absolute path to Next.js root folder                                               | `string`                                                    | _auto detected_ |
-| **dotenvFile**                 | Relative path to a `.env` file holding [environment variables][next-docs-env-vars] | `string`                                                    | -               |
-| **wrapper**                    | Map of render functions. Useful to decorate component tree with mocked providers.  | `{ Page?: NextPage => NextPage; App?: NextApp => NextApp }` | -               |
-| **sharedModules**              | List of modules that should preserve identity between client and server context.   | `string[]`                                                  | []              |
+| Property                                                                                                                                 | Description                                                                        | type                                                        | Default         |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------- | --------------- |
+| **route** (mandatory)                                                                                                                    | Next route (must start with `/`)                                                   | `string`                                                    | -               |
+| **req**                                                                                                                                  | Enhance default mocked [request object][req-docs]                                  | `req => req`                                                | -               |
+| **res**                                                                                                                                  | Enhance default mocked [response object][res-docs]                                 | `res => res`                                                | -               |
+| **router**                                                                                                                               | Enhance default mocked [Next router object][next-docs-router]                      | `router => router`                                          | -               |
+| **useApp**                                                                                                                               | Render [custom App component][next-docs-custom-app]                                | `boolean`                                                   | `true`          |
+| ~**useDocument**~ (experimental. Temporarily disabled due to [this issue](https://github.com/toomuchdesign/next-page-tester/issues/263)) | Render [Document component][next-docs-custom-document]                             | `boolean`                                                   | `false`         |
+| **nextRoot**                                                                                                                             | Absolute path to Next.js root folder                                               | `string`                                                    | _auto detected_ |
+| **dotenvFile**                                                                                                                           | Relative path to a `.env` file holding [environment variables][next-docs-env-vars] | `string`                                                    | -               |
+| **wrapper**                                                                                                                              | Map of render functions. Useful to decorate component tree with mocked providers.  | `{ Page?: NextPage => NextPage; App?: NextApp => NextApp }` | -               |
+| **sharedModules**                                                                                                                        | List of modules that should preserve identity between client and server context.   | `string[]`                                                  | []              |
 
 ## Setting up your dev environment
 
@@ -164,7 +164,8 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 | v0.8.0 -> v0.22.0  | v10.0.0 -> v10.0.7 |         |
 | v0.23.0 -> v0.25.X | v10.0.8 -> v11.0.X |         |
 | v0.26.0 -> v0.27.X | v10.0.8 -> v11.0.X | v27.X.X |
-| v0.28.0 +          | v11.1.0 +          |         |
+| v0.28.0 -> v0.28.X | v11.1.0            |         |
+| v0.29.0 +          | v11.1.1 +          |         |
 
 Since:
 
@@ -292,7 +293,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- prettier-ignore-start -->
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
- 
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- prettier-ignore-end -->
 

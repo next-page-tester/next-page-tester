@@ -26,7 +26,11 @@ import {
 import { InternalError } from './_error';
 import { RuntimeEnvironment } from './constants';
 
-function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
+function validateOptions({
+  nextRoot,
+  route,
+  useDocument,
+}: OptionsWithDefaults) {
   if (!route.startsWith('/')) {
     throw new InternalError('"route" option should start with "/"');
   }
@@ -34,6 +38,12 @@ function validateOptions({ nextRoot, route }: OptionsWithDefaults) {
   if (!existsSync(nextRoot)) {
     throw new InternalError(
       'Cannot find "nextRoot" directory under: ${nextRoot}'
+    );
+  }
+
+  if (useDocument) {
+    throw new InternalError(
+      'useDocument option is temporarily disabled until issue #263 is fixed'
     );
   }
 }
