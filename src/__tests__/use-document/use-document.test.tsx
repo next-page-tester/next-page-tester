@@ -141,6 +141,32 @@ describe('_document support', () => {
         expect(metaDescriptions[0]).toBe('Custom document description');
         expect(metaDescriptions[1]).toBe('Page A description');
       });
+
+      it('updates head element after initial render', async () => {
+        const { render } = await getPage({
+          nextRoot: path.join(
+            __dirname,
+            '/__fixtures__/custom-document-with-gip'
+          ),
+          route: '/page',
+          useDocument: true,
+        });
+        render();
+
+        const initialMetaKeywords = getMetaTagsContentByName(
+          document.documentElement,
+          'keywords'
+        );
+        expect(initialMetaKeywords.length).toBe(0);
+
+        userEvent.click(screen.getByText('Append keywords meta tag'));
+
+        const metaKeywords = getMetaTagsContentByName(
+          document.documentElement,
+          'keywords'
+        );
+        expect(metaKeywords.length).toBe(1);
+      });
     });
   });
 });
