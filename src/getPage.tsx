@@ -43,7 +43,7 @@ function validateOptions({
 
   if (useDocument) {
     throw new InternalError(
-      'useDocument option is temporarily disabled until issue #263 is fixed'
+      'useDocument option was temporarily disabled since v0.29.0 due to issue #263'
     );
   }
 }

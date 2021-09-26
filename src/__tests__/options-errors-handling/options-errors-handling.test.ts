@@ -35,7 +35,7 @@ describe('Options errors handling', () => {
           useDocument: true,
         })
       ).rejects.toThrow(
-        '[next-page-tester] useDocument option is temporarily disabled until issue #263 is fixed'
+        '[next-page-tester] useDocument option was temporarily disabled since v0.29.0 due to issue #263'
       );
     });
   });
