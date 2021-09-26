@@ -148,6 +148,7 @@ export default async function serverRenderDocument({
       devOnlyCacheBusterQueryString: '',
     };
 
+    // @ts-expect-error this method doesn't exist since Next.js v11.1.2 and useDocument option is currently disabled
     return DocumentComponent.renderDocument(DocumentComponent, documentProps);
   });
 }

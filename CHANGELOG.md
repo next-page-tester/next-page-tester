@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.29.0
+
+### Breaking Changes
+
+- Support Next v11.1.2+
+- Disable `useDocument` option
+
 ## 0.28.1
 
 ### Bugfix
