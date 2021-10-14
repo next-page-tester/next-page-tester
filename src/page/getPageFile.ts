@@ -52,17 +52,14 @@ export function getPageFileIfExists<FileType>({
   try {
     return loadFile({ absolutePath });
   } catch (e: unknown) {
+    /* istanbul ignore else */
     if (e instanceof Error) {
       const internalError = new InternalError(
         `Failed to load "${pagePath}" file due to ${e.name}: ${e.message}`
       );
       internalError.stack = e.stack;
       throw internalError;
-    } /* istanbul ignore next */ else if (
-      e &&
-      typeof e === 'object' &&
-      'message' in e
-    ) {
+    } else if (e && typeof e === 'object' && 'message' in e) {
       // Jest can throw errors as pure objects, to provide better information
       // we need to include the original message in the thrown error.
       // See https://github.com/toomuchdesign/next-page-tester/issues/269
