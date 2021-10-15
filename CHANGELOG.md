@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.29.1
+
+### Bugfix
+
+- Include jest error details on `loadFile` error
+
 ## 0.29.0
 
 ### Breaking Changes
