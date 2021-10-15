@@ -1,6 +1,14 @@
 import path from 'path';
 import { InternalError } from './_error';
 
+// Jest seems to throw errors which are not Error Instances.
+// To provide better information
+// we need to include the original message in the thrown error.
+// See https://github.com/toomuchdesign/next-page-tester/issues/269
+function seemsJestError(e: unknown): boolean {
+  return Boolean(e && typeof e === 'object' && 'message' in e);
+}
+
 export function loadFile<FileType>({
   absolutePath,
 }: {
@@ -11,21 +19,15 @@ export function loadFile<FileType>({
   } catch (e: unknown) {
     const baseName = path.basename(absolutePath);
 
-    if (e instanceof Error) {
+    // @NOTE There are tests covering it but tests coverage seems to not see it
+    /* istanbul ignore next */
+    if (e instanceof Error || seemsJestError(e)) {
+      const error = e as Error;
       const internalError = new InternalError(
-        `Failed to load "${baseName}" file due to ${e.name}: ${e.message}`
+        `Failed to load "${baseName}" file due to ${error.name}: ${error.message}`
       );
-      internalError.stack = e.stack;
+      internalError.stack = error.stack;
       throw internalError;
-    }
-
-    if (e && typeof e === 'object' && 'message' in e) {
-      // Jest can throw errors as pure objects, to provide better information
-      // we need to include the original message in the thrown error.
-      // See https://github.com/toomuchdesign/next-page-tester/issues/269
-      throw new InternalError(
-        `Failed to load "${baseName}" file due to: ${(e as Error).message}`
-      );
     }
 
     /* istanbul ignore next */

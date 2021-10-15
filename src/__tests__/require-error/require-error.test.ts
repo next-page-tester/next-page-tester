@@ -25,7 +25,7 @@ describe('require-error', () => {
             route: '/unknown-imported-extension',
           })
         ).rejects.toThrow(
-          '[next-page-tester] Failed to load "unknown-imported-extension.tsx" file due to: Unexpected identifier'
+          '[next-page-tester] Failed to load "unknown-imported-extension.tsx" file due to SyntaxError: Unexpected identifier'
         );
       });
     });
