@@ -7,46 +7,59 @@ import { silenceConsoleError } from '../__utils__';
 
 silenceConsoleError('Text content did not match.');
 
+const renderMethods = ['serverRender', 'render'] as const;
+
 describe('wrapper', () => {
-  test('Should wrap with Page', async () => {
-    const source = 'Page wrapper';
-    const { render } = await getPage({
-      nextRoot: path.join(__dirname, '__fixtures__', 'Page'),
-      route: '/a',
-      wrapper: {
-        Page: (Page) => (pageProps) => {
-          return (
-            <MockedProvider.Provider value={{ source }}>
-              <Page {...pageProps} />
-            </MockedProvider.Provider>
-          );
-        },
-      },
+  describe('.Page', () => {
+    renderMethods.forEach((_renderMethod) => {
+      describe(_renderMethod, () => {
+        it('wraps page component with provided Page enhancer', async () => {
+          const source = 'Page wrapper';
+          const { [_renderMethod]: renderMethod } = await getPage({
+            nextRoot: path.join(__dirname, '__fixtures__', 'Page'),
+            route: '/a',
+            wrapper: {
+              Page: (Page) => (pageProps) => {
+                return (
+                  <MockedProvider.Provider value={{ source }}>
+                    <Page {...pageProps} />
+                  </MockedProvider.Provider>
+                );
+              },
+            },
+          });
+
+          renderMethod();
+          expect(screen.getByText(`Source: ${source}`)).toBeInTheDocument();
+        });
+      });
     });
-
-    render();
-
-    expect(screen.getByText(`Source: ${source}`)).toBeInTheDocument();
   });
 
-  test('accepts App enhancer', async () => {
-    const source = 'App wrapper';
-    const { render } = await getPage({
-      nextRoot: path.join(__dirname, '__fixtures__', 'App'),
-      route: '/a',
-      wrapper: {
-        App: (App) => (appProps) => {
-          return (
-            <MockedProvider.Provider value={{ source }}>
-              <App {...appProps} />
-            </MockedProvider.Provider>
-          );
-        },
-      },
+  describe('.App', () => {
+    renderMethods.forEach((_renderMethod) => {
+      describe(_renderMethod, () => {
+        it('wraps app component with provided App enhancer', async () => {
+          const source = 'App wrapper';
+          const { [_renderMethod]: renderMethod } = await getPage({
+            nextRoot: path.join(__dirname, '__fixtures__', 'App'),
+            route: '/a',
+            useApp: false,
+            wrapper: {
+              App: (App) => (appProps) => {
+                return (
+                  <MockedProvider.Provider value={{ source }}>
+                    <App {...appProps} />
+                  </MockedProvider.Provider>
+                );
+              },
+            },
+          });
+
+          renderMethod();
+          expect(screen.queryByText(`Source: ${source}`)).toBeInTheDocument();
+        });
+      });
     });
-
-    render();
-
-    expect(screen.queryByText(`Source: ${source}`)).toBeInTheDocument();
   });
 });
