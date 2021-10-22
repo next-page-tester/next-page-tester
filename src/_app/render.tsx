@@ -26,20 +26,20 @@ export default function renderApp({
   const {
     appFile: { default: AppComponent },
     pageFile: { default: PageComponent },
-    appWrapperFile,
-    pageWrapperFile,
+    wrappersFile,
   } = files;
 
-  const appWrapper = appWrapperFile?.default;
-  const pageWrapper = pageWrapperFile?.default;
+  const wrappers = {
+    appWrapper: wrappersFile?.App,
+    pageWrapper: wrappersFile?.Page,
+  };
 
   return renderEnhancedApp({
     App: AppComponent,
-    appWrapper,
     Page: PageComponent,
-    pageWrapper,
     appProps,
     pageProps,
+    wrappers,
   });
 }
 
@@ -49,27 +49,28 @@ export default function renderApp({
 export function renderEnhancedApp({
   App,
   Page,
-  appWrapper,
-  pageWrapper,
   appProps,
   pageProps,
+  wrappers,
 }: {
   App: NextApp;
   Page: NextPage;
-  appWrapper?: AppWrapper;
-  pageWrapper?: PageWrapper;
   appProps: PageProps | undefined;
   pageProps: PageProps | undefined;
+  wrappers: {
+    appWrapper?: AppWrapper;
+    pageWrapper?: PageWrapper;
+  };
 }): JSX.Element {
   let UserEnhancedPage = Page;
   let UserEnhancedApp = App;
 
-  if (appWrapper) {
-    UserEnhancedApp = appWrapper(App);
+  if (wrappers.appWrapper) {
+    UserEnhancedApp = wrappers.appWrapper(App);
   }
 
-  if (pageWrapper) {
-    UserEnhancedPage = pageWrapper(Page);
+  if (wrappers.pageWrapper) {
+    UserEnhancedPage = wrappers.pageWrapper(Page);
   }
 
   return (

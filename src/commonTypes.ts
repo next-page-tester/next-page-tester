@@ -29,13 +29,10 @@ export type Options = {
   useApp?: boolean;
   useDocument?: boolean;
   dotenvFile?: string;
-  wrapper?: {
-    App?: string;
-    Page?: string;
-  };
+  wrappers?: string;
 };
 
-type OptionsWithoutDefaultValue = 'dotenvFile' | 'wrapper';
+type OptionsWithoutDefaultValue = 'dotenvFile' | 'wrappers';
 
 export type OptionsWithDefaults = Omit<
   Required<Options>,
@@ -124,9 +121,8 @@ export type NextDocumentFile = {
 
 // Expected options.wrapper files
 export type PageWrapper = (Page: NextPage) => NextPage;
-export type PageWrapperFile = { default: PageWrapper };
 export type AppWrapper = (App: NextApp) => NextApp;
-export type AppWrapperFile = { default: AppWrapper };
+export type WrappersFile = { App: AppWrapper; Page: PageWrapper };
 
 export class CustomError extends Error {
   payload?: unknown;
@@ -139,8 +135,7 @@ export type NextPageFiles<PageFile extends NextFile> = {
   documentFile: NextDocumentFile;
   appFile: NextAppFile;
   pageFile: PageFile;
-  pageWrapperFile?: PageWrapperFile;
-  appWrapperFile?: AppWrapperFile;
+  wrappersFile?: WrappersFile;
 };
 
 export type NextExistingPageFiles = NextPageFiles<NextPageFile>;

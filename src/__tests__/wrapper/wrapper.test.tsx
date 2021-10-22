@@ -2,8 +2,8 @@ import { getPage } from '../../../src';
 import path from 'path';
 import { screen } from '@testing-library/react';
 import { silenceConsoleError } from '../__utils__';
-import { appContextValue } from './__fixtures__/appWrapper';
-import { pageContextValue } from './__fixtures__/pageWrapper';
+import { appContextValue } from './__fixtures__/App/wrappers';
+import { pageContextValue } from './__fixtures__/Page/wrappers';
 
 silenceConsoleError('Text content did not match.');
 
@@ -17,9 +17,7 @@ describe('wrapper', () => {
           const { [_renderMethod]: renderMethod } = await getPage({
             nextRoot: path.join(__dirname, '__fixtures__', 'Page'),
             route: '/a',
-            wrapper: {
-              Page: path.resolve(__dirname, '__fixtures__/pageWrapper'),
-            },
+            wrappers: path.resolve(__dirname, '__fixtures__/Page/wrappers'),
           });
 
           renderMethod();
@@ -39,9 +37,7 @@ describe('wrapper', () => {
             nextRoot: path.join(__dirname, '__fixtures__', 'App'),
             route: '/a',
             useApp: false,
-            wrapper: {
-              App: path.resolve(__dirname, '__fixtures__/appWrapper'),
-            },
+            wrappers: path.resolve(__dirname, '__fixtures__/App/wrappers'),
           });
 
           renderMethod();

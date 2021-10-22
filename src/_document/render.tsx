@@ -65,21 +65,21 @@ export default async function serverRenderDocument({
       documentFile: { default: DocumentComponent },
       appFile: { default: AppComponent },
       pageFile: { default: PageComponent },
-      appWrapperFile,
-      pageWrapperFile,
+      wrappersFile,
     } = pageObject.files.server;
 
-    const appWrapper = appWrapperFile?.default;
-    const pageWrapper = pageWrapperFile?.default;
+    const wrappers = {
+      appWrapper: wrappersFile?.App,
+      pageWrapper: wrappersFile?.Page,
+    };
 
     const render = (App: NextApp, Page: NextPage) => {
       return renderEnhancedApp({
         App,
         Page,
-        appWrapper,
-        pageWrapper,
         appProps,
         pageProps,
+        wrappers,
       });
     };
 

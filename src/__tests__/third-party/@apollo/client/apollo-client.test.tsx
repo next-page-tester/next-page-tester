@@ -2,16 +2,14 @@ import { getPage } from '../../../../../src';
 import userEvent from '@testing-library/user-event';
 import { screen } from '@testing-library/react';
 import path from 'path';
-import { mocks } from './pageWrapper';
+import { mocks } from './wrappers';
 
 describe('@apollo/client', () => {
   it('As a user I can test applications using "@apollo/client"', async () => {
     const { render } = await getPage({
       nextRoot: path.join(__dirname, '__fixtures__'),
       route: '/',
-      wrapper: {
-        Page: path.resolve(__dirname, 'pageWrapper'),
-      },
+      wrappers: path.resolve(__dirname, 'wrappers'),
     });
 
     render();

@@ -28,10 +28,8 @@ export const mocks = [
   },
 ] as const;
 
-const pageWrapper: PageWrapper = (Page) => (pageProps) => (
+export const Page: PageWrapper = (Page) => (pageProps) => (
   <MockedProvider mocks={mocks}>
     <Page {...pageProps} />
   </MockedProvider>
 );
-
-export default pageWrapper;
