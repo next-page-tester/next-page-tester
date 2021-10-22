@@ -1,35 +1,8 @@
-import React from 'react';
 import { getPage } from '../../../../../src';
 import userEvent from '@testing-library/user-event';
 import { screen } from '@testing-library/react';
 import path from 'path';
-import { MockedProvider } from '@apollo/client/testing';
-import { ALL_POSTS_QUERY, allPostsQueryVars } from './__fixtures__/api/posts';
-
-const mocks = [
-  {
-    request: {
-      query: ALL_POSTS_QUERY,
-      variables: allPostsQueryVars,
-    },
-    result: {
-      data: {
-        allPosts: [
-          {
-            id: '1',
-            title: 'Post B',
-            url: '/post-b',
-            votes: 5,
-            createdAt: Date.now(),
-          },
-        ],
-        _allPostsMeta: {
-          count: 1,
-        },
-      },
-    },
-  },
-] as const;
+import { mocks } from './pageWrapper';
 
 describe('@apollo/client', () => {
   it('As a user I can test applications using "@apollo/client"', async () => {
@@ -37,13 +10,7 @@ describe('@apollo/client', () => {
       nextRoot: path.join(__dirname, '__fixtures__'),
       route: '/',
       wrapper: {
-        Page: (Page) => (pageProps) => {
-          return (
-            <MockedProvider mocks={mocks}>
-              <Page {...pageProps} />
-            </MockedProvider>
-          );
-        },
+        Page: path.resolve(__dirname, 'pageWrapper'),
       },
     });
 
