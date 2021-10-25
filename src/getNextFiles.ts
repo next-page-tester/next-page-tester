@@ -10,6 +10,7 @@ import type {
   MultiEnv,
   NextFile,
   NextPageFiles,
+  WrappersFile,
 } from './commonTypes';
 
 // Get Document, App and Page files
@@ -20,12 +21,18 @@ function loadPageFiles<PageFile extends NextFile>({
   absolutePagePath: string;
   options: ExtendedOptions;
 }): NextPageFiles<PageFile> {
+  const { wrappers } = options;
   return {
     documentFile: getDocumentFile({ options }),
     appFile: getAppFile({ options }),
     pageFile: loadFile<PageFile>({
       absolutePath: absolutePagePath,
     }),
+    wrappersFile: wrappers
+      ? loadFile<WrappersFile>({
+          absolutePath: wrappers,
+        })
+      : undefined,
   };
 }
 

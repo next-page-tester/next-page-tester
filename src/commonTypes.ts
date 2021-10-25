@@ -8,7 +8,7 @@ import type {
 import type { NextRouter } from 'next/router';
 import type { createResponse, createRequest } from 'node-mocks-http';
 import type { ParsedUrlQuery } from 'querystring';
-import type { DocumentType, Enhancer } from 'next/dist/shared/lib/utils';
+import type { DocumentType } from 'next/dist/shared/lib/utils';
 import { RuntimeEnvironment } from './constants';
 import DefaultError from 'next/error';
 import DefaultApp from './_app/DefaultApp';
@@ -29,13 +29,10 @@ export type Options = {
   useApp?: boolean;
   useDocument?: boolean;
   dotenvFile?: string;
-  wrapper?: {
-    App?: Enhancer<NextApp>;
-    Page?: Enhancer<NextPage>;
-  };
+  wrappers?: string;
 };
 
-type OptionsWithoutDefaultValue = 'dotenvFile' | 'wrapper';
+type OptionsWithoutDefaultValue = 'dotenvFile' | 'wrappers';
 
 export type OptionsWithDefaults = Omit<
   Required<Options>,
@@ -122,6 +119,11 @@ export type NextDocumentFile = {
   default: DocumentType;
 };
 
+// Expected options.wrapper files
+export type PageWrapper = (Page: NextPage) => NextPage;
+export type AppWrapper = (App: NextApp) => NextApp;
+export type WrappersFile = { App: AppWrapper; Page: PageWrapper };
+
 export class CustomError extends Error {
   payload?: unknown;
 }
@@ -133,6 +135,7 @@ export type NextPageFiles<PageFile extends NextFile> = {
   documentFile: NextDocumentFile;
   appFile: NextAppFile;
   pageFile: PageFile;
+  wrappersFile?: WrappersFile;
 };
 
 export type NextExistingPageFiles = NextPageFiles<NextPageFile>;

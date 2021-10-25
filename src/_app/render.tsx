@@ -5,6 +5,8 @@ import type {
   NextApp,
   PageObject,
   PageProps,
+  AppWrapper,
+  PageWrapper,
 } from '../commonTypes';
 
 export default function renderApp({
@@ -19,17 +21,25 @@ export default function renderApp({
   appProps: PageProps | undefined;
 }): JSX.Element {
   const { env } = options;
+  const files = pageObject.files[env];
+
   const {
     appFile: { default: AppComponent },
     pageFile: { default: PageComponent },
-  } = pageObject.files[env];
+    wrappersFile,
+  } = files;
+
+  const wrappers = {
+    appWrapper: wrappersFile?.App,
+    pageWrapper: wrappersFile?.Page,
+  };
 
   return renderEnhancedApp({
     App: AppComponent,
     Page: PageComponent,
     appProps,
     pageProps,
-    options,
+    wrappers,
   });
 }
 
@@ -41,23 +51,26 @@ export function renderEnhancedApp({
   Page,
   appProps,
   pageProps,
-  options: { wrapper = {} },
+  wrappers,
 }: {
   App: NextApp;
   Page: NextPage;
   appProps: PageProps | undefined;
   pageProps: PageProps | undefined;
-  options: ExtendedOptions;
+  wrappers: {
+    appWrapper?: AppWrapper;
+    pageWrapper?: PageWrapper;
+  };
 }): JSX.Element {
   let UserEnhancedPage = Page;
   let UserEnhancedApp = App;
 
-  if (wrapper.App) {
-    UserEnhancedApp = wrapper.App(App);
+  if (wrappers.appWrapper) {
+    UserEnhancedApp = wrappers.appWrapper(App);
   }
 
-  if (wrapper.Page) {
-    UserEnhancedPage = wrapper.Page(Page);
+  if (wrappers.pageWrapper) {
+    UserEnhancedPage = wrappers.pageWrapper(Page);
   }
 
   return (

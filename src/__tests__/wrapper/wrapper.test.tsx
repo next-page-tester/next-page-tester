@@ -1,52 +1,51 @@
-import React from 'react';
 import { getPage } from '../../../src';
 import path from 'path';
 import { screen } from '@testing-library/react';
-import { MockedProvider } from './__fixtures__/MockedProvider';
 import { silenceConsoleError } from '../__utils__';
+import { appContextValue } from './__fixtures__/App/wrappers';
+import { pageContextValue } from './__fixtures__/Page/wrappers';
 
 silenceConsoleError('Text content did not match.');
 
+const renderMethods = ['serverRender', 'render'] as const;
+
 describe('wrapper', () => {
-  test('Should wrap with Page', async () => {
-    const source = 'Page wrapper';
-    const { render } = await getPage({
-      nextRoot: path.join(__dirname, '__fixtures__', 'Page'),
-      route: '/a',
-      wrapper: {
-        Page: (Page) => (pageProps) => {
-          return (
-            <MockedProvider.Provider value={{ source }}>
-              <Page {...pageProps} />
-            </MockedProvider.Provider>
-          );
-        },
-      },
+  describe('.Page', () => {
+    renderMethods.forEach((_renderMethod) => {
+      describe(_renderMethod, () => {
+        it('wraps page component with provided Page enhancer', async () => {
+          const { [_renderMethod]: renderMethod } = await getPage({
+            nextRoot: path.join(__dirname, '__fixtures__', 'Page'),
+            route: '/a',
+            wrappers: path.resolve(__dirname, '__fixtures__/Page/wrappers'),
+          });
+
+          renderMethod();
+          expect(
+            screen.getByText(`Source: ${pageContextValue}`)
+          ).toBeInTheDocument();
+        });
+      });
     });
-
-    render();
-
-    expect(screen.getByText(`Source: ${source}`)).toBeInTheDocument();
   });
 
-  test('accepts App enhancer', async () => {
-    const source = 'App wrapper';
-    const { render } = await getPage({
-      nextRoot: path.join(__dirname, '__fixtures__', 'App'),
-      route: '/a',
-      wrapper: {
-        App: (App) => (appProps) => {
-          return (
-            <MockedProvider.Provider value={{ source }}>
-              <App {...appProps} />
-            </MockedProvider.Provider>
-          );
-        },
-      },
+  describe('.App', () => {
+    renderMethods.forEach((_renderMethod) => {
+      describe(_renderMethod, () => {
+        it('wraps app component with provided App enhancer', async () => {
+          const { [_renderMethod]: renderMethod } = await getPage({
+            nextRoot: path.join(__dirname, '__fixtures__', 'App'),
+            route: '/a',
+            useApp: false,
+            wrappers: path.resolve(__dirname, '__fixtures__/App/wrappers'),
+          });
+
+          renderMethod();
+          expect(
+            screen.queryByText(`Source: ${appContextValue}`)
+          ).toBeInTheDocument();
+        });
+      });
     });
-
-    render();
-
-    expect(screen.queryByText(`Source: ${source}`)).toBeInTheDocument();
   });
 });
