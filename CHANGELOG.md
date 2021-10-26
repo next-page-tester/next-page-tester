@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.30.0
+
+### Breaking Changes
+
+- `wrapper` option replaced with `wrappers`. `wrappers` accepts an absolute url pointing to a wrappers file.
+
 ## 0.29.1
 
 ### Bugfix

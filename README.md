@@ -286,6 +286,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://janbiasi.ch"><img src="https://avatars.githubusercontent.com/u/4563751?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jan R. Biasi</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Ajanbiasi" title="Bug reports">🐛</a> <a href="https://github.com/toomuchdesign/next-page-tester/commits?author=janbiasi" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/otaviosoares"><img src="https://avatars.githubusercontent.com/u/180912?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Otávio Augusto Soares</b></sub></a><br /><a href="https://github.com/toomuchdesign/next-page-tester/issues?q=author%3Aotaviosoares" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
@@ -296,7 +297,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- prettier-ignore-start -->
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
-
+ 
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- prettier-ignore-end -->
 
