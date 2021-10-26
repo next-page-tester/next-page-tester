@@ -214,6 +214,15 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "otaviosoares",
+      "name": "Otávio Augusto Soares",
+      "avatar_url": "https://avatars.githubusercontent.com/u/180912?v=4",
+      "profile": "https://github.com/otaviosoares",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
