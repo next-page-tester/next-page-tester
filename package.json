@@ -80,7 +80,7 @@
     "jest": "^27.0.4",
     "lint-staged": "^10.5.4",
     "lodash": "^4.17.21",
-    "next": "^11.1.2",
+    "next": "^12.0.1",
     "next-page-tester-on-npm": "npm:next-page-tester@^0.25.0",
     "prettier": "^2.2.1",
     "react": "^17.0.2",
