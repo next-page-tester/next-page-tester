@@ -12,6 +12,7 @@ import type { DocumentType } from 'next/dist/shared/lib/utils';
 import { RuntimeEnvironment } from './constants';
 import DefaultError from 'next/error';
 import DefaultApp from './_app/DefaultApp';
+import type { AppInitialProps } from 'next/app';
 
 export type Req = ReturnType<typeof createRequest>;
 export type Res = ReturnType<typeof createResponse>;
@@ -152,3 +153,7 @@ export type MakePageResult = {
   pageElement: JSX.Element;
   pageObject: PageObject;
 };
+
+export type AppPropsData = AppInitialProps | undefined;
+
+export type AppData = AppPropsData | Pick<PageData, 'redirect'>;

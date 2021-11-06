@@ -19,6 +19,10 @@ describe('Data fetching', () => {
       const expectedQuery = { foo: 'bar' };
 
       const { nextRoot: actual } = render();
+
+      const res = httpMocks.createResponse();
+      // @ts-expect-error missing type
+      res._eventsCount = 1;
       const expectedContext = {
         pathname: '/gip/[id]',
         query: { ...expectedParams, ...expectedQuery },
@@ -29,7 +33,7 @@ describe('Data fetching', () => {
           params: expectedParams,
           query: expectedQuery,
         }),
-        res: httpMocks.createResponse(),
+        res,
         err: undefined,
       };
 
@@ -51,6 +55,10 @@ describe('Data fetching', () => {
       const expectedQuery = { foo: 'bar' };
 
       const { nextRoot: actual } = render();
+
+      const res = httpMocks.createResponse();
+      // @ts-expect-error missing type
+      res._eventsCount = 1;
       const expectedProps = {
         params: expectedParams,
         query: expectedQuery,
@@ -60,7 +68,7 @@ describe('Data fetching', () => {
           params: expectedParams,
           query: expectedQuery,
         }),
-        res: httpMocks.createResponse(),
+        res,
       };
       const { container: expected } = renderWithinNextRoot(
         <SSRPage {...expectedProps} />

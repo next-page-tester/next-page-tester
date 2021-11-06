@@ -16,11 +16,13 @@ export default function RouterProvider({
   options: ExtendedOptions;
   children: JSX.Element;
   makePage: (
-    optionsOverride?: Partial<ExtendedOptions>
+    pushHandler: PushHandler | undefined,
+    optionsOverride: Partial<ExtendedOptions>
   ) => Promise<MakePageResult>;
 }): JSX.Element {
   const isMounted = useMountedState();
   const previousRouteRef = useRef(pageObject.route);
+  const pushHandlerRef = useRef<PushHandler>();
 
   const pushHandler: PushHandler = useCallback(
     async (url, _$, transitionOptions) => {
@@ -31,11 +33,15 @@ export default function RouterProvider({
 
       const nextOptions = { ...options, route: nextRoute };
       const previousRoute = previousRouteRef.current;
-      const { pageElement, pageObject } = await makePage({
-        route: nextRoute,
-        previousRoute,
-        env: RuntimeEnvironment.CLIENT,
-      });
+      const { pageElement, pageObject } = await makePage(
+        pushHandlerRef.current,
+        {
+          route: nextRoute,
+          previousRoute,
+          env: RuntimeEnvironment.CLIENT,
+        }
+      );
+
       previousRouteRef.current = nextRoute;
 
       const nextRouter = makeRouterMock({
@@ -55,6 +61,8 @@ export default function RouterProvider({
     },
     []
   );
+
+  pushHandlerRef.current = pushHandler;
 
   const [{ children, router }, setState] = useState(() => ({
     children: initialChildren,
