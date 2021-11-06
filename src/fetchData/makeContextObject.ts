@@ -3,6 +3,7 @@ import type {
   NextPageContext,
   GetServerSidePropsContext,
   GetStaticPropsContext,
+  Redirect,
 } from 'next';
 import { parse } from 'cookie';
 import makeHttpObjects from './makeHttpObjects';
@@ -12,13 +13,17 @@ import type {
   FoundPageObject,
   PageObject,
 } from '../commonTypes';
+import { noop } from 'lodash';
+import { RuntimeEnvironment } from '../constants';
 
 export function makeGetInitialPropsContext({
   pageObject,
   options: { req: reqMocker, res: resMocker, previousRoute, env },
+  onRedirect,
 }: {
   pageObject: PageObject;
   options: ExtendedOptions;
+  onRedirect: (redirect: Redirect) => void;
 }): NextPageContext {
   const { pagePath, params, route, query } = pageObject;
 
@@ -30,12 +35,13 @@ export function makeGetInitialPropsContext({
     asPath: route,
   };
 
-  if (env === 'server') {
+  if (env === RuntimeEnvironment.SERVER) {
     const { req, res } = makeHttpObjects({
       pageObject,
       reqMocker,
       resMocker,
       refererRoute: previousRoute,
+      onRedirect,
     });
 
     ctx.req = req;
@@ -59,6 +65,7 @@ export function makeGetServerSidePropsContext({
     reqMocker,
     resMocker,
     refererRoute: previousRoute,
+    onRedirect: noop,
   });
   const { locale, locales, defaultLocale } = getLocales({ pageObject });
 

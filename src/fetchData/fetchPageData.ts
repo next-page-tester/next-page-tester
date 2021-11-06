@@ -2,8 +2,8 @@ import type {
   NextPageContext,
   GetServerSidePropsContext,
   GetStaticPropsContext,
+  Redirect,
 } from 'next';
-import type { AppInitialProps } from 'next/app';
 import {
   makeGetInitialPropsContext,
   makeGetServerSidePropsContext,
@@ -16,6 +16,7 @@ import {
   PageProps,
   NextPageFile,
   CustomError,
+  AppPropsData,
 } from '../commonTypes';
 import { executeAsIfOnServer } from '../server';
 import { InternalError } from '../_error';
@@ -68,7 +69,7 @@ function mergePageDataWithAppData({
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   pageData: { [key: string]: any };
-  appInitialProps?: AppInitialProps;
+  appInitialProps: AppPropsData;
 }) {
   const { props: pageProps, ...restOfPageData } = pageData;
   const { pageProps: appPageProps, ...restOfAppInitialProps } =
@@ -107,7 +108,7 @@ export default async function fetchPageData({
   options,
 }: {
   pageObject: PageObject;
-  appInitialProps?: AppInitialProps;
+  appInitialProps?: AppPropsData;
   options: ExtendedOptions;
 }): Promise<PageData> {
   const { env } = options;
@@ -122,18 +123,29 @@ export default async function fetchPageData({
     // getInitialProps is not called when custom App has the same method
     !appInitialProps
   ) {
+    let pageRedirect: Redirect | undefined;
+
     const ctx: NextPageContext = makeGetInitialPropsContext({
       options,
       pageObject,
+      onRedirect: (redirect) => {
+        pageRedirect = redirect;
+      },
     });
 
     if (env === RuntimeEnvironment.CLIENT) {
       const initialProps = await getInitialProps(ctx);
+      if (pageRedirect) {
+        return { redirect: pageRedirect };
+      }
       return { props: initialProps };
     } else {
       const initialProps = await executeAsIfOnServer(() =>
         getInitialProps(ctx)
       );
+      if (pageRedirect) {
+        return { redirect: pageRedirect };
+      }
       return { props: initialProps };
     }
   }

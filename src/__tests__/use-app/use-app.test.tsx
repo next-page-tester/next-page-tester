@@ -31,6 +31,10 @@ describe('_app support', () => {
         route: '/app-context',
       });
       const { nextRoot: actual } = render();
+
+      const res = httpMocks.createResponse();
+      // @ts-expect-error missing type
+      res._eventsCount = 1;
       const expectedAppContext = {
         AppTree: Fragment,
         Component: CustomAppWithGIP_AppContextPage,
@@ -43,15 +47,20 @@ describe('_app support', () => {
             params: {},
             query: {},
           }),
-          res: httpMocks.createResponse(),
+          res,
           err: undefined,
         },
         router: {
-          asPath: '/app-context',
-          pathname: '/app-context',
-          query: {},
-          route: '/app-context',
           basePath: '',
+          pathname: '/app-context',
+          route: '/app-context',
+          asPath: '/app-context',
+          query: {},
+          events: {},
+          isFallback: false,
+          isLocaleDomain: false,
+          isReady: true,
+          isPreview: false,
         },
       };
       const { container: expected } = renderWithinNextRoot(

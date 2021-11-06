@@ -25,6 +25,7 @@ import {
 } from './commonTypes';
 import { InternalError } from './_error';
 import { RuntimeEnvironment } from './constants';
+import { PushHandler } from './router/makeRouterMock';
 
 function validateOptions({
   nextRoot,
@@ -94,9 +95,14 @@ export default async function getPage({
   const headManager = useDocument && initHeadManager();
 
   const makePage = async (
+    pushHandler: PushHandler | undefined,
     options: ExtendedOptions
   ): Promise<MakePageResult> => {
-    let { pageElement, pageObject } = await makePageElement({ options });
+    let { pageElement, pageObject } = await makePageElement({
+      options,
+      pushHandler,
+    });
+
     if (
       useDocument &&
       options.env === RuntimeEnvironment.CLIENT &&
@@ -118,8 +124,8 @@ export default async function getPage({
       <RouterProvider
         options={options}
         pageObject={pageObject}
-        makePage={(optionsOverrides) =>
-          makePage({ ...options, ...optionsOverrides })
+        makePage={(pushHandler, optionsOverrides) =>
+          makePage(pushHandler, { ...options, ...optionsOverrides })
         }
       >
         {children}
