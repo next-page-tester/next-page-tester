@@ -7,7 +7,7 @@ export async function get404PageInfo({
 }: {
   options: ExtendedOptions;
 }): Promise<PageInfo> {
-  const pageObject = makeNotFoundPageObject({ options });
+  const pageObject = await makeNotFoundPageObject({ options });
   const pageData = await fetchPageData({ pageObject, options });
   pageData.props = {
     ...pageData.props,

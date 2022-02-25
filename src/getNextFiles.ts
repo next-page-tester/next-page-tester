@@ -14,38 +14,38 @@ import type {
 } from './commonTypes';
 
 // Get Document, App and Page files
-function loadPageFiles<PageFile extends NextFile>({
+async function loadPageFiles<PageFile extends NextFile>({
   absolutePagePath,
   options,
 }: {
   absolutePagePath: string;
   options: ExtendedOptions;
-}): NextPageFiles<PageFile> {
+}): Promise<NextPageFiles<PageFile>> {
   const { wrappers } = options;
   return {
-    documentFile: getDocumentFile({ options }),
-    appFile: getAppFile({ options }),
-    pageFile: loadFile<PageFile>({
+    documentFile: await getDocumentFile({ options }),
+    appFile: await getAppFile({ options }),
+    pageFile: await loadFile<PageFile>({
       absolutePath: absolutePagePath,
     }),
     wrappersFile: wrappers
-      ? loadFile<WrappersFile>({
+      ? await loadFile<WrappersFile>({
           absolutePath: wrappers,
         })
       : undefined,
   };
 }
 
-export function loadExistingPageFiles({
+export async function loadExistingPageFiles({
   absolutePagePath,
   options,
 }: {
   absolutePagePath: string;
   options: ExtendedOptions;
-}): MultiEnv<NextExistingPageFiles> {
+}): Promise<MultiEnv<NextExistingPageFiles>> {
   return {
-    client: loadPageFiles({ absolutePagePath, options }),
-    server: executeAsIfOnServerSync(() =>
+    client: await loadPageFiles({ absolutePagePath, options }),
+    server: await executeAsIfOnServerSync(() =>
       executeWithFreshModules(
         () => loadPageFiles({ absolutePagePath, options }),
         options
@@ -54,16 +54,16 @@ export function loadExistingPageFiles({
   };
 }
 
-export function loadErrorPageFiles({
+export async function loadErrorPageFiles({
   absolutePagePath,
   options,
 }: {
   absolutePagePath: string;
   options: ExtendedOptions;
-}): MultiEnv<NextErrorPageFiles> {
+}): Promise<MultiEnv<NextErrorPageFiles>> {
   return {
-    client: loadPageFiles({ absolutePagePath, options }),
-    server: executeAsIfOnServerSync(() =>
+    client: await loadPageFiles({ absolutePagePath, options }),
+    server: await executeAsIfOnServerSync(() =>
       executeWithFreshModules(
         () => loadPageFiles({ absolutePagePath, options }),
         options

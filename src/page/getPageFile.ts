@@ -40,14 +40,14 @@ export function getPagePathIfExists(
   }
 }
 
-export function getPageFileIfExists<FileType>({
+export async function getPageFileIfExists<FileType>({
   pagePath,
   options,
-}: GetPageOptions): FileType | undefined {
+}: GetPageOptions): Promise<FileType | undefined> {
   const absolutePath = getPagePathIfExists({ pagePath, options });
   if (!absolutePath) {
     return undefined;
   }
 
-  return loadFile({ absolutePath });
+  return await loadFile({ absolutePath });
 }

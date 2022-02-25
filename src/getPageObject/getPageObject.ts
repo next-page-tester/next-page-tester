@@ -15,7 +15,7 @@ export async function getPageObject({
   if (routeInfo) {
     const { pagePath } = routeInfo;
     const absolutePagePath = getPagePath({ pagePath, options });
-    const files = loadExistingPageFiles({
+    const files = await loadExistingPageFiles({
       absolutePagePath,
       options,
     });
