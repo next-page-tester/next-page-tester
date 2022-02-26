@@ -1,7 +1,6 @@
 import { getDocumentFile } from './_document';
 import { getAppFile } from './_app';
 import { loadFile } from './loadFile';
-import { executeWithFreshModules } from './utils';
 import { executeAsIfOnServerSync } from './server';
 import type {
   ExtendedOptions,
@@ -45,11 +44,11 @@ export async function loadExistingPageFiles({
 }): Promise<MultiEnv<NextExistingPageFiles>> {
   return {
     client: await loadPageFiles({ absolutePagePath, options }),
-    server: await executeAsIfOnServerSync(() =>
-      executeWithFreshModules(
-        () => loadPageFiles({ absolutePagePath, options }),
-        options
-      )
+    server: await executeAsIfOnServerSync(
+      // executeWithFreshModules(
+      () => loadPageFiles({ absolutePagePath, options })
+      // options
+      // )
     ),
   };
 }
@@ -63,11 +62,12 @@ export async function loadErrorPageFiles({
 }): Promise<MultiEnv<NextErrorPageFiles>> {
   return {
     client: await loadPageFiles({ absolutePagePath, options }),
-    server: await executeAsIfOnServerSync(() =>
-      executeWithFreshModules(
-        () => loadPageFiles({ absolutePagePath, options }),
-        options
-      )
+    server: await executeAsIfOnServerSync(
+      // () =>
+      // executeWithFreshModules(
+      () => loadPageFiles({ absolutePagePath, options })
+      // options
+      // )
     ),
   };
 }
