@@ -6,11 +6,11 @@ import type { ExtendedOptions, NotFoundPageObject } from '../commonTypes';
 
 // @NOTE we currently set pagePath as current path name, but it should
 // be the path of the currently rendered page file
-export function makeNotFoundPageObject({
+export async function makeNotFoundPageObject({
   options,
 }: {
   options: ExtendedOptions;
-}): NotFoundPageObject {
+}): Promise<NotFoundPageObject> {
   const { route } = options;
   const { pathname } = parseRoute({ route }).urlObject;
   const notFoundPageRouteInfo = makeRouteInfo({
@@ -23,6 +23,6 @@ export function makeNotFoundPageObject({
     ...notFoundPageRouteInfo,
     type: 'notFound',
     absolutePagePath,
-    files: loadErrorPageFiles({ absolutePagePath, options }),
+    files: await loadErrorPageFiles({ absolutePagePath, options }),
   };
 }

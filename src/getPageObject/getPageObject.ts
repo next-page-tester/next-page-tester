@@ -15,12 +15,16 @@ export async function getPageObject({
   if (routeInfo) {
     const { pagePath } = routeInfo;
     const absolutePagePath = getPagePath({ pagePath, options });
-    const files = loadExistingPageFiles({
+    const files = await loadExistingPageFiles({
       absolutePagePath,
       options,
     });
 
-    if (!files.client.pageFile.default) {
+    // Since ESM this check needs to be different.
+    // Before we could just check for the existence of default.
+    // Now we need to check if default is a "function" type to know if something has been exported
+    // Because default will always be present regardless of what's in the file
+    if (typeof files.client.pageFile.default !== 'function') {
       throw new InternalError('No default export found for given route');
     }
 

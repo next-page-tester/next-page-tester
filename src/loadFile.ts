@@ -9,13 +9,13 @@ function seemsJestError(e: unknown): boolean {
   return Boolean(e && typeof e === 'object' && 'message' in e);
 }
 
-export function loadFile<FileType>({
+export async function loadFile<FileType>({
   absolutePath,
 }: {
   absolutePath: string;
-}): FileType {
+}): Promise<FileType> {
   try {
-    return require(absolutePath);
+    return await import(absolutePath);
   } catch (e: unknown) {
     const baseName = path.basename(absolutePath);
 

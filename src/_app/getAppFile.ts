@@ -4,14 +4,14 @@ import { loadFile } from '../loadFile';
 import { getPageFileIfExists } from '../page';
 import { APP_PATH } from '../constants';
 
-export function getAppFile({
+export async function getAppFile({
   options,
 }: {
   options: ExtendedOptions;
-}): NextAppFile {
+}): Promise<NextAppFile> {
   const { useApp } = options;
   if (useApp) {
-    const customAppFile = getPageFileIfExists<NextAppFile>({
+    const customAppFile = await getPageFileIfExists<NextAppFile>({
       pagePath: APP_PATH,
       options,
     });
@@ -20,11 +20,11 @@ export function getAppFile({
       return customAppFile;
     }
   }
-  return getDefaultAppFile();
+  return await getDefaultAppFile();
 }
 
-function getDefaultAppFile(): NextAppFile {
-  return loadFile<NextAppFile>({
+async function getDefaultAppFile(): Promise<NextAppFile> {
+  return await loadFile<NextAppFile>({
     absolutePath: path.resolve(__dirname, 'DefaultApp'),
   });
 }
