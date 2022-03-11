@@ -36,6 +36,11 @@ export function initTestHelpers(): void {
   // If user has a different test runner we handle it in src/utils where we fallback to stealthy-require
   if (typeof jest !== 'undefined') {
     preservePredefinedSharedModulesIdentity();
+
+    // Enable a Next.js workaround to avoid mixed commonJs/Es Module imports that Jes can't handle
+    beforeEach(() => {
+      process.env.__NEXT_TEST_MODE = 'jest';
+    });
   }
 }
 
