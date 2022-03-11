@@ -158,6 +158,8 @@ export default async function serverRenderDocument({
       canonicalBase: '',
       headTags: [],
       devOnlyCacheBusterQueryString: '',
+      // @ts-expect-error We don't expect to use this method
+      useMaybeDeferContent: () => {},
     };
 
     // @ts-expect-error this method doesn't exist since Next.js v11.1.2 and useDocument option is currently disabled
