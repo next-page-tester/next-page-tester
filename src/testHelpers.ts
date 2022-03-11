@@ -38,6 +38,7 @@ export function initTestHelpers(): void {
     preservePredefinedSharedModulesIdentity();
 
     // Enable a Next.js workaround to avoid mixed commonJs/Es Module imports that Jes can't handle
+    // @LINK: https://github.com/vercel/next.js/blob/v12.1.0/packages/next/server/config.ts#L639
     beforeEach(() => {
       process.env.__NEXT_TEST_MODE = 'jest';
     });
