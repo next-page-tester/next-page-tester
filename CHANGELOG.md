@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.31.0
+
+### Breaking Changes
+
+- Support Next v12.1.0+
+
+### Bugfix
+
+- Fix segfault errors with Next v12
+
 ## 0.30.0
 
 ### Breaking Changes
