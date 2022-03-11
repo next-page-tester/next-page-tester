@@ -165,7 +165,8 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 | v0.23.0 -> v0.25.X | v10.0.8 -> v11.0.X |         |
 | v0.26.0 -> v0.27.X | v10.0.8 -> v11.0.X | v27.X.X |
 | v0.28.0 -> v0.28.X | v11.1.0            |         |
-| v0.29.0 +          | v11.1.1 +          |         |
+| v0.29.0 +          | v11.1.1 -> v11.X   |         |
+| v0.31.0 +          | v12.1.0 +          |         |
 
 Since:
 
@@ -297,7 +298,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- prettier-ignore-start -->
 <!-- ALL-CONTRIBUTORS-BADGE:START -->
- 
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- prettier-ignore-end -->
 
