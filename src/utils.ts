@@ -10,7 +10,7 @@ import normalizePath from 'normalize-path';
 import { getNextConfig } from './nextConfig';
 import { InternalError } from './_error';
 import { normalizeLocalePath } from 'next/dist/shared/lib/i18n/normalize-locale-path';
-import { ImageConfig, imageConfigDefault } from 'next/dist/server/image-config';
+import { ImageConfig, imageConfigDefault } from 'next/dist/shared/lib/image-config';
 import type { PageObject } from './commonTypes';
 
 export function parseRoute({
