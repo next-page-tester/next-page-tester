@@ -80,7 +80,7 @@
     "jest": "^27.0.4",
     "lint-staged": "^10.5.4",
     "lodash": "^4.17.21",
-    "next": "^12.1.0",
+    "next": "^12.1.1",
     "next-page-tester-on-npm": "npm:next-page-tester@^0.25.0",
     "prettier": "^2.2.1",
     "react": "^17.0.2",
@@ -103,7 +103,7 @@
     "tiny-glob": "^0.2.9"
   },
   "peerDependencies": {
-    "next": "^12.1.0",
+    "next": "^12.1.1",
     "react": "^16.6.0 || ^17",
     "react-dom": "^16.6.0 || ^17"
   },
