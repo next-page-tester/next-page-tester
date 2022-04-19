@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.32.0
+
+### Breaking Changes
+
+- Support Next v12.1.1+
+
 ## 0.31.0
 
 ### Breaking Changes
