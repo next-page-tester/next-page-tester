@@ -167,6 +167,7 @@ Under [examples folder][examples-folder] we're documenting the testing cases whi
 | v0.28.0 -> v0.28.X | v11.1.0            |         |
 | v0.29.0 +          | v11.1.1 -> v11.X   |         |
 | v0.31.0 +          | v12.1.0 +          |         |
+| v0.32.0 +          | v12.1.1 +          |         |
 
 Since:
 
