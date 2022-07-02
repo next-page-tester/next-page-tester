@@ -1,8 +1,15 @@
-# Next page tester
+# Next page tester (deprecated)
 
+[![deprecated](http://badges.github.io/stability-badges/dist/deprecated.svg)](http://github.com/badges/stability-badges)
 [![Build status][ci-badge]][ci]
 [![Test coverage report][coveralls-badge]][coveralls]
 [![Npm version][npm-badge]][npm]
+
+## This project is deprecated
+
+Next.js took a development course which makes the testing approach adopted by this library obsolete. Next page tester maintainers suggest to use browser testing, instead.
+
+## Intro
 
 The missing DOM integration testing tool for [Next.js][next-github].
 
