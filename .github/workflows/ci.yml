@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -27,8 +27,26 @@ jobs:
         env:
           HUSKY_SKIP_INSTALL: 1
 
-      - name: Upload code coverage
+      - uses: actions/upload-artifact@v2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          name: coverage-output
+          path: coverage
+          retention-days: 1
+
+  upload-coverage:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: coverage-output
+          path: coverage
+
+      - name: Display structure of downloaded files
+          run: ls -R
+
+      - name: Upload code coverage to Coveralls
         uses: coverallsapp/github-action@master
-        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '16.x'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
